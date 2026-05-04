@@ -95,14 +95,10 @@ export default function Home() {
     <main className="min-h-screen bg-[#F7F7F8] text-[#0D0D0F] overflow-x-hidden">
  
       {/* NAV */}
-      <motion.nav
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7 }}
-        className="w-full px-6 md:px-12 py-5 flex items-center justify-between border-b border-black/8 sticky top-0 z-50 backdrop-blur-md bg-[#F7F7F8]/90"
-      >
+      <Image src="/LOGO_SATORI-removebg-preview.png" alt="SATORI" width={160} height={50} priority />
         <a href="#inicio">
-          <Image src="/LOGO_SATORI.png" alt="SATORI" width={160} height={50} priority />
+          <Image src="/public/LOGO_SATORI-removebg-preview.png"
+          alt="SATORI" width={160} height={50} priority />
         </a>
  
         <div className="hidden md:flex items-center gap-10">
@@ -164,7 +160,7 @@ export default function Home() {
             transition={{ duration: 1.6 }}
             className="hidden md:flex items-center justify-center"
           >
-            <Image src="/ENSO_NEGRO.png" alt="Enso SATORI" width={380} height={380} style={{ opacity: 0.7 }} />
+            <Image src="/ENSO_NEGRO.png" alt="Enso SATORI" width={420} height={420} style={{ opacity: 0.9 }} />
           </motion.div>
         </div>
       </section>
@@ -262,7 +258,7 @@ export default function Home() {
             <div className="relative w-full max-w-sm mx-auto">
               <div className="absolute -top-4 -left-4 w-full h-full border border-white/10" />
               <Image
-                src="public/LOGO_SATORI-removebg-preview.png"
+                src="/rodrigo.png"
                 alt="Rodrigo Tristán — Fundador SATORI"
                 width={480}
                 height={600}
@@ -270,7 +266,7 @@ export default function Home() {
                 style={{ filter: "grayscale(15%)" }}
               />
               <div className="absolute -bottom-10 -right-10 opacity-15">
-                <Image src="/ENSO_BLANCO.png" alt="" width={160} height={160} />
+                <Image src="/ENSO BLANCO.png" alt="" width={160} height={160} />
               </div>
             </div>
           </motion.div>
@@ -331,7 +327,7 @@ export default function Home() {
  
       {/* FOOTER */}
       <footer className="px-6 md:px-12 py-10 border-t border-black/8 bg-[#F7F7F8] flex flex-col sm:flex-row items-center justify-between gap-4">
-        <Image src="/LOGO_SATORI.png" alt="SATORI" width={130} height={40} />
+        <Image src="/LOGO_SATORI-removebg-preview.png" alt="SATORI" width={130} height={40} />
         <p className="text-xs tracking-[0.12em] text-[#5B626B] uppercase">
           © 2025 SATORI · Todos los derechos reservados
         </p>
