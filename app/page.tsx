@@ -3,33 +3,30 @@
 import { motion } from "framer-motion";
 import { ArrowRight, PenTool, Sparkles, Megaphone, Brain, TrendingUp, Users, Zap } from "lucide-react";
 import Image from "next/image";
+import { useState } from "react";
 
 const servicios = [
   {
     titulo: "Creación de Contenido",
-    descripcion:
-      "Tu negocio merece contenido que vende, no solo que se ve bien. Diseñamos estrategia, copy y piezas visuales que generan confianza y convierten seguidores en clientes.",
+    descripcion: "Tu negocio merece contenido que vende, no solo que se ve bien. Diseñamos estrategia, copy y piezas visuales que generan confianza y convierten seguidores en clientes.",
     icono: PenTool,
     estado: "Disponible",
   },
   {
     titulo: "Gestión de Redes Sociales",
-    descripcion:
-      "Tus redes son tu vitrina digital. Nosotros la mantenemos activa, coherente y trabajando para ti todos los días — sin que tengas que preocuparte por el qué publicar.",
+    descripcion: "Tus redes son tu vitrina digital. Nosotros la mantenemos activa, coherente y trabajando para ti todos los días — sin que tengas que preocuparte por el qué publicar.",
     icono: Sparkles,
     estado: "Disponible",
   },
   {
     titulo: "Medios Pagados",
-    descripcion:
-      "Llega exactamente a quien necesitas, cuando lo necesitas. Campañas de publicidad digital diseñadas para generar retorno real desde el primer peso invertido.",
+    descripcion: "Llega exactamente a quien necesitas, cuando lo necesitas. Campañas de publicidad digital diseñadas para generar retorno real desde el primer peso invertido.",
     icono: Megaphone,
     estado: "Próximamente",
   },
   {
     titulo: "Sistemas con IA",
-    descripcion:
-      "Automatiza lo repetitivo y enfócate en lo que importa. Implementamos herramientas de inteligencia artificial que trabajan por ti las 24 horas.",
+    descripcion: "Automatiza lo repetitivo y enfócate en lo que importa. Implementamos herramientas de inteligencia artificial que trabajan por ti las 24 horas.",
     icono: Brain,
     estado: "Próximamente",
   },
@@ -71,18 +68,12 @@ const resultados = [
   { numero: "2–4", label: "Semanas para ver primeros resultados" },
 ];
 
-function EnsoDetallado({ size = 200, opacity = 1 }: { size?: number; opacity?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ opacity }}>
-      <path d="M100 18 C140 18 168 42 174 72 C182 110 164 148 132 164 C100 180 62 172 40 148 C18 124 16 88 32 62 C46 38 68 24 90 20" stroke="#1E1F23" strokeWidth="11" strokeLinecap="round" fill="none" />
-      <path d="M100 22 C138 22 164 44 170 73 C178 108 161 144 130 160 C100 175 65 168 44 145 C23 122 22 88 37 63 C50 41 71 27 92 22" stroke="#383B42" strokeWidth="3" strokeLinecap="round" fill="none" opacity="0.4" />
-      <path d="M100 26 C135 26 160 47 166 74 C173 106 158 140 128 156" stroke="#5B626B" strokeWidth="1.5" strokeLinecap="round" fill="none" opacity="0.25" />
-      <path d="M88 20 C84 19 80 19 77 20 C74 21 71 23 69 22" stroke="#1E1F23" strokeWidth="7" strokeLinecap="round" fill="none" />
-      <path d="M76 20 C72 20 68 21 65 22" stroke="#383B42" strokeWidth="3" strokeLinecap="round" fill="none" opacity="0.5" />
-      <path d="M68 22 C65 23 63 24 62 25" stroke="#5B626B" strokeWidth="2" strokeLinecap="round" fill="none" opacity="0.35" />
-    </svg>
-  );
-}
+const navLinks = [
+  { label: "Inicio", href: "#inicio" },
+  { label: "Servicios", href: "#servicios" },
+  { label: "Nosotros", href: "#nosotros" },
+  { label: "Contacto", href: "#contacto" },
+];
 
 function TexturaGrid() {
   const puntos = [];
@@ -92,7 +83,7 @@ function TexturaGrid() {
     }
   }
   return (
-    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style={{ position: "absolute", inset: 0, opacity: 0.12, pointerEvents: "none" }}>
+    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style={{ position: "absolute", inset: 0, opacity: 0.1, pointerEvents: "none" }}>
       {puntos.map((p, i) => <circle key={i} cx={p.x} cy={p.y} r="1.2" fill="#1E1F23" />)}
     </svg>
   );
@@ -112,6 +103,8 @@ function TexturaLineas() {
 }
 
 export default function Home() {
+  const [menuAbierto, setMenuAbierto] = useState(false);
+
   return (
     <main className="min-h-screen bg-[#F7F7F8] text-[#0D0D0F] overflow-x-hidden">
 
@@ -120,16 +113,61 @@ export default function Home() {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: "easeOut" }}
-        className="w-full px-6 md:px-12 py-5 flex items-center justify-between border-b border-black/8 sticky top-0 z-50 backdrop-blur-md bg-[#F7F7F8]/90"
+        className="w-full px-6 md:px-12 py-4 flex items-center justify-between border-b border-black/8 sticky top-0 z-50 backdrop-blur-md bg-[#F7F7F8]/90"
       >
-        <Image src="/SATORI.png" alt="SATORI" width={120} height={36} priority />
-        <a href="#contacto" className="text-xs tracking-[0.18em] uppercase border border-black/20 px-5 py-2.5 hover:bg-black hover:text-white transition-all duration-300 text-[#1E1F23]">
-          Hablar con nosotros
+        {/* Logo */}
+        <a href="#inicio">
+          <Image src="/LOGO_SATORI.png" alt="SATORI" width={130} height={40} priority />
         </a>
+
+        {/* Desktop nav */}
+        <div className="hidden md:flex items-center gap-8">
+          {navLinks.map((link) => (
+            <a
+              key={link.label}
+              href={link.href}
+              className="text-xs tracking-[0.15em] uppercase text-[#5B626B] hover:text-[#0D0D0F] transition-colors duration-200"
+            >
+              {link.label}
+            </a>
+          ))}
+          <a
+            href="#contacto"
+            className="text-xs tracking-[0.18em] uppercase border border-black/20 px-5 py-2.5 hover:bg-black hover:text-white transition-all duration-300 text-[#1E1F23]"
+          >
+            Hablar con nosotros
+          </a>
+        </div>
+
+        {/* Mobile hamburger */}
+        <button
+          className="md:hidden flex flex-col gap-1.5 p-2"
+          onClick={() => setMenuAbierto(!menuAbierto)}
+        >
+          <span className={`block w-6 h-px bg-[#0D0D0F] transition-all duration-300 ${menuAbierto ? "rotate-45 translate-y-2" : ""}`} />
+          <span className={`block w-6 h-px bg-[#0D0D0F] transition-all duration-300 ${menuAbierto ? "opacity-0" : ""}`} />
+          <span className={`block w-6 h-px bg-[#0D0D0F] transition-all duration-300 ${menuAbierto ? "-rotate-45 -translate-y-2" : ""}`} />
+        </button>
       </motion.nav>
 
+      {/* Mobile menu */}
+      {menuAbierto && (
+        <div className="md:hidden fixed inset-0 z-40 bg-[#F7F7F8] flex flex-col items-center justify-center gap-8">
+          {navLinks.map((link) => (
+            <a
+              key={link.label}
+              href={link.href}
+              onClick={() => setMenuAbierto(false)}
+              className="text-2xl font-serif tracking-[0.1em] text-[#0D0D0F]"
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
+      )}
+
       {/* HERO */}
-      <section className="px-6 md:px-12 pt-20 md:pt-28 pb-24 relative overflow-hidden">
+      <section id="inicio" className="px-6 md:px-12 pt-20 md:pt-28 pb-24 relative overflow-hidden">
         <TexturaGrid />
         <div className="max-w-6xl mx-auto grid md:grid-cols-[1fr_380px] gap-16 items-center relative">
           <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, ease: "easeOut" }}>
@@ -150,14 +188,20 @@ export default function Home() {
               <a href="#contacto" className="inline-flex items-center justify-center gap-2 bg-[#0D0D0F] text-white px-7 py-4 text-sm tracking-[0.08em] uppercase font-medium hover:bg-[#383B42] transition-all duration-200">
                 Agenda tu llamada gratuita <ArrowRight size={15} />
               </a>
-              <a href="#paquetes" className="inline-flex items-center justify-center border border-black/20 px-7 py-4 text-sm tracking-[0.08em] uppercase text-[#383B42] hover:bg-black hover:text-white transition-all duration-200">
-                Ver precios
+              <a href="#servicios" className="inline-flex items-center justify-center border border-black/20 px-7 py-4 text-sm tracking-[0.08em] uppercase text-[#383B42] hover:bg-black hover:text-white transition-all duration-200">
+                Ver servicios
               </a>
             </div>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, rotate: -20, scale: 0.9 }} animate={{ opacity: 1, rotate: 0, scale: 1 }} transition={{ duration: 1.6, ease: "easeOut" }} className="hidden md:flex items-center justify-center">
-            <EnsoDetallado size={320} opacity={0.8} />
+          {/* Enso real */}
+          <motion.div
+            initial={{ opacity: 0, rotate: -20, scale: 0.9 }}
+            animate={{ opacity: 1, rotate: 0, scale: 1 }}
+            transition={{ duration: 1.6, ease: "easeOut" }}
+            className="hidden md:flex items-center justify-center"
+          >
+            <Image src="/ENSO_NEGRO.png" alt="Enso SATORI" width={300} height={300} style={{ opacity: 0.75 }} />
           </motion.div>
         </div>
       </section>
@@ -234,8 +278,8 @@ export default function Home() {
                 No somos una agencia que desaparece después del onboarding. Somos tu equipo de marketing externo — estratégico, accesible y enfocado en resultados reales.
               </p>
             </div>
-            <div className="opacity-20">
-              <EnsoDetallado size={140} />
+            <div style={{ opacity: 0.15 }}>
+              <Image src="/ENSO_NEGRO.png" alt="Enso" width={120} height={120} />
             </div>
           </motion.div>
 
@@ -302,27 +346,105 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CONTACTO */}
-      <section id="contacto" className="px-6 md:px-12 py-32 bg-[#0D0D0F] relative overflow-hidden">
+      {/* NOSOTROS — FUNDADOR */}
+      <section id="nosotros" className="px-6 md:px-12 py-24 bg-[#0D0D0F] relative overflow-hidden">
         <TexturaLineas />
+        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center relative">
+
+          {/* Foto */}
+          <motion.div
+            initial={{ opacity: 0, x: -24 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1 }}
+            className="relative"
+          >
+            <div className="relative w-full max-w-sm mx-auto">
+              {/* Marco decorativo */}
+              <div className="absolute -top-4 -left-4 w-full h-full border border-white/10" />
+              <Image
+                src="/IMG_2379.jpeg"
+                alt="Rodrigo Tristán — Fundador SATORI"
+                width={480}
+                height={600}
+                className="w-full object-cover grayscale"
+                style={{ filter: "grayscale(20%)" }}
+              />
+              {/* Enso blanco decorativo */}
+              <div className="absolute -bottom-8 -right-8 opacity-20">
+                <Image src="/ENSO_BLANCO.png" alt="" width={120} height={120} />
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Texto */}
+          <motion.div
+            initial={{ opacity: 0, x: 24 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, delay: 0.15 }}
+            className="text-white"
+          >
+            <p className="text-[10px] uppercase tracking-[0.28em] text-[#5B626B] mb-6">Fundador</p>
+
+            <h2 className="text-3xl md:text-4xl font-serif font-bold tracking-[-0.02em] text-white leading-[1.1] mb-2">
+              Rodrigo Tristán
+            </h2>
+            <p className="text-sm tracking-[0.15em] uppercase text-[#5B626B] mb-8">
+              Fundador & CEO · SATORI
+            </p>
+
+            {/* Cita */}
+            <div className="border-l-2 border-white/20 pl-5 mb-8">
+              <p className="text-lg font-serif italic text-[#D1D5DA] leading-relaxed">
+                "Intuición + Tecnología. En ese orden."
+              </p>
+            </div>
+
+            <div className="space-y-4 text-[#93A1AD] font-light leading-relaxed text-sm">
+              <p>
+                Visionario amante de la psicología y la tecnología.
+              </p>
+              <p>
+                Rodrigo tiene el propósito de ayudar a los emprendedores y empresarios mexicanos a crecer mediante la adopción de tecnología e utilización de Inteligencia Artificial en sus negocios.
+              </p>
+              <p>
+                Inspirado en el concepto japonés <span className="italic text-white">"Satori"</span> — momento repentino de iluminación, presencia y comprensión profunda de la realidad —,{" "}
+                <strong className="text-white font-medium">
+                  Rodrigo vive ese momento Satori en el que decide dedicar su vida a servir a los emprendedores y empresarios a crecer con intuición y tecnología.
+                </strong>
+              </p>
+              <p>
+                <strong className="text-white font-medium">
+                  Se convierte en Fundador y CEO de SATORI, agencia de marketing digital especializada en gestión de contenido, social ads, automatización e implementación de IA.
+                </strong>
+              </p>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* CONTACTO */}
+      <section id="contacto" className="px-6 md:px-12 py-32 bg-[#F7F7F8] relative overflow-hidden">
+        <TexturaGrid />
         <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.9 }} className="max-w-3xl mx-auto text-center relative">
           <p className="text-[10px] uppercase tracking-[0.28em] text-[#5B626B] mb-6">Hablemos</p>
-          <h2 className="text-4xl md:text-6xl font-serif font-bold tracking-[-0.02em] text-white leading-[1.05] mb-6">
+          <h2 className="text-4xl md:text-6xl font-serif font-bold tracking-[-0.02em] text-[#0D0D0F] leading-[1.05] mb-6">
             Tu negocio puede<br />
-            <span className="italic font-normal text-[#D1D5DA]">llegar más lejos.</span>
+            <span className="italic font-normal text-[#383B42]">llegar más lejos.</span>
           </h2>
           <p className="text-[#5B626B] text-lg font-light mb-4 max-w-xl mx-auto">
             Una llamada de 30 minutos para entender tu negocio, sin compromisos y sin costo.
           </p>
-          <p className="text-[#383B42] text-sm font-light mb-12">Respondemos en menos de 24 horas.</p>
+          <p className="text-[#5B626B] text-sm font-light mb-12">Respondemos en menos de 24 horas.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="https://wa.me/52" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 bg-white text-[#0D0D0F] px-7 py-4 text-sm tracking-[0.08em] uppercase font-medium hover:bg-[#E9EAEC] transition-all">
+            <a href="https://wa.me/52" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 bg-[#0D0D0F] text-white px-7 py-4 text-sm tracking-[0.08em] uppercase font-medium hover:bg-[#383B42] transition-all">
               WhatsApp <ArrowRight size={15} />
             </a>
-            <a href="mailto:hola@satorimkt.com" className="inline-flex items-center justify-center gap-2 border border-white/15 px-7 py-4 text-sm tracking-[0.08em] uppercase text-[#93A1AD] hover:border-white/30 hover:text-white transition-all">
+            <a href="mailto:hola@satorimkt.com" className="inline-flex items-center justify-center gap-2 border border-black/20 px-7 py-4 text-sm tracking-[0.08em] uppercase text-[#383B42] hover:bg-black hover:text-white transition-all">
               hola@satorimkt.com
             </a>
-            <a href="tel:+52" className="inline-flex items-center justify-center gap-2 border border-white/15 px-7 py-4 text-sm tracking-[0.08em] uppercase text-[#93A1AD] hover:border-white/30 hover:text-white transition-all">
+            <a href="tel:+52" className="inline-flex items-center justify-center gap-2 border border-black/20 px-7 py-4 text-sm tracking-[0.08em] uppercase text-[#383B42] hover:bg-black hover:text-white transition-all">
               Llamar
             </a>
           </div>
@@ -331,7 +453,7 @@ export default function Home() {
 
       {/* FOOTER */}
       <footer className="px-6 md:px-12 py-8 border-t border-black/8 bg-[#F7F7F8] flex flex-col sm:flex-row items-center justify-between gap-4">
-        <Image src="/SATORI.png" alt="SATORI" width={100} height={30} priority />
+        <Image src="/LOGO_SATORI.png" alt="SATORI" width={100} height={30} />
         <p className="text-[11px] tracking-[0.12em] text-[#5B626B] uppercase">
           © 2025 SATORI · Todos los derechos reservados
         </p>
