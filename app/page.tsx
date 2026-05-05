@@ -343,7 +343,7 @@ export default function Home() {
                 height={600}
                 className="w-full object-cover"
               />
-              <div className="absolute -bottom-10 -right-10 opacity-40">
+              <div className="absolute -bottom-10 -right-10 opacity-80">
                 <Image src="/enso-negro.png" alt="" width={160} height={160} style={{ filter: "invert(1)" }} />
               </div>
             </div>
