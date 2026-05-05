@@ -195,7 +195,7 @@ export default function Home() {
             transition={{ duration: 2.6 }}
             className="hidden md:flex items-center justify-center"
           >
-            <Image src="/enso-negro.png" alt="enso-negro.png" width={420} height={420} style={{ opacity: 0 }} />
+            <Image src="/enso-negro.png" alt="enso-negro.png" width={420} height={420} style={{ opacity: -40 }} />
           </motion.div>
         </div>
       </section>
