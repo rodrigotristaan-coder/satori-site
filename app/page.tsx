@@ -70,11 +70,6 @@ const navLinks = [
   { label: "Contacto", href: "#contacto" },
 ];
  
-// Paleta: plateado frío + negro + dorado
-// --gold: #C9A84C
-// --silver: #E8E9EB
-// --bg: #F0F1F3
- 
 function TexturaGrid() {
   const puntos: { x: number; y: number }[] = [];
   for (let r = 0; r < 20; r++)
@@ -112,22 +107,32 @@ export default function Home() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7 }}
         style={{ backgroundColor: "rgba(240,241,243,0.92)", borderBottom: "1px solid #D8DADD" }}
-        className="w-full px-6 md:px-12 py-4 flex items-center justify-between sticky top-0 z-50 backdrop-blur-md"
+        className="w-full px-6 md:px-12 py-3 flex items-center justify-between sticky top-0 z-50 backdrop-blur-md"
       >
         <a href="#inicio">
-          <Image src="/logo-satori.png" alt="SATORI" width={220} height={66} priority />
+          <Image
+            src="/logo-satori.png"
+            alt="SATORI"
+            width={280}
+            height={84}
+            priority
+            style={{ filter: "brightness(0)" }}
+          />
         </a>
  
         <div className="hidden md:flex items-center gap-10">
           {navLinks.map((link) => (
-            <a key={link.label} href={link.href} className="text-sm tracking-[0.12em] uppercase transition-colors" style={{ color: "#5B626B" }}
+            <a key={link.label} href={link.href}
+              className="text-sm tracking-[0.12em] uppercase transition-colors font-medium"
+              style={{ color: "#5B626B" }}
               onMouseEnter={e => (e.currentTarget.style.color = "#0D0D0F")}
               onMouseLeave={e => (e.currentTarget.style.color = "#5B626B")}
             >
               {link.label}
             </a>
           ))}
-          <a href="#contacto" className="text-sm tracking-[0.12em] uppercase px-6 py-3 transition-all font-medium"
+          <a href="#contacto"
+            className="text-sm tracking-[0.12em] uppercase px-6 py-3 transition-all font-semibold"
             style={{ backgroundColor: "#C9A84C", color: "#fff" }}
             onMouseEnter={e => (e.currentTarget.style.backgroundColor = "#b8953e")}
             onMouseLeave={e => (e.currentTarget.style.backgroundColor = "#C9A84C")}
@@ -147,7 +152,7 @@ export default function Home() {
       {menuAbierto && (
         <div className="md:hidden fixed inset-0 z-40 flex flex-col items-center justify-center gap-10" style={{ backgroundColor: "#F0F1F3" }}>
           {navLinks.map((link) => (
-            <a key={link.label} href={link.href} onClick={() => setMenuAbierto(false)} className="text-3xl font-serif tracking-[0.1em] text-[#0D0D0F]">
+            <a key={link.label} href={link.href} onClick={() => setMenuAbierto(false)} className="text-4xl font-serif tracking-[0.1em] text-[#0D0D0F]">
               {link.label}
             </a>
           ))}
@@ -155,31 +160,31 @@ export default function Home() {
       )}
  
       {/* HERO */}
-      <section id="inicio" className="px-6 md:px-18 pt-24 md:pt-32 pb-28 relative overflow-hidden">
+      <section id="inicio" className="px-6 md:px-12 pt-24 md:pt-32 pb-28 relative overflow-hidden">
         <TexturaGrid />
-        <div className="max-w-6xl mx-auto grid md:grid-cols-[1fr_400px] gap-16 items-center relative">
+        <div className="max-w-6xl mx-auto grid md:grid-cols-[1fr_420px] gap-16 items-center relative">
           <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}>
-            <p className="text-xs tracking-[0.28em] uppercase mb-8" style={{ color: "#C9A84C" }}>
+            <p className="text-sm tracking-[0.28em] uppercase mb-8 font-black" style={{ color: "#C9A84C" }}>
               Marketing · IA · Resultados reales
             </p>
             <h1 className="text-6xl md:text-7xl lg:text-8xl font-serif font-bold leading-[0.95] tracking-[-0.03em] text-[#0D0D0F] mb-8">
               Más clientes.<br />
               <span className="italic font-normal" style={{ color: "#5B626B" }}>Menos ruido.</span>
             </h1>
-            <p className="text-xl max-w-md leading-relaxed mb-10 font-light" style={{ color: "#5B626B" }}>
+            <p className="text-2xl max-w-md leading-relaxed mb-10 font-light" style={{ color: "#5B626B" }}>
               Ayudamos a empresarios y emprendedores mexicanos a crecer en digital con estrategia, contenido e inteligencia artificial.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 text-sm tracking-[0.1em] uppercase font-medium transition-all"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 text-base tracking-[0.1em] uppercase font-semibold transition-all"
                 style={{ backgroundColor: "#C9A84C", color: "#fff" }}
                 onMouseEnter={e => (e.currentTarget.style.backgroundColor = "#b8953e")}
                 onMouseLeave={e => (e.currentTarget.style.backgroundColor = "#C9A84C")}
               >
-                Agenda una llamada gratuita <ArrowRight size={15} />
+                Agenda una llamada gratuita <ArrowRight size={16} />
               </a>
               <a href="#servicios"
-                className="inline-flex items-center justify-center px-8 py-4 text-sm tracking-[0.1em] uppercase transition-all"
+                className="inline-flex items-center justify-center px-8 py-4 text-base tracking-[0.1em] uppercase transition-all font-medium"
                 style={{ border: "1px solid #C0C3C8", color: "#383B42" }}
                 onMouseEnter={e => { e.currentTarget.style.backgroundColor = "#0D0D0F"; e.currentTarget.style.color = "#fff"; }}
                 onMouseLeave={e => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "#383B42"; }}
@@ -192,16 +197,16 @@ export default function Home() {
           <motion.div
             initial={{ opacity: 0, rotate: -20, scale: 0.9 }}
             animate={{ opacity: 1, rotate: 0, scale: 1 }}
-            transition={{ duration: 2.6 }}
+            transition={{ duration: 1.6 }}
             className="hidden md:flex items-center justify-center"
           >
-            <Image src="/enso-negro.png" alt="enso-negro.png" width={420} height={420} />
+            <Image src="/enso-negro.png" alt="Enso SATORI" width={440} height={440} style={{ opacity: 0.85 }} />
           </motion.div>
         </div>
       </section>
  
       {/* NÚMEROS */}
-      <section className="px-6 md:px-12 py-16 relative overflow-hidden" style={{ backgroundColor: "#0D0D0F" }}>
+      <section className="px-6 md:px-12 py-20 relative overflow-hidden" style={{ backgroundColor: "#0D0D0F" }}>
         <TexturaLineas />
         <div className="max-w-5xl mx-auto grid grid-cols-3 gap-px relative" style={{ backgroundColor: "rgba(255,255,255,0.08)" }}>
           {[
@@ -210,9 +215,9 @@ export default function Home() {
             { numero: "2–4", label: "Semanas para resultados" },
           ].map((r, i) => (
             <motion.div key={r.label} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: i * 0.1 }}
-              className="px-8 py-12 text-center" style={{ backgroundColor: "#0D0D0F" }}>
-              <p className="text-5xl md:text-6xl font-serif font-bold mb-3" style={{ color: "#C9A84C" }}>{r.numero}</p>
-              <p className="text-sm font-light" style={{ color: "#5B626B" }}>{r.label}</p>
+              className="px-8 py-14 text-center" style={{ backgroundColor: "#0D0D0F" }}>
+              <p className="text-6xl md:text-7xl font-serif font-bold mb-3" style={{ color: "#C9A84C" }}>{r.numero}</p>
+              <p className="text-lg font-light" style={{ color: "#5B626B" }}>{r.label}</p>
             </motion.div>
           ))}
         </div>
@@ -222,14 +227,12 @@ export default function Home() {
       <section id="servicios" className="px-6 md:px-12 py-28" style={{ backgroundColor: "#fff" }}>
         <div className="max-w-6xl mx-auto">
           <div className="mb-16">
-            <p className="text-xs uppercase tracking-[0.28em] mb-5" style={{ color: "#C9A84C" }}>Servicios</p>
+            <p className="text-sm uppercase tracking-[0.28em] mb-5 font-black" style={{ color: "#C9A84C" }}>Servicios</p>
             <h2 className="text-5xl md:text-6xl font-serif font-bold tracking-[-0.02em] text-[#0D0D0F] leading-[1.05]">
               Todo lo que necesita<br />tu negocio.
             </h2>
           </div>
- 
-          {/* 4 filas, cada una con imagen a la derecha */}
-          <div className="flex flex-col gap-px" style={{ outline: "1px solid #E0E2E5" }}>
+          <div className="flex flex-col" style={{ outline: "1px solid #E0E2E5" }}>
             {servicios.map((s, i) => {
               const Icono = s.icono;
               const imagenDerecha = i % 2 === 0;
@@ -240,34 +243,26 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: i * 0.08 }}
-                  className={`grid md:grid-cols-2 gap-0 ${imagenDerecha ? "" : "md:[&>*:first-child]:order-2"}`}
+                  className={`grid md:grid-cols-2 gap-0 ${!imagenDerecha ? "md:[&>*:first-child]:order-2" : ""}`}
                   style={{ borderBottom: "1px solid #E0E2E5" }}
                 >
-                  {/* Texto */}
-                  <div className="p-10 md:p-14 flex flex-col justify-center" style={{ backgroundColor: "#fff" }}>
-                    <div className="flex items-center gap-4 mb-6">
-                      <div className="w-12 h-12 flex items-center justify-center" style={{ border: "0px solid #E0E2E5" }}>
-                        <Icono size={20} style={{ color: "#C9A84C" }} />
+                  <div className="p-12 md:p-16 flex flex-col justify-center" style={{ backgroundColor: "#fff" }}>
+                    <div className="flex items-center gap-4 mb-8">
+                      <div className="w-14 h-14 flex items-center justify-center" style={{ border: "1px solid #E0E2E5" }}>
+                        <Icono size={24} style={{ color: "#C9A84C" }} />
                       </div>
-                      <span className="text-[10px] tracking-[0.2em] uppercase px-3 py-1.5"
+                      <span className="text-xs tracking-[0.2em] uppercase px-3 py-1.5 font-semibold"
                         style={s.estado === "Disponible"
                           ? { backgroundColor: "#0D0D0F", color: "#fff" }
                           : { border: "1px solid #D0D3D8", color: "#5B626B" }}>
                         {s.estado}
                       </span>
                     </div>
-                    <h3 className="text-3xl font-medium text-[#0D0D0F] mb-4">{s.titulo}</h3>
-                    <p className="text-lg leading-relaxed font-light" style={{ color: "#5B626B" }}>{s.descripcion}</p>
+                    <h3 className="text-4xl font-medium text-[#0D0D0F] mb-5">{s.titulo}</h3>
+                    <p className="text-xl leading-relaxed font-light" style={{ color: "#5B626B" }}>{s.descripcion}</p>
                   </div>
- 
-                  {/* Imagen */}
-                  <div className="relative min-h-[280px] md:min-h-[320px] overflow-hidden">
-                    <img
-                      src={s.img}
-                      alt={s.titulo}
-                      className="w-full h-full object-cover"
-                      style={{ filter: "grayscale(20%)" }}
-                    />
+                  <div className="relative min-h-[300px] md:min-h-[360px] overflow-hidden">
+                    <img src={s.img} alt={s.titulo} className="w-full h-full object-cover" style={{ filter: "grayscale(15%)" }} />
                     <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, rgba(201,168,76,0.08) 0%, transparent 60%)" }} />
                   </div>
                 </motion.div>
@@ -282,7 +277,7 @@ export default function Home() {
         <TexturaGrid />
         <div className="max-w-6xl mx-auto relative">
           <div className="mb-16 text-center">
-            <p className="text-xs uppercase tracking-[0.28em] mb-5" style={{ color: "#C9A84C" }}>Inversión</p>
+            <p className="text-sm uppercase tracking-[0.28em] mb-5 font-black" style={{ color: "#C9A84C" }}>Inversión</p>
             <h2 className="text-5xl md:text-6xl font-serif font-bold tracking-[-0.02em] text-[#0D0D0F] leading-[1.05]">
               Elige tu punto de partida.
             </h2>
@@ -293,25 +288,23 @@ export default function Home() {
                 className="flex flex-col p-10"
                 style={{ backgroundColor: p.destacado ? "#0D0D0F" : "#fff" }}>
                 {p.destacado && <div className="h-0.5 w-full mb-8" style={{ backgroundColor: "#C9A84C" }} />}
-                <p className="text-[10px] tracking-[0.2em] uppercase mb-3" style={{ color: p.destacado ? "rgba(201,168,76,0.7)" : "#5B626B" }}>{p.etiqueta}</p>
-                <h3 className="text-2xl font-medium mb-4" style={{ color: p.destacado ? "#fff" : "#0D0D0F" }}>{p.nombre}</h3>
+                <p className="text-xs tracking-[0.2em] uppercase mb-3 font-semibold" style={{ color: p.destacado ? "rgba(201,168,76,0.8)" : "#5B626B" }}>{p.etiqueta}</p>
+                <h3 className="text-3xl font-medium mb-4" style={{ color: p.destacado ? "#fff" : "#0D0D0F" }}>{p.nombre}</h3>
                 <div className="flex items-baseline gap-1 mb-8">
                   <span className="text-5xl font-serif font-bold" style={{ color: p.destacado ? "#C9A84C" : "#0D0D0F" }}>{p.precio}</span>
-                  <span className="text-sm" style={{ color: p.destacado ? "rgba(255,255,255,0.4)" : "#5B626B" }}>/mes MXN</span>
+                  <span className="text-base" style={{ color: p.destacado ? "rgba(255,255,255,0.4)" : "#5B626B" }}>/mes MXN</span>
                 </div>
                 <ul className="space-y-3 flex-1 mb-10">
                   {p.items.map((item) => (
-                    <li key={item} className="flex items-center gap-3 font-light" style={{ color: p.destacado ? "rgba(255,255,255,0.7)" : "#5B626B" }}>
+                    <li key={item} className="flex items-center gap-3 font-light text-lg" style={{ color: p.destacado ? "rgba(255,255,255,0.75)" : "#5B626B" }}>
                       <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: p.destacado ? "#C9A84C" : "#C0C3C8" }} />
                       {item}
                     </li>
                   ))}
                 </ul>
                 <a href="#contacto"
-                  className="text-center py-4 text-xs tracking-[0.15em] uppercase transition-all font-medium"
-                  style={p.destacado
-                    ? { backgroundColor: "#C9A84C", color: "#fff" }
-                    : { border: "1px solid #C0C3C8", color: "#0D0D0F" }}
+                  className="text-center py-4 text-sm tracking-[0.15em] uppercase transition-all font-semibold"
+                  style={p.destacado ? { backgroundColor: "#C9A84C", color: "#fff" } : { border: "1px solid #C0C3C8", color: "#0D0D0F" }}
                   onMouseEnter={e => {
                     if (p.destacado) e.currentTarget.style.backgroundColor = "#b8953e";
                     else { e.currentTarget.style.backgroundColor = "#0D0D0F"; e.currentTarget.style.color = "#fff"; }
@@ -333,36 +326,35 @@ export default function Home() {
       <section id="nosotros" className="px-6 md:px-12 py-28 relative overflow-hidden" style={{ backgroundColor: "#0D0D0F" }}>
         <TexturaLineas />
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-20 items-center relative">
- 
           <motion.div initial={{ opacity: 0, x: -24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 1 }} className="relative">
-            <div className="relative w-full max-w-sm mx-auto">
+            <div className="relative w-full max-w-md mx-auto">
               <Image
                 src="/rodrigo.png"
                 alt="Rodrigo Tristán — Fundador SATORI"
-                width={480}
-                height={600}
+                width={560}
+                height={700}
                 className="w-full object-cover"
               />
-              <div className="absolute -bottom-10 -right-10 opacity-80">
-                <Image src="/enso-negro.png" alt="" width={160} height={160} style={{ filter: "invert(1)" }} />
+              <div className="absolute -bottom-10 -right-10 opacity-30">
+                <Image src="/enso-negro.png" alt="" width={180} height={180} style={{ filter: "invert(1)" }} />
               </div>
             </div>
           </motion.div>
  
           <motion.div initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 1, delay: 0.15 }} className="text-white">
-            <p className="text-xs uppercase tracking-[0.28em] mb-8" style={{ color: "#C9A84C" }}>Fundador</p>
-            <h2 className="text-4xl md:text-5xl font-serif font-bold tracking-[-0.02em] text-white leading-[1.1] mb-2">
+            <p className="text-sm uppercase tracking-[0.28em] mb-8 font-black" style={{ color: "#C9A84C" }}>Fundador</p>
+            <h2 className="text-5xl md:text-6xl font-serif font-bold tracking-[-0.02em] text-white leading-[1.1] mb-2">
               Rodrigo Tristán
             </h2>
-            <p className="text-sm tracking-[0.15em] uppercase mb-10" style={{ color: "#5B626B" }}>
+            <p className="text-lg tracking-[0.15em] uppercase mb-10" style={{ color: "#5B626B" }}>
               Fundador & CEO · SATORI
             </p>
             <div className="pl-6 mb-10" style={{ borderLeft: "2px solid #C9A84C" }}>
-              <p className="text-xl font-serif italic leading-relaxed" style={{ color: "#D1D5DA" }}>
+              <p className="text-2xl font-serif italic leading-relaxed" style={{ color: "#D1D5DA" }}>
                 "Intuición + Tecnología. En ese orden."
               </p>
             </div>
-            <div className="space-y-5 font-light leading-relaxed" style={{ color: "#93A1AD" }}>
+            <div className="space-y-5 font-light leading-relaxed text-lg" style={{ color: "#93A1AD" }}>
               <p>Visionario amante de la psicología y la tecnología.</p>
               <p>Con el propósito de ayudar a los emprendedores y empresarios mexicanos a crecer mediante la adopción de tecnología e inteligencia artificial.</p>
               <p>
@@ -381,33 +373,33 @@ export default function Home() {
       <section id="contacto" className="px-6 md:px-12 py-32 relative overflow-hidden" style={{ backgroundColor: "#F0F1F3" }}>
         <TexturaGrid />
         <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.9 }} className="max-w-3xl mx-auto text-center relative">
-          <p className="text-xs uppercase tracking-[0.28em] mb-8" style={{ color: "#C9A84C" }}>Hablemos</p>
+          <p className="text-sm uppercase tracking-[0.28em] mb-8 font-black" style={{ color: "#C9A84C" }}>Hablemos</p>
           <h2 className="text-5xl md:text-7xl font-serif font-bold tracking-[-0.02em] text-[#0D0D0F] leading-[1.0] mb-8">
             Tu negocio puede<br />
             <span className="italic font-normal" style={{ color: "#5B626B" }}>llegar más lejos.</span>
           </h2>
-          <p className="text-xl font-light mb-14 max-w-lg mx-auto" style={{ color: "#5B626B" }}>
+          <p className="text-2xl font-light mb-14 max-w-lg mx-auto" style={{ color: "#5B626B" }}>
             Una llamada de 30 minutos. Sin compromisos. Sin costo.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 text-sm tracking-[0.1em] uppercase font-medium transition-all"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 text-base tracking-[0.1em] uppercase font-semibold transition-all"
               style={{ backgroundColor: "#C9A84C", color: "#fff" }}
               onMouseEnter={e => (e.currentTarget.style.backgroundColor = "#b8953e")}
               onMouseLeave={e => (e.currentTarget.style.backgroundColor = "#C9A84C")}
             >
-              WhatsApp <ArrowRight size={15} />
+              WhatsApp <ArrowRight size={16} />
             </a>
             <a href={`mailto:${EMAIL}`}
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 text-sm tracking-[0.1em] uppercase transition-all"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 text-base tracking-[0.1em] uppercase transition-all font-medium"
               style={{ border: "1px solid #C0C3C8", color: "#383B42" }}
               onMouseEnter={e => { e.currentTarget.style.backgroundColor = "#0D0D0F"; e.currentTarget.style.color = "#fff"; }}
               onMouseLeave={e => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "#383B42"; }}
             >
-              <Mail size={15} /> Enviar mail
+              <Mail size={16} /> Enviar mail
             </a>
             <a href="tel:+525625018281"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 text-sm tracking-[0.1em] uppercase transition-all"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 text-base tracking-[0.1em] uppercase transition-all font-medium"
               style={{ border: "1px solid #C0C3C8", color: "#383B42" }}
               onMouseEnter={e => { e.currentTarget.style.backgroundColor = "#0D0D0F"; e.currentTarget.style.color = "#fff"; }}
               onMouseLeave={e => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "#383B42"; }}
@@ -420,8 +412,8 @@ export default function Home() {
  
       {/* FOOTER */}
       <footer className="px-6 md:px-12 py-10 flex flex-col sm:flex-row items-center justify-between gap-4" style={{ borderTop: "1px solid #D8DADD", backgroundColor: "#F0F1F3" }}>
-        <Image src="/logo-satori.png" alt="SATORI" width={150} height={45} />
-        <p className="text-xs tracking-[0.12em] uppercase" style={{ color: "#5B626B" }}>
+        <Image src="/logo-satori.png" alt="SATORI" width={180} height={54} style={{ filter: "brightness(0)" }} />
+        <p className="text-sm tracking-[0.12em] uppercase" style={{ color: "#5B626B" }}>
           © 2026 SATORI · Todos los derechos reservados
         </p>
       </footer>
