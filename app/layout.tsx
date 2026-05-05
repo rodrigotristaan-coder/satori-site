@@ -9,17 +9,21 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 export const metadata: Metadata = {
   title: "SATORI — Marketing Digital e IA",
   description: "Estrategia, contenido e IA para empresarios mexicanos.",
-  // Forzamos la ruta del favicon
   icons: {
-    icon: "/ENSO_NEGRO.png",
-    shortcut: "/ENSO_NEGRO.png",
-    apple: "/ENSO_NEGRO.png",
+    icon: [
+      { url: "/favicon.png", type: "image/png" },
+    ],
+    shortcut: "/favicon.png",
+    apple: "/favicon.png",
   },
 };
  
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es" className="scroll-smooth">
+      <head>
+        <link rel="icon" href="/favicon.png" type="image/png" />
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {children}
         <GoogleAnalytics gaId="G-BM9ZGGCDMG" />
@@ -27,3 +31,4 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }
+ 
