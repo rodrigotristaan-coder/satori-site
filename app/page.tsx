@@ -90,6 +90,7 @@ function TexturaLineas() {
  
 export default function Home() {
   const [menuAbierto, setMenuAbierto] = useState(false);
+  const WHATSAPP_LINK = "https://wa.me/525625018182";
  
   return (
     <main className="min-h-screen bg-[#F7F7F8] text-[#0D0D0F] overflow-x-hidden">
@@ -317,13 +318,13 @@ export default function Home() {
             Una llamada de 30 minutos. Sin compromisos. Sin costo.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="https://wa.me/52" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 bg-[#0D0D0F] text-white px-8 py-4 text-sm tracking-[0.1em] uppercase font-medium hover:bg-[#383B42] transition-all">
+            <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 bg-[#0D0D0F] text-white px-8 py-4 text-sm tracking-[0.1em] uppercase font-medium hover:bg-[#383B42] transition-all">
               WhatsApp <ArrowRight size={15} />
             </a>
             <a href="mailto:hola@satorimkt.com" className="inline-flex items-center justify-center border border-black/20 px-8 py-4 text-sm tracking-[0.1em] uppercase text-[#383B42] hover:bg-black hover:text-white transition-all">
               hola@satorimkt.com
             </a>
-            <a href="tel:+52" className="inline-flex items-center justify-center border border-black/20 px-8 py-4 text-sm tracking-[0.1em] uppercase text-[#383B42] hover:bg-black hover:text-white transition-all">
+            <a href="https://api.whatsapp.com/send?phone=525625018182&text=Hola%20Rodrigo,%20vengo%20de%20tu%20sitio%20web." className="inline-flex items-center justify-center border border-black/20 px-8 py-4 text-sm tracking-[0.1em] uppercase text-[#383B42] hover:bg-black hover:text-white transition-all">
               Llamar
             </a>
           </div>
@@ -334,7 +335,7 @@ export default function Home() {
       <footer className="px-6 md:px-12 py-10 border-t border-black/8 bg-[#F7F7F8] flex flex-col sm:flex-row items-center justify-between gap-4">
         <Image src="/LOGO_SATORI-removebg-preview.png" alt="SATORI" width={130} height={40} />
         <p className="text-xs tracking-[0.12em] text-[#5B626B] uppercase">
-          © 2025 SATORI · Todos los derechos reservados
+          © 2026 SATORI · Todos los derechos reservados
         </p>
       </footer>
     </main>
