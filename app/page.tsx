@@ -246,7 +246,7 @@ export default function Home() {
                   {/* Texto */}
                   <div className="p-10 md:p-14 flex flex-col justify-center" style={{ backgroundColor: "#fff" }}>
                     <div className="flex items-center gap-4 mb-6">
-                      <div className="w-12 h-12 flex items-center justify-center" style={{ border: "1px solid #E0E2E5" }}>
+                      <div className="w-12 h-12 flex items-center justify-center" style={{ border: "0px solid #E0E2E5" }}>
                         <Icono size={20} style={{ color: "#C9A84C" }} />
                       </div>
                       <span className="text-[10px] tracking-[0.2em] uppercase px-3 py-1.5"
