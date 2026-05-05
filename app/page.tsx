@@ -336,7 +336,6 @@ export default function Home() {
  
           <motion.div initial={{ opacity: 0, x: -24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 1 }} className="relative">
             <div className="relative w-full max-w-sm mx-auto">
-              <div className="absolute -top-4 -left-4 w-full h-full" style={{ border: "1px solid rgba(201,168,76,0.2)" }} />
               <Image
                 src="/rodrigo.png"
                 alt="Rodrigo Tristán — Fundador SATORI"
@@ -344,7 +343,7 @@ export default function Home() {
                 height={600}
                 className="w-full object-cover"
               />
-              <div className="absolute -bottom-10 -right-10 opacity-10">
+              <div className="absolute -bottom-10 -right-10 opacity-40">
                 <Image src="/enso-negro.png" alt="" width={160} height={160} style={{ filter: "invert(1)" }} />
               </div>
             </div>
