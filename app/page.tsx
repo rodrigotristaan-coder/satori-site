@@ -192,10 +192,10 @@ export default function Home() {
           <motion.div
             initial={{ opacity: 0, rotate: -20, scale: 0.9 }}
             animate={{ opacity: 1, rotate: 0, scale: 1 }}
-            transition={{ duration: 1.6 }}
+            transition={{ duration: 2.6 }}
             className="hidden md:flex items-center justify-center"
           >
-            <Image src="/enso-negro.png" alt="enso-negro.png" width={420} height={420} style={{ opacity: 0.05 }} />
+            <Image src="/enso-negro.png" alt="enso-negro.png" width={420} height={420} style={{ opacity: 0.35 }} />
           </motion.div>
         </div>
       </section>
