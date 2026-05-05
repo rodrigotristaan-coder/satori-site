@@ -90,7 +90,7 @@ function TexturaLineas() {
  
 export default function Home() {
   const [menuAbierto, setMenuAbierto] = useState(false);
-  const WHATSAPP_LINK = "https://wa.me/525625018182";
+  const WHATSAPP_LINK = "https://wa.me/525625018281";
  
   return (
     <main className="min-h-screen bg-[#F7F7F8] text-[#0D0D0F] overflow-x-hidden">
@@ -315,7 +315,7 @@ export default function Home() {
             <span className="italic font-normal text-[#5B626B]">llegar más lejos.</span>
           </h2>
           <p className="text-xl text-[#5B626B] font-light mb-14 max-w-lg mx-auto">
-            Una llamada de 30 minutos. Sin compromisos. Sin costo.
+            Una llamada de 15 minutos. Sin compromisos. Sin costo.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 bg-[#0D0D0F] text-white px-8 py-4 text-sm tracking-[0.1em] uppercase font-medium hover:bg-[#383B42] transition-all">
@@ -324,7 +324,7 @@ export default function Home() {
             <a href="mailto:hola@satorimkt.com" className="inline-flex items-center justify-center border border-black/20 px-8 py-4 text-sm tracking-[0.1em] uppercase text-[#383B42] hover:bg-black hover:text-white transition-all">
               hola@satorimkt.com
             </a>
-            <a href="tel:+525625018182" className="inline-flex items-center justify-center border border-black/20 px-8 py-4 text-sm tracking-[0.1em] uppercase text-[#383B42] hover:bg-black hover:text-white transition-all">
+            <a href="tel:+525625018281" className="inline-flex items-center justify-center border border-black/20 px-8 py-4 text-sm tracking-[0.1em] uppercase text-[#383B42] hover:bg-black hover:text-white transition-all">
               Llamar
             </a>
           </div>
