@@ -5,7 +5,7 @@ import { ArrowRight, PenTool, Sparkles, Brain, Megaphone, Mail } from "lucide-re
 import Image from "next/image";
 import { useState } from "react";
  
-const WHATSAPP_LINK = "https://wa.me/525625018182";
+const WHATSAPP_LINK = "https://wa.me/525625018281";
 const EMAIL = "r.tristaan@outlook.com";
  
 const servicios = [
@@ -406,7 +406,7 @@ export default function Home() {
             >
               <Mail size={15} /> Enviar mail
             </a>
-            <a href="tel:+525625018182"
+            <a href="tel:+525625018281"
               className="inline-flex items-center justify-center gap-2 px-8 py-4 text-sm tracking-[0.1em] uppercase transition-all"
               style={{ border: "1px solid #C0C3C8", color: "#383B42" }}
               onMouseEnter={e => { e.currentTarget.style.backgroundColor = "#0D0D0F"; e.currentTarget.style.color = "#fff"; }}
