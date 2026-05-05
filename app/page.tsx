@@ -155,11 +155,11 @@ export default function Home() {
       )}
  
       {/* HERO */}
-      <section id="inicio" className="px-6 md:px-12 pt-24 md:pt-32 pb-28 relative overflow-hidden">
+      <section id="inicio" className="px-6 md:px-18 pt-24 md:pt-32 pb-28 relative overflow-hidden">
         <TexturaGrid />
         <div className="max-w-6xl mx-auto grid md:grid-cols-[1fr_400px] gap-16 items-center relative">
           <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}>
-            <p className="text-xs tracking-[0.28em] uppercase mb-12" style={{ color: "#C9A84C" }}>
+            <p className="text-xs tracking-[0.28em] uppercase mb-8" style={{ color: "#C9A84C" }}>
               Marketing · IA · Resultados reales
             </p>
             <h1 className="text-6xl md:text-7xl lg:text-8xl font-serif font-bold leading-[0.95] tracking-[-0.03em] text-[#0D0D0F] mb-8">
