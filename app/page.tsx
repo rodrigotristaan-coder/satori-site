@@ -269,7 +269,7 @@ export default function Home() {
                 width={480}
                 height={600}
                 className="w-full object-cover"
-                style={{ filter: "grayscale(15%)" }}
+                style={{ filter:"none" }}
               />
               <div className="absolute -bottom-10 -right-10 opacity-15">
                 <Image src="/ENSO_NEGRO.png" alt="" width={160} height={160} style={{ filter: "invert(1)" }} />
@@ -324,7 +324,7 @@ export default function Home() {
             <a href="mailto:hola@satorimkt.com" className="inline-flex items-center justify-center border border-black/20 px-8 py-4 text-sm tracking-[0.1em] uppercase text-[#383B42] hover:bg-black hover:text-white transition-all">
               hola@satorimkt.com
             </a>
-            <a href="https://api.whatsapp.com/send?phone=525625018182&text=Hola%20Rodrigo,%20vengo%20de%20tu%20sitio%20web." className="inline-flex items-center justify-center border border-black/20 px-8 py-4 text-sm tracking-[0.1em] uppercase text-[#383B42] hover:bg-black hover:text-white transition-all">
+            <a href="tel:+525625018182" className="inline-flex items-center justify-center border border-black/20 px-8 py-4 text-sm tracking-[0.1em] uppercase text-[#383B42] hover:bg-black hover:text-white transition-all">
               Llamar
             </a>
           </div>
