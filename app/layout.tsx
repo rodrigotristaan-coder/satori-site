@@ -9,10 +9,9 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 export const metadata: Metadata = {
   title: "SATORI — Marketing Digital e IA",
   description: "Estrategia, contenido e IA para empresarios mexicanos.",
+  // ESTA ES LA PARTE CLAVE PARA EL FAVICON:
   icons: {
-    icon: [
-      { url: "/favicon.png", type: "image/png" },
-    ],
+    icon: "/favicon.png", // Next.js busca automáticamente en la carpeta 'public'
     shortcut: "/favicon.png",
     apple: "/favicon.png",
   },
@@ -21,9 +20,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es" className="scroll-smooth">
-      <head>
-        <link rel="icon" href="/favicon.png" type="image/png" />
-      </head>
+      {/* Ya no necesitas el <head> manual, Next.js usa el metadata de arriba */}
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {children}
         <GoogleAnalytics gaId="G-BM9ZGGCDMG" />
@@ -31,4 +28,3 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }
- 
