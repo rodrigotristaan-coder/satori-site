@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useState } from "react";
  
 const WHATSAPP_LINK = "https://wa.me/525625018281?text=Hola%20Rodrigo,%20vi%20tu%20página%20y%20me%20gustaría%20una%20auditoría.";
-const CALENDLY_LINK = "https://calendly.com/r-tristaan/30min"; 
+const CALENDLY_LINK = "https://calendly.com/rodrigo-tristaan"; 
 const EMAIL = "r.tristaan@outlook.com";
 
 const themes = {
