@@ -10,7 +10,7 @@ const WHATSAPP_LINK_EN = "https://wa.me/525625018281?text=Hi%20Rodrigo,%20I%20sa
 const CALENDLY_LINK    = "https://calendly.com/rodrigo-tristaan";
 const EMAIL            = "r.tristaan@outlook.com";
 
-const themeOrder = ["white", "blue", "silver", "rainbow", "gold"] as const;
+const themeOrder = ["white", "blue", "silver", "rainbow", "gold", "nopal"] as const;
 type ThemeKey = typeof themeOrder[number];
 
 const themes: Record<ThemeKey, {
@@ -22,6 +22,7 @@ const themes: Record<ThemeKey, {
   silver:  { bg: "#0A0A0A", accent: "#E5E5E5", text: "#FFFFFF", sub: "#A3A3A3", card: "#171717", matrixColor: "#888888", navBg: "rgba(10,10,10,0.93)",    logoFilter: "invert(1)",              ensoFilter: "invert(1) brightness(2) opacity(0.06)" },
   rainbow: { bg: "#0F0218", accent: "#FF00CC", text: "#FFFFFF", sub: "#A855F7", card: "#1E0B36", matrixColor: "#FF00CC", navBg: "rgba(15,2,24,0.93)",     logoFilter: "invert(1)",              ensoFilter: "invert(1) brightness(2) opacity(0.06)" },
   gold:    { bg: "#FFFFF8", accent: "#B8860B", text: "#1a1000", sub: "#8B6914", card: "#FDF8E1", matrixColor: "#D4AF37", navBg: "rgba(255,255,248,0.93)", logoFilter: "brightness(0) sepia(1)", ensoFilter: "brightness(0) sepia(1) opacity(0.06)"  },
+  nopal:   { bg: "#0A1A0D", accent: "#4CAF50", text: "#E8F5E9", sub: "#66BB6A", card: "#0F2412", matrixColor: "#4CAF50", navBg: "rgba(10,26,13,0.93)",   logoFilter: "invert(1)",              ensoFilter: "invert(1) brightness(2) opacity(0.06)" },
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -283,101 +284,86 @@ function LangPopup({ onSelect, t }: { onSelect: (l: "es" | "en") => void; t: typ
 // ─────────────────────────────────────────────────────────────────────────────
 function ServicesBento({ t, c }: { t: typeof themes.white; c: typeof copy.es }) {
   const [active, setActive] = useState<number | null>(null);
-
   const accents = ["#FF6B6B", "#4ECDC4", "#45B7D1", "#A29BFE", "#FD79A8"];
+
+  const cells = c.servicios.map((s, i) => ({ s, i, color: accents[i], isActive: active === i }));
 
   return (
     <div style={{ padding: "0 clamp(1rem,4vw,3rem) 3rem" }}>
-      {/* Bento grid — asymmetric 2+3 layout */}
-      <div style={{ display: "grid", gap: "0.75rem",
-        gridTemplateColumns: "repeat(6, 1fr)",
-        gridTemplateRows: "auto",
-      }}>
-        {c.servicios.map((s, i) => {
-          const isActive = active === i;
-          const color = accents[i];
-          // Layout: 0+1 big (3col each), 2+3+4 medium (2col each)
-          const gridCol = i < 2
-            ? `span 3`
-            : `span 2`;
-
-          return (
-            <motion.div key={i}
-              onHoverStart={() => setActive(i)}
-              onHoverEnd={() => setActive(null)}
-              onTap={() => setActive(active === i ? null : i)}
-              animate={{ scale: isActive ? 1.015 : 1 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
-              style={{
-                gridColumn: gridCol,
-                position: "relative",
-                overflow: "hidden",
-                cursor: "pointer",
-                minHeight: i < 2 ? "clamp(260px,35vh,380px)" : "clamp(200px,28vh,300px)",
-                borderRadius: 2,
-              }}>
-
-              {/* Image bg */}
-              {s.i && (
-                <img src={s.i} alt={s.t}
-                  style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", transition: "transform 0.6s ease", transform: isActive ? "scale(1.06)" : "scale(1)" }}
-                  loading="lazy" />
-              )}
-
-              {/* Base overlay */}
-              <div style={{ position: "absolute", inset: 0, background: `linear-gradient(to top, ${t.bg}F2 0%, ${t.bg}88 50%, ${t.bg}33 100%)`, transition: "opacity 0.4s" }} />
-
-              {/* Color accent overlay on hover */}
-              <motion.div
-                animate={{ opacity: isActive ? 1 : 0 }}
-                transition={{ duration: 0.35 }}
-                style={{ position: "absolute", inset: 0, background: `linear-gradient(135deg, ${color}22 0%, ${color}08 100%)`, borderBottom: `2px solid ${color}` }} />
-
-              {/* Number watermark */}
-              <div style={{ position: "absolute", top: "0.75rem", right: "1rem", fontSize: "clamp(3rem,6vw,5rem)", fontFamily: "serif", fontWeight: 900, color: t.accent, opacity: isActive ? 0.12 : 0.05, lineHeight: 1, transition: "opacity 0.4s", pointerEvents: "none", userSelect: "none" }}>
-                {String(i + 1).padStart(2, "0")}
-              </div>
-
-              {/* Content */}
-              <div style={{ position: "absolute", inset: 0, padding: "1.25rem 1.4rem", display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
-                {/* Tag pill */}
-                <motion.div
-                  animate={{ y: isActive ? 0 : 4, opacity: isActive ? 1 : 0.7 }}
-                  transition={{ duration: 0.3 }}
-                  style={{ marginBottom: "0.5rem" }}>
-                  <span style={{ fontSize: "0.52rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.2em", color: color, backgroundColor: `${color}18`, padding: "0.2rem 0.6rem", borderRadius: 2 }}>
-                    {s.tag}
-                  </span>
-                </motion.div>
-
-                {/* Title */}
-                <h3 style={{ fontSize: "clamp(1rem,2.2vw,1.5rem)", fontFamily: "serif", fontWeight: 700, color: t.text, lineHeight: 1.15, marginBottom: "0.5rem" }}>
-                  {s.t}
-                </h3>
-
-                {/* Description — only on hover */}
-                <motion.div
-                  animate={{ height: isActive ? "auto" : 0, opacity: isActive ? 1 : 0 }}
-                  transition={{ duration: 0.35, ease: "easeOut" }}
-                  style={{ overflow: "hidden" }}>
-                  <p style={{ fontSize: "clamp(0.75rem,1.4vw,0.85rem)", color: t.text, opacity: 0.75, lineHeight: 1.6, marginBottom: "0.75rem" }}>
-                    {s.back}
-                  </p>
-                  <span style={{ fontSize: "0.58rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.15em", color: color }}>
-                    {c.ver_mas} →
-                  </span>
-                </motion.div>
-              </div>
-            </motion.div>
-          );
-        })}
+      {/* Service names row outside the grid */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(6,1fr)", gap: "0.75rem", marginBottom: "0.5rem", padding: "0 0.1rem" }}>
+        {cells.map(({ s, i, color, isActive }) => (
+          <div key={i} style={{ gridColumn: i < 2 ? "span 3" : "span 2", textAlign: "center", transition: "all 0.3s" }}>
+            <span style={{ fontSize: "0.62rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.15em", color: isActive ? color : t.sub, transition: "color 0.3s" }}>
+              {s.num}. {s.tag}
+            </span>
+          </div>
+        ))}
       </div>
 
-      {/* Mobile: stacked list */}
+      {/* Bento grid */}
+      <div style={{ display: "grid", gap: "0.75rem", gridTemplateColumns: "repeat(6,1fr)" }}>
+        {cells.map(({ s, i, color, isActive }) => (
+          <motion.div key={i}
+            onHoverStart={() => setActive(i)}
+            onHoverEnd={() => setActive(null)}
+            onTap={() => setActive(active === i ? null : i)}
+            animate={{ scale: isActive ? 1.02 : 1, y: isActive ? -4 : 0 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            style={{
+              gridColumn: i < 2 ? "span 3" : "span 2",
+              position: "relative", overflow: "hidden", cursor: "pointer",
+              minHeight: i < 2 ? "clamp(260px,35vh,380px)" : "clamp(200px,28vh,300px)",
+              borderRadius: "1.25rem",
+              boxShadow: isActive ? `0 20px 60px ${color}35, 0 8px 20px rgba(0,0,0,0.15)` : "0 4px 20px rgba(0,0,0,0.08)",
+              transition: "box-shadow 0.4s",
+            }}>
+
+            {/* Image — no blur, full crispness */}
+            {s.i ? (
+              <img src={s.i} alt={s.t} loading="lazy"
+                style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", transition: "transform 0.55s ease", transform: isActive ? "scale(1.07)" : "scale(1)", display: "block" }} />
+            ) : (
+              <div style={{ position: "absolute", inset: 0, background: `linear-gradient(135deg, ${color}30, ${t.card})` }} />
+            )}
+
+            {/* Overlay — lighter than before, no blur */}
+            <div style={{ position: "absolute", inset: 0, background: `linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.28) 55%, rgba(0,0,0,0.05) 100%)` }} />
+
+            {/* Color accent border on hover */}
+            <motion.div animate={{ opacity: isActive ? 1 : 0 }} transition={{ duration: 0.3 }}
+              style={{ position: "absolute", inset: 0, borderRadius: "1.25rem", border: `2px solid ${color}`, pointerEvents: "none" }} />
+
+            {/* Number watermark */}
+            <div style={{ position: "absolute", top: "0.6rem", right: "0.9rem", fontSize: "clamp(2.5rem,5vw,4rem)", fontFamily: "serif", fontWeight: 900, color: "#fff", opacity: isActive ? 0.15 : 0.07, lineHeight: 1, pointerEvents: "none", userSelect: "none", transition: "opacity 0.3s" }}>
+              {String(i + 1).padStart(2, "0")}
+            </div>
+
+            {/* Content */}
+            <div style={{ position: "absolute", inset: 0, padding: "1.2rem 1.35rem", display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
+              {/* Title always visible */}
+              <h3 style={{ fontSize: "clamp(1rem,2.2vw,1.45rem)", fontFamily: "serif", fontWeight: 700, color: "#fff", lineHeight: 1.2, marginBottom: "0.45rem", textShadow: "0 1px 8px rgba(0,0,0,0.4)" }}>
+                {s.t}
+              </h3>
+              {/* Sub */}
+              <p style={{ fontSize: "0.58rem", textTransform: "uppercase", letterSpacing: "0.15em", color: color, fontWeight: 700, marginBottom: "0.35rem", opacity: 0.9 }}>
+                {s.sub}
+              </p>
+              {/* Detail on hover */}
+              <motion.div animate={{ height: isActive ? "auto" : 0, opacity: isActive ? 1 : 0 }} transition={{ duration: 0.35, ease: "easeOut" }} style={{ overflow: "hidden" }}>
+                <p style={{ fontSize: "clamp(0.75rem,1.3vw,0.83rem)", color: "rgba(255,255,255,0.82)", lineHeight: 1.6, marginBottom: "0.6rem" }}>{s.d}</p>
+                <span style={{ fontSize: "0.58rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.15em", color }}>
+                  {c.ver_mas} →
+                </span>
+              </motion.div>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
       <style>{`
         @media (max-width: 640px) {
-          .bento-grid { display: flex !important; flex-direction: column !important; }
-          .bento-grid > * { grid-column: span 1 !important; min-height: 220px !important; }
+          .bento-names > *, .bento-grid > * { grid-column: span 6 !important; min-height: 200px !important; }
         }
       `}</style>
     </div>
@@ -469,35 +455,26 @@ export default function Home() {
     if (introRan.current) return;
     introRan.current = true;
 
-    // Step through themes with individual timeouts (reliable, no stale closure)
-    // Pattern: white→blue→silver→rainbow→gold — land on gold (idx 4)
-    const steps = [
-      [0,   0],  // white
-      [1, 500],  // blue
-      [2,1000],  // silver
-      [3,1500],  // rainbow
-      [0,2000],  // white
-      [1,2500],  // blue
-      [2,3000],  // silver
-      [3,3500],  // rainbow
-      [4,4000],  // gold — final
-    ];
-    steps.forEach(([idx, delay]) => {
+    // One pass through all 5 themes: white→blue→silver→rainbow→gold
+    const sequence = [
+      [0,   0],   // white
+      [1, 600],   // blue
+      [2,1200],   // silver
+      [3,1800],   // rainbow
+      [4,2400],   // gold — final
+    ] as const;
+    sequence.forEach(([idx, delay]) => {
       setTimeout(() => setThemeIdx(idx), delay);
     });
 
-    // After landing on gold (4s), start infinite logo color cycling on the button
-    setTimeout(() => {
-      setPaletteActive(true);
-      // Cycle logo color every 600ms — infinite
-      let step = 0;
-      const cycle = () => {
-        step++;
-        setLogoThemeIdx(step % themeOrder.length);
-      };
-      // Store interval id so we never clear it (runs forever)
-      setInterval(cycle, 600);
-    }, 4200);
+    // After landing on gold (2.6s), blink the palette button 3 times then stay on
+    const blinkStart = 2700;
+    const blinkTimes = [blinkStart, blinkStart+300, blinkStart+600];
+    blinkTimes.forEach((t, i) => {
+      setTimeout(() => setPaletteActive(true), t);
+      setTimeout(() => setPaletteActive(false), t + 200);
+    });
+    // After blinks, keep palette showing next-theme accent color permanently (handled by button style)
   };
 
   // Button shake every 15 seconds
@@ -553,6 +530,12 @@ export default function Home() {
           section > div { text-align: center !important; }
           .mobile-left, .mobile-left * { text-align: left !important; }
         }
+        /* Apple bubble effect — rounded corners everywhere */
+        .bubble { border-radius: 1.5rem !important; }
+        .bubble-sm { border-radius: 1rem !important; }
+        .bubble-pill { border-radius: 999px !important; }
+        nav { border-radius: 0 !important; }
+        section { border-radius: 0 !important; }
       `}</style>
       <MatrixBackground color={t.matrixColor} />
       <CursorGlow accent={t.accent} />
@@ -608,8 +591,8 @@ export default function Home() {
             </h1>
             <p style={{ fontSize: "1rem", marginBottom: "2.5rem", opacity: 0.7, maxWidth: "28rem", lineHeight: 1.75 }}>{c.hero_sub}</p>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem" }}>
-              <motion.a href={CALENDLY_LINK} target="_blank" whileHover={{ scale: 1.04, y: -2 }} style={{ padding: "1rem 2.2rem", backgroundColor: t.accent, color: t.bg, fontWeight: 900, textTransform: "uppercase", fontSize: "0.75rem", letterSpacing: "0.05em", textDecoration: "none" }}>{c.cta1}</motion.a>
-              <motion.a href="#servicios" whileHover={{ scale: 1.04, y: -2 }} style={{ padding: "1rem 2.2rem", border: `1px solid ${t.accent}`, color: t.accent, fontWeight: 700, textTransform: "uppercase", fontSize: "0.75rem", textDecoration: "none" }}>{c.cta2}</motion.a>
+              <motion.a href={CALENDLY_LINK} target="_blank" whileHover={{ scale: 1.04, y: -2 }} style={{ padding: "1rem 2.2rem", backgroundColor: t.accent, color: t.bg, fontWeight: 900, textTransform: "uppercase", fontSize: "0.75rem", letterSpacing: "0.05em", textDecoration: "none", borderRadius: "999px" }}>{c.cta1}</motion.a>
+              <motion.a href="#servicios" whileHover={{ scale: 1.04, y: -2 }} style={{ padding: "1rem 2.2rem", border: `1px solid ${t.accent}`, color: t.accent, fontWeight: 700, textTransform: "uppercase", fontSize: "0.75rem", textDecoration: "none", borderRadius: "999px" }}>{c.cta2}</motion.a>
             </div>
           </motion.div>
           <div style={{ display: "flex", justifyContent: "center" }}>
@@ -641,7 +624,7 @@ export default function Home() {
                   viewport={{ once: true, margin: "-60px" }}
                   transition={{ delay: i * 0.15, duration: 0.5, ease: "easeOut" }}
                   className="mobile-left"
-                  style={{ display: "grid", gridTemplateColumns: "3rem 1fr auto", gap: "1.5rem", alignItems: "start", padding: "2rem 0", borderBottom: i < 2 ? `1px solid ${t.accent}12` : "none" }}>
+                  style={{ display: "grid", gridTemplateColumns: "3rem 1fr auto", gap: "1.5rem", alignItems: "start", padding: "1.5rem", borderRadius: "1.25rem", marginBottom: "0.75rem", backgroundColor: `${t.accent}05` }}>
                   {/* Number */}
                   <div style={{ fontSize: "clamp(2rem,4vw,3rem)", fontFamily: "serif", fontWeight: 700, color: t.accent, opacity: 0.25, lineHeight: 1, paddingTop: "0.1rem" }}>
                     {String(i + 1).padStart(2, "0")}
@@ -667,7 +650,7 @@ export default function Home() {
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.5 }}
             style={{ marginTop: "3rem", display: "flex", alignItems: "center", gap: "1.5rem", flexWrap: "wrap" }}>
             <a href={waLink} target="_blank"
-              style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", color: t.bg, fontSize: "0.72rem", textDecoration: "none", backgroundColor: t.accent, padding: "0.85rem 2rem" }}>
+              style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", color: t.bg, fontSize: "0.72rem", textDecoration: "none", backgroundColor: t.accent, padding: "0.85rem 2rem", borderRadius: "999px" }}>
               {c.problema_cta}
             </a>
             <span style={{ fontSize: "0.72rem", opacity: 0.4, color: t.sub }}>— es gratis, sin compromiso</span>
@@ -681,7 +664,7 @@ export default function Home() {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(1rem,4vw,3rem)" }}>
             {[
               { label: c.stats[0].label, from: 1,   to: 24,  suffix: "/7",  desc: lang === "es" ? "Siempre disponible" : "Always available" },
-              { label: c.stats[1].label, from: 100, to: 0,   suffix: "",    desc: lang === "es" ? "Prospecto aprovechado" : "Every lead captured" },
+              { label: c.stats[1].label, from: 100, to: 0,   suffix: "",    desc: "" },
               { label: c.stats[2].label, from: 90,  to: 30,  suffix: "",    desc: lang === "es" ? "Días para ver resultados" : "Days to see results" },
             ].map(({ label, from, to, suffix, desc }, i) => (
               <motion.div key={i}
@@ -711,6 +694,34 @@ export default function Home() {
         <ServicesBento t={t} c={c} />
       </section>
 
+      {/* ── NOSOTROS ── */}
+      <section id="nosotros" style={{ padding: "5rem 1.5rem", position: "relative", zIndex: 1 }}>
+        <div style={{ maxWidth: "68rem", margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4rem", alignItems: "center" }} className="!grid-cols-1 md:!grid-cols-2">
+          <div style={{ position: "relative" }}>
+            <Image src="/rodrigo.png" alt="Rodrigo Tristán" width={500} height={600} className="grayscale hover:grayscale-0 transition-all duration-700 object-cover" />
+            <div style={{ position: "absolute", top: "-1.5rem", left: "-1.5rem", width: "5rem", height: "5rem", borderTop: `2px solid ${t.accent}`, borderLeft: `2px solid ${t.accent}` }} />
+          </div>
+          <div>
+            <p style={{ fontSize: "0.62rem", textTransform: "uppercase", letterSpacing: "0.35em", fontWeight: 900, color: t.accent, marginBottom: "1rem" }}>{c.nosotros_label}</p>
+            <h2 style={{ fontSize: "clamp(2.2rem,4vw,3.2rem)", fontFamily: "serif", fontWeight: 700, marginBottom: "0.4rem" }}>{c.nosotros_nombre}</h2>
+            <p style={{ fontSize: "0.68rem", textTransform: "uppercase", letterSpacing: "0.2em", color: t.sub, marginBottom: "1.75rem" }}>{c.nosotros_cargo}</p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "1rem", marginBottom: "1.75rem" }}>
+              <p style={{ fontSize: "1.2rem", fontStyle: "italic", fontWeight: 600, lineHeight: 1.4 }}>{c.nosotros_quote}</p>
+              <p style={{ fontSize: "0.9rem", opacity: 0.7, lineHeight: 1.8 }}>{c.nosotros_p1}</p>
+              <p style={{ fontSize: "0.9rem", opacity: 0.7, lineHeight: 1.8 }}>{c.nosotros_p2}</p>
+              <div style={{ padding: "1.25rem", border: `1px solid ${t.accent}20`, backgroundColor: `${t.accent}05`, borderRadius: "1.25rem" }}>
+                <p style={{ fontWeight: 700, fontSize: "0.78rem", color: t.accent, marginBottom: "0.4rem" }}>{c.garantia_title}</p>
+                <p style={{ fontSize: "0.8rem", opacity: 0.68, lineHeight: 1.7 }}>{c.garantia_text}</p>
+              </div>
+            </div>
+            <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+              <motion.a href={CALENDLY_LINK} target="_blank" whileHover={{ scale: 1.03 }} style={{ padding: "0.85rem 1.75rem", border: `1px solid ${t.accent}`, color: t.accent, fontWeight: 700, fontSize: "0.78rem", textDecoration: "none" }}>{c.btn_zoom}</motion.a>
+              <a href={`mailto:${EMAIL}`} style={{ padding: "0.85rem 1.75rem", fontWeight: 700, opacity: 0.5, fontSize: "0.78rem", textDecoration: "none" }}>{c.btn_email}</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── REVIEWS ── */}
       <section style={{ padding: "5rem 1.5rem", backgroundColor: t.card, position: "relative", zIndex: 1 }}>
         <div style={{ maxWidth: "64rem", margin: "0 auto" }}>
@@ -722,7 +733,7 @@ export default function Home() {
             {c.reviews.map((r, i) => (
               <motion.div key={i}
                 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
-                style={{ padding: "1.75rem", backgroundColor: t.bg, border: `1px solid ${t.accent}10`, display: "flex", flexDirection: "column", gap: "1rem" }}>
+                style={{ padding: "1.75rem", backgroundColor: t.bg, border: `1px solid ${t.accent}10`, borderRadius: "1.5rem", display: "flex", flexDirection: "column", gap: "1rem", boxShadow: "0 4px 24px rgba(0,0,0,0.06)" }}>
                 {/* Stars */}
                 <div style={{ display: "flex", gap: "0.2rem" }}>
                   {Array.from({ length: r.stars }).map((_, s) => (
@@ -741,7 +752,7 @@ export default function Home() {
       </section>
 
       {/* ── FAQ ── */}
-      <section style={{ padding: "5rem 1.5rem", position: "relative", zIndex: 1 }}>
+      <section style={{ padding: "5rem 1.5rem", position: "relative", zIndex: 1, backgroundColor: `${t.card}E8` }}>
         <div style={{ maxWidth: "52rem", margin: "0 auto" }}>
           <div style={{ marginBottom: "3rem", textAlign: "center" }}>
             <p style={{ fontSize: "0.6rem", textTransform: "uppercase", letterSpacing: "0.4em", color: t.accent, fontWeight: 900, marginBottom: "0.5rem" }}>{c.faq_label}</p>
@@ -760,37 +771,9 @@ export default function Home() {
         <div style={{ maxWidth: "38rem", margin: "0 auto", textAlign: "center" }}>
           <h2 style={{ fontSize: "clamp(2rem,5vw,3.2rem)", fontFamily: "serif", fontWeight: 700, marginBottom: "1rem", lineHeight: 1.2 }}>{c.cotizar_h}</h2>
           <p style={{ fontSize: "0.95rem", opacity: 0.62, lineHeight: 1.8, marginBottom: "2rem", color: t.sub }}>{c.cotizar_sub}</p>
-          <motion.a href={waLink} target="_blank" whileHover={{ scale: 1.05, y: -2 }} style={{ display: "inline-block", padding: "1rem 2.5rem", backgroundColor: t.accent, color: t.bg, fontWeight: 900, textTransform: "uppercase", fontSize: "0.78rem", letterSpacing: "0.08em", textDecoration: "none" }}>
+          <motion.a href={waLink} target="_blank" whileHover={{ scale: 1.05, y: -2 }} style={{ display: "inline-block", padding: "1rem 2.5rem", backgroundColor: t.accent, color: t.bg, fontWeight: 900, textTransform: "uppercase", fontSize: "0.78rem", letterSpacing: "0.08em", textDecoration: "none", borderRadius: "999px" }}>
             {c.cotizar_cta}
           </motion.a>
-        </div>
-      </section>
-
-      {/* ── NOSOTROS ── */}
-      <section id="nosotros" style={{ padding: "5rem 1.5rem", position: "relative", zIndex: 1 }}>
-        <div style={{ maxWidth: "68rem", margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4rem", alignItems: "center" }} className="!grid-cols-1 md:!grid-cols-2">
-          <div style={{ position: "relative" }}>
-            <Image src="/rodrigo.png" alt="Rodrigo Tristán" width={500} height={600} className="grayscale hover:grayscale-0 transition-all duration-700 object-cover" />
-            <div style={{ position: "absolute", top: "-1.5rem", left: "-1.5rem", width: "5rem", height: "5rem", borderTop: `2px solid ${t.accent}`, borderLeft: `2px solid ${t.accent}` }} />
-          </div>
-          <div>
-            <p style={{ fontSize: "0.62rem", textTransform: "uppercase", letterSpacing: "0.35em", fontWeight: 900, color: t.accent, marginBottom: "1rem" }}>{c.nosotros_label}</p>
-            <h2 style={{ fontSize: "clamp(2.2rem,4vw,3.2rem)", fontFamily: "serif", fontWeight: 700, marginBottom: "0.4rem" }}>{c.nosotros_nombre}</h2>
-            <p style={{ fontSize: "0.68rem", textTransform: "uppercase", letterSpacing: "0.2em", color: t.sub, marginBottom: "1.75rem" }}>{c.nosotros_cargo}</p>
-            <div style={{ display: "flex", flexDirection: "column", gap: "1rem", marginBottom: "1.75rem" }}>
-              <p style={{ fontSize: "1.2rem", fontStyle: "italic", fontWeight: 600, lineHeight: 1.4 }}>{c.nosotros_quote}</p>
-              <p style={{ fontSize: "0.9rem", opacity: 0.7, lineHeight: 1.8 }}>{c.nosotros_p1}</p>
-              <p style={{ fontSize: "0.9rem", opacity: 0.7, lineHeight: 1.8 }}>{c.nosotros_p2}</p>
-              <div style={{ padding: "1.25rem", border: `1px solid ${t.accent}20`, backgroundColor: `${t.accent}05` }}>
-                <p style={{ fontWeight: 700, fontSize: "0.78rem", color: t.accent, marginBottom: "0.4rem" }}>{c.garantia_title}</p>
-                <p style={{ fontSize: "0.8rem", opacity: 0.68, lineHeight: 1.7 }}>{c.garantia_text}</p>
-              </div>
-            </div>
-            <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
-              <motion.a href={CALENDLY_LINK} target="_blank" whileHover={{ scale: 1.03 }} style={{ padding: "0.85rem 1.75rem", border: `1px solid ${t.accent}`, color: t.accent, fontWeight: 700, fontSize: "0.78rem", textDecoration: "none" }}>{c.btn_zoom}</motion.a>
-              <a href={`mailto:${EMAIL}`} style={{ padding: "0.85rem 1.75rem", fontWeight: 700, opacity: 0.5, fontSize: "0.78rem", textDecoration: "none" }}>{c.btn_email}</a>
-            </div>
-          </div>
         </div>
       </section>
 
