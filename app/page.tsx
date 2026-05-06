@@ -259,8 +259,8 @@ export default function Home() {
       </button>
 
       {/* ── NAV ── */}
-      <nav className="w-full px-6 py-4 flex items-center justify-between sticky top-0 z-50 backdrop-blur-md border-b"
-        style={{ borderColor: `${t.accent}20`, position: "relative" }}>
+      <nav className="w-full px-6 py-4 flex items-center justify-between fixed top-0 left-0 right-0 z-50 backdrop-blur-md border-b"
+        style={{ borderColor: `${t.accent}20`, backgroundColor: `${t.bg}E8` }}>
         <a href="#inicio">
           <Image src="/logo-satori.png" alt="SATORI" width={120} height={36} className="invert" />
         </a>
@@ -271,7 +271,7 @@ export default function Home() {
           {/* Language Toggle */}
           <button onClick={() => setLang(lang === "es" ? "en" : "es")}
             className="flex items-center gap-1 px-3 py-1 border rounded-full text-xs font-bold uppercase transition-all hover:scale-105"
-            style={{ borderColor: `${t.accent}50`, color: t.accent }}>
+            style={{ borderColor: "rgba(255,255,255,0.4)", color: "#ffffff", backgroundColor: "rgba(255,255,255,0.08)" }}>
             <Globe size={13} />
             {lang === "es" ? "EN" : "ES"}
           </button>
@@ -284,14 +284,14 @@ export default function Home() {
         {/* Mobile lang toggle */}
         <button onClick={() => setLang(lang === "es" ? "en" : "es")}
           className="md:hidden flex items-center gap-1 px-3 py-1 border rounded-full text-xs font-bold uppercase"
-          style={{ borderColor: `${t.accent}50`, color: t.accent }}>
+          style={{ borderColor: "rgba(255,255,255,0.4)", color: "#ffffff", backgroundColor: "rgba(255,255,255,0.08)" }}>
           <Globe size={13} />
           {lang === "es" ? "EN" : "ES"}
         </button>
       </nav>
 
       {/* ── HERO ── */}
-      <section id="inicio" className="px-6 py-20 max-w-6xl mx-auto grid md:grid-cols-2 items-center gap-12"
+      <section id="inicio" className="px-6 py-20 max-w-6xl mx-auto grid md:grid-cols-2 items-center gap-12 pt-32 md:pt-24"
         style={{ position: "relative", zIndex: 1 }}>
         <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
           <div className="inline-block px-4 py-1 rounded-full border mb-6"
