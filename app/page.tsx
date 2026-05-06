@@ -596,8 +596,8 @@ export default function Home() {
                   </div>
                   {/* Text */}
                   <div>
-                    <p style={{ fontSize: "clamp(1rem,2.2vw,1.3rem)", fontWeight: 700, lineHeight: 1.3, marginBottom: "0.6rem" }}>{q}</p>
-                    <p style={{ fontSize: "0.85rem", opacity: 0.55, lineHeight: 1.7, color: t.sub, maxWidth: "36rem" }}>{desc}</p>
+                    <p style={{ fontSize: "clamp(1.1rem,2.5vw,1.4rem)", fontWeight: 700, lineHeight: 1.3, marginBottom: "0.7rem" }}>{q}</p>
+                    <p style={{ fontSize: "1rem", opacity: 0.75, lineHeight: 1.75, color: t.text, maxWidth: "36rem" }}>{desc}</p>
                   </div>
                   {/* Icon — animated */}
                   <motion.div
