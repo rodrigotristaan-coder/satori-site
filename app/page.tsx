@@ -226,7 +226,7 @@ function Typewriter({ text, style }: { text: string; style?: React.CSSProperties
     const timer = setTimeout(() => {
       setDisplayed(p => p + text[idx]);
       setIdx(i => i + 1);
-    }, 42);
+    }, 80);
     return () => clearTimeout(timer);
   }, [idx, text, done]);
 
@@ -290,11 +290,11 @@ function ServicesBento({ t, c }: { t: typeof themes.white; c: typeof copy.es }) 
 
   return (
     <div style={{ padding: "0 clamp(1rem,4vw,3rem) 3rem" }}>
-      {/* Service names row outside the grid */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(6,1fr)", gap: "0.75rem", marginBottom: "0.5rem", padding: "0 0.1rem" }}>
+      {/* Service names row — all 5 equal, same level */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.6rem", padding: "0 0.2rem" }}>
         {cells.map(({ s, i, color, isActive }) => (
-          <div key={i} style={{ gridColumn: i < 2 ? "span 3" : "span 2", textAlign: "center", transition: "all 0.3s" }}>
-            <span style={{ fontSize: "0.62rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.15em", color: isActive ? color : t.sub, transition: "color 0.3s" }}>
+          <div key={i} style={{ flex: 1, textAlign: "center", transition: "all 0.3s" }}>
+            <span style={{ fontSize: "0.65rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.15em", color: isActive ? color : t.sub, transition: "color 0.3s" }}>
               {s.num}. {s.tag}
             </span>
           </div>
@@ -685,11 +685,19 @@ export default function Home() {
 
       {/* ── SERVICIOS ── */}
       <section id="servicios" style={{ backgroundColor: t.card, position: "relative", zIndex: 1 }}>
-        {/* Header */}
-        <div style={{ padding: "4rem clamp(1.5rem,5vw,4rem) 0", maxWidth: "72rem", margin: "0 auto" }}>
-          <Typewriter text={c.camino_label} style={{ fontSize: "0.62rem", textTransform: "uppercase", letterSpacing: "0.4em", color: t.accent, fontWeight: 900, marginBottom: "0.6rem", display: "block" }} />
-          <h2 style={{ fontSize: "clamp(2.4rem,5vw,4rem)", fontFamily: "serif", fontWeight: 700, lineHeight: 1.08, marginBottom: "0.5rem" }}>{c.camino_h}</h2>
-          <p style={{ fontSize: "0.88rem", opacity: 0.48, maxWidth: "32rem", lineHeight: 1.7, color: t.sub, marginBottom: "2rem" }}>{c.camino_sub}</p>
+        {/* Header — all elements on same horizontal level */}
+        <div style={{ padding: "4rem clamp(1.5rem,5vw,4rem) 1.5rem", maxWidth: "72rem", margin: "0 auto" }}>
+          {/* Top row: typewriter label (left) + sub text (right) */}
+          <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "2rem", flexWrap: "wrap", marginBottom: "0.75rem" }}>
+            <Typewriter
+              text={c.camino_label}
+              style={{ fontSize: "0.82rem", textTransform: "uppercase", letterSpacing: "0.35em", color: t.accent, fontWeight: 900, display: "block", whiteSpace: "nowrap" }}
+            />
+            <p style={{ fontSize: "0.85rem", opacity: 0.5, maxWidth: "28rem", lineHeight: 1.65, color: t.sub, textAlign: "right", flexShrink: 0 }}>{c.camino_sub}</p>
+          </div>
+
+          {/* Big title */}
+          <h2 style={{ fontSize: "clamp(2.8rem,6vw,5rem)", fontFamily: "serif", fontWeight: 700, lineHeight: 1.0, marginBottom: "2.5rem" }}>{c.camino_h}</h2>
         </div>
         <ServicesBento t={t} c={c} />
       </section>
