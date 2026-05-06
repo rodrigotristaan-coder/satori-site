@@ -63,8 +63,8 @@ const copy = {
     cotizar_cta: "Quiero mi cotización →",
     nosotros_label: "Tu Socio Digital", nosotros_nombre: "Rodrigo Tristán", nosotros_cargo: "Fundador de SATORI",
     nosotros_quote: '"La IA no reemplaza tu negocio. Lo potencia."',
-    nosotros_p1: "Mi misión es poner la tecnología al alcance de cada emprendedor y empresario mexicano. Porque el crecimiento digital no debería ser privilegio de unos pocos — es una herramienta que merece estar en manos de quien trabaja todos los días para construir algo.",
-    nosotros_p2: "En Satori nos mantenemos a la vanguardia — por ti y para ti. Para que tú te dediques a lo tuyo, y nosotros hagamos que tu negocio trabaje incluso cuando tú no puedes.",
+    nosotros_p1: "Sé lo que cuesta construir un negocio desde adentro: las horas, las decisiones, la incertidumbre. Por eso fundé Satori — para que cada emprendedor y empresario mexicano tenga acceso a las mismas herramientas que usan las empresas más avanzadas del mundo, sin necesitar un equipo de 50 personas ni un presupuesto millonario.",
+    nosotros_p2: "Mi compromiso no es venderte un servicio. Es que entiendas exactamente qué estás haciendo, por qué funciona, y que veas los resultados. Si no hay claridad, no hay confianza. Y sin confianza, no hay nada.",
     garantia_title: "Garantía de 30 días:",
     garantia_text: "Si en 30 días no sientes que el valor recibido supera lo que invertiste, seguimos trabajando contigo 20 días más sin costo adicional. Sin preguntas, sin drama.",
     btn_zoom: "Agendar Zoom", btn_email: "Enviar Email",
@@ -85,7 +85,7 @@ const copy = {
       { name: "Carlos M.", role: "Dueño de restaurante", text: "Antes perdía clientes porque no contestaba rápido. Ahora el bot de Satori responde solo y ya agendé 3 mesas más esta semana.", stars: 5 },
       { name: "Fernanda R.", role: "Directora de clínica dental", text: "Mi página web nueva me ha traído pacientes de Google que antes ni sabían que existíamos. El ROI fue visible en el primer mes.", stars: 5 },
       { name: "Diego L.", role: "Consultor independiente", text: "Contraté el servicio de redes y en 6 semanas duplicamos los mensajes de posibles clientes. El contenido es de muy buena calidad.", stars: 5 },
-      { name: "Ana P.", role: "Dueña de boutique", text: "El agente de IA es impresionante. Responde igual que yo, agenda citas y hasta manda el catálogo. Mis clientes no saben si hablan con una persona o no.", stars: 5 },
+      { name: "Ana P.", role: "Dueña de boutique", text: "El agente de IA es muy bueno. Hubo una demora en los primeros chats que me preocupó, pero Rodrigo lo resolvió rápido y desde entonces funciona de maravilla. Mis clientes no saben si hablan con una persona.", stars: 4.5 },
     ],
     footer: "© 2026 SATORI · Soluciones Digitales con IA · México",
   },
@@ -123,8 +123,8 @@ const copy = {
     cotizar_cta: "Get my quote →",
     nosotros_label: "Your Digital Partner", nosotros_nombre: "Rodrigo Tristán", nosotros_cargo: "Founder of SATORI",
     nosotros_quote: '"AI doesn\'t replace your business. It supercharges it."',
-    nosotros_p1: "My mission is to put cutting-edge technology within reach of every entrepreneur and small business owner. Digital growth shouldn't be a privilege — it belongs in the hands of those who build something every day.",
-    nosotros_p2: "At Satori, we stay at the forefront — for you and because of you. So you focus on what you do best, and we make sure your business keeps working even when you can't.",
+    nosotros_p1: "I know what it costs to build a business from the inside: the hours, the decisions, the uncertainty. That's why I founded Satori — so every Mexican entrepreneur has access to the same tools used by the world's most advanced companies, without needing a team of 50 or a million-dollar budget.",
+    nosotros_p2: "My commitment isn't to sell you a service. It's to make sure you understand exactly what you're doing, why it works, and that you see the results. No clarity, no trust. No trust, nothing.",
     garantia_title: "30-Day Guarantee:",
     garantia_text: "If within 30 days you don't feel the value far exceeds what you invested, we keep working with you for 20 more days at no additional cost. No questions, no drama.",
     btn_zoom: "Book a Zoom", btn_email: "Send Email",
@@ -145,7 +145,7 @@ const copy = {
       { name: "Carlos M.", role: "Restaurant owner", text: "I used to lose customers because I couldn't reply fast. Now Satori's bot handles it and I've booked 3 more tables this week alone.", stars: 5 },
       { name: "Fernanda R.", role: "Dental clinic director", text: "My new website brought in patients from Google who didn't even know we existed. ROI was visible in the first month.", stars: 5 },
       { name: "Diego L.", role: "Independent consultant", text: "I hired the social media service and in 6 weeks we doubled our inbound messages. The content quality is excellent.", stars: 5 },
-      { name: "Ana P.", role: "Boutique owner", text: "The AI agent is impressive. It replies like me, books appointments and sends the catalog. Clients can't tell if it's a person or not.", stars: 5 },
+      { name: "Ana P.", role: "Boutique owner", text: "The AI agent is great. There was a delay in the first few chats that worried me, but Rodrigo fixed it quickly and since then it works flawlessly. Clients can't tell if it's a person.", stars: 4.5 },
     ],
     footer: "© 2026 SATORI · AI-Powered Digital Solutions · México",
   },
@@ -291,7 +291,7 @@ function ServicesBento({ t, c }: { t: typeof themes.white; c: typeof copy.es }) 
   return (
     <div style={{ padding: "0 clamp(1rem,4vw,3rem) 3rem" }}>
       {/* Service names row — all 5 equal, same level */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.6rem", padding: "0 0.2rem" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "3rem", padding: "0 0.2rem" }}>
         {cells.map(({ s, i, color, isActive }) => (
           <div key={i} style={{ flex: 1, textAlign: "center", transition: "all 0.3s" }}>
             <span style={{ fontSize: "0.65rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.15em", color: isActive ? color : t.sub, transition: "color 0.3s" }}>
@@ -572,7 +572,7 @@ export default function Home() {
           {([["#problema", c.nav.problema], ["#servicios", c.nav.soluciones], ["#cotizar", c.nav.precios]] as [string,string][]).map(([href, label]) => (
             <motion.a key={href} href={href} whileHover={{ y: -1 }} style={{ fontSize: "0.68rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", color: t.sub, textDecoration: "none" }}>{label}</motion.a>
           ))}
-          <a href={CALENDLY_LINK} target="_blank" style={{ padding: "0.45rem 1.3rem", backgroundColor: t.accent, color: t.bg, fontWeight: 900, fontSize: "0.68rem", textTransform: "uppercase", textDecoration: "none" }}>{c.nav.cta}</a>
+          <a href={CALENDLY_LINK} target="_blank" style={{ padding: "0.45rem 1.3rem", backgroundColor: t.accent, color: t.bg, fontWeight: 900, fontSize: "0.68rem", textTransform: "uppercase", textDecoration: "none", borderRadius: "999px" }}>{c.nav.cta}</a>
         </div>
         <button onClick={() => setShowPopup(true)} className="md:hidden" style={{ display: "flex", alignItems: "center", gap: "0.25rem", padding: "0.3rem 0.8rem", border: `1px solid ${t.accent}30`, borderRadius: 999, fontSize: "0.68rem", fontWeight: 700, color: t.text, backgroundColor: `${t.accent}08`, cursor: "pointer" }}>
           <Globe size={12} /> {lang === "es" ? "EN" : "ES"}
@@ -609,8 +609,8 @@ export default function Home() {
         <div style={{ maxWidth: "60rem", margin: "0 auto", position: "relative" }}>
           {/* Title */}
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
-            <p style={{ fontSize: "0.6rem", textTransform: "uppercase", letterSpacing: "0.4em", color: t.accent, fontWeight: 900, marginBottom: "0.75rem" }}>El problema</p>
-            <h2 style={{ fontSize: "clamp(2rem,4.5vw,3.5rem)", fontFamily: "serif", lineHeight: 1.1, marginBottom: "4rem", maxWidth: "36rem" }}>{c.problema_h}</h2>
+            <p style={{ fontSize: "0.82rem", textTransform: "uppercase", letterSpacing: "0.35em", color: t.accent, fontWeight: 900, marginBottom: "1rem" }}>El problema</p>
+            <h2 style={{ fontSize: "clamp(1.8rem,5.5vw,5rem)", fontFamily: "serif", lineHeight: 1.0, marginBottom: "3.5rem" }}>{c.problema_h}</h2>
           </motion.div>
 
           {/* Problems as numbered list — full width, stacked */}
@@ -665,7 +665,7 @@ export default function Home() {
             {[
               { label: c.stats[0].label, from: 1,   to: 24,  suffix: "/7",  desc: lang === "es" ? "Siempre disponible" : "Always available" },
               { label: c.stats[1].label, from: 100, to: 0,   suffix: "",    desc: "" },
-              { label: c.stats[2].label, from: 90,  to: 30,  suffix: "",    desc: lang === "es" ? "Días para ver resultados" : "Days to see results" },
+              { label: c.stats[2].label, from: 90,  to: 30,  suffix: "",    desc: lang === "es" ? "días" : "days" },
             ].map(({ label, from, to, suffix, desc }, i) => (
               <motion.div key={i}
                 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
@@ -687,17 +687,17 @@ export default function Home() {
       <section id="servicios" style={{ backgroundColor: t.card, position: "relative", zIndex: 1 }}>
         {/* Header — all elements on same horizontal level */}
         <div style={{ padding: "4rem clamp(1.5rem,5vw,4rem) 1.5rem", maxWidth: "72rem", margin: "0 auto" }}>
-          {/* Top row: typewriter label (left) + sub text (right) */}
-          <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "2rem", flexWrap: "wrap", marginBottom: "0.75rem" }}>
-            <Typewriter
-              text={c.camino_label}
-              style={{ fontSize: "0.82rem", textTransform: "uppercase", letterSpacing: "0.35em", color: t.accent, fontWeight: 900, display: "block", whiteSpace: "nowrap" }}
-            />
-            <p style={{ fontSize: "0.85rem", opacity: 0.5, maxWidth: "28rem", lineHeight: 1.65, color: t.sub, textAlign: "right", flexShrink: 0 }}>{c.camino_sub}</p>
-          </div>
+          {/* Typewriter label */}
+          <Typewriter
+            text={c.camino_label}
+            style={{ fontSize: "0.82rem", textTransform: "uppercase", letterSpacing: "0.35em", color: t.accent, fontWeight: 900, display: "block", whiteSpace: "nowrap", marginBottom: "0.75rem" }}
+          />
 
-          {/* Big title */}
-          <h2 style={{ fontSize: "clamp(2.8rem,6vw,5rem)", fontFamily: "serif", fontWeight: 700, lineHeight: 1.0, marginBottom: "2.5rem" }}>{c.camino_h}</h2>
+          {/* Big title — centered */}
+          <h2 style={{ fontSize: "clamp(2.8rem,6vw,5rem)", fontFamily: "serif", fontWeight: 700, lineHeight: 1.0, marginBottom: "1rem", textAlign: "center" }}>{c.camino_h}</h2>
+
+          {/* Sub — below title, centered, single line */}
+          <p style={{ fontSize: "0.88rem", opacity: 0.5, lineHeight: 1.4, color: t.sub, marginBottom: "2.5rem", textAlign: "center", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{c.camino_sub}</p>
         </div>
         <ServicesBento t={t} c={c} />
       </section>
@@ -735,17 +735,19 @@ export default function Home() {
         <div style={{ maxWidth: "64rem", margin: "0 auto" }}>
           <div style={{ marginBottom: "3rem", textAlign: "center" }}>
             <p style={{ fontSize: "0.6rem", textTransform: "uppercase", letterSpacing: "0.4em", color: t.accent, fontWeight: 900, marginBottom: "0.5rem" }}>{c.reviews_label}</p>
-            <h2 style={{ fontSize: "clamp(2rem,4vw,3rem)", fontFamily: "serif", fontWeight: 700 }}>{c.reviews_h}</h2>
+            <h2 style={{ fontSize: "clamp(2.4rem,4.5vw,3.8rem)", fontFamily: "serif", fontWeight: 700 }}>{c.reviews_h}</h2>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1.5rem" }}>
-            {c.reviews.map((r, i) => (
+            {c.reviews.slice(0,3).map((r, i) => (
               <motion.div key={i}
                 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
                 style={{ padding: "1.75rem", backgroundColor: t.bg, border: `1px solid ${t.accent}10`, borderRadius: "1.5rem", display: "flex", flexDirection: "column", gap: "1rem", boxShadow: "0 4px 24px rgba(0,0,0,0.06)" }}>
-                {/* Stars */}
-                <div style={{ display: "flex", gap: "0.2rem" }}>
-                  {Array.from({ length: r.stars }).map((_, s) => (
-                    <span key={s} style={{ color: "#F59E0B", fontSize: "0.9rem" }}>★</span>
+                {/* Stars — supports half stars */}
+                <div style={{ display: "flex", gap: "0.15rem", alignItems: "center" }}>
+                  {[1,2,3,4,5].map((s) => (
+                    <span key={s} style={{ color: s <= Math.floor(r.stars) ? "#F59E0B" : s - 0.5 === r.stars ? "#F59E0B" : "#D1D5DB", fontSize: "0.85rem" }}>
+                      {s - 0.5 === r.stars ? "⯨" : "★"}
+                    </span>
                   ))}
                 </div>
                 <p style={{ fontSize: "0.9rem", lineHeight: 1.75, color: t.text, opacity: 0.8, fontStyle: "italic" }}>"{r.text}"</p>
@@ -764,7 +766,7 @@ export default function Home() {
         <div style={{ maxWidth: "52rem", margin: "0 auto" }}>
           <div style={{ marginBottom: "3rem", textAlign: "center" }}>
             <p style={{ fontSize: "0.6rem", textTransform: "uppercase", letterSpacing: "0.4em", color: t.accent, fontWeight: 900, marginBottom: "0.5rem" }}>{c.faq_label}</p>
-            <h2 style={{ fontSize: "clamp(2rem,4vw,3rem)", fontFamily: "serif", fontWeight: 700 }}>{c.faq_h}</h2>
+            <h2 style={{ fontSize: "clamp(2.4rem,4.5vw,3.8rem)", fontFamily: "serif", fontWeight: 700 }}>{c.faq_h}</h2>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
             {c.faqs.map((f, i) => (
@@ -777,9 +779,13 @@ export default function Home() {
       {/* ── COTIZAR ── */}
       <section id="cotizar" style={{ padding: "5rem 1.5rem", position: "relative", zIndex: 1 }}>
         <div style={{ maxWidth: "38rem", margin: "0 auto", textAlign: "center" }}>
-          <h2 style={{ fontSize: "clamp(2rem,5vw,3.2rem)", fontFamily: "serif", fontWeight: 700, marginBottom: "1rem", lineHeight: 1.2 }}>{c.cotizar_h}</h2>
+          <h2 style={{ fontSize: "clamp(2.6rem,5vw,4rem)", fontFamily: "serif", fontWeight: 700, marginBottom: "1rem", lineHeight: 1.05 }}>{c.cotizar_h}</h2>
           <p style={{ fontSize: "0.95rem", opacity: 0.62, lineHeight: 1.8, marginBottom: "2rem", color: t.sub }}>{c.cotizar_sub}</p>
-          <motion.a href={waLink} target="_blank" whileHover={{ scale: 1.05, y: -2 }} style={{ display: "inline-block", padding: "1rem 2.5rem", backgroundColor: t.accent, color: t.bg, fontWeight: 900, textTransform: "uppercase", fontSize: "0.78rem", letterSpacing: "0.08em", textDecoration: "none", borderRadius: "999px" }}>
+          <motion.a href={waLink} target="_blank"
+            animate={{ scale: [1, 1.06, 1] }}
+            transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+            whileHover={{ scale: 1.1 }}
+            style={{ display: "inline-block", padding: "1rem 2.5rem", backgroundColor: t.accent, color: t.bg, fontWeight: 900, textTransform: "uppercase", fontSize: "0.78rem", letterSpacing: "0.08em", textDecoration: "none", borderRadius: "999px", boxShadow: `0 8px 32px ${t.accent}50` }}>
             {c.cotizar_cta}
           </motion.a>
         </div>
