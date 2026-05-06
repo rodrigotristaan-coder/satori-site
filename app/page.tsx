@@ -143,7 +143,7 @@ function MatrixBackground({ color }: { color: string }) {
     draw();
     return () => { cancelAnimationFrame(id); window.removeEventListener("resize", resize); };
   }, []);
-  return <canvas ref={ref} style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", opacity: 0.28, pointerEvents: "none", zIndex: 0 }} />;
+  return <canvas ref={ref} style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", opacity: 0.28, pointerEvents: "none", zIndex: 0, willChange: "transform" }} />;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -272,9 +272,8 @@ function ServicesSpotlight({ t, c }: { t: typeof themes.white; c: typeof copy.es
     <div style={{ position: "relative", overflow: "hidden" }}>
       {/* Full-width image area */}
       <div
-        style={{ position: "relative", height: "clamp(420px, 65vh, 680px)", cursor: "pointer", userSelect: "none", touchAction: "pan-y", WebkitTapHighlightColor: "transparent" } as React.CSSProperties}
-        onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp}
-        onClick={() => !dragged.current && setExpanded(e => !e)}>
+        style={{ position: "relative", height: "clamp(400px, 60vh, 640px)", userSelect: "none", touchAction: "pan-y", WebkitTapHighlightColor: "transparent" } as React.CSSProperties}
+        onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp}>
 
         {/* BG image with crossfade */}
         <AnimatePresence mode="wait">
@@ -322,31 +321,22 @@ function ServicesSpotlight({ t, c }: { t: typeof themes.white; c: typeof copy.es
             </motion.p>
           </AnimatePresence>
 
-          {/* Tap to expand hint */}
-          <motion.div animate={{ opacity: [0.4, 0.8, 0.4] }} transition={{ duration: 2, repeat: Infinity }}
-            style={{ fontSize: "0.6rem", textTransform: "uppercase", letterSpacing: "0.25em", color: t.accent, fontWeight: 700 }}>
-            {expanded ? "↑ menos" : "↓ ver más"}
-          </motion.div>
+
         </div>
       </div>
 
-      {/* Expanded detail panel */}
-      <AnimatePresence>
-        {expanded && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.45, ease: "easeInOut" }}
-            style={{ overflow: "hidden", backgroundColor: t.accent, color: t.bg }}>
-            <motion.p
-              initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 10, opacity: 0 }}
-              transition={{ delay: 0.15 }}
-              style={{ padding: "2rem clamp(1.5rem,5vw,4rem)", fontSize: "clamp(0.9rem,1.8vw,1.05rem)", lineHeight: 1.8, maxWidth: "52rem", opacity: 0.95 }}>
-              {s.back}
-            </motion.p>
-          </motion.div>
-        )}
+      {/* Detail panel — always visible */}
+      <AnimatePresence mode="wait">
+        <motion.div key={`back-${active}`}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -8 }}
+          transition={{ duration: 0.35 }}
+          style={{ backgroundColor: t.accent, color: t.bg }}>
+          <p style={{ padding: "1.75rem clamp(1.5rem,5vw,4rem)", fontSize: "clamp(0.9rem,1.8vw,1.05rem)", lineHeight: 1.8, maxWidth: "52rem", opacity: 0.95 }}>
+            {s.back}
+          </p>
+        </motion.div>
       </AnimatePresence>
 
       {/* Navigation row */}
@@ -508,6 +498,22 @@ export default function Home() {
           80%  { transform: translateX(-1px) rotate(-1deg); }
           100% { transform: translateX(0) rotate(0deg); }
         }
+        html, body {
+          overscroll-behavior: none;
+          -webkit-overflow-scrolling: touch;
+        }
+        canvas {
+          backface-visibility: hidden;
+          -webkit-backface-visibility: hidden;
+          will-change: transform;
+        }
+        @media (max-width: 768px) {
+          section p:not(.no-scale),
+          section span:not(.no-scale),
+          section li { font-size: max(1rem, 0.95em) !important; line-height: 1.7 !important; }
+          section > div { text-align: center !important; }
+          .mobile-left, .mobile-left * { text-align: left !important; }
+        }
       `}</style>
       <MatrixBackground color={t.matrixColor} />
       <CursorGlow accent={t.accent} />
@@ -527,7 +533,13 @@ export default function Home() {
         <span className="hidden md:inline">{c.btn_zoom}</span>
       </a>
 
-      <button onClick={() => setThemeIdx(i => (i + 1) % themeOrder.length)} style={{ position: "fixed", bottom: "10.5rem", right: "1.5rem", zIndex: 100, padding: "0.75rem", borderRadius: 999, backgroundColor: paletteActive ? themes[themeOrder[logoThemeIdx]].accent : t.card, color: paletteActive ? themes[themeOrder[logoThemeIdx]].bg : t.accent, border: `1px solid ${t.accent}30`, cursor: "pointer", boxShadow: paletteActive ? `0 0 24px ${themes[themeOrder[logoThemeIdx]].accent}99` : "0 4px 20px rgba(0,0,0,0.15)", transition: "background-color 0.4s, color 0.4s, box-shadow 0.4s" }}>
+      <button onClick={() => setThemeIdx(i => (i + 1) % themeOrder.length)}
+        style={{ position: "fixed", bottom: "10.5rem", right: "1.5rem", zIndex: 100, padding: "0.75rem", borderRadius: 999,
+          backgroundColor: themes[nextThemeKey].accent,
+          color: themes[nextThemeKey].bg,
+          border: "none", cursor: "pointer",
+          boxShadow: `0 4px 20px ${themes[nextThemeKey].accent}60`,
+          transition: "background-color 0.5s, color 0.5s, box-shadow 0.5s" }}>
         <Palette size={18} />
       </button>
 
@@ -589,6 +601,7 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-60px" }}
                   transition={{ delay: i * 0.15, duration: 0.5, ease: "easeOut" }}
+                  className="mobile-left"
                   style={{ display: "grid", gridTemplateColumns: "3rem 1fr auto", gap: "1.5rem", alignItems: "start", padding: "2rem 0", borderBottom: i < 2 ? `1px solid ${t.accent}12` : "none" }}>
                   {/* Number */}
                   <div style={{ fontSize: "clamp(2rem,4vw,3rem)", fontFamily: "serif", fontWeight: 700, color: t.accent, opacity: 0.25, lineHeight: 1, paddingTop: "0.1rem" }}>
@@ -630,7 +643,7 @@ export default function Home() {
             {[
               { label: c.stats[0].label, from: 1,   to: 24,  suffix: "/7",  desc: lang === "es" ? "Siempre disponible" : "Always available" },
               { label: c.stats[1].label, from: 100, to: 0,   suffix: "",    desc: lang === "es" ? "Prospecto aprovechado" : "Every lead captured" },
-              { label: c.stats[2].label, from: 90,  to: 30,  suffix: " d",  desc: lang === "es" ? "Para ver resultados" : "To see results" },
+              { label: c.stats[2].label, from: 90,  to: 30,  suffix: "",    desc: lang === "es" ? "Días para ver resultados" : "Days to see results" },
             ].map(({ label, from, to, suffix, desc }, i) => (
               <motion.div key={i}
                 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
