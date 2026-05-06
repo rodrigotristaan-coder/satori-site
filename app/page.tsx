@@ -206,7 +206,7 @@ function Typewriter({ text, style }: { text: string; style?: React.CSSProperties
 function SpinningEnso({ filter, opacity = 0.88 }: { filter: string; opacity?: number }) {
   return (
     <motion.div
-      animate={{ rotate: [0, 360] }}
+      animate={{ rotate: [0, -360] }}
       transition={{ duration: 18, repeat: Infinity, ease: "linear", repeatType: "loop" }}
       style={{ width: 420, height: 420, display: "flex", alignItems: "center", justifyContent: "center", transformOrigin: "center center" }}>
       <Image src="/enso-negro.png" alt="Enso" width={420} height={420} style={{ filter, opacity, display: "block" }} />
@@ -241,162 +241,143 @@ function LangPopup({ onSelect, t }: { onSelect: (l: "es" | "en") => void; t: typ
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// AI WORKFLOW VISUAL
+// SERVICES — FULLSCREEN SPOTLIGHT
 // ─────────────────────────────────────────────────────────────────────────────
-function AIWorkflow({ accent, card }: { accent: string; card: string }) {
-  const steps = ["📩 Mensaje entrante", "🤖 IA analiza intención", "💬 Respuesta en segundos", "📅 Cita agendada automáticamente", "✅ Prospecto convertido"];
-  return (
-    <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "center", padding: "1rem", gap: "0.4rem", backgroundColor: card }}>
-      {steps.map((s, i) => (
-        <motion.div key={i} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.1 }}
-          style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.68rem", fontFamily: "monospace", padding: "0.35rem 0.6rem", backgroundColor: `${accent}10`, color: accent, border: `1px solid ${accent}18`, borderRadius: 2 }}>
-          <span style={{ opacity: 0.3, fontSize: "0.58rem", width: "1rem", flexShrink: 0 }}>{i + 1}.</span>
-          {s}
-          {i < 4 && <span style={{ marginLeft: "auto", opacity: 0.2 }}>↓</span>}
-        </motion.div>
-      ))}
-    </div>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// SERVICE FLIP CARD
-// ─────────────────────────────────────────────────────────────────────────────
-function ServiceCard({ s, t, c }: { s: typeof copy.es.servicios[0]; t: typeof themes.white; c: typeof copy.es }) {
-  const [flipped, setFlipped] = useState(false);
-  useEffect(() => { setFlipped(false); }, [s.num]);
-
-  return (
-    <div style={{ width: "100%", height: 400, perspective: "1200px", cursor: "pointer" }} onClick={() => setFlipped(f => !f)}>
-      <div style={{
-        width: "100%", height: "100%", position: "relative",
-        transformStyle: "preserve-3d",
-        transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)",
-        transition: "transform 0.45s cubic-bezier(0.4,0.2,0.2,1)",
-      }}>
-        {/* FRONT */}
-        <div style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", backgroundColor: t.bg, border: `1px solid ${t.accent}18`, display: "flex", flexDirection: "column", overflow: "hidden" }}>
-          <div style={{ height: 160, flexShrink: 0, overflow: "hidden" }}>
-            {s.i
-              ? <img src={s.i} alt={s.t} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} loading="lazy" />
-              : <AIWorkflow accent={t.accent} card={t.card} />
-            }
-          </div>
-          <div style={{ flex: 1, padding: "1.1rem 1.3rem", display: "flex", flexDirection: "column", justifyContent: "space-between", overflow: "hidden" }}>
-            <div>
-              <p style={{ fontSize: "0.56rem", textTransform: "uppercase", letterSpacing: "0.18em", color: t.accent, fontWeight: 800, marginBottom: "0.4rem", opacity: 0.65, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{s.sub}</p>
-              <h3 style={{ fontSize: "1.2rem", fontWeight: 700, lineHeight: 1.2, marginBottom: "0.6rem", color: t.text, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{s.t}</h3>
-              <p style={{ fontSize: "0.8rem", lineHeight: 1.55, color: t.sub, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{s.d}</p>
-            </div>
-            <div style={{ display: "flex", alignItems: "center", gap: "0.2rem", fontSize: "0.6rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.15em", color: t.accent, marginTop: "0.6rem" }}>
-              {c.ver_mas} <span>↗</span>
-            </div>
-          </div>
-        </div>
-        {/* BACK */}
-        <div style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", transform: "rotateY(180deg)", backgroundColor: t.accent, color: t.bg, padding: "2rem 1.75rem", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-          <p style={{ fontSize: "0.56rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.15em", opacity: 0.5, marginBottom: "0.75rem" }}>{c.paquete} {s.num} · {s.sub}</p>
-          <h3 style={{ fontSize: "1.45rem", fontWeight: 700, lineHeight: 1.2, marginBottom: "0.9rem" }}>{s.t}</h3>
-          <p style={{ fontSize: "0.82rem", lineHeight: 1.75, opacity: 0.92, display: "-webkit-box", WebkitLineClamp: 6, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{s.back}</p>
-          <div style={{ marginTop: "auto", paddingTop: "1.25rem", fontSize: "0.58rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.15em", opacity: 0.4 }}>{c.volver}</div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// SERVICES SWIPER
-// ─────────────────────────────────────────────────────────────────────────────
-function ServicesSwiper({ t, c }: { t: typeof themes.white; c: typeof copy.es }) {
+function ServicesSpotlight({ t, c }: { t: typeof themes.white; c: typeof copy.es }) {
   const [active, setActive] = useState(0);
+  const [expanded, setExpanded] = useState(false);
   const total = c.servicios.length;
   const startX = useRef<number | null>(null);
   const dragged = useRef(false);
 
-  const goTo = (i: number) => setActive((i + total) % total);
+  const goTo = (i: number) => { setActive((i + total) % total); setExpanded(false); };
 
   const onPointerDown = (e: React.PointerEvent) => { startX.current = e.clientX; dragged.current = false; };
-  const onPointerMove = (e: React.PointerEvent) => { if (startX.current !== null && Math.abs(e.clientX - startX.current) > 6) dragged.current = true; };
+  const onPointerMove = (e: React.PointerEvent) => { if (startX.current !== null && Math.abs(e.clientX - startX.current) > 8) dragged.current = true; };
   const onPointerUp   = (e: React.PointerEvent) => {
     if (!startX.current) return;
     const diff = startX.current - e.clientX;
-    if (Math.abs(diff) > 45 && dragged.current) diff > 0 ? goTo(active + 1) : goTo(active - 1);
+    if (Math.abs(diff) > 50 && dragged.current) diff > 0 ? goTo(active + 1) : goTo(active - 1);
     startX.current = null; dragged.current = false;
   };
 
+  const s = c.servicios[active];
+
+  // Fallback gradient for services without a photo
+  const bgImage = s.i
+    ? `url(${s.i})`
+    : `linear-gradient(135deg, ${t.card} 0%, ${t.bg} 100%)`;
+
   return (
-    <div>
-      {/* Pills */}
-      <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "0.5rem", marginBottom: "2.5rem" }}>
-        {c.servicios.map((s, i) => (
-          <button key={i} onClick={() => goTo(i)}
-            style={{ padding: "0.45rem 1rem", fontSize: "0.68rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.12em", backgroundColor: active === i ? t.accent : "transparent", color: active === i ? t.bg : t.sub, border: "none", cursor: "pointer", transition: "all 0.25s" }}>
-            {s.num}. {s.tag}
-          </button>
-        ))}
-      </div>
-
-      {/* Swipe zone */}
+    <div style={{ position: "relative", overflow: "hidden" }}>
+      {/* Full-width image area */}
       <div
-        style={{ position: "relative", userSelect: "none", touchAction: "pan-y", WebkitTapHighlightColor: "transparent", WebkitUserSelect: "none" } as React.CSSProperties}
-        onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp}>
+        style={{ position: "relative", height: "clamp(420px, 65vh, 680px)", cursor: "pointer", userSelect: "none", touchAction: "pan-y", WebkitTapHighlightColor: "transparent" } as React.CSSProperties}
+        onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp}
+        onClick={() => !dragged.current && setExpanded(e => !e)}>
 
-        {/* Enso bg — rotates on each swipe */}
+        {/* BG image with crossfade */}
         <AnimatePresence mode="wait">
-          <motion.div key={`enso-${active}`}
-            initial={{ opacity: 0, scale: 0.8, rotate: -20 }}
-            animate={{ opacity: 1, scale: 1, rotate: 0 }}
-            exit={{ opacity: 0, scale: 1.15, rotate: 20 }}
-            transition={{ duration: 0.45, ease: "easeOut" }}
-            style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", pointerEvents: "none", zIndex: 0 }}>
-            <img src="/enso-negro.png" alt="" style={{ width: "65%", maxWidth: 360, filter: t.ensoFilter }} />
-          </motion.div>
+          <motion.div key={`bg-${active}`}
+            initial={{ opacity: 0, scale: 1.04 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.97 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            style={{ position: "absolute", inset: 0, backgroundImage: bgImage, backgroundSize: "cover", backgroundPosition: "center" }} />
         </AnimatePresence>
 
-        {/* Cards */}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "1rem", padding: "0.5rem 0 1.5rem", position: "relative", zIndex: 1, minHeight: 420 }}>
-          {/* Prev ghost */}
-          <div onClick={() => goTo(active - 1)}
-            style={{ width: "min(130px,22vw)", flexShrink: 0, cursor: "pointer", opacity: 0.18, filter: "blur(2px)", transform: "scale(0.86)", transition: "all 0.35s", WebkitTapHighlightColor: "transparent" } as React.CSSProperties}>
-            <ServiceCard s={c.servicios[(active - 1 + total) % total]} t={t} c={c} />
-          </div>
+        {/* Gradient overlay — darker at bottom */}
+        <div style={{ position: "absolute", inset: 0, background: `linear-gradient(to bottom, ${t.bg}22 0%, ${t.bg}99 55%, ${t.bg}EE 100%)` }} />
 
-          {/* Active card */}
+        {/* Enso watermark */}
+        <div style={{ position: "absolute", right: "-5%", top: "50%", transform: "translateY(-50%)", width: "45%", maxWidth: 340, opacity: 0.06, pointerEvents: "none" }}>
+          <img src="/enso-negro.png" alt="" style={{ width: "100%", filter: t.ensoFilter.replace("opacity(0.06)", "opacity(1)") }} />
+        </div>
+
+        {/* Content */}
+        <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "2.5rem clamp(1.5rem,5vw,4rem)" }}>
+          {/* Package number */}
+          <motion.p key={`num-${active}`} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+            style={{ fontSize: "0.6rem", textTransform: "uppercase", letterSpacing: "0.4em", color: t.accent, fontWeight: 900, marginBottom: "0.6rem", opacity: 0.8 }}>
+            {c.paquete} {s.num} · {s.sub}
+          </motion.p>
+
+          {/* Title */}
           <AnimatePresence mode="wait">
-            <motion.div key={`card-${active}`}
-              initial={{ opacity: 0, y: 18, scale: 0.94 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -18, scale: 0.94 }}
-              transition={{ duration: 0.38, ease: "easeOut" }}
-              style={{ width: "min(400px,82vw)", flexShrink: 0, zIndex: 2 }}>
-              <ServiceCard s={c.servicios[active]} t={t} c={c} />
-            </motion.div>
+            <motion.h2 key={`title-${active}`}
+              initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 30 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+              style={{ fontSize: "clamp(2.2rem,6vw,4.5rem)", fontFamily: "serif", fontWeight: 700, lineHeight: 1.05, color: t.text, marginBottom: "0.75rem", letterSpacing: "-0.01em" }}>
+              {s.t}
+            </motion.h2>
           </AnimatePresence>
 
-          {/* Next ghost */}
-          <div onClick={() => goTo(active + 1)}
-            style={{ width: "min(130px,22vw)", flexShrink: 0, cursor: "pointer", opacity: 0.18, filter: "blur(2px)", transform: "scale(0.86)", transition: "all 0.35s", WebkitTapHighlightColor: "transparent" } as React.CSSProperties}>
-            <ServiceCard s={c.servicios[(active + 1) % total]} t={t} c={c} />
-          </div>
+          {/* Short description */}
+          <AnimatePresence mode="wait">
+            <motion.p key={`desc-${active}`}
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              transition={{ delay: 0.15, duration: 0.4 }}
+              style={{ fontSize: "clamp(0.9rem,2vw,1.05rem)", color: t.text, opacity: 0.72, maxWidth: "42rem", lineHeight: 1.65, marginBottom: "1rem" }}>
+              {s.d}
+            </motion.p>
+          </AnimatePresence>
+
+          {/* Tap to expand hint */}
+          <motion.div animate={{ opacity: [0.4, 0.8, 0.4] }} transition={{ duration: 2, repeat: Infinity }}
+            style={{ fontSize: "0.6rem", textTransform: "uppercase", letterSpacing: "0.25em", color: t.accent, fontWeight: 700 }}>
+            {expanded ? "↑ menos" : "↓ ver más"}
+          </motion.div>
         </div>
       </div>
 
-      {/* Arrows + dots */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "1.5rem", marginTop: "0.5rem" }}>
-        <button onClick={() => goTo(active - 1)} style={{ padding: "0.6rem 0.8rem", border: "none", color: t.accent, backgroundColor: "transparent", cursor: "pointer", opacity: 0.65, transition: "opacity 0.2s" }}
-          onMouseEnter={e => (e.currentTarget.style.opacity = "1")} onMouseLeave={e => (e.currentTarget.style.opacity = "0.65")}>
-          <ChevronLeft size={24} />
-        </button>
-        <div style={{ display: "flex", gap: "0.4rem", alignItems: "center" }}>
-          {c.servicios.map((_, i) => (
-            <button key={i} onClick={() => goTo(i)} style={{ width: active === i ? 28 : 8, height: 8, borderRadius: active === i ? 4 : "50%", backgroundColor: active === i ? t.accent : `${t.accent}30`, border: "none", cursor: "pointer", padding: 0, transition: "all 0.3s ease" }} />
+      {/* Expanded detail panel */}
+      <AnimatePresence>
+        {expanded && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.45, ease: "easeInOut" }}
+            style={{ overflow: "hidden", backgroundColor: t.accent, color: t.bg }}>
+            <motion.p
+              initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 10, opacity: 0 }}
+              transition={{ delay: 0.15 }}
+              style={{ padding: "2rem clamp(1.5rem,5vw,4rem)", fontSize: "clamp(0.9rem,1.8vw,1.05rem)", lineHeight: 1.8, maxWidth: "52rem", opacity: 0.95 }}>
+              {s.back}
+            </motion.p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Navigation row */}
+      <div style={{ padding: "1.75rem clamp(1.5rem,5vw,4rem)", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem" }}>
+        {/* Pills */}
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}>
+          {c.servicios.map((sv, i) => (
+            <button key={i} onClick={() => goTo(i)}
+              style={{ padding: "0.35rem 0.85rem", fontSize: "0.62rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.1em", backgroundColor: active === i ? t.accent : "transparent", color: active === i ? t.bg : t.sub, border: "none", cursor: "pointer", transition: "all 0.25s" }}>
+              {sv.num}. {sv.tag}
+            </button>
           ))}
         </div>
-        <button onClick={() => goTo(active + 1)} style={{ padding: "0.6rem 0.8rem", border: "none", color: t.accent, backgroundColor: "transparent", cursor: "pointer", opacity: 0.65, transition: "opacity 0.2s" }}
-          onMouseEnter={e => (e.currentTarget.style.opacity = "1")} onMouseLeave={e => (e.currentTarget.style.opacity = "0.65")}>
-          <ChevronRight size={24} />
-        </button>
+
+        {/* Arrows + dots */}
+        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+          <button onClick={() => goTo(active - 1)} style={{ background: "none", border: "none", color: t.accent, cursor: "pointer", opacity: 0.6, padding: "0.25rem" }}
+            onMouseEnter={e => (e.currentTarget.style.opacity = "1")} onMouseLeave={e => (e.currentTarget.style.opacity = "0.6")}>
+            <ChevronLeft size={22} />
+          </button>
+          <div style={{ display: "flex", gap: "0.35rem", alignItems: "center" }}>
+            {c.servicios.map((_, i) => (
+              <button key={i} onClick={() => goTo(i)}
+                style={{ width: active === i ? 24 : 6, height: 6, borderRadius: 3, backgroundColor: active === i ? t.accent : `${t.accent}35`, border: "none", cursor: "pointer", padding: 0, transition: "all 0.3s" }} />
+            ))}
+          </div>
+          <button onClick={() => goTo(active + 1)} style={{ background: "none", border: "none", color: t.accent, cursor: "pointer", opacity: 0.6, padding: "0.25rem" }}
+            onMouseEnter={e => (e.currentTarget.style.opacity = "1")} onMouseLeave={e => (e.currentTarget.style.opacity = "0.6")}>
+            <ChevronRight size={22} />
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -410,23 +391,28 @@ export default function Home() {
   const [lang, setLang]         = useState<"es" | "en">("es");
   const [showPopup, setShowPopup] = useState(true);
   const [shake, setShake]         = useState(false);
+  const [paletteActive, setPaletteActive] = useState(false);
   const introRan = useRef(false);
 
-  // Theme intro: cycle through all themes, land on blue (idx 1)
-  useEffect(() => {
+  // Theme intro runs after lang is chosen
+  const runThemeIntro = () => {
     if (introRan.current) return;
     introRan.current = true;
-    const order = [2, 3, 4, 0, 1]; // silver→rainbow→gold→white→blue
+    // Cycle every 0.5s: silver→rainbow→gold→white→blue, 5 steps
+    const order = [2, 3, 4, 0, 1];
     order.forEach((idx, step) => {
-      setTimeout(() => setThemeIdx(idx), (step + 1) * 1000);
+      setTimeout(() => setThemeIdx(idx), (step + 1) * 500);
     });
-  }, []);
+    // Palette button pulses color for 10s
+    setPaletteActive(true);
+    setTimeout(() => setPaletteActive(false), 10000);
+  };
 
   // Button shake every 15 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setShake(true);
-      setTimeout(() => setShake(false), 700);
+      setTimeout(() => setShake(false), 2100);
     }, 15000);
     return () => clearInterval(interval);
   }, []);
@@ -440,7 +426,7 @@ export default function Home() {
   const Icons        = [HandCoins, Zap, Target];
 
   const shakeStyle: React.CSSProperties = shake ? {
-    animation: "btnShake 0.6s ease",
+    animation: "btnShake 2s ease",
   } : {};
 
   return (
@@ -448,11 +434,15 @@ export default function Home() {
       <style>{`
         @keyframes btnShake {
           0%   { transform: translateX(0) rotate(0deg); }
-          15%  { transform: translateX(-5px) rotate(-4deg); }
-          30%  { transform: translateX(5px) rotate(4deg); }
-          45%  { transform: translateX(-4px) rotate(-3deg); }
-          60%  { transform: translateX(4px) rotate(3deg); }
-          75%  { transform: translateX(-2px) rotate(-1deg); }
+          8%   { transform: translateX(-6px) rotate(-5deg); }
+          16%  { transform: translateX(6px) rotate(5deg); }
+          24%  { transform: translateX(-5px) rotate(-4deg); }
+          32%  { transform: translateX(5px) rotate(4deg); }
+          40%  { transform: translateX(-4px) rotate(-3deg); }
+          48%  { transform: translateX(4px) rotate(3deg); }
+          56%  { transform: translateX(-3px) rotate(-2deg); }
+          64%  { transform: translateX(3px) rotate(2deg); }
+          80%  { transform: translateX(-1px) rotate(-1deg); }
           100% { transform: translateX(0) rotate(0deg); }
         }
       `}</style>
@@ -460,7 +450,7 @@ export default function Home() {
       <CursorGlow accent={t.accent} />
 
       <AnimatePresence>
-        {showPopup && <LangPopup t={t} onSelect={l => { setLang(l); setShowPopup(false); }} />}
+        {showPopup && <LangPopup t={t} onSelect={l => { setLang(l); setShowPopup(false); runThemeIntro(); }} />}
       </AnimatePresence>
 
       {/* ── FLOATING BUTTONS ── */}
@@ -474,7 +464,7 @@ export default function Home() {
         <span className="hidden md:inline">{c.btn_zoom}</span>
       </a>
 
-      <button onClick={() => setThemeIdx(i => (i + 1) % themeOrder.length)} style={{ position: "fixed", bottom: "10.5rem", right: "1.5rem", zIndex: 100, padding: "0.75rem", borderRadius: 999, backgroundColor: t.card, color: t.accent, border: `1px solid ${t.accent}30`, cursor: "pointer", boxShadow: "0 4px 20px rgba(0,0,0,0.15)", ...shakeStyle }}>
+      <button onClick={() => setThemeIdx(i => (i + 1) % themeOrder.length)} style={{ position: "fixed", bottom: "10.5rem", right: "1.5rem", zIndex: 100, padding: "0.75rem", borderRadius: 999, backgroundColor: paletteActive ? t.accent : t.card, color: paletteActive ? t.bg : t.accent, border: `1px solid ${t.accent}30`, cursor: "pointer", boxShadow: paletteActive ? `0 0 20px ${t.accent}88` : "0 4px 20px rgba(0,0,0,0.15)", transition: "all 0.4s ease" }}>
         <Palette size={18} />
       </button>
 
@@ -562,15 +552,14 @@ export default function Home() {
       </section>
 
       {/* ── SERVICIOS ── */}
-      <section id="servicios" style={{ padding: "5rem 1.5rem", backgroundColor: t.card, position: "relative", zIndex: 1, overflow: "hidden" }}>
-        <div style={{ maxWidth: "62rem", margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: "2.5rem" }}>
-            <Typewriter text={c.camino_label} style={{ fontSize: "0.65rem", textTransform: "uppercase", letterSpacing: "0.4em", color: t.accent, fontWeight: 900, marginBottom: "0.75rem", display: "block" }} />
-            <h2 style={{ fontSize: "clamp(2.8rem,6vw,5rem)", fontFamily: "serif", fontWeight: 700, lineHeight: 1.05, marginBottom: "0.75rem" }}>{c.camino_h}</h2>
-            <p style={{ fontSize: "0.88rem", opacity: 0.52, maxWidth: "34rem", margin: "0 auto", lineHeight: 1.7, color: t.sub }}>{c.camino_sub}</p>
-          </div>
-          <ServicesSwiper t={t} c={c} />
+      <section id="servicios" style={{ backgroundColor: t.card, position: "relative", zIndex: 1 }}>
+        {/* Header */}
+        <div style={{ padding: "4rem clamp(1.5rem,5vw,4rem) 0", maxWidth: "72rem", margin: "0 auto" }}>
+          <Typewriter text={c.camino_label} style={{ fontSize: "0.62rem", textTransform: "uppercase", letterSpacing: "0.4em", color: t.accent, fontWeight: 900, marginBottom: "0.6rem", display: "block" }} />
+          <h2 style={{ fontSize: "clamp(2.4rem,5vw,4rem)", fontFamily: "serif", fontWeight: 700, lineHeight: 1.08, marginBottom: "0.5rem" }}>{c.camino_h}</h2>
+          <p style={{ fontSize: "0.88rem", opacity: 0.48, maxWidth: "32rem", lineHeight: 1.7, color: t.sub, marginBottom: "2rem" }}>{c.camino_sub}</p>
         </div>
+        <ServicesSpotlight t={t} c={c} />
       </section>
 
       {/* ── COTIZAR ── */}
