@@ -51,11 +51,11 @@ const copy = {
     camino_sub: "Cada paquete construye sobre el anterior. Empieza donde estás — llega a donde quieres.",
     ver_mas: "Ver detalle", volver: "← Volver", paquete: "Paquete",
     servicios: [
-      { num: 1, tag: "Redes",     t: "Presencia Digital",  sub: "Redes Sociales + Contenido",          d: "Tus redes publicando con estrategia todos los días.",            back: "Posts, reels y stories diseñados para posicionarte como el experto. Incluye estrategia mensual, diseño, copywriting con IA y reporte de métricas.", i: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=800&q=80&fm=jpg" },
-      { num: 2, tag: "Página Web",t: "Tu Página Web",      sub: "Sitio Web o Landing Page",             d: "Tu vitrina digital que convierte visitas en clientes.",          back: "Diseño profesional, copywriting estratégico, optimización móvil. Entrega en 7–10 días. La base que todo negocio serio necesita.", i: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&q=80&fm=jpg" },
-      { num: 3, tag: "Social Ads",t: "Clientes con Ads",   sub: "Campañas Meta + Google",               d: "Anuncios que llevan el cliente correcto a tu puerta.",          back: "Setup, segmentación avanzada, creativos, optimización semanal y reporte mensual. Ideal para escalar cuando ya tienes presencia.", i: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80&fm=jpg" },
-      { num: 4, tag: "AI Bot",    t: "Vendedor 24/7",      sub: "Agente IA · WhatsApp + Instagram",     d: "Un agente que cotiza, agenda y cierra mientras duermes.",        back: "Entrenado con tu negocio. Integrado a WhatsApp e Instagram DM. Responde, califica y agenda automáticamente — sin que tú intervengas.", i: "https://images.unsplash.com/photo-1676299081847-824916de030a?w=800&q=80&fm=jpg" },
-      { num: 5, tag: "¿Satori?",  t: "Sociedad Satori",   sub: "Todo lo anterior + Estrategia y Branding", d: "Para dominar tu mercado. No un proveedor — un socio.",     back: "Todos los servicios + identidad de marca, sesión mensual de estrategia, consultoría prioritaria y acceso anticipado a nuevas herramientas de IA.", i: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&q=80&fm=jpg" },
+      { num: 1, tag: "Redes",     t: "Presencia Digital",  sub: "Redes Sociales + Contenido",          d: "Tus redes publicando con estrategia todos los días.",            back: "Posts, reels y stories diseñados para posicionarte como el experto. Incluye estrategia mensual, diseño, copywriting con IA y reporte de métricas.", i: "https://images.unsplash.com/photo-1611162616305-c69b3037c7bb?w=800&q=80&fm=jpg" },
+      { num: 2, tag: "Página Web",t: "Tu Página Web",      sub: "Sitio Web o Landing Page",             d: "Tu vitrina digital que convierte visitas en clientes.",          back: "Diseño profesional, copywriting estratégico, optimización móvil. Entrega en 7–10 días. La base que todo negocio serio necesita.", i: "https://images.unsplash.com/photo-1547658719-da2b51169166?w=800&q=80&fm=jpg" },
+      { num: 3, tag: "Social Ads",t: "Clientes con Ads",   sub: "Campañas Meta + Google",               d: "Anuncios que llevan el cliente correcto a tu puerta.",          back: "Setup, segmentación avanzada, creativos, optimización semanal y reporte mensual. Ideal para escalar cuando ya tienes presencia.", i: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80&fm=jpg" },
+      { num: 4, tag: "AI Bot",    t: "Vendedor 24/7",      sub: "Agente IA · WhatsApp + Instagram",     d: "Un agente que cotiza, agenda y cierra mientras duermes.",        back: "Entrenado con tu negocio. Integrado a WhatsApp e Instagram DM. Responde, califica y agenda automáticamente — sin que tú intervengas.", i: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800&q=80&fm=jpg" },
+      { num: 5, tag: "¿Satori?",  t: "Sociedad Satori",   sub: "Todo lo anterior + Estrategia y Branding", d: "Para dominar tu mercado. No un proveedor — un socio.",     back: "Todos los servicios + identidad de marca, sesión mensual de estrategia, consultoría prioritaria y acceso anticipado a nuevas herramientas de IA.", i: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80&fm=jpg" },
     ],
     cotizar_h: "¿Listo para crecer?",
     cotizar_sub: "Cuéntanos dónde está tu negocio hoy y te armamos una propuesta a tu medida.",
@@ -67,6 +67,25 @@ const copy = {
     garantia_title: "Garantía de 30 días:",
     garantia_text: "Si en 30 días no sientes que el valor recibido supera lo que invertiste, seguimos trabajando contigo 20 días más sin costo adicional. Sin preguntas, sin drama.",
     btn_zoom: "Agendar Zoom", btn_email: "Enviar Email",
+
+    faq_label: "Preguntas frecuentes",
+    faq_h: "Todo lo que necesitas saber.",
+    faqs: [
+      { q: "¿Cuánto tiempo tarda ver resultados?", a: "Depende del servicio. Contenido y redes: primeras semanas. Ads: desde el primer mes. Agente IA: desde el día de activación." },
+      { q: "¿Necesito saber de tecnología?", a: "Para nada. Nos encargamos de toda la parte técnica. Tú solo nos dices cómo funciona tu negocio y nosotros hacemos el resto." },
+      { q: "¿Firmo un contrato largo?", a: "No. Trabajamos mes a mes. Si no estás satisfecho, puedes cancelar cuando quieras — y si es dentro de los primeros 30 días, seguimos 20 días más sin costo." },
+      { q: "¿Qué necesito para empezar?", a: "Solo una llamada de 30 minutos. Ahí entendemos tu negocio, te proponemos la mejor ruta y te damos un precio claro. Sin sorpresas." },
+      { q: "¿Trabajan con cualquier tipo de negocio?", a: "Trabajamos con negocios locales y pymes en México — restaurantes, clínicas, despachos, tiendas, servicios profesionales, constructoras y más." },
+      { q: "¿Cómo funciona el agente de IA?", a: "Lo entrenamos con la información de tu negocio: precios, servicios, horarios, FAQs. Luego lo conectamos a tu WhatsApp Business e Instagram DM. Empieza a responder solo en minutos." },
+    ],
+    reviews_label: "Lo que dicen nuestros clientes",
+    reviews_h: "Resultados reales.",
+    reviews: [
+      { name: "Carlos M.", role: "Dueño de restaurante", text: "Antes perdía clientes porque no contestaba rápido. Ahora el bot de Satori responde solo y ya agendé 3 mesas más esta semana.", stars: 5 },
+      { name: "Fernanda R.", role: "Directora de clínica dental", text: "Mi página web nueva me ha traído pacientes de Google que antes ni sabían que existíamos. El ROI fue visible en el primer mes.", stars: 5 },
+      { name: "Diego L.", role: "Consultor independiente", text: "Contraté el servicio de redes y en 6 semanas duplicamos los mensajes de posibles clientes. El contenido es de muy buena calidad.", stars: 5 },
+      { name: "Ana P.", role: "Dueña de boutique", text: "El agente de IA es impresionante. Responde igual que yo, agenda citas y hasta manda el catálogo. Mis clientes no saben si hablan con una persona o no.", stars: 5 },
+    ],
     footer: "© 2026 SATORI · Soluciones Digitales con IA · México",
   },
   en: {
@@ -92,11 +111,11 @@ const copy = {
     camino_sub: "Each package builds on the previous one. Start where you are — grow from there.",
     ver_mas: "See details", volver: "← Back", paquete: "Package",
     servicios: [
-      { num: 1, tag: "Social",     t: "Digital Presence",  sub: "Social Media + Content",               d: "Your social media posting strategically every single day.",      back: "Posts, reels, and stories designed to position you as the go-to expert. Monthly strategy, design, AI copywriting, and metrics report.", i: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=800&q=80&fm=jpg" },
-      { num: 2, tag: "Website",    t: "Your Website",      sub: "Website or Landing Page",              d: "Your digital storefront that turns visitors into clients.",       back: "Professional design, strategic copywriting, mobile optimization. Delivery in 7–10 days. The foundation every serious business needs.", i: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&q=80&fm=jpg" },
-      { num: 3, tag: "Social Ads", t: "Clients with Ads",  sub: "Meta + Google Campaigns",              d: "Ads that bring the right client straight to your door.",         back: "Campaign setup, advanced targeting, creatives, weekly optimization and monthly report. Best when you already have a presence.", i: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80&fm=jpg" },
-      { num: 4, tag: "AI Bot",     t: "24/7 Salesperson",  sub: "AI Agent · WhatsApp + Instagram",     d: "An agent that quotes, books, and closes while you sleep.",       back: "Trained with your brand voice. Integrated into WhatsApp and Instagram DM. Responds, qualifies leads, and books appointments automatically.", i: "https://images.unsplash.com/photo-1676299081847-824916de030a?w=800&q=80&fm=jpg" },
-      { num: 5, tag: "Satori?",    t: "Satori Society",    sub: "Everything + Strategy & Branding",    d: "To dominate your local market. Not a vendor — a partner.",      back: "All services + brand identity, monthly strategy session, priority consulting, and early access to new AI tools.", i: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&q=80&fm=jpg" },
+      { num: 1, tag: "Social",     t: "Digital Presence",  sub: "Social Media + Content",               d: "Your social media posting strategically every single day.",      back: "Posts, reels, and stories designed to position you as the go-to expert. Monthly strategy, design, AI copywriting, and metrics report.", i: "https://images.unsplash.com/photo-1611162616305-c69b3037c7bb?w=800&q=80&fm=jpg" },
+      { num: 2, tag: "Website",    t: "Your Website",      sub: "Website or Landing Page",              d: "Your digital storefront that turns visitors into clients.",       back: "Professional design, strategic copywriting, mobile optimization. Delivery in 7–10 days. The foundation every serious business needs.", i: "https://images.unsplash.com/photo-1547658719-da2b51169166?w=800&q=80&fm=jpg" },
+      { num: 3, tag: "Social Ads", t: "Clients with Ads",  sub: "Meta + Google Campaigns",              d: "Ads that bring the right client straight to your door.",         back: "Campaign setup, advanced targeting, creatives, weekly optimization and monthly report. Best when you already have a presence.", i: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80&fm=jpg" },
+      { num: 4, tag: "AI Bot",     t: "24/7 Salesperson",  sub: "AI Agent · WhatsApp + Instagram",     d: "An agent that quotes, books, and closes while you sleep.",       back: "Trained with your brand voice. Integrated into WhatsApp and Instagram DM. Responds, qualifies leads, and books appointments automatically.", i: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800&q=80&fm=jpg" },
+      { num: 5, tag: "Satori?",    t: "Satori Society",    sub: "Everything + Strategy & Branding",    d: "To dominate your local market. Not a vendor — a partner.",      back: "All services + brand identity, monthly strategy session, priority consulting, and early access to new AI tools.", i: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80&fm=jpg" },
     ],
     cotizar_h: "Ready to grow?",
     cotizar_sub: "Tell us where your business is today and we'll build a proposal tailored to you.",
@@ -108,6 +127,25 @@ const copy = {
     garantia_title: "30-Day Guarantee:",
     garantia_text: "If within 30 days you don't feel the value far exceeds what you invested, we keep working with you for 20 more days at no additional cost. No questions, no drama.",
     btn_zoom: "Book a Zoom", btn_email: "Send Email",
+
+    faq_label: "Frequently asked questions",
+    faq_h: "Everything you need to know.",
+    faqs: [
+      { q: "How long until I see results?", a: "Depends on the service. Content & social: first few weeks. Ads: from month one. AI Agent: from day one of activation." },
+      { q: "Do I need to be tech-savvy?", a: "Not at all. We handle every technical detail. Just tell us how your business works and we take care of the rest." },
+      { q: "Do I sign a long-term contract?", a: "No. We work month to month. Cancel anytime — and within the first 30 days, we keep working with you 20 more days at no cost." },
+      { q: "What do I need to get started?", a: "Just a 30-minute call. We learn your business, propose the best path, and give you a clear price. No surprises." },
+      { q: "What types of businesses do you work with?", a: "Local businesses and SMEs in Mexico — restaurants, clinics, law firms, shops, professional services, construction and more." },
+      { q: "How does the AI agent work?", a: "We train it on your business info: prices, services, hours, FAQs. Then connect it to WhatsApp Business and Instagram DM. Starts responding in minutes." },
+    ],
+    reviews_label: "What our clients say",
+    reviews_h: "Real results.",
+    reviews: [
+      { name: "Carlos M.", role: "Restaurant owner", text: "I used to lose customers because I couldn't reply fast. Now Satori's bot handles it and I've booked 3 more tables this week alone.", stars: 5 },
+      { name: "Fernanda R.", role: "Dental clinic director", text: "My new website brought in patients from Google who didn't even know we existed. ROI was visible in the first month.", stars: 5 },
+      { name: "Diego L.", role: "Independent consultant", text: "I hired the social media service and in 6 weeks we doubled our inbound messages. The content quality is excellent.", stars: 5 },
+      { name: "Ana P.", role: "Boutique owner", text: "The AI agent is impressive. It replies like me, books appointments and sends the catalog. Clients can't tell if it's a person or not.", stars: 5 },
+    ],
     footer: "© 2026 SATORI · AI-Powered Digital Solutions · México",
   },
 };
@@ -241,188 +279,138 @@ function LangPopup({ onSelect, t }: { onSelect: (l: "es" | "en") => void; t: typ
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// SERVICES — HORIZONTAL TIMELINE
+// SERVICES — BENTO GRID
 // ─────────────────────────────────────────────────────────────────────────────
-function ServicesTimeline({ t, c }: { t: typeof themes.white; c: typeof copy.es }) {
-  const [active, setActive] = useState(0);
-  const [detailOpen, setDetailOpen] = useState(false);
-  const total = c.servicios.length;
-  const startX = useRef<number | null>(null);
-  const dragged = useRef(false);
-  const containerRef = useRef<HTMLDivElement>(null);
+function ServicesBento({ t, c }: { t: typeof themes.white; c: typeof copy.es }) {
+  const [active, setActive] = useState<number | null>(null);
 
-  const goTo = (i: number) => {
-    setActive((i + total) % total);
-    setDetailOpen(false);
-  };
-
-  const onPointerDown = (e: React.PointerEvent) => {
-    startX.current = e.clientX;
-    dragged.current = false;
-  };
-  const onPointerMove = (e: React.PointerEvent) => {
-    if (startX.current !== null && Math.abs(e.clientX - startX.current) > 8) dragged.current = true;
-  };
-  const onPointerUp = (e: React.PointerEvent) => {
-    if (!startX.current) return;
-    const diff = startX.current - e.clientX;
-    if (Math.abs(diff) > 50 && dragged.current) diff > 0 ? goTo(active + 1) : goTo(active - 1);
-    startX.current = null;
-    dragged.current = false;
-  };
-
-  const s = c.servicios[active];
-
-  // Unique gradient tint per service
-  const tints = ["#FF6B6B", "#4ECDC4", "#45B7D1", "#96CEB4", "#FFEAA7"];
-  const tint = tints[active];
+  const accents = ["#FF6B6B", "#4ECDC4", "#45B7D1", "#A29BFE", "#FD79A8"];
 
   return (
-    <div ref={containerRef} style={{ position: "relative", overflow: "hidden" }}>
+    <div style={{ padding: "0 clamp(1rem,4vw,3rem) 3rem" }}>
+      {/* Bento grid — asymmetric 2+3 layout */}
+      <div style={{ display: "grid", gap: "0.75rem",
+        gridTemplateColumns: "repeat(6, 1fr)",
+        gridTemplateRows: "auto",
+      }}>
+        {c.servicios.map((s, i) => {
+          const isActive = active === i;
+          const color = accents[i];
+          // Layout: 0+1 big (3col each), 2+3+4 medium (2col each)
+          const gridCol = i < 2
+            ? `span 3`
+            : `span 2`;
 
-      {/* ── MAIN STAGE ── */}
-      <div
-        style={{ position: "relative", minHeight: "85vh", display: "flex", flexDirection: "column", justifyContent: "flex-end",
-          userSelect: "none", touchAction: "pan-y", WebkitTapHighlightColor: "transparent",
-          cursor: detailOpen ? "default" : "ew-resize",
-        } as React.CSSProperties}
-        onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp}>
+          return (
+            <motion.div key={i}
+              onHoverStart={() => setActive(i)}
+              onHoverEnd={() => setActive(null)}
+              onTap={() => setActive(active === i ? null : i)}
+              animate={{ scale: isActive ? 1.015 : 1 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              style={{
+                gridColumn: gridCol,
+                position: "relative",
+                overflow: "hidden",
+                cursor: "pointer",
+                minHeight: i < 2 ? "clamp(260px,35vh,380px)" : "clamp(200px,28vh,300px)",
+                borderRadius: 2,
+              }}>
 
-        {/* Background — service image with strong overlay */}
-        <AnimatePresence mode="wait">
-          <motion.div key={`bg-${active}`}
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            transition={{ duration: 0.7 }}
-            style={{ position: "absolute", inset: 0, zIndex: 0 }}>
-            {s.i && (
-              <img src={s.i} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", display: "block" }} />
-            )}
-            {/* Dark overlay — gets lighter toward center */}
-            <div style={{ position: "absolute", inset: 0, background: `linear-gradient(135deg, ${t.bg}F5 0%, ${t.bg}BB 40%, ${t.bg}88 70%, ${t.bg}CC 100%)` }} />
-            {/* Tint accent stripe */}
-            <div style={{ position: "absolute", inset: 0, background: `linear-gradient(to right, transparent 50%, ${tint}18 100%)` }} />
-          </motion.div>
-        </AnimatePresence>
+              {/* Image bg */}
+              {s.i && (
+                <img src={s.i} alt={s.t}
+                  style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", transition: "transform 0.6s ease", transform: isActive ? "scale(1.06)" : "scale(1)" }}
+                  loading="lazy" />
+              )}
 
-        {/* Giant background number */}
-        <div style={{ position: "absolute", right: "clamp(1rem,5vw,4rem)", top: "50%", transform: "translateY(-60%)", zIndex: 1, pointerEvents: "none", lineHeight: 1, userSelect: "none" }}>
-          <AnimatePresence mode="wait">
-            <motion.span key={`num-${active}`}
-              initial={{ opacity: 0, y: 20, scale: 0.9 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -20, scale: 1.1 }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-              style={{ fontSize: "clamp(10rem,30vw,22rem)", fontFamily: "serif", fontWeight: 900, color: t.accent, opacity: 0.06, display: "block", lineHeight: 0.85 }}>
-              {String(active + 1).padStart(2, "0")}
-            </motion.span>
-          </AnimatePresence>
-        </div>
+              {/* Base overlay */}
+              <div style={{ position: "absolute", inset: 0, background: `linear-gradient(to top, ${t.bg}F2 0%, ${t.bg}88 50%, ${t.bg}33 100%)`, transition: "opacity 0.4s" }} />
 
-        {/* Content — bottom aligned */}
-        <div style={{ position: "relative", zIndex: 2, padding: "0 clamp(1.5rem,6vw,5rem) 3rem" }}>
-          {/* Sub label */}
-          <AnimatePresence mode="wait">
-            <motion.p key={`sub-${active}`}
-              initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-              transition={{ duration: 0.35, delay: 0.1 }}
-              style={{ fontSize: "0.58rem", textTransform: "uppercase", letterSpacing: "0.4em", color: tint, fontWeight: 900, marginBottom: "0.75rem", opacity: 0.9 }}>
-              {c.paquete} {s.num} · {s.sub}
-            </motion.p>
-          </AnimatePresence>
+              {/* Color accent overlay on hover */}
+              <motion.div
+                animate={{ opacity: isActive ? 1 : 0 }}
+                transition={{ duration: 0.35 }}
+                style={{ position: "absolute", inset: 0, background: `linear-gradient(135deg, ${color}22 0%, ${color}08 100%)`, borderBottom: `2px solid ${color}` }} />
 
-          {/* Big title */}
-          <AnimatePresence mode="wait">
-            <motion.h2 key={`title-${active}`}
-              initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 40 }}
-              transition={{ duration: 0.45, ease: "easeOut" }}
-              style={{ fontSize: "clamp(2.8rem,7vw,5.5rem)", fontFamily: "serif", fontWeight: 700, lineHeight: 1.0, color: t.text, marginBottom: "1.2rem", letterSpacing: "-0.02em", maxWidth: "14ch" }}>
-              {s.t}
-            </motion.h2>
-          </AnimatePresence>
+              {/* Number watermark */}
+              <div style={{ position: "absolute", top: "0.75rem", right: "1rem", fontSize: "clamp(3rem,6vw,5rem)", fontFamily: "serif", fontWeight: 900, color: t.accent, opacity: isActive ? 0.12 : 0.05, lineHeight: 1, transition: "opacity 0.4s", pointerEvents: "none", userSelect: "none" }}>
+                {String(i + 1).padStart(2, "0")}
+              </div>
 
-          {/* Short desc + CTA row */}
-          <AnimatePresence mode="wait">
-            <motion.div key={`desc-${active}`}
-              initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-              transition={{ duration: 0.4, delay: 0.15 }}
-              style={{ display: "flex", alignItems: "flex-start", gap: "2rem", flexWrap: "wrap" }}>
-              <p style={{ fontSize: "clamp(0.95rem,1.8vw,1.1rem)", color: t.text, opacity: 0.7, maxWidth: "38rem", lineHeight: 1.65 }}>
-                {s.d}
-              </p>
-              <button
-                onClick={() => setDetailOpen(o => !o)}
-                style={{ flexShrink: 0, padding: "0.7rem 1.5rem", backgroundColor: "transparent", color: tint, border: `1.5px solid ${tint}`, cursor: "pointer", fontSize: "0.68rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.15em", transition: "all 0.25s", whiteSpace: "nowrap" }}
-                onMouseEnter={e => { e.currentTarget.style.backgroundColor = tint; e.currentTarget.style.color = "#000"; }}
-                onMouseLeave={e => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = tint; }}>
-                {detailOpen ? (c.volver) : (c.ver_mas + " →")}
-              </button>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-      </div>
+              {/* Content */}
+              <div style={{ position: "absolute", inset: 0, padding: "1.25rem 1.4rem", display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
+                {/* Tag pill */}
+                <motion.div
+                  animate={{ y: isActive ? 0 : 4, opacity: isActive ? 1 : 0.7 }}
+                  transition={{ duration: 0.3 }}
+                  style={{ marginBottom: "0.5rem" }}>
+                  <span style={{ fontSize: "0.52rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.2em", color: color, backgroundColor: `${color}18`, padding: "0.2rem 0.6rem", borderRadius: 2 }}>
+                    {s.tag}
+                  </span>
+                </motion.div>
 
-      {/* ── DETAIL PANEL — slides down ── */}
-      <AnimatePresence>
-        {detailOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.45, ease: "easeInOut" }}
-            style={{ overflow: "hidden", borderTop: `2px solid ${tint}60` }}>
-            <motion.div
-              initial={{ y: 12, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 12, opacity: 0 }}
-              transition={{ delay: 0.15 }}
-              style={{ padding: "2.5rem clamp(1.5rem,6vw,5rem)", display: "grid", gridTemplateColumns: "1fr auto", gap: "2rem", alignItems: "start" }}>
-              <p style={{ fontSize: "clamp(1rem,1.8vw,1.15rem)", lineHeight: 1.85, color: t.text, opacity: 0.85, maxWidth: "52rem" }}>
-                {s.back}
-              </p>
-              <div style={{ textAlign: "right", flexShrink: 0 }}>
-                <div style={{ fontSize: "clamp(3rem,6vw,5rem)", fontFamily: "serif", fontWeight: 900, color: tint, opacity: 0.2, lineHeight: 1 }}>
-                  {String(active + 1).padStart(2, "0")}
-                </div>
+                {/* Title */}
+                <h3 style={{ fontSize: "clamp(1rem,2.2vw,1.5rem)", fontFamily: "serif", fontWeight: 700, color: t.text, lineHeight: 1.15, marginBottom: "0.5rem" }}>
+                  {s.t}
+                </h3>
+
+                {/* Description — only on hover */}
+                <motion.div
+                  animate={{ height: isActive ? "auto" : 0, opacity: isActive ? 1 : 0 }}
+                  transition={{ duration: 0.35, ease: "easeOut" }}
+                  style={{ overflow: "hidden" }}>
+                  <p style={{ fontSize: "clamp(0.75rem,1.4vw,0.85rem)", color: t.text, opacity: 0.75, lineHeight: 1.6, marginBottom: "0.75rem" }}>
+                    {s.back}
+                  </p>
+                  <span style={{ fontSize: "0.58rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.15em", color: color }}>
+                    {c.ver_mas} →
+                  </span>
+                </motion.div>
               </div>
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* ── TIMELINE TRACK ── */}
-      <div style={{ padding: "2rem clamp(1.5rem,6vw,5rem)", position: "relative", zIndex: 3 }}>
-        {/* Connecting line */}
-        <div style={{ position: "relative", display: "flex", alignItems: "center", gap: 0 }}>
-          {/* Base line */}
-          <div style={{ position: "absolute", top: "50%", left: 0, right: 0, height: 1, backgroundColor: `${t.accent}15`, transform: "translateY(-50%)" }} />
-          {/* Progress line */}
-          <motion.div
-            style={{ position: "absolute", top: "50%", left: 0, height: 2, backgroundColor: tint, transform: "translateY(-50%)", borderRadius: 1 }}
-            animate={{ width: `${(active / (total - 1)) * 100}%` }}
-            transition={{ duration: 0.5, ease: "easeOut" }} />
-
-          {/* Nodes */}
-          {c.servicios.map((sv, i) => (
-            <div key={i} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: i === 0 ? "flex-start" : i === total - 1 ? "flex-end" : "center", position: "relative", zIndex: 1 }}>
-              <button
-                onClick={() => goTo(i)}
-                style={{ width: active === i ? 14 : 8, height: active === i ? 14 : 8, borderRadius: "50%", backgroundColor: active === i ? tint : `${t.accent}30`, border: active === i ? `2px solid ${tint}` : "none", cursor: "pointer", padding: 0, transition: "all 0.35s", boxShadow: active === i ? `0 0 12px ${tint}80` : "none" }} />
-              <span style={{ fontSize: "0.55rem", textTransform: "uppercase", letterSpacing: "0.1em", color: active === i ? tint : t.sub, fontWeight: active === i ? 900 : 400, marginTop: "0.6rem", transition: "all 0.3s", whiteSpace: "nowrap" }}>
-                {sv.tag}
-              </span>
-            </div>
-          ))}
-        </div>
+          );
+        })}
       </div>
 
-      {/* ── SWIPE HINT on mobile ── */}
-      <motion.div
-        animate={{ x: [0, 8, 0] }} transition={{ duration: 1.8, repeat: 3, delay: 1 }}
-        style={{ textAlign: "center", paddingBottom: "1.5rem", fontSize: "0.55rem", textTransform: "uppercase", letterSpacing: "0.2em", color: t.sub, opacity: 0.4 }}>
-        ← swipe →
-      </motion.div>
+      {/* Mobile: stacked list */}
+      <style>{`
+        @media (max-width: 640px) {
+          .bento-grid { display: flex !important; flex-direction: column !important; }
+          .bento-grid > * { grid-column: span 1 !important; min-height: 220px !important; }
+        }
+      `}</style>
     </div>
   );
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// FAQ ACCORDION ITEM
+// ─────────────────────────────────────────────────────────────────────────────
+function FaqItem({ q, a, t, last }: { q: string; a: string; t: typeof themes.white; last: boolean }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div style={{ borderTop: `1px solid ${t.accent}12`, borderBottom: last ? `1px solid ${t.accent}12` : "none" }}>
+      <button
+        onClick={() => setOpen(o => !o)}
+        style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", padding: "1.4rem 0", background: "none", border: "none", cursor: "pointer", textAlign: "left", gap: "1rem" }}>
+        <span style={{ fontSize: "clamp(0.95rem,1.8vw,1.05rem)", fontWeight: 600, color: t.text, lineHeight: 1.4 }}>{q}</span>
+        <motion.span animate={{ rotate: open ? 45 : 0 }} transition={{ duration: 0.25 }}
+          style={{ flexShrink: 0, fontSize: "1.4rem", color: t.accent, lineHeight: 1, display: "block" }}>+</motion.span>
+      </button>
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.35, ease: "easeInOut" }}
+            style={{ overflow: "hidden" }}>
+            <p style={{ paddingBottom: "1.4rem", fontSize: "0.9rem", lineHeight: 1.8, color: t.sub, opacity: 0.85 }}>{a}</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // COUNT UP / DOWN ANIMATION
@@ -631,7 +619,7 @@ export default function Home() {
       </section>
 
       {/* ── PROBLEMA ── */}
-      <section id="problema" style={{ padding: "6rem 1.5rem", position: "relative", zIndex: 1, overflow: "hidden" }}>
+      <section id="problema" style={{ padding: "6rem 1.5rem", position: "relative", zIndex: 1, overflow: "hidden", backgroundColor: `${t.card}CC`, backdropFilter: "blur(2px)" }}>
         {/* Large faded number in background */}
         <div style={{ position: "absolute", right: "-2rem", top: "50%", transform: "translateY(-50%)", fontSize: "clamp(12rem,25vw,22rem)", fontFamily: "serif", fontWeight: 900, color: t.accent, opacity: 0.03, lineHeight: 1, pointerEvents: "none", userSelect: "none" }}>?</div>
 
@@ -720,7 +708,51 @@ export default function Home() {
           <h2 style={{ fontSize: "clamp(2.4rem,5vw,4rem)", fontFamily: "serif", fontWeight: 700, lineHeight: 1.08, marginBottom: "0.5rem" }}>{c.camino_h}</h2>
           <p style={{ fontSize: "0.88rem", opacity: 0.48, maxWidth: "32rem", lineHeight: 1.7, color: t.sub, marginBottom: "2rem" }}>{c.camino_sub}</p>
         </div>
-        <ServicesTimeline t={t} c={c} />
+        <ServicesBento t={t} c={c} />
+      </section>
+
+      {/* ── REVIEWS ── */}
+      <section style={{ padding: "5rem 1.5rem", backgroundColor: t.card, position: "relative", zIndex: 1 }}>
+        <div style={{ maxWidth: "64rem", margin: "0 auto" }}>
+          <div style={{ marginBottom: "3rem", textAlign: "center" }}>
+            <p style={{ fontSize: "0.6rem", textTransform: "uppercase", letterSpacing: "0.4em", color: t.accent, fontWeight: 900, marginBottom: "0.5rem" }}>{c.reviews_label}</p>
+            <h2 style={{ fontSize: "clamp(2rem,4vw,3rem)", fontFamily: "serif", fontWeight: 700 }}>{c.reviews_h}</h2>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1.5rem" }}>
+            {c.reviews.map((r, i) => (
+              <motion.div key={i}
+                initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+                style={{ padding: "1.75rem", backgroundColor: t.bg, border: `1px solid ${t.accent}10`, display: "flex", flexDirection: "column", gap: "1rem" }}>
+                {/* Stars */}
+                <div style={{ display: "flex", gap: "0.2rem" }}>
+                  {Array.from({ length: r.stars }).map((_, s) => (
+                    <span key={s} style={{ color: "#F59E0B", fontSize: "0.9rem" }}>★</span>
+                  ))}
+                </div>
+                <p style={{ fontSize: "0.9rem", lineHeight: 1.75, color: t.text, opacity: 0.8, fontStyle: "italic" }}>"{r.text}"</p>
+                <div style={{ marginTop: "auto" }}>
+                  <p style={{ fontWeight: 700, fontSize: "0.82rem", color: t.text }}>{r.name}</p>
+                  <p style={{ fontSize: "0.72rem", color: t.sub, opacity: 0.7 }}>{r.role}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── FAQ ── */}
+      <section style={{ padding: "5rem 1.5rem", position: "relative", zIndex: 1 }}>
+        <div style={{ maxWidth: "52rem", margin: "0 auto" }}>
+          <div style={{ marginBottom: "3rem", textAlign: "center" }}>
+            <p style={{ fontSize: "0.6rem", textTransform: "uppercase", letterSpacing: "0.4em", color: t.accent, fontWeight: 900, marginBottom: "0.5rem" }}>{c.faq_label}</p>
+            <h2 style={{ fontSize: "clamp(2rem,4vw,3rem)", fontFamily: "serif", fontWeight: 700 }}>{c.faq_h}</h2>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
+            {c.faqs.map((f, i) => (
+              <FaqItem key={i} q={f.q} a={f.a} t={t} last={i === c.faqs.length - 1} />
+            ))}
+          </div>
+        </div>
       </section>
 
       {/* ── COTIZAR ── */}
