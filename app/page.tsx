@@ -1,28 +1,26 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckCircle2, HandCoins, Palette, Zap, Target, Globe, ChevronLeft, ChevronRight } from "lucide-react";
+import { HandCoins, Palette, Zap, Target, Globe, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const WHATSAPP_LINK    = "https://wa.me/525625018281?text=Hola%20Rodrigo,%20vi%20tu%20página%20y%20me%20gustaría%20una%20auditoría.";
 const WHATSAPP_LINK_EN = "https://wa.me/525625018281?text=Hi%20Rodrigo,%20I%20saw%20your%20page%20and%20I'd%20like%20a%20free%20audit.";
 const CALENDLY_LINK    = "https://calendly.com/rodrigo-tristaan";
 const EMAIL            = "r.tristaan@outlook.com";
 
-// ── Themes ───────────────────────────────────────────────────────────────────
 const themes = {
-  white:   { bg: "#FFFFFF", accent: "#111111", text: "#111111", sub: "#555555", card: "#F5F5F5", matrixColor: "#bbbbbb", navBg: "rgba(255,255,255,0.93)", ensoFilter: "brightness(0)" },
-  blue:    { bg: "#020B18", accent: "#00D4FF", text: "#E0F0FF", sub: "#4A7FA5", card: "#041428",  matrixColor: "#00D4FF", navBg: "rgba(2,11,24,0.93)",     ensoFilter: "invert(1) brightness(2)" },
-  silver:  { bg: "#0A0A0A", accent: "#E5E5E5", text: "#FFFFFF", sub: "#A3A3A3", card: "#171717",  matrixColor: "#888888", navBg: "rgba(10,10,10,0.93)",    ensoFilter: "invert(1) brightness(2)" },
-  rainbow: { bg: "#0F0218", accent: "#FF00CC", text: "#FFFFFF", sub: "#A855F7", card: "#1E0B36",  matrixColor: "#FF00CC", navBg: "rgba(15,2,24,0.93)",     ensoFilter: "invert(1) brightness(2)" },
-  gold:    { bg: "#FFFFF8", accent: "#B8860B", text: "#1a1000", sub: "#8B6914", card: "#FDF8E1",  matrixColor: "#D4AF37", navBg: "rgba(255,255,248,0.93)", ensoFilter: "brightness(0) sepia(1) hue-rotate(10deg)" },
+  white:   { bg: "#FFFFFF", accent: "#111111", text: "#111111", sub: "#666666", card: "#F4F4F4", matrixColor: "#aaaaaa", navBg: "rgba(255,255,255,0.93)", logoFilter: "brightness(0)",         ensoFilter: "brightness(0) opacity(0.08)"       },
+  blue:    { bg: "#020B18", accent: "#00D4FF", text: "#E0F0FF", sub: "#4A7FA5", card: "#041428", matrixColor: "#00D4FF", navBg: "rgba(2,11,24,0.93)",     logoFilter: "invert(1)",              ensoFilter: "invert(1) brightness(2) opacity(0.07)"  },
+  silver:  { bg: "#0A0A0A", accent: "#E5E5E5", text: "#FFFFFF", sub: "#A3A3A3", card: "#171717", matrixColor: "#888888", navBg: "rgba(10,10,10,0.93)",    logoFilter: "invert(1)",              ensoFilter: "invert(1) brightness(2) opacity(0.07)"  },
+  rainbow: { bg: "#0F0218", accent: "#FF00CC", text: "#FFFFFF", sub: "#A855F7", card: "#1E0B36", matrixColor: "#FF00CC", navBg: "rgba(15,2,24,0.93)",     logoFilter: "invert(1)",              ensoFilter: "invert(1) brightness(2) opacity(0.07)"  },
+  gold:    { bg: "#FFFFF8", accent: "#B8860B", text: "#1a1000", sub: "#8B6914", card: "#FDF8E1", matrixColor: "#D4AF37", navBg: "rgba(255,255,248,0.93)", logoFilter: "brightness(0) sepia(1)", ensoFilter: "brightness(0) sepia(1) opacity(0.08)"   },
 };
 
-// ── Copy ─────────────────────────────────────────────────────────────────────
 const copy = {
   es: {
-    nav: { problema: "El Problema", soluciones: "Servicios", precios: "Planes", cta: "Agendar Zoom" },
+    nav: { problema: "El Problema", soluciones: "Servicios", precios: "Cotizar", cta: "Agendar Zoom" },
     badge: "Tu negocio local + Inteligencia Artificial",
     h1a: "Más clientes.",
     h1b: "Menos caos.",
@@ -32,114 +30,74 @@ const copy = {
     problema_h: "¿Te suena alguno de estos?",
     problemas: [
       { q: '"Pago anuncios y no me llega el cliente correcto."', desc: "Tu dinero en ads se va sin convertir porque no tienes un sistema que filtre y nutra prospectos." },
-      { q: '"Se me van los clientes porque no contesto rápido."', desc: "El 78% de las ventas se las lleva quien responde primero. Sin automatización, pierdes sin saberlo." },
-      { q: '"Mis redes están muertas y mi competencia me gana."', desc: "No tienes tiempo para crear contenido consistente. Y la consistencia es lo que genera confianza — y ventas." },
+      { q: '"Se me van clientes por no contestar rápido."', desc: "El 78% de las ventas se las lleva quien responde primero. Sin automatización, pierdes sin saberlo." },
+      { q: '"Mis redes están muertas y la competencia me gana."', desc: "No tienes tiempo para crear contenido consistente. Y la consistencia es lo que genera confianza — y ventas." },
     ],
     problema_cta: "Identifiqué mi problema — quiero la solución →",
     stats: [
-      { n: "24/7", d: "Tu negocio siempre abierto" },
-      { n: "0",    d: "Prospectos perdidos" },
-      { n: "30",   d: "Días para ver resultados" },
+      { label: "Tu negocio siempre abierto", n: "24/7" },
+      { label: "Prospectos perdidos",          n: "0"    },
+      { label: "Días para ver resultados",     n: "30"   },
     ],
-    servicios_label: "El camino al crecimiento",
-    servicios_h: "Paso a paso.\nO todo a la vez.",
-    servicios_sub: "Cada servicio está diseñado para construir sobre el anterior. Empieza donde estás y llega a donde quieres.",
-    servicios_ver_mas: "Ver detalle",
-    servicios_volver: "← Volver",
-    servicios_paso: "Paso",
+    camino_label: "El camino al crecimiento",
+    camino_h: "El camino al crecimiento",
+    camino_sub: "Cada paquete construye sobre el anterior. Empieza donde estás — llega a donde quieres.",
+    ver_mas: "Ver detalle",
+    volver: "← Volver",
+    paquete: "Paquete",
     servicios: [
       {
-        paso: 1,
+        num: 1, tag: "Redes",
         t: "Presencia Digital",
         sub: "Redes Sociales + Contenido",
-        d: "Tus redes publicando con estrategia todos los días.",
+        d: "Tus redes publicando con estrategia real todos los días.",
         back: "Posts, reels y stories diseñados para posicionarte como el experto de tu industria. Incluye estrategia mensual, diseño, copywriting con IA y reporte de métricas.",
         i: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=800&q=80&fm=jpg",
       },
       {
-        paso: 2,
+        num: 2, tag: "Página Web",
         t: "Tu Página Web",
         sub: "Sitio Web o Landing Page",
         d: "Tu vitrina digital que convierte visitas en clientes.",
-        back: "Diseño profesional, copywriting estratégico, optimización móvil y entrega en 7-10 días. La base que todo negocio serio necesita en internet.",
+        back: "Diseño profesional, copywriting estratégico, optimización móvil y entrega en 7–10 días. La base que todo negocio serio necesita en internet.",
         i: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&q=80&fm=jpg",
       },
       {
-        paso: 3,
+        num: 3, tag: "Social Ads",
         t: "Clientes con Ads",
         sub: "Campañas Meta + Google",
-        d: "Anuncios que llevan el cliente correcto a tu puerta.",
-        back: "Setup de campaña, segmentación avanzada, creativos publicitarios, optimización semanal y reporte de resultados. Ideal para escalar cuando ya tienes presencia.",
+        d: "Anuncios que llevan el cliente correcto directo a tu puerta.",
+        back: "Setup de campaña, segmentación avanzada, creativos publicitarios, optimización semanal y reporte mensual. Ideal para escalar cuando ya tienes presencia.",
         i: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80&fm=jpg",
       },
       {
-        paso: 4,
+        num: 4, tag: "AI Bot",
         t: "Vendedor 24/7",
         sub: "Agente IA · WhatsApp + Instagram",
         d: "Un agente de IA que cotiza, agenda y cierra mientras duermes.",
-        back: "Entrenado con la voz de tu negocio. Integrado a WhatsApp Business e Instagram DM. Responde, califica prospectos y agenda citas automáticamente. El servicio con menos competencia local.",
+        back: "Entrenado con la voz de tu negocio. Integrado a WhatsApp Business e Instagram DM. Responde, califica prospectos y agenda citas — sin que tú levantes el teléfono.",
         i: null,
       },
       {
-        paso: 5,
+        num: 5, tag: "¿Satori?",
         t: "Sociedad Satori",
         sub: "Todo lo anterior + Estrategia y Branding",
-        d: "Para dominar tu mercado local. No un proveedor — un socio.",
+        d: "Para dominar tu mercado. No un proveedor — un socio.",
         back: "Todos los servicios anteriores + identidad de marca, sesión mensual de estrategia, consultoría prioritaria y acceso anticipado a nuevas herramientas de IA. Tu equipo digital completo.",
         i: "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&q=80&fm=jpg",
       },
     ],
-    precios_h: "Un plan para\ncada etapa.",
-    precios_sub: "Sin contratos. Sin letra chica. Solo resultados.",
-    planes: [
-      {
-        n: "Presencia",
-        p: "$3,500",
-        et: "Paso 1 — Contenido y Redes",
-        desc: "Ideal para negocios que quieren empezar a construir autoridad en redes.",
-        l: ["Estrategia de contenido mensual", "12 posts con diseño y copy", "Copywriting con IA para tu voz", "Soporte por WhatsApp"],
-      },
-      {
-        n: "Página Web",
-        p: "$8,000",
-        et: "Paso 2 — Tu Vitrina Online",
-        desc: "Pago único. Landing page o sitio profesional listo en 7-10 días.",
-        l: ["Diseño profesional a medida", "Copywriting estratégico incluido", "Optimización móvil y SEO básico", "Formulario de contacto + integración WA"],
-        badge: "Pago único",
-      },
-      {
-        n: "Ads",
-        p: "$5,000",
-        et: "Paso 3 — Campañas Pagadas",
-        desc: "Gestión mensual de tus campañas en Meta y/o Google.",
-        l: ["Setup y segmentación de campaña", "Creativos publicitarios", "Optimización semanal", "Reporte mensual de resultados"],
-      },
-      {
-        n: "Vendedor IA",
-        p: "$6,500",
-        et: "Paso 4 — Agente de Ventas",
-        desc: "Setup inicial + primer mes de soporte. Requiere WhatsApp Business activo.",
-        l: ["Entrenamiento del agente con tu negocio", "Integración WA Business + Instagram DM", "Flujos de seguimiento automático", "Optimización mensual incluida"],
-        badge: "El más diferenciado",
-      },
-      {
-        n: "Sociedad Satori",
-        p: "Desde $18,000",
-        et: "Paso 5 — Dominio Total",
-        desc: "Para el empresario que quiere un socio digital completo.",
-        l: ["Todos los servicios anteriores", "Identidad de marca y branding", "Sesión mensual de estrategia", "Consultoría prioritaria + acceso anticipado a IA"],
-        badge: "Todo incluido",
-      },
-    ],
-    plan_cta: "Quiero este plan →",
+    cotizar_h: "¿Listo para crecer?",
+    cotizar_sub: "Cuéntanos dónde está tu negocio hoy y te armamos una propuesta a tu medida.",
+    cotizar_cta: "Quiero mi cotización",
     nosotros_label: "Tu Socio Digital",
     nosotros_nombre: "Rodrigo Tristán",
     nosotros_cargo: "Fundador de SATORI",
     nosotros_quote: '"La IA no reemplaza tu negocio. Lo potencia."',
-    nosotros_p1: "Fundé Satori porque vi de cerca cómo negocios con enorme potencial perdían clientes y dinero por falta de sistemas — no por falta de talento.",
-    nosotros_p2: "Hoy usamos la misma tecnología que tienen las grandes corporaciones y la ponemos a trabajar para ti. Para que tú te dediques a lo tuyo y el sistema trabaje solo.",
+    nosotros_p1: "Mi misión es poner la tecnología al alcance de cada emprendedor y empresario mexicano. Porque el crecimiento digital no debería ser privilegio de unos pocos — es una herramienta que merece estar en manos de quien trabaja todos los días para construir algo.",
+    nosotros_p2: "En Satori nos mantenemos a la vanguardia — por ti y para ti. Para que tú te dediques a lo tuyo, y nosotros hagamos que tu negocio trabaje incluso cuando tú no puedes.",
     garantia_title: "Garantía de 30 días:",
-    garantia_text: "Si en 30 días no sientes que el valor recibido supera con creces lo que pagaste, seguimos trabajando contigo 20 días más sin costo adicional. Sin preguntas, sin drama.",
+    garantia_text: "Si en 30 días no sientes que el valor recibido supera con creces lo que invertiste, seguimos trabajando contigo 20 días más sin costo adicional. Sin preguntas, sin drama.",
     btn_zoom: "Agendar Zoom",
     btn_email: "Enviar Email",
     footer: "© 2026 SATORI · Soluciones Digitales con IA · San Luis Potosí, MX",
@@ -154,340 +112,275 @@ const copy = {
     cta2: "See How It Works",
     problema_h: "Do any of these sound familiar?",
     problemas: [
-      { q: '"I pay for ads but the wrong people show up."', desc: "Your ad spend leaks because there's no system to filter and nurture leads before they go cold." },
+      { q: '"I pay for ads but the wrong people show up."', desc: "Your ad spend leaks because there's no system to filter and nurture leads." },
       { q: '"I lose customers because I can\'t reply fast enough."', desc: "78% of sales go to whoever responds first. Without automation, you're losing deals you don't even know about." },
       { q: '"My social media is dead and my competitors are winning."', desc: "You don't have time for consistent content. But consistency builds trust — and trust drives sales." },
     ],
     problema_cta: "I found my problem — show me the fix →",
     stats: [
-      { n: "24/7", d: "Your business always open" },
-      { n: "0",    d: "Leads lost" },
-      { n: "30",   d: "Days to see results" },
+      { label: "Your business always open", n: "24/7" },
+      { label: "Leads lost",                 n: "0"    },
+      { label: "Days to see results",         n: "30"   },
     ],
-    servicios_label: "The path to growth",
-    servicios_h: "Step by step.\nOr all at once.",
-    servicios_sub: "Each service builds on the previous one. Start where you are and grow from there.",
-    servicios_ver_mas: "See details",
-    servicios_volver: "← Back",
-    servicios_paso: "Step",
+    camino_label: "The path to growth",
+    camino_h: "The path to growth",
+    camino_sub: "Each package builds on the previous one. Start where you are — grow from there.",
+    ver_mas: "See details",
+    volver: "← Back",
+    paquete: "Package",
     servicios: [
-      {
-        paso: 1,
-        t: "Digital Presence",
-        sub: "Social Media + Content",
-        d: "Your social media posting strategically every single day.",
-        back: "Posts, reels, and stories designed to position you as the go-to expert. Includes monthly strategy, design, AI copywriting, and metrics report.",
-        i: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=800&q=80&fm=jpg",
-      },
-      {
-        paso: 2,
-        t: "Your Website",
-        sub: "Website or Landing Page",
-        d: "Your digital storefront that turns visitors into clients.",
-        back: "Professional design, strategic copywriting, mobile optimization, and delivery in 7-10 business days. The foundation every serious business needs online.",
-        i: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&q=80&fm=jpg",
-      },
-      {
-        paso: 3,
-        t: "Clients with Ads",
-        sub: "Meta + Google Campaigns",
-        d: "Ads that bring the right client straight to your door.",
-        back: "Campaign setup, advanced targeting, ad creatives, weekly optimization, and monthly results report. Best when you already have a presence and want to scale.",
-        i: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80&fm=jpg",
-      },
-      {
-        paso: 4,
-        t: "24/7 Salesperson",
-        sub: "AI Agent · WhatsApp + Instagram",
-        d: "An AI agent that quotes, books, and closes while you sleep.",
-        back: "Trained with your brand voice. Integrated into WhatsApp Business and Instagram DM. Automatically responds, qualifies leads, and books appointments. The most differentiated service in the local market.",
-        i: null,
-      },
-      {
-        paso: 5,
-        t: "Satori Society",
-        sub: "Everything + Strategy & Branding",
-        d: "To dominate your local market. Not a vendor — a partner.",
-        back: "All previous services + brand identity, monthly strategy session, priority consulting, and early access to new AI tools. Your complete digital team.",
-        i: "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&q=80&fm=jpg",
-      },
+      { num: 1, tag: "Social", t: "Digital Presence", sub: "Social Media + Content", d: "Your social media posting strategically every single day.", back: "Posts, reels, and stories designed to position you as the go-to expert. Includes monthly strategy, design, AI copywriting, and metrics report.", i: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=800&q=80&fm=jpg" },
+      { num: 2, tag: "Website", t: "Your Website", sub: "Website or Landing Page", d: "Your digital storefront that turns visitors into clients.", back: "Professional design, strategic copywriting, mobile optimization, delivery in 7–10 days. The foundation every serious business needs online.", i: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&q=80&fm=jpg" },
+      { num: 3, tag: "Social Ads", t: "Clients with Ads", sub: "Meta + Google Campaigns", d: "Ads that bring the right client straight to your door.", back: "Campaign setup, advanced targeting, ad creatives, weekly optimization, monthly results report. Best when you already have a presence.", i: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80&fm=jpg" },
+      { num: 4, tag: "AI Bot", t: "24/7 Salesperson", sub: "AI Agent · WhatsApp + Instagram", d: "An AI agent that quotes, books, and closes while you sleep.", back: "Trained with your brand voice. Integrated into WhatsApp Business and Instagram DM. Responds, qualifies leads, and books appointments automatically.", i: null },
+      { num: 5, tag: "Satori?", t: "Satori Society", sub: "Everything + Strategy & Branding", d: "To dominate your local market. Not a vendor — a partner.", back: "All previous services + brand identity, monthly strategy session, priority consulting, and early access to new AI tools.", i: "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&q=80&fm=jpg" },
     ],
-    precios_h: "A plan for\nevery stage.",
-    precios_sub: "No contracts. No fine print. Just results.",
-    planes: [
-      {
-        n: "Presence",
-        p: "$3,500",
-        et: "Step 1 — Content & Social",
-        desc: "Ideal for businesses ready to start building authority online.",
-        l: ["Monthly content strategy", "12 posts with design & copy", "AI copywriting in your voice", "WhatsApp support"],
-      },
-      {
-        n: "Website",
-        p: "$8,000",
-        et: "Step 2 — Your Online Storefront",
-        desc: "One-time payment. Landing page or professional site in 7-10 days.",
-        l: ["Custom professional design", "Strategic copywriting included", "Mobile optimization + basic SEO", "Contact form + WA integration"],
-        badge: "One-time payment",
-      },
-      {
-        n: "Ads",
-        p: "$5,000",
-        et: "Step 3 — Paid Campaigns",
-        desc: "Monthly management of your Meta and/or Google campaigns.",
-        l: ["Campaign setup & targeting", "Ad creatives", "Weekly optimization", "Monthly results report"],
-      },
-      {
-        n: "AI Salesperson",
-        p: "$6,500",
-        et: "Step 4 — Sales Agent",
-        desc: "Initial setup + first month of support. Requires active WhatsApp Business.",
-        l: ["Agent trained on your business", "WA Business + Instagram DM integration", "Automated follow-up flows", "Monthly optimization included"],
-        badge: "Most differentiated",
-      },
-      {
-        n: "Satori Society",
-        p: "From $18,000",
-        et: "Step 5 — Total Domination",
-        desc: "For the entrepreneur who wants a complete digital partner.",
-        l: ["All previous services", "Brand identity & branding", "Monthly strategy session", "Priority consulting + early AI access"],
-        badge: "All-inclusive",
-      },
-    ],
-    plan_cta: "I want this plan →",
+    cotizar_h: "Ready to grow?",
+    cotizar_sub: "Tell us where your business is today and we'll build a proposal tailored to you.",
+    cotizar_cta: "Get my quote",
     nosotros_label: "Your Digital Partner",
     nosotros_nombre: "Rodrigo Tristán",
     nosotros_cargo: "Founder of SATORI",
     nosotros_quote: '"AI doesn\'t replace your business. It supercharges it."',
-    nosotros_p1: "I founded Satori because I watched great businesses lose clients and revenue not from lack of talent — but from lack of systems.",
-    nosotros_p2: "Today we take the same technology used by major corporations and put it to work for you. So you focus on your craft, and the system handles the rest.",
+    nosotros_p1: "My mission is to put cutting-edge technology within reach of every entrepreneur and small business owner. Digital growth shouldn't be a privilege — it's a tool that belongs in the hands of those who build something every day.",
+    nosotros_p2: "At Satori, we stay at the forefront — for you and because of you. So you focus on what you do best, and we make sure your business keeps working even when you can't.",
     garantia_title: "30-Day Guarantee:",
-    garantia_text: "If within 30 days you don't feel the value far exceeds what you paid, we keep working with you for 20 more days at no additional cost. No questions, no drama.",
+    garantia_text: "If within 30 days you don't feel the value far exceeds what you invested, we keep working with you for 20 more days at no additional cost. No questions, no drama.",
     btn_zoom: "Book a Zoom",
     btn_email: "Send Email",
     footer: "© 2026 SATORI · AI-Powered Digital Solutions · San Luis Potosí, MX",
   },
 };
 
-// ── Matrix Canvas ─────────────────────────────────────────────────────────────
+// ── Matrix ────────────────────────────────────────────────────────────────────
 function MatrixBackground({ color }: { color: string }) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const colorRef  = useRef(color);
+  const ref = useRef<HTMLCanvasElement>(null);
+  const colorRef = useRef(color);
   useEffect(() => { colorRef.current = color; }, [color]);
   useEffect(() => {
-    const canvas = canvasRef.current!;
-    const ctx = canvas.getContext("2d")!;
-    let animId: number;
+    const canvas = ref.current!; const ctx = canvas.getContext("2d")!; let id: number;
     const resize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
-    resize();
-    window.addEventListener("resize", resize);
-    const cols = Math.floor(canvas.width / 20);
-    const drops = Array(cols).fill(1);
+    resize(); window.addEventListener("resize", resize);
+    const cols = Math.floor(canvas.width / 20); const drops = Array(cols).fill(1);
     const draw = () => {
-      ctx.fillStyle = "rgba(0,0,0,0.04)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "rgba(0,0,0,0.04)"; ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.font = "14px monospace";
       drops.forEach((y, i) => {
         ctx.fillStyle = Math.random() > 0.93 ? colorRef.current : colorRef.current + "44";
         ctx.fillText(Math.random() < 0.5 ? "1" : "0", i * 20, y * 20);
-        if (y * 20 > canvas.height && Math.random() > 0.975) drops[i] = 0;
-        drops[i]++;
+        if (y * 20 > canvas.height && Math.random() > 0.975) drops[i] = 0; drops[i]++;
       });
-      animId = requestAnimationFrame(draw);
+      id = requestAnimationFrame(draw);
     };
     draw();
-    return () => { cancelAnimationFrame(animId); window.removeEventListener("resize", resize); };
+    return () => { cancelAnimationFrame(id); window.removeEventListener("resize", resize); };
   }, []);
-  return <canvas ref={canvasRef} style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", opacity: 0.13, pointerEvents: "none", zIndex: 0 }} />;
+  return <canvas ref={ref} style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", opacity: 0.12, pointerEvents: "none", zIndex: 0 }} />;
 }
 
-// ── Language Popup ────────────────────────────────────────────────────────────
+// ── Lang Popup ────────────────────────────────────────────────────────────────
 function LangPopup({ onSelect, t }: { onSelect: (l: "es" | "en") => void; t: typeof themes.white }) {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
       className="fixed inset-0 z-[200] flex items-center justify-center"
-      style={{ backgroundColor: "rgba(0,0,0,0.75)", backdropFilter: "blur(8px)" }}>
-      <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }}
+      style={{ backgroundColor: "rgba(0,0,0,0.75)", backdropFilter: "blur(10px)" }}>
+      <motion.div initial={{ scale: 0.92, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.92, opacity: 0 }}
         className="p-10 max-w-sm w-full mx-6 text-center"
-        style={{ backgroundColor: t.card, color: t.text, border: `1px solid ${t.accent}25` }}>
-        <Image src="/logo-satori.png" alt="SATORI" width={100} height={30} className="mx-auto mb-6" style={{ filter: t.ensoFilter }} />
+        style={{ backgroundColor: t.card, color: t.text, border: `1px solid ${t.accent}20` }}>
+        <Image src="/logo-satori.png" alt="SATORI" width={100} height={30} className="mx-auto mb-6" style={{ filter: t.logoFilter }} />
         <h2 className="text-2xl font-serif font-bold mb-2">¿Cómo prefieres continuar?</h2>
         <p className="text-xs opacity-40 mb-8">You can change this anytime</p>
         <div className="flex flex-col gap-3">
-          <button onClick={() => onSelect("es")} className="w-full py-4 font-black text-sm uppercase transition-all hover:scale-105" style={{ backgroundColor: t.accent, color: t.bg }}>🇲🇽 Español</button>
-          <button onClick={() => onSelect("en")} className="w-full py-4 font-black text-sm uppercase border transition-all hover:scale-105" style={{ borderColor: `${t.accent}40`, color: t.text }}>🇺🇸 English</button>
+          <button onClick={() => onSelect("es")} className="w-full py-4 font-black text-sm uppercase transition-all hover:opacity-80" style={{ backgroundColor: t.accent, color: t.bg }}>🇲🇽 Español</button>
+          <button onClick={() => onSelect("en")} className="w-full py-4 font-black text-sm uppercase border transition-all hover:opacity-80" style={{ borderColor: `${t.accent}30`, color: t.text }}>🇺🇸 English</button>
         </div>
       </motion.div>
     </motion.div>
   );
 }
 
-// ── AI Workflow Card ──────────────────────────────────────────────────────────
-function AIWorkflowVisual({ accent, bg }: { accent: string; bg: string }) {
-  const steps = ["📩 Mensaje entrante", "🤖 IA analiza intención", "💬 Respuesta instantánea", "📅 Cita agendada", "✅ Cliente convertido"];
+// ── AI Workflow ───────────────────────────────────────────────────────────────
+function AIWorkflow({ accent, card }: { accent: string; card: string }) {
+  const steps = ["📩 Mensaje entrante", "🤖 IA analiza intención", "💬 Respuesta en segundos", "📅 Cita agendada automáticamente", "✅ Prospecto convertido"];
   return (
-    <div className="w-full h-48 flex flex-col justify-center px-4 py-3 gap-1" style={{ backgroundColor: bg }}>
+    <div className="w-full flex flex-col justify-center px-4 py-4 gap-1.5" style={{ height: 180, backgroundColor: card }}>
       {steps.map((s, i) => (
-        <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.15 }}
-          className="flex items-center gap-2 text-[11px] font-mono px-3 py-1.5 rounded"
-          style={{ backgroundColor: `${accent}15`, color: accent, border: `1px solid ${accent}25` }}>
-          <span className="opacity-40 text-[9px]">{String(i + 1).padStart(2, "0")}</span>
+        <motion.div key={i} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.12 }}
+          className="flex items-center gap-2 text-[11px] font-mono px-3 py-1.5 rounded-sm"
+          style={{ backgroundColor: `${accent}12`, color: accent, border: `1px solid ${accent}22` }}>
+          <span className="opacity-30 text-[9px] w-4 shrink-0">{i + 1}.</span>
           {s}
-          {i < steps.length - 1 && <span className="ml-auto opacity-30">↓</span>}
+          {i < 4 && <span className="ml-auto opacity-25 text-[10px]">↓</span>}
         </motion.div>
       ))}
     </div>
   );
 }
 
-// ── Rotating Enso ─────────────────────────────────────────────────────────────
-function RotatingEnso({ filter, visible }: { filter: string; visible: boolean }) {
-  return (
-    <AnimatePresence>
-      {visible && (
-        <motion.div
-          key="enso"
-          initial={{ opacity: 0, rotate: -30, scale: 0.7 }}
-          animate={{ opacity: 0.07, rotate: 0, scale: 1 }}
-          exit={{ opacity: 0, rotate: 30, scale: 0.7 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden"
-          style={{ zIndex: 0 }}>
-          <img src="/enso-negro.png" alt="" style={{ width: "110%", height: "110%", objectFit: "contain", filter }} />
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
-}
-
-// ── Service Card ──────────────────────────────────────────────────────────────
-function ServiceCard({ s, t, c, isActive }: {
-  s: typeof copy.es.servicios[0];
-  t: typeof themes.white;
-  c: typeof copy.es;
-  isActive: boolean;
-}) {
+// ── Service Flip Card ─────────────────────────────────────────────────────────
+function ServiceCard({ s, t, c }: { s: typeof copy.es.servicios[0]; t: typeof themes.white; c: typeof copy.es }) {
   const [flipped, setFlipped] = useState(false);
-
-  // Reset flip when card changes
-  useEffect(() => { setFlipped(false); }, [s.paso]);
+  useEffect(() => { setFlipped(false); }, [s.num]);
 
   return (
-    <div className="relative w-full" style={{ height: 420, perspective: "1200px" }}>
-      <RotatingEnso filter={t.ensoFilter} visible={isActive && !flipped} />
-      <div
-        onClick={() => setFlipped(f => !f)}
-        className="absolute inset-0 cursor-pointer"
-        style={{ transformStyle: "preserve-3d", transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)", transition: "transform 0.55s cubic-bezier(0.4,0.2,0.2,1)" }}>
-
-        {/* ── FRONT ── */}
-        <div className="absolute inset-0 overflow-hidden border" style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", backgroundColor: t.bg, borderColor: `${t.accent}15`, zIndex: 1 }}>
-          {s.i ? (
-            <img src={s.i} alt={s.t} className="w-full object-cover" style={{ height: 180 }} loading="lazy" />
-          ) : (
-            <AIWorkflowVisual accent={t.accent} bg={t.card} />
-          )}
-          <div className="p-5" style={{ height: "calc(100% - 180px)", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+    <div style={{ width: "100%", height: 460, perspective: "1200px", cursor: "pointer" }} onClick={() => setFlipped(f => !f)}>
+      <div style={{
+        width: "100%", height: "100%", position: "relative",
+        transformStyle: "preserve-3d",
+        transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)",
+        transition: "transform 0.5s cubic-bezier(0.4,0.2,0.2,1)",
+      }}>
+        {/* FRONT */}
+        <div style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", backgroundColor: t.bg, border: `1px solid ${t.accent}15`, overflow: "hidden" }}>
+          <div style={{ height: 180, overflow: "hidden", flexShrink: 0 }}>
+            {s.i
+              ? <img src={s.i} alt={s.t} style={{ width: "100%", height: "100%", objectFit: "cover" }} loading="lazy" />
+              : <AIWorkflow accent={t.accent} card={t.card} />
+            }
+          </div>
+          <div style={{ padding: "1.25rem", display: "flex", flexDirection: "column", height: "calc(100% - 180px)", justifyContent: "space-between" }}>
             <div>
-              <div className="flex items-center gap-2 mb-1">
-                <span className="text-[9px] font-black px-2 py-0.5" style={{ backgroundColor: t.accent, color: t.bg }}>{c.servicios_paso} {s.paso}</span>
-                <span className="text-[9px] uppercase tracking-widest font-bold opacity-60" style={{ color: t.accent }}>{s.sub}</span>
-              </div>
-              <h3 className="text-lg font-bold mb-2 leading-tight">{s.t}</h3>
-              <p className="text-xs leading-relaxed" style={{ color: t.sub }}>{s.d}</p>
+              <p style={{ fontSize: "0.6rem", textTransform: "uppercase", letterSpacing: "0.15em", color: t.accent, fontWeight: 800, marginBottom: "0.4rem", opacity: 0.7 }}>{s.sub}</p>
+              <h3 style={{ fontSize: "1.2rem", fontWeight: 700, lineHeight: 1.25, marginBottom: "0.6rem", color: t.text }}>{s.t}</h3>
+              <p style={{ fontSize: "0.78rem", lineHeight: 1.6, color: t.sub }}>{s.d}</p>
             </div>
-            <span className="text-[10px] font-bold uppercase tracking-widest mt-3 flex items-center gap-1" style={{ color: t.accent }}>
-              {c.servicios_ver_mas} →
-            </span>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.3rem", fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.15em", color: t.accent, marginTop: "0.75rem" }}>
+              {c.ver_mas} <span style={{ fontSize: "0.8rem" }}>↗</span>
+            </div>
           </div>
         </div>
-
-        {/* ── BACK ── */}
-        <div className="absolute inset-0 flex flex-col justify-center p-7 border" style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", transform: "rotateY(180deg)", backgroundColor: t.accent, color: t.bg, borderColor: t.accent, zIndex: 1 }}>
-          <span className="text-[9px] font-black mb-4 opacity-60">{c.servicios_paso} {s.paso} · {s.sub}</span>
-          <h3 className="text-2xl font-bold mb-4 leading-tight">{s.t}</h3>
-          <p className="text-sm leading-relaxed opacity-90">{s.back}</p>
-          <span className="mt-6 text-[10px] font-bold uppercase tracking-widest opacity-50">{c.servicios_volver}</span>
+        {/* BACK */}
+        <div style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", transform: "rotateY(180deg)", backgroundColor: t.accent, color: t.bg, padding: "2rem", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+          <p style={{ fontSize: "0.6rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: "1rem", opacity: 0.6 }}>{c.paquete} {s.num} · {s.sub}</p>
+          <h3 style={{ fontSize: "1.6rem", fontWeight: 700, lineHeight: 1.2, marginBottom: "1rem" }}>{s.t}</h3>
+          <p style={{ fontSize: "0.85rem", lineHeight: 1.75, opacity: 0.9 }}>{s.back}</p>
+          <div style={{ marginTop: "auto", paddingTop: "1.5rem", fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.15em", opacity: 0.5 }}>{c.volver}</div>
         </div>
       </div>
     </div>
   );
 }
 
-// ── Services Swiper ───────────────────────────────────────────────────────────
+// ── Swiper ────────────────────────────────────────────────────────────────────
 function ServicesSwiper({ t, c }: { t: typeof themes.white; c: typeof copy.es }) {
   const [active, setActive] = useState(0);
   const total = c.servicios.length;
-  const dragStart = useRef<number | null>(null);
+  const startX = useRef<number | null>(null);
+  const isDragging = useRef(false);
 
-  const prev = () => setActive(a => (a - 1 + total) % total);
-  const next = () => setActive(a => (a + 1) % total);
+  const goTo = (i: number) => setActive((i + total) % total);
+  const prev = () => goTo(active - 1);
+  const next = () => goTo(active + 1);
 
-  const onDragStart = (e: React.MouseEvent | React.TouchEvent) => {
-    dragStart.current = "touches" in e ? e.touches[0].clientX : e.clientX;
+  const onPointerDown = (e: React.PointerEvent) => {
+    startX.current = e.clientX;
+    isDragging.current = false;
   };
-  const onDragEnd = (e: React.MouseEvent | React.TouchEvent) => {
-    if (dragStart.current === null) return;
-    const endX = "changedTouches" in e ? e.changedTouches[0].clientX : e.clientX;
-    const diff = dragStart.current - endX;
-    if (Math.abs(diff) > 40) diff > 0 ? next() : prev();
-    dragStart.current = null;
+  const onPointerMove = (e: React.PointerEvent) => {
+    if (startX.current !== null && Math.abs(e.clientX - startX.current) > 5) isDragging.current = true;
+  };
+  const onPointerUp = (e: React.PointerEvent) => {
+    if (startX.current === null) return;
+    const diff = startX.current - e.clientX;
+    if (Math.abs(diff) > 50 && isDragging.current) diff > 0 ? next() : prev();
+    startX.current = null; isDragging.current = false;
   };
 
   return (
-    <div className="relative" style={{ position: "relative", zIndex: 1 }}>
-      {/* Step indicators */}
-      <div className="flex items-center justify-center gap-2 mb-8">
+    <div>
+      {/* Package pills */}
+      <div className="flex flex-wrap justify-center gap-2 mb-10">
         {c.servicios.map((s, i) => (
-          <button key={i} onClick={() => setActive(i)}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest transition-all"
-            style={{ backgroundColor: active === i ? t.accent : "transparent", color: active === i ? t.bg : t.sub, border: `1px solid ${active === i ? t.accent : t.accent + "30"}` }}>
-            {s.paso}. {s.t.split(" ")[0]}
+          <button key={i} onClick={() => goTo(i)}
+            className="px-4 py-2 text-xs font-black uppercase tracking-widest transition-all duration-300 hover:scale-105"
+            style={{
+              backgroundColor: active === i ? t.accent : "transparent",
+              color: active === i ? t.bg : t.sub,
+              border: `1.5px solid ${active === i ? t.accent : t.accent + "35"}`,
+              transform: active === i ? "scale(1.05)" : "scale(1)",
+            }}>
+            {s.num}. {s.tag}
           </button>
         ))}
       </div>
 
-      {/* Card area */}
-      <div className="relative overflow-hidden"
-        onMouseDown={onDragStart} onMouseUp={onDragEnd}
-        onTouchStart={onDragStart} onTouchEnd={onDragEnd}>
-        <div className="flex justify-center items-center" style={{ minHeight: 440, position: "relative" }}>
-          {/* Adjacent cards preview */}
-          {[-1, 0, 1].map(offset => {
-            const idx = (active + offset + total) % total;
-            const s = c.servicios[idx];
-            return (
-              <div key={idx} onClick={() => offset !== 0 && setActive(idx)}
-                className="absolute transition-all duration-500"
-                style={{
-                  width: offset === 0 ? "min(420px, 90vw)" : "min(180px, 30vw)",
-                  left: offset === -1 ? 0 : offset === 1 ? undefined : "50%",
-                  right: offset === 1 ? 0 : undefined,
-                  transform: offset === 0 ? "translateX(-50%)" : undefined,
-                  opacity: offset === 0 ? 1 : 0.25,
-                  scale: offset === 0 ? "1" : "0.88",
-                  zIndex: offset === 0 ? 10 : 1,
-                  cursor: offset !== 0 ? "pointer" : "default",
-                  pointerEvents: offset !== 0 ? "auto" : "auto",
-                  overflow: "hidden",
-                }}>
-                <ServiceCard s={s} t={t} c={c} isActive={offset === 0} />
-              </div>
-            );
-          })}
+      {/* Cards container */}
+      <div
+        style={{ position: "relative", userSelect: "none", touchAction: "pan-y" }}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}>
+
+        {/* Enso background */}
+        <AnimatePresence mode="wait">
+          <motion.div key={active}
+            initial={{ opacity: 0, scale: 0.85, rotate: -15 }}
+            animate={{ opacity: 1, scale: 1, rotate: 0 }}
+            exit={{ opacity: 0, scale: 1.1, rotate: 15 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", pointerEvents: "none", zIndex: 0, overflow: "hidden" }}>
+            <img src="/enso-negro.png" alt="" style={{ width: "70%", maxWidth: 380, filter: t.ensoFilter, transform: "scale(1.1)" }} />
+          </motion.div>
+        </AnimatePresence>
+
+        {/* 3-card layout */}
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "1rem", padding: "1rem 0", minHeight: 480, position: "relative", zIndex: 1 }}>
+          {/* Prev */}
+          <motion.div
+            key={`prev-${active}`}
+            initial={{ opacity: 0, x: -60 }}
+            animate={{ opacity: 0.3, x: 0 }}
+            exit={{ opacity: 0, x: -60 }}
+            transition={{ duration: 0.35 }}
+            onClick={prev}
+            style={{ width: "clamp(100px, 18vw, 160px)", flexShrink: 0, cursor: "pointer", filter: "blur(1px)", transform: "scale(0.88)" }}>
+            <ServiceCard s={c.servicios[(active - 1 + total) % total]} t={t} c={c} />
+          </motion.div>
+
+          {/* Active */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={`active-${active}`}
+              initial={{ opacity: 0, scale: 0.92, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.92, y: -20 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+              style={{ width: "clamp(280px, 42vw, 420px)", flexShrink: 0, zIndex: 2 }}>
+              <ServiceCard s={c.servicios[active]} t={t} c={c} />
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Next */}
+          <motion.div
+            key={`next-${active}`}
+            initial={{ opacity: 0, x: 60 }}
+            animate={{ opacity: 0.3, x: 0 }}
+            exit={{ opacity: 0, x: 60 }}
+            transition={{ duration: 0.35 }}
+            onClick={next}
+            style={{ width: "clamp(100px, 18vw, 160px)", flexShrink: 0, cursor: "pointer", filter: "blur(1px)", transform: "scale(0.88)" }}>
+            <ServiceCard s={c.servicios[(active + 1) % total]} t={t} c={c} />
+          </motion.div>
         </div>
       </div>
 
-      {/* Nav arrows */}
-      <div className="flex items-center justify-center gap-6 mt-8">
-        <button onClick={prev} className="p-3 border transition-all hover:scale-110" style={{ borderColor: `${t.accent}40`, color: t.accent }}>
-          <ChevronLeft size={20} />
+      {/* Arrow nav */}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "1.5rem", marginTop: "1.5rem" }}>
+        <button onClick={prev} style={{ padding: "0.75rem", border: `1px solid ${t.accent}35`, color: t.accent, background: "transparent", cursor: "pointer", transition: "all 0.2s" }}
+          onMouseEnter={e => (e.currentTarget.style.backgroundColor = `${t.accent}15`)}
+          onMouseLeave={e => (e.currentTarget.style.backgroundColor = "transparent")}>
+          <ChevronLeft size={22} />
         </button>
-        <span className="text-xs font-bold uppercase tracking-widest" style={{ color: t.sub }}>
-          {active + 1} / {total}
-        </span>
-        <button onClick={next} className="p-3 border transition-all hover:scale-110" style={{ borderColor: `${t.accent}40`, color: t.accent }}>
-          <ChevronRight size={20} />
+        <div style={{ display: "flex", gap: "0.5rem" }}>
+          {c.servicios.map((_, i) => (
+            <button key={i} onClick={() => goTo(i)}
+              style={{ width: active === i ? 24 : 8, height: 8, borderRadius: active === i ? 4 : "50%", backgroundColor: active === i ? t.accent : `${t.accent}35`, border: "none", cursor: "pointer", transition: "all 0.3s", padding: 0 }} />
+          ))}
+        </div>
+        <button onClick={next} style={{ padding: "0.75rem", border: `1px solid ${t.accent}35`, color: t.accent, background: "transparent", cursor: "pointer", transition: "all 0.2s" }}
+          onMouseEnter={e => (e.currentTarget.style.backgroundColor = `${t.accent}15`)}
+          onMouseLeave={e => (e.currentTarget.style.backgroundColor = "transparent")}>
+          <ChevronRight size={22} />
         </button>
       </div>
     </div>
@@ -501,209 +394,187 @@ export default function Home() {
   const [showPopup, setShowPopup] = useState(true);
   const t = themes[theme];
   const c = copy[lang];
+  const waLink = lang === "es" ? WHATSAPP_LINK : WHATSAPP_LINK_EN;
 
   const cycleTheme = () => {
     const keys = Object.keys(themes) as (keyof typeof themes)[];
     setTheme(keys[(keys.indexOf(theme) + 1) % keys.length]);
   };
 
-  const waLink = lang === "es" ? WHATSAPP_LINK : WHATSAPP_LINK_EN;
-  const isLight = theme === "white" || theme === "gold";
-
   return (
-    <main style={{ backgroundColor: t.bg, color: t.text, minHeight: "100vh", position: "relative", transition: "all 0.5s ease" }}>
+    <main style={{ backgroundColor: t.bg, color: t.text, minHeight: "100vh", position: "relative", transition: "background-color 0.5s ease, color 0.5s ease" }}>
       <MatrixBackground color={t.matrixColor} />
 
       <AnimatePresence>
-        {showPopup && <LangPopup t={t} onSelect={(l) => { setLang(l); setShowPopup(false); }} />}
+        {showPopup && <LangPopup t={t} onSelect={l => { setLang(l); setShowPopup(false); }} />}
       </AnimatePresence>
 
-      {/* Floating buttons */}
+      {/* Floating: WhatsApp */}
       <a href={waLink} target="_blank" rel="noopener noreferrer"
-        className="fixed z-[100] flex items-center gap-2 px-4 py-3 rounded-full shadow-2xl transition-all hover:scale-105 font-black text-xs uppercase"
-        style={{ bottom: "6rem", right: "1.5rem", backgroundColor: "#25D366", color: "#000" }}>
+        className="fixed z-[100] flex items-center gap-2 px-4 py-3 rounded-full shadow-2xl font-black text-xs uppercase"
+        style={{ bottom: "6rem", right: "1.5rem", backgroundColor: "#25D366", color: "#000", transition: "transform 0.2s" }}
+        onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.07)")}
+        onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")}>
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
           <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
         </svg>
         <span className="hidden md:inline">WhatsApp</span>
       </a>
 
+      {/* Floating: Zoom */}
       <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer"
-        className="fixed z-[100] flex items-center gap-2 px-4 py-3 rounded-full shadow-2xl transition-all hover:scale-105 font-black text-xs uppercase"
-        style={{ bottom: "1.5rem", right: "1.5rem", backgroundColor: t.accent, color: t.bg }}>
+        className="fixed z-[100] flex items-center gap-2 px-4 py-3 rounded-full shadow-2xl font-black text-xs uppercase"
+        style={{ bottom: "1.5rem", right: "1.5rem", backgroundColor: t.accent, color: t.bg, transition: "transform 0.2s" }}
+        onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.07)")}
+        onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")}>
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
           <polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
         </svg>
         <span className="hidden md:inline">{c.btn_zoom}</span>
       </a>
 
+      {/* Floating: Theme */}
       <button onClick={cycleTheme}
-        className="fixed z-[100] p-3 rounded-full shadow-2xl transition-all hover:scale-110"
-        style={{ bottom: "10.5rem", right: "1.5rem", backgroundColor: t.card, color: t.accent, border: `1px solid ${t.accent}40` }}>
+        className="fixed z-[100] p-3 rounded-full shadow-xl"
+        style={{ bottom: "10.5rem", right: "1.5rem", backgroundColor: t.card, color: t.accent, border: `1px solid ${t.accent}35`, transition: "transform 0.2s" }}
+        onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.1)")}
+        onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")}>
         <Palette size={18} />
       </button>
 
       {/* NAV */}
-      <nav className="w-full px-6 py-4 flex items-center justify-between fixed top-0 left-0 right-0 z-50 backdrop-blur-md border-b"
-        style={{ borderColor: `${t.accent}15`, backgroundColor: t.navBg }}>
+      <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 50, backdropFilter: "blur(14px)", backgroundColor: t.navBg, borderBottom: `1px solid ${t.accent}12`, padding: "1rem 1.5rem", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <a href="#inicio">
-          <Image src="/logo-satori.png" alt="SATORI" width={120} height={36} style={{ filter: t.ensoFilter }} />
+          <Image src="/logo-satori.png" alt="SATORI" width={120} height={36} style={{ filter: t.logoFilter }} />
         </a>
         <div className="hidden md:flex items-center gap-6">
-          <a href="#problema" className="text-xs font-bold uppercase" style={{ color: t.sub }}>{c.nav.problema}</a>
-          <a href="#servicios" className="text-xs font-bold uppercase" style={{ color: t.sub }}>{c.nav.soluciones}</a>
-          <a href="#precios"   className="text-xs font-bold uppercase" style={{ color: t.sub }}>{c.nav.precios}</a>
+          {[["#problema", c.nav.problema], ["#servicios", c.nav.soluciones], ["#cotizar", c.nav.precios]].map(([href, label]) => (
+            <a key={href} href={href} style={{ fontSize: "0.7rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", color: t.sub }}>{label}</a>
+          ))}
           <button onClick={() => setShowPopup(true)}
-            className="flex items-center gap-1 px-3 py-1 border rounded-full text-xs font-bold uppercase transition-all hover:scale-105"
-            style={{ borderColor: `${t.accent}40`, color: t.text, backgroundColor: `${t.accent}08` }}>
-            <Globe size={13} />
-            {lang === "es" ? "EN" : "ES"}
+            style={{ display: "flex", alignItems: "center", gap: "0.25rem", padding: "0.25rem 0.75rem", border: `1px solid ${t.accent}35`, borderRadius: 999, fontSize: "0.7rem", fontWeight: 700, textTransform: "uppercase", color: t.text, backgroundColor: `${t.accent}08`, cursor: "pointer" }}>
+            <Globe size={12} /> {lang === "es" ? "EN" : "ES"}
           </button>
           <a href={CALENDLY_LINK} target="_blank"
-            className="px-6 py-2 font-black text-xs uppercase"
-            style={{ backgroundColor: t.accent, color: t.bg }}>
+            style={{ padding: "0.5rem 1.5rem", backgroundColor: t.accent, color: t.bg, fontWeight: 900, fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.08em" }}>
             {c.nav.cta}
           </a>
         </div>
-        <button onClick={() => setShowPopup(true)} className="md:hidden flex items-center gap-1 px-3 py-1 border rounded-full text-xs font-bold uppercase"
-          style={{ borderColor: `${t.accent}40`, color: t.text, backgroundColor: `${t.accent}08` }}>
-          <Globe size={13} /> {lang === "es" ? "EN" : "ES"}
+        <button onClick={() => setShowPopup(true)} className="md:hidden"
+          style={{ display: "flex", alignItems: "center", gap: "0.25rem", padding: "0.25rem 0.75rem", border: `1px solid ${t.accent}35`, borderRadius: 999, fontSize: "0.7rem", fontWeight: 700, color: t.text, backgroundColor: `${t.accent}08`, cursor: "pointer" }}>
+          <Globe size={12} /> {lang === "es" ? "EN" : "ES"}
         </button>
       </nav>
 
       {/* HERO */}
-      <section id="inicio" className="px-6 pt-36 pb-20 max-w-6xl mx-auto grid md:grid-cols-2 items-center gap-12" style={{ position: "relative", zIndex: 1 }}>
+      <section id="inicio" style={{ padding: "9rem 1.5rem 5rem", maxWidth: "72rem", margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "3rem", alignItems: "center", position: "relative", zIndex: 1 }} className="!grid-cols-1 md:!grid-cols-2">
         <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
-          <div className="inline-block px-4 py-1 rounded-full border mb-6" style={{ borderColor: `${t.accent}25`, backgroundColor: `${t.accent}06` }}>
-            <p className="text-[10px] tracking-[0.3em] uppercase font-black" style={{ color: t.accent }}>{c.badge}</p>
+          <div style={{ display: "inline-block", padding: "0.2rem 1rem", borderRadius: 999, border: `1px solid ${t.accent}25`, backgroundColor: `${t.accent}06`, marginBottom: "1.5rem" }}>
+            <p style={{ fontSize: "0.6rem", letterSpacing: "0.3em", textTransform: "uppercase", fontWeight: 900, color: t.accent }}>{c.badge}</p>
           </div>
-          <h1 className="text-6xl md:text-8xl font-serif font-bold leading-none mb-4 tracking-tighter">
-            {c.h1a}<br />
-            <span style={{ color: t.accent }} className="italic font-normal">{c.h1b}</span>
+          <h1 style={{ fontSize: "clamp(3.5rem,8vw,6rem)", fontFamily: "serif", fontWeight: 700, lineHeight: 1, marginBottom: "1rem", letterSpacing: "-0.02em" }}>
+            {c.h1a}<br /><span style={{ color: t.accent, fontStyle: "italic", fontWeight: 400 }}>{c.h1b}</span>
           </h1>
-          <p className="text-lg mb-10 opacity-75 max-w-md leading-relaxed">{c.hero_sub}</p>
-          <div className="flex flex-wrap gap-4">
-            <a href={CALENDLY_LINK} target="_blank" className="px-10 py-4 font-black uppercase text-sm shadow-lg transition-transform hover:scale-105" style={{ backgroundColor: t.accent, color: t.bg }}>{c.cta1}</a>
-            <a href="#servicios" className="px-10 py-4 border font-bold uppercase text-sm" style={{ borderColor: t.accent, color: t.accent }}>{c.cta2}</a>
+          <p style={{ fontSize: "1.05rem", marginBottom: "2.5rem", opacity: 0.72, maxWidth: "28rem", lineHeight: 1.7 }}>{c.hero_sub}</p>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem" }}>
+            <a href={CALENDLY_LINK} target="_blank" style={{ padding: "1rem 2.5rem", backgroundColor: t.accent, color: t.bg, fontWeight: 900, textTransform: "uppercase", fontSize: "0.78rem", letterSpacing: "0.05em" }}>{c.cta1}</a>
+            <a href="#servicios" style={{ padding: "1rem 2.5rem", border: `1px solid ${t.accent}`, color: t.accent, fontWeight: 700, textTransform: "uppercase", fontSize: "0.78rem" }}>{c.cta2}</a>
           </div>
         </motion.div>
-        <div className="flex justify-center">
-          <Image src="/enso-negro.png" alt="Enso" width={450} height={450} style={{ filter: t.ensoFilter, opacity: 0.9 }} />
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <Image src="/enso-negro.png" alt="Enso" width={450} height={450} style={{ filter: t.ensoFilter.replace("opacity(0.08)", "opacity(1)"), opacity: 0.88 }} />
         </div>
       </section>
 
       {/* PROBLEMA */}
-      <section id="problema" className="px-6 py-24 border-y" style={{ backgroundColor: t.card, borderColor: `${t.accent}10`, position: "relative", zIndex: 1 }}>
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl md:text-5xl font-serif mb-14 leading-tight text-center">{c.problema_h}</h2>
-          <div className="grid md:grid-cols-3 gap-8 text-left">
+      <section id="problema" style={{ padding: "6rem 1.5rem", backgroundColor: t.card, borderTop: `1px solid ${t.accent}10`, borderBottom: `1px solid ${t.accent}10`, position: "relative", zIndex: 1 }}>
+        <div style={{ maxWidth: "56rem", margin: "0 auto" }}>
+          <h2 style={{ fontSize: "clamp(1.8rem,4vw,3rem)", fontFamily: "serif", textAlign: "center", marginBottom: "3.5rem", lineHeight: 1.2 }}>{c.problema_h}</h2>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "2rem" }}>
             {c.problemas.map(({ q, desc }, i) => (
-              <div key={i} className="p-8 border-l-2" style={{ borderColor: `${t.accent}40`, backgroundColor: `${t.accent}04` }}>
-                <div className="mb-4">
-                  {i === 0 && <HandCoins size={24} style={{ color: t.accent }} />}
-                  {i === 1 && <Zap       size={24} style={{ color: t.accent }} />}
-                  {i === 2 && <Target    size={24} style={{ color: t.accent }} />}
+              <div key={i} style={{ padding: "2rem", borderLeft: `2px solid ${t.accent}45`, backgroundColor: `${t.accent}04` }}>
+                <div style={{ marginBottom: "1rem" }}>
+                  {i === 0 && <HandCoins size={22} style={{ color: t.accent }} />}
+                  {i === 1 && <Zap       size={22} style={{ color: t.accent }} />}
+                  {i === 2 && <Target    size={22} style={{ color: t.accent }} />}
                 </div>
-                <p className="text-base italic mb-3 font-medium">{q}</p>
-                <p className="text-sm opacity-60 leading-relaxed" style={{ color: t.sub }}>{desc}</p>
+                <p style={{ fontSize: "0.9rem", fontStyle: "italic", fontWeight: 600, marginBottom: "0.75rem" }}>{q}</p>
+                <p style={{ fontSize: "0.8rem", opacity: 0.6, lineHeight: 1.65, color: t.sub }}>{desc}</p>
               </div>
             ))}
           </div>
-          <div className="text-center mt-12">
-            <a href={waLink} target="_blank" className="inline-block font-bold tracking-widest uppercase hover:scale-105 transition-all" style={{ color: t.accent }}>
-              {c.problema_cta}
-            </a>
+          <div style={{ textAlign: "center", marginTop: "3rem" }}>
+            <a href={waLink} target="_blank" style={{ fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: t.accent, fontSize: "0.75rem" }}>{c.problema_cta}</a>
           </div>
         </div>
       </section>
 
-      {/* NÚMEROS */}
-      <section className="px-6 py-16" style={{ position: "relative", zIndex: 1 }}>
-        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-          {c.stats.map(({ n, d }, i) => (
+      {/* STATS — label arriba, número abajo */}
+      <section style={{ padding: "4rem 1.5rem", position: "relative", zIndex: 1 }}>
+        <div style={{ maxWidth: "56rem", margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "2rem", textAlign: "center" }}>
+          {c.stats.map(({ label, n }, i) => (
             <div key={i}>
-              <p className="text-5xl font-serif font-bold mb-2" style={{ color: t.accent }}>{n}</p>
-              <p className="text-xs tracking-[0.2em] uppercase leading-relaxed max-w-[200px] mx-auto" style={{ color: t.sub }}>{d}</p>
+              <p style={{ fontSize: "0.65rem", textTransform: "uppercase", letterSpacing: "0.2em", color: t.sub, marginBottom: "0.75rem", lineHeight: 1.5 }}>{label}</p>
+              <p style={{ fontSize: "3.5rem", fontFamily: "serif", fontWeight: 700, color: t.accent, lineHeight: 1 }}>{n}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* SERVICIOS — SWIPER */}
-      <section id="servicios" className="px-6 py-24" style={{ backgroundColor: t.card, position: "relative", zIndex: 1, overflow: "hidden" }}>
-        <div className="max-w-5xl mx-auto">
-          <div className="mb-10 text-center">
-            <p className="text-xs uppercase tracking-[0.5em] mb-3 font-black" style={{ color: t.accent }}>{c.servicios_label}</p>
-            <h2 className="text-4xl md:text-5xl font-serif font-bold leading-tight whitespace-pre-line mb-4">{c.servicios_h}</h2>
-            <p className="text-sm opacity-60 max-w-md mx-auto leading-relaxed" style={{ color: t.sub }}>{c.servicios_sub}</p>
+      {/* SERVICIOS */}
+      <section id="servicios" style={{ padding: "6rem 1.5rem", backgroundColor: t.card, position: "relative", zIndex: 1, overflow: "hidden" }}>
+        <div style={{ maxWidth: "64rem", margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: "3rem" }}>
+            <p style={{ fontSize: "0.65rem", textTransform: "uppercase", letterSpacing: "0.4em", color: t.accent, fontWeight: 900, marginBottom: "1rem" }}>{c.camino_label}</p>
+            <h2 style={{ fontSize: "clamp(2.8rem,6vw,5rem)", fontFamily: "serif", fontWeight: 700, lineHeight: 1.1, marginBottom: "1rem" }}>{c.camino_h}</h2>
+            <p style={{ fontSize: "0.9rem", opacity: 0.55, maxWidth: "36rem", margin: "0 auto", lineHeight: 1.7, color: t.sub }}>{c.camino_sub}</p>
           </div>
           <ServicesSwiper t={t} c={c} />
         </div>
       </section>
 
-      {/* PRECIOS */}
-      <section id="precios" className="px-6 py-24 max-w-6xl mx-auto" style={{ position: "relative", zIndex: 1 }}>
-        <div className="text-center mb-14">
-          <h2 className="text-4xl font-serif font-bold mb-3 leading-tight whitespace-pre-line">{c.precios_h}</h2>
-          <p className="text-xs uppercase tracking-widest opacity-50" style={{ color: t.sub }}>{c.precios_sub}</p>
-        </div>
-        <div className="grid md:grid-cols-5 gap-4">
-          {c.planes.map((plan, i) => (
-            <div key={i} className="p-6 border-t-4 shadow-xl transition-transform hover:scale-[1.02] flex flex-col"
-              style={{ borderColor: t.accent, backgroundColor: t.card }}>
-              {"badge" in plan && plan.badge && (
-                <span className="text-[8px] font-black uppercase px-2 py-0.5 mb-2 self-start" style={{ backgroundColor: t.accent, color: t.bg }}>{plan.badge}</span>
-              )}
-              <p className="text-[9px] tracking-[0.2em] uppercase font-bold mb-2 opacity-60" style={{ color: t.accent }}>{plan.et}</p>
-              <h3 className="text-lg font-bold mb-1">{plan.n}</h3>
-              <p className="text-2xl font-serif font-bold mb-1">{plan.p}</p>
-              <p className="text-[9px] opacity-40 mb-4">/MXN</p>
-              <p className="text-[10px] leading-relaxed opacity-60 mb-4" style={{ color: t.sub }}>{plan.desc}</p>
-              <ul className="space-y-2 mb-6 flex-1">
-                {plan.l.map(item => (
-                  <li key={item} className="text-[10px] flex items-start gap-1.5">
-                    <CheckCircle2 size={10} style={{ color: t.accent }} className="mt-0.5 shrink-0" /> {item}
-                  </li>
-                ))}
-              </ul>
-              <a href={waLink} target="_blank" className="block text-center py-2.5 font-black uppercase text-[10px] mt-auto" style={{ backgroundColor: t.accent, color: t.bg }}>
-                {c.plan_cta}
-              </a>
-            </div>
-          ))}
+      {/* COTIZAR */}
+      <section id="cotizar" style={{ padding: "6rem 1.5rem", position: "relative", zIndex: 1 }}>
+        <div style={{ maxWidth: "40rem", margin: "0 auto", textAlign: "center" }}>
+          <h2 style={{ fontSize: "clamp(2rem,5vw,3.5rem)", fontFamily: "serif", fontWeight: 700, marginBottom: "1.25rem", lineHeight: 1.2 }}>{c.cotizar_h}</h2>
+          <p style={{ fontSize: "1rem", opacity: 0.65, lineHeight: 1.75, marginBottom: "2.5rem", color: t.sub }}>{c.cotizar_sub}</p>
+          <a href={waLink} target="_blank"
+            style={{ display: "inline-block", padding: "1.1rem 3rem", backgroundColor: t.accent, color: t.bg, fontWeight: 900, textTransform: "uppercase", fontSize: "0.8rem", letterSpacing: "0.08em" }}>
+            {c.cotizar_cta}
+          </a>
         </div>
       </section>
 
       {/* NOSOTROS */}
-      <section id="nosotros" className="px-6 py-24 max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center" style={{ position: "relative", zIndex: 1 }}>
-        <div className="relative">
+      <section id="nosotros" style={{ padding: "6rem 1.5rem", maxWidth: "72rem", margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4rem", alignItems: "center", position: "relative", zIndex: 1 }} className="!grid-cols-1 md:!grid-cols-2">
+        <div style={{ position: "relative" }}>
           <Image src="/rodrigo.png" alt="Rodrigo Tristán" width={500} height={600} className="grayscale hover:grayscale-0 transition-all duration-700 object-cover" />
-          <div className="absolute -top-6 -left-6 w-24 h-24 border-t-2 border-l-2" style={{ borderColor: t.accent }}></div>
+          <div style={{ position: "absolute", top: "-1.5rem", left: "-1.5rem", width: "5rem", height: "5rem", borderTop: `2px solid ${t.accent}`, borderLeft: `2px solid ${t.accent}` }} />
         </div>
         <div>
-          <p className="text-xs uppercase tracking-[0.4em] font-black mb-6" style={{ color: t.accent }}>{c.nosotros_label}</p>
-          <h2 className="text-5xl font-serif font-bold mb-4">{c.nosotros_nombre}</h2>
-          <p className="text-sm uppercase tracking-widest mb-10" style={{ color: t.sub }}>{c.nosotros_cargo}</p>
-          <div className="space-y-5 mb-10">
-            <p className="text-xl italic font-medium leading-snug">{c.nosotros_quote}</p>
-            <p className="text-base opacity-70 leading-relaxed">{c.nosotros_p1}</p>
-            <p className="text-base opacity-70 leading-relaxed">{c.nosotros_p2}</p>
-            <div className="p-6 border" style={{ borderColor: `${t.accent}25`, backgroundColor: `${t.accent}05` }}>
-              <p className="font-bold mb-2 text-sm" style={{ color: t.accent }}>{c.garantia_title}</p>
-              <p className="text-sm opacity-70 leading-relaxed">{c.garantia_text}</p>
+          <p style={{ fontSize: "0.65rem", textTransform: "uppercase", letterSpacing: "0.35em", fontWeight: 900, color: t.accent, marginBottom: "1.25rem" }}>{c.nosotros_label}</p>
+          <h2 style={{ fontSize: "clamp(2.5rem,5vw,3.5rem)", fontFamily: "serif", fontWeight: 700, marginBottom: "0.5rem" }}>{c.nosotros_nombre}</h2>
+          <p style={{ fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.2em", color: t.sub, marginBottom: "2rem" }}>{c.nosotros_cargo}</p>
+          <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem", marginBottom: "2rem" }}>
+            <p style={{ fontSize: "1.25rem", fontStyle: "italic", fontWeight: 600, lineHeight: 1.4 }}>{c.nosotros_quote}</p>
+            <p style={{ fontSize: "0.92rem", opacity: 0.72, lineHeight: 1.75 }}>{c.nosotros_p1}</p>
+            <p style={{ fontSize: "0.92rem", opacity: 0.72, lineHeight: 1.75 }}>{c.nosotros_p2}</p>
+            <div style={{ padding: "1.5rem", border: `1px solid ${t.accent}22`, backgroundColor: `${t.accent}05` }}>
+              <p style={{ fontWeight: 700, fontSize: "0.8rem", color: t.accent, marginBottom: "0.5rem" }}>{c.garantia_title}</p>
+              <p style={{ fontSize: "0.82rem", opacity: 0.7, lineHeight: 1.7 }}>{c.garantia_text}</p>
             </div>
           </div>
-          <div className="flex gap-4 flex-wrap">
-            <a href={CALENDLY_LINK} target="_blank" className="px-8 py-4 font-bold border transition-all hover:scale-105" style={{ borderColor: t.accent, color: t.accent }}>{c.btn_zoom}</a>
-            <a href={`mailto:${EMAIL}`} className="px-8 py-4 font-bold opacity-60 hover:opacity-100 transition-all">{c.btn_email}</a>
+          <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+            <a href={CALENDLY_LINK} target="_blank" style={{ padding: "1rem 2rem", border: `1px solid ${t.accent}`, color: t.accent, fontWeight: 700, fontSize: "0.8rem" }}>{c.btn_zoom}</a>
+            <a href={`mailto:${EMAIL}`} style={{ padding: "1rem 2rem", fontWeight: 700, opacity: 0.55, fontSize: "0.8rem" }}>{c.btn_email}</a>
           </div>
         </div>
       </section>
 
       {/* FOOTER */}
-      <footer className="px-6 py-12 border-t flex flex-col md:flex-row justify-between items-center gap-6" style={{ borderColor: `${t.accent}10`, position: "relative", zIndex: 1 }}>
-        <Image src="/logo-satori.png" alt="SATORI" width={100} height={30} style={{ filter: t.ensoFilter }} />
-        <p className="text-[10px] tracking-[0.3em] uppercase opacity-40">{c.footer}</p>
+      <footer style={{ padding: "3rem 1.5rem", borderTop: `1px solid ${t.accent}10`, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "1rem", position: "relative", zIndex: 1 }}>
+        <Image src="/logo-satori.png" alt="SATORI" width={90} height={28} style={{ filter: t.logoFilter }} />
+        <p style={{ fontSize: "0.6rem", letterSpacing: "0.25em", textTransform: "uppercase", opacity: 0.35 }}>{c.footer}</p>
       </footer>
     </main>
   );
