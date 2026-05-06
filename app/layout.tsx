@@ -10,9 +10,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="es" className="scroll-smooth">
       <head>
-        <link rel="icon" href="/favicon.png" type="image/png" />
-        <link rel="shortcut icon" href="/favicon.png" type="image/png" />
-        <link rel="apple-touch-icon" href="/favicon.png" />
+        <link rel="icon" href="/favicon.ico" type="image/png" />
+        <link rel="shortcut icon" href="/favicon.ico" type="image/png" />
+        <link rel="apple-touch-icon" href="/favicon.ico" />
       </head>
       <body>{children}</body>
     </html>
