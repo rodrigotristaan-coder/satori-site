@@ -1,9 +1,9 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckCircle2, HandCoins, Palette, Zap, Target, Globe, RotateCcw } from "lucide-react";
+import { CheckCircle2, HandCoins, Palette, Zap, Target, Globe, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 
 const WHATSAPP_LINK    = "https://wa.me/525625018281?text=Hola%20Rodrigo,%20vi%20tu%20página%20y%20me%20gustaría%20una%20auditoría.";
 const WHATSAPP_LINK_EN = "https://wa.me/525625018281?text=Hi%20Rodrigo,%20I%20saw%20your%20page%20and%20I'd%20like%20a%20free%20audit.";
@@ -12,11 +12,11 @@ const EMAIL            = "r.tristaan@outlook.com";
 
 // ── Themes ───────────────────────────────────────────────────────────────────
 const themes = {
-  white:   { bg: "#FFFFFF", accent: "#000000", text: "#111111", sub: "#555555", card: "#F5F5F5", matrixColor: "#cccccc", navBg: "rgba(255,255,255,0.92)" },
-  blue:    { bg: "#020B18", accent: "#00D4FF", text: "#E0F0FF", sub: "#4A7FA5", card: "#041428",  matrixColor: "#00D4FF", navBg: "rgba(2,11,24,0.92)"    },
-  silver:  { bg: "#0A0A0A", accent: "#E5E5E5", text: "#FFFFFF",  sub: "#A3A3A3", card: "#171717", matrixColor: "#999999", navBg: "rgba(10,10,10,0.92)"   },
-  rainbow: { bg: "#0F0218", accent: "#FF00CC", text: "#FFFFFF",  sub: "#A855F7", card: "#1E0B36", matrixColor: "#FF00CC", navBg: "rgba(15,2,24,0.92)"    },
-  gold:    { bg: "#FFFFF8", accent: "#B8860B", text: "#1a1000", sub: "#8B6914", card: "#FDF8E1",  matrixColor: "#D4AF37", navBg: "rgba(255,255,248,0.92)" },
+  white:   { bg: "#FFFFFF", accent: "#111111", text: "#111111", sub: "#555555", card: "#F5F5F5", matrixColor: "#bbbbbb", navBg: "rgba(255,255,255,0.93)", ensoFilter: "brightness(0)" },
+  blue:    { bg: "#020B18", accent: "#00D4FF", text: "#E0F0FF", sub: "#4A7FA5", card: "#041428",  matrixColor: "#00D4FF", navBg: "rgba(2,11,24,0.93)",     ensoFilter: "invert(1) brightness(2)" },
+  silver:  { bg: "#0A0A0A", accent: "#E5E5E5", text: "#FFFFFF", sub: "#A3A3A3", card: "#171717",  matrixColor: "#888888", navBg: "rgba(10,10,10,0.93)",    ensoFilter: "invert(1) brightness(2)" },
+  rainbow: { bg: "#0F0218", accent: "#FF00CC", text: "#FFFFFF", sub: "#A855F7", card: "#1E0B36",  matrixColor: "#FF00CC", navBg: "rgba(15,2,24,0.93)",     ensoFilter: "invert(1) brightness(2)" },
+  gold:    { bg: "#FFFFF8", accent: "#B8860B", text: "#1a1000", sub: "#8B6914", card: "#FDF8E1",  matrixColor: "#D4AF37", navBg: "rgba(255,255,248,0.93)", ensoFilter: "brightness(0) sepia(1) hue-rotate(10deg)" },
 };
 
 // ── Copy ─────────────────────────────────────────────────────────────────────
@@ -29,10 +29,6 @@ const copy = {
     hero_sub: "Sabemos lo que es atender el negocio, contestar mensajes, publicar en redes y encima intentar crecer. Satori automatiza lo repetitivo para que tú te enfoques en lo que importa: vender.",
     cta1: "Quiero mi Auditoría Gratis",
     cta2: "Ver Cómo Funciona",
-    lang_popup_title: "¿En qué idioma prefieres continuar?",
-    lang_popup_sub: "You can change this anytime / Puedes cambiarlo cuando quieras",
-    lang_es: "🇲🇽 Español",
-    lang_en: "🇺🇸 English",
     problema_h: "¿Te suena alguno de estos?",
     problemas: [
       { q: '"Pago anuncios y no me llega el cliente correcto."', desc: "Tu dinero en ads se va sin convertir porque no tienes un sistema que filtre y nutra prospectos." },
@@ -43,56 +39,99 @@ const copy = {
     stats: [
       { n: "24/7", d: "Tu negocio siempre abierto" },
       { n: "0",    d: "Prospectos perdidos" },
-      { n: "30",   d: "Días para ver resultados o te devolvemos tu dinero" },
+      { n: "30",   d: "Días para ver resultados" },
     ],
-    servicios_label: "Lo que construimos para ti",
-    servicios_h: "Tu equipo digital.\nTrabajando mientras duermes.",
-    servicios_ver_mas: "Ver más",
+    servicios_label: "El camino al crecimiento",
+    servicios_h: "Paso a paso.\nO todo a la vez.",
+    servicios_sub: "Cada servicio está diseñado para construir sobre el anterior. Empieza donde estás y llega a donde quieres.",
+    servicios_ver_mas: "Ver detalle",
+    servicios_volver: "← Volver",
+    servicios_paso: "Paso",
     servicios: [
       {
+        paso: 1,
         t: "Presencia Digital",
         sub: "Redes Sociales + Contenido",
-        d: "Posts, reels y stories con estrategia real. Nos encargamos de que tus redes trabajen para ti todos los días.",
-        back: "Incluye: estrategia de contenido mensual, diseño de posts, copywriting con IA adaptado a tu voz, y reporte de métricas. El punto de entrada ideal para empezar a construir autoridad en tu mercado.",
+        d: "Tus redes publicando con estrategia todos los días.",
+        back: "Posts, reels y stories diseñados para posicionarte como el experto de tu industria. Incluye estrategia mensual, diseño, copywriting con IA y reporte de métricas.",
         i: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=800&q=80&fm=jpg",
       },
       {
-        t: "Tu Vitrina Online",
+        paso: 2,
+        t: "Tu Página Web",
         sub: "Sitio Web o Landing Page",
-        d: "Una página que convierte visitas en clientes. Diseñada para vender, no solo para verse bien.",
-        back: "Incluye: diseño profesional, copywriting estratégico, optimización móvil, formulario de contacto y entrega en 7-10 días hábiles. La base de cualquier negocio serio en internet.",
+        d: "Tu vitrina digital que convierte visitas en clientes.",
+        back: "Diseño profesional, copywriting estratégico, optimización móvil y entrega en 7-10 días. La base que todo negocio serio necesita en internet.",
         i: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&q=80&fm=jpg",
       },
       {
+        paso: 3,
         t: "Clientes con Ads",
         sub: "Campañas Meta + Google",
-        d: "Anuncios dirigidos a personas que ya quieren lo que tú vendes. Bajamos tu costo por lead y subimos tu retorno.",
-        back: "Incluye: setup de campaña, segmentación avanzada, creativos publicitarios, optimización semanal y reporte de resultados. Ideal cuando ya tienes presencia y quieres escalar.",
+        d: "Anuncios que llevan el cliente correcto a tu puerta.",
+        back: "Setup de campaña, segmentación avanzada, creativos publicitarios, optimización semanal y reporte de resultados. Ideal para escalar cuando ya tienes presencia.",
         i: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80&fm=jpg",
       },
       {
+        paso: 4,
         t: "Vendedor 24/7",
-        sub: "Agente IA para WhatsApp + Instagram",
-        d: "Un agente de IA entrenado con la voz de tu negocio que cotiza, agenda y cierra mientras duermes.",
-        back: "Incluye: entrenamiento del agente con tu catálogo y FAQ, integración a WhatsApp Business e Instagram DM, flujos de seguimiento automático y optimización mensual. El servicio más diferenciado del mercado local.",
-        i: "https://images.unsplash.com/photo-1531746790731-6c087fecd05a?w=800&q=80&fm=jpg",
+        sub: "Agente IA · WhatsApp + Instagram",
+        d: "Un agente de IA que cotiza, agenda y cierra mientras duermes.",
+        back: "Entrenado con la voz de tu negocio. Integrado a WhatsApp Business e Instagram DM. Responde, califica prospectos y agenda citas automáticamente. El servicio con menos competencia local.",
+        i: null,
       },
       {
-        t: "Satori Completo",
+        paso: 5,
+        t: "Sociedad Satori",
         sub: "Todo lo anterior + Estrategia y Branding",
-        d: "Para el empresario que quiere dominar su mercado local. No solo herramientas — una estrategia integral.",
-        back: "Incluye: todos los servicios anteriores + identidad de marca, sesión mensual de estrategia, consultoría prioritaria y acceso a nuevas herramientas de IA antes que nadie. Tu socio digital completo.",
+        d: "Para dominar tu mercado local. No un proveedor — un socio.",
+        back: "Todos los servicios anteriores + identidad de marca, sesión mensual de estrategia, consultoría prioritaria y acceso anticipado a nuevas herramientas de IA. Tu equipo digital completo.",
         i: "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&q=80&fm=jpg",
       },
     ],
-    precios_h: "Planes claros.\nSin letra chica.",
-    precios_sub: "Sin contratos. Solo resultados.",
+    precios_h: "Un plan para\ncada etapa.",
+    precios_sub: "Sin contratos. Sin letra chica. Solo resultados.",
     planes: [
-      { n: "Arranque",    p: "$4,500",  et: "Para el que empieza a escalar",       l: ["Estrategia de contenido mensual", "12 posts con diseño y copy", "Redacción con IA para tu voz", "Soporte por WhatsApp"] },
-      { n: "Crecimiento", p: "$8,500",  et: "El más elegido por nuestros clientes", l: ["Todo lo de Arranque", "2 redes sociales gestionadas", "Reels y TikToks de tu negocio", "Chatbot de ventas básico", "Reporte mensual"] },
-      { n: "Aceleración", p: "$15,000", et: "Para dominar tu mercado local",        l: ["Todo lo de Crecimiento", "Ads en Meta + Google", "Agente IA de ventas avanzado", "Video profesional", "Sesión semanal de estrategia"] },
+      {
+        n: "Presencia",
+        p: "$3,500",
+        et: "Paso 1 — Contenido y Redes",
+        desc: "Ideal para negocios que quieren empezar a construir autoridad en redes.",
+        l: ["Estrategia de contenido mensual", "12 posts con diseño y copy", "Copywriting con IA para tu voz", "Soporte por WhatsApp"],
+      },
+      {
+        n: "Página Web",
+        p: "$8,000",
+        et: "Paso 2 — Tu Vitrina Online",
+        desc: "Pago único. Landing page o sitio profesional listo en 7-10 días.",
+        l: ["Diseño profesional a medida", "Copywriting estratégico incluido", "Optimización móvil y SEO básico", "Formulario de contacto + integración WA"],
+        badge: "Pago único",
+      },
+      {
+        n: "Ads",
+        p: "$5,000",
+        et: "Paso 3 — Campañas Pagadas",
+        desc: "Gestión mensual de tus campañas en Meta y/o Google.",
+        l: ["Setup y segmentación de campaña", "Creativos publicitarios", "Optimización semanal", "Reporte mensual de resultados"],
+      },
+      {
+        n: "Vendedor IA",
+        p: "$6,500",
+        et: "Paso 4 — Agente de Ventas",
+        desc: "Setup inicial + primer mes de soporte. Requiere WhatsApp Business activo.",
+        l: ["Entrenamiento del agente con tu negocio", "Integración WA Business + Instagram DM", "Flujos de seguimiento automático", "Optimización mensual incluida"],
+        badge: "El más diferenciado",
+      },
+      {
+        n: "Sociedad Satori",
+        p: "Desde $18,000",
+        et: "Paso 5 — Dominio Total",
+        desc: "Para el empresario que quiere un socio digital completo.",
+        l: ["Todos los servicios anteriores", "Identidad de marca y branding", "Sesión mensual de estrategia", "Consultoría prioritaria + acceso anticipado a IA"],
+        badge: "Todo incluido",
+      },
     ],
-    plan_cta: "Quiero empezar →",
+    plan_cta: "Quiero este plan →",
     nosotros_label: "Tu Socio Digital",
     nosotros_nombre: "Rodrigo Tristán",
     nosotros_cargo: "Fundador de SATORI",
@@ -100,7 +139,7 @@ const copy = {
     nosotros_p1: "Fundé Satori porque vi de cerca cómo negocios con enorme potencial perdían clientes y dinero por falta de sistemas — no por falta de talento.",
     nosotros_p2: "Hoy usamos la misma tecnología que tienen las grandes corporaciones y la ponemos a trabajar para ti. Para que tú te dediques a lo tuyo y el sistema trabaje solo.",
     garantia_title: "Garantía de 30 días:",
-    garantia_text: "Si en 30 días no sientes que el valor recibido supera con creces lo que pagaste, te regresamos tu dinero. Sin preguntas, sin drama.",
+    garantia_text: "Si en 30 días no sientes que el valor recibido supera con creces lo que pagaste, seguimos trabajando contigo 20 días más sin costo adicional. Sin preguntas, sin drama.",
     btn_zoom: "Agendar Zoom",
     btn_email: "Enviar Email",
     footer: "© 2026 SATORI · Soluciones Digitales con IA · San Luis Potosí, MX",
@@ -113,70 +152,109 @@ const copy = {
     hero_sub: "We know what it's like to run a business, answer messages, post on social media, and still try to grow. Satori automates the repetitive stuff so you can focus on what matters: selling.",
     cta1: "Get My Free Audit",
     cta2: "See How It Works",
-    lang_popup_title: "¿En qué idioma prefieres continuar?",
-    lang_popup_sub: "You can change this anytime / Puedes cambiarlo cuando quieras",
-    lang_es: "🇲🇽 Español",
-    lang_en: "🇺🇸 English",
     problema_h: "Do any of these sound familiar?",
     problemas: [
-      { q: '"I pay for ads but the wrong people show up."',         desc: "Your ad spend leaks because there's no system to filter and nurture leads before they go cold." },
+      { q: '"I pay for ads but the wrong people show up."', desc: "Your ad spend leaks because there's no system to filter and nurture leads before they go cold." },
       { q: '"I lose customers because I can\'t reply fast enough."', desc: "78% of sales go to whoever responds first. Without automation, you're losing deals you don't even know about." },
       { q: '"My social media is dead and my competitors are winning."', desc: "You don't have time for consistent content. But consistency builds trust — and trust drives sales." },
     ],
     problema_cta: "I found my problem — show me the fix →",
     stats: [
       { n: "24/7", d: "Your business always open" },
-      { n: "0",    d: "Leads slipping through the cracks" },
-      { n: "30",   d: "Days to see results or your money back" },
+      { n: "0",    d: "Leads lost" },
+      { n: "30",   d: "Days to see results" },
     ],
-    servicios_label: "What we build for you",
-    servicios_h: "Your digital team.\nWorking while you sleep.",
-    servicios_ver_mas: "Learn more",
+    servicios_label: "The path to growth",
+    servicios_h: "Step by step.\nOr all at once.",
+    servicios_sub: "Each service builds on the previous one. Start where you are and grow from there.",
+    servicios_ver_mas: "See details",
+    servicios_volver: "← Back",
+    servicios_paso: "Step",
     servicios: [
       {
+        paso: 1,
         t: "Digital Presence",
         sub: "Social Media + Content",
-        d: "Strategic posts, reels, and stories. We make your social media work for you every single day.",
-        back: "Includes: monthly content strategy, post design, AI copywriting in your brand voice, and metrics report. The ideal starting point to build authority in your market.",
+        d: "Your social media posting strategically every single day.",
+        back: "Posts, reels, and stories designed to position you as the go-to expert. Includes monthly strategy, design, AI copywriting, and metrics report.",
         i: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=800&q=80&fm=jpg",
       },
       {
-        t: "Your Online Storefront",
+        paso: 2,
+        t: "Your Website",
         sub: "Website or Landing Page",
-        d: "A page that turns visitors into customers. Built to sell, not just to look good.",
-        back: "Includes: professional design, strategic copywriting, mobile optimization, contact form, and delivery in 7-10 business days. The foundation every serious business needs online.",
+        d: "Your digital storefront that turns visitors into clients.",
+        back: "Professional design, strategic copywriting, mobile optimization, and delivery in 7-10 business days. The foundation every serious business needs online.",
         i: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&q=80&fm=jpg",
       },
       {
+        paso: 3,
         t: "Clients with Ads",
         sub: "Meta + Google Campaigns",
-        d: "Ads targeting people already looking for what you sell. Lower cost per lead, higher return.",
-        back: "Includes: campaign setup, advanced targeting, ad creatives, weekly optimization, and results report. Best when you already have a presence and want to scale.",
+        d: "Ads that bring the right client straight to your door.",
+        back: "Campaign setup, advanced targeting, ad creatives, weekly optimization, and monthly results report. Best when you already have a presence and want to scale.",
         i: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80&fm=jpg",
       },
       {
+        paso: 4,
         t: "24/7 Salesperson",
-        sub: "AI Agent for WhatsApp + Instagram",
-        d: "An AI agent trained in your brand voice that quotes, books, and closes while you sleep.",
-        back: "Includes: agent training with your catalog & FAQ, WhatsApp Business + Instagram DM integration, automated follow-up flows, and monthly optimization. The most differentiated service in the local market.",
-        i: "https://images.unsplash.com/photo-1531746790731-6c087fecd05a?w=800&q=80&fm=jpg",
+        sub: "AI Agent · WhatsApp + Instagram",
+        d: "An AI agent that quotes, books, and closes while you sleep.",
+        back: "Trained with your brand voice. Integrated into WhatsApp Business and Instagram DM. Automatically responds, qualifies leads, and books appointments. The most differentiated service in the local market.",
+        i: null,
       },
       {
-        t: "Satori Complete",
+        paso: 5,
+        t: "Satori Society",
         sub: "Everything + Strategy & Branding",
-        d: "For the entrepreneur who wants to dominate their local market. Not just tools — a full strategy.",
-        back: "Includes: all previous services + brand identity, monthly strategy session, priority consulting, and early access to new AI tools. Your complete digital partner.",
+        d: "To dominate your local market. Not a vendor — a partner.",
+        back: "All previous services + brand identity, monthly strategy session, priority consulting, and early access to new AI tools. Your complete digital team.",
         i: "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&q=80&fm=jpg",
       },
     ],
-    precios_h: "Clear plans.\nNo fine print.",
-    precios_sub: "No contracts. Just results.",
+    precios_h: "A plan for\nevery stage.",
+    precios_sub: "No contracts. No fine print. Just results.",
     planes: [
-      { n: "Starter",      p: "$4,500",  et: "For the business ready to scale",        l: ["Monthly content strategy", "12 posts with design & copy", "AI copywriting in your voice", "WhatsApp support"] },
-      { n: "Growth",       p: "$8,500",  et: "Most popular with our clients",           l: ["Everything in Starter", "2 managed social platforms", "Reels & TikToks for your biz", "Basic AI sales chatbot", "Monthly report"] },
-      { n: "Acceleration", p: "$15,000", et: "For total local market dominance",        l: ["Everything in Growth", "Meta + Google Ads", "Advanced AI sales agent", "Professional video", "Weekly strategy session"] },
+      {
+        n: "Presence",
+        p: "$3,500",
+        et: "Step 1 — Content & Social",
+        desc: "Ideal for businesses ready to start building authority online.",
+        l: ["Monthly content strategy", "12 posts with design & copy", "AI copywriting in your voice", "WhatsApp support"],
+      },
+      {
+        n: "Website",
+        p: "$8,000",
+        et: "Step 2 — Your Online Storefront",
+        desc: "One-time payment. Landing page or professional site in 7-10 days.",
+        l: ["Custom professional design", "Strategic copywriting included", "Mobile optimization + basic SEO", "Contact form + WA integration"],
+        badge: "One-time payment",
+      },
+      {
+        n: "Ads",
+        p: "$5,000",
+        et: "Step 3 — Paid Campaigns",
+        desc: "Monthly management of your Meta and/or Google campaigns.",
+        l: ["Campaign setup & targeting", "Ad creatives", "Weekly optimization", "Monthly results report"],
+      },
+      {
+        n: "AI Salesperson",
+        p: "$6,500",
+        et: "Step 4 — Sales Agent",
+        desc: "Initial setup + first month of support. Requires active WhatsApp Business.",
+        l: ["Agent trained on your business", "WA Business + Instagram DM integration", "Automated follow-up flows", "Monthly optimization included"],
+        badge: "Most differentiated",
+      },
+      {
+        n: "Satori Society",
+        p: "From $18,000",
+        et: "Step 5 — Total Domination",
+        desc: "For the entrepreneur who wants a complete digital partner.",
+        l: ["All previous services", "Brand identity & branding", "Monthly strategy session", "Priority consulting + early AI access"],
+        badge: "All-inclusive",
+      },
     ],
-    plan_cta: "Let's get started →",
+    plan_cta: "I want this plan →",
     nosotros_label: "Your Digital Partner",
     nosotros_nombre: "Rodrigo Tristán",
     nosotros_cargo: "Founder of SATORI",
@@ -184,7 +262,7 @@ const copy = {
     nosotros_p1: "I founded Satori because I watched great businesses lose clients and revenue not from lack of talent — but from lack of systems.",
     nosotros_p2: "Today we take the same technology used by major corporations and put it to work for you. So you focus on your craft, and the system handles the rest.",
     garantia_title: "30-Day Guarantee:",
-    garantia_text: "If within 30 days you don't feel the value far exceeds what you paid, we refund you in full. No questions, no drama.",
+    garantia_text: "If within 30 days you don't feel the value far exceeds what you paid, we keep working with you for 20 more days at no additional cost. No questions, no drama.",
     btn_zoom: "Book a Zoom",
     btn_email: "Send Email",
     footer: "© 2026 SATORI · AI-Powered Digital Solutions · San Luis Potosí, MX",
@@ -192,10 +270,10 @@ const copy = {
 };
 
 // ── Matrix Canvas ─────────────────────────────────────────────────────────────
-function MatrixBackground({ accentColor }: { accentColor: string }) {
+function MatrixBackground({ color }: { color: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const accentRef = useRef(accentColor);
-  useEffect(() => { accentRef.current = accentColor; }, [accentColor]);
+  const colorRef  = useRef(color);
+  useEffect(() => { colorRef.current = color; }, [color]);
   useEffect(() => {
     const canvas = canvasRef.current!;
     const ctx = canvas.getContext("2d")!;
@@ -210,9 +288,8 @@ function MatrixBackground({ accentColor }: { accentColor: string }) {
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.font = "14px monospace";
       drops.forEach((y, i) => {
-        const char = Math.random() < 0.5 ? "1" : "0";
-        ctx.fillStyle = Math.random() > 0.92 ? accentRef.current : accentRef.current + "44";
-        ctx.fillText(char, i * 20, y * 20);
+        ctx.fillStyle = Math.random() > 0.93 ? colorRef.current : colorRef.current + "44";
+        ctx.fillText(Math.random() < 0.5 ? "1" : "0", i * 20, y * 20);
         if (y * 20 > canvas.height && Math.random() > 0.975) drops[i] = 0;
         drops[i]++;
       });
@@ -221,7 +298,7 @@ function MatrixBackground({ accentColor }: { accentColor: string }) {
     draw();
     return () => { cancelAnimationFrame(animId); window.removeEventListener("resize", resize); };
   }, []);
-  return <canvas ref={canvasRef} style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", opacity: 0.15, pointerEvents: "none", zIndex: 0 }} />;
+  return <canvas ref={canvasRef} style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", opacity: 0.13, pointerEvents: "none", zIndex: 0 }} />;
 }
 
 // ── Language Popup ────────────────────────────────────────────────────────────
@@ -229,57 +306,189 @@ function LangPopup({ onSelect, t }: { onSelect: (l: "es" | "en") => void; t: typ
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
       className="fixed inset-0 z-[200] flex items-center justify-center"
-      style={{ backgroundColor: "rgba(0,0,0,0.7)", backdropFilter: "blur(8px)" }}>
+      style={{ backgroundColor: "rgba(0,0,0,0.75)", backdropFilter: "blur(8px)" }}>
       <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }}
-        className="p-10 rounded-2xl shadow-2xl max-w-sm w-full mx-6 text-center"
-        style={{ backgroundColor: t.card, color: t.text, border: `1px solid ${t.accent}30` }}>
-        <Image src="/logo-satori.png" alt="SATORI" width={100} height={30} className="invert mx-auto mb-6" />
+        className="p-10 max-w-sm w-full mx-6 text-center"
+        style={{ backgroundColor: t.card, color: t.text, border: `1px solid ${t.accent}25` }}>
+        <Image src="/logo-satori.png" alt="SATORI" width={100} height={30} className="mx-auto mb-6" style={{ filter: t.ensoFilter }} />
         <h2 className="text-2xl font-serif font-bold mb-2">¿Cómo prefieres continuar?</h2>
-        <p className="text-xs opacity-50 mb-8">You can change this anytime</p>
+        <p className="text-xs opacity-40 mb-8">You can change this anytime</p>
         <div className="flex flex-col gap-3">
-          <button onClick={() => onSelect("es")}
-            className="w-full py-4 font-black text-sm uppercase rounded-lg transition-all hover:scale-105"
-            style={{ backgroundColor: t.accent, color: t.bg }}>
-            🇲🇽 Español
-          </button>
-          <button onClick={() => onSelect("en")}
-            className="w-full py-4 font-black text-sm uppercase rounded-lg transition-all hover:scale-105 border"
-            style={{ borderColor: `${t.accent}40`, color: t.text }}>
-            🇺🇸 English
-          </button>
+          <button onClick={() => onSelect("es")} className="w-full py-4 font-black text-sm uppercase transition-all hover:scale-105" style={{ backgroundColor: t.accent, color: t.bg }}>🇲🇽 Español</button>
+          <button onClick={() => onSelect("en")} className="w-full py-4 font-black text-sm uppercase border transition-all hover:scale-105" style={{ borderColor: `${t.accent}40`, color: t.text }}>🇺🇸 English</button>
         </div>
       </motion.div>
     </motion.div>
   );
 }
 
-// ── Flip Card ────────────────────────────────────────────────────────────────
-function FlipCard({ s, t, c }: { s: typeof copy.es.servicios[0]; t: typeof themes.white; c: typeof copy.es }) {
-  const [flipped, setFlipped] = useState(false);
+// ── AI Workflow Card ──────────────────────────────────────────────────────────
+function AIWorkflowVisual({ accent, bg }: { accent: string; bg: string }) {
+  const steps = ["📩 Mensaje entrante", "🤖 IA analiza intención", "💬 Respuesta instantánea", "📅 Cita agendada", "✅ Cliente convertido"];
   return (
-    <div className="relative h-[420px] cursor-pointer" style={{ perspective: "1000px" }} onClick={() => setFlipped(!flipped)}>
-      <div className="w-full h-full transition-all duration-700 relative" style={{ transformStyle: "preserve-3d", transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)" }}>
-        {/* Front */}
-        <div className="absolute inset-0 border overflow-hidden group" style={{ borderColor: `${t.accent}15`, backgroundColor: t.bg, backfaceVisibility: "hidden" }}>
-          <img src={s.i} alt={s.t} className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy" />
-          <div className="p-6">
-            <p className="text-[10px] uppercase tracking-widest mb-1 font-bold" style={{ color: t.accent }}>{s.sub}</p>
-            <h3 className="text-xl font-bold mb-2">{s.t}</h3>
-            <p className="text-sm opacity-70 leading-relaxed mb-4" style={{ color: t.sub }}>{s.d}</p>
-            <span className="text-xs font-bold uppercase tracking-widest flex items-center gap-1" style={{ color: t.accent }}>
-              {c.servicios_ver_mas} <RotateCcw size={12} />
+    <div className="w-full h-48 flex flex-col justify-center px-4 py-3 gap-1" style={{ backgroundColor: bg }}>
+      {steps.map((s, i) => (
+        <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.15 }}
+          className="flex items-center gap-2 text-[11px] font-mono px-3 py-1.5 rounded"
+          style={{ backgroundColor: `${accent}15`, color: accent, border: `1px solid ${accent}25` }}>
+          <span className="opacity-40 text-[9px]">{String(i + 1).padStart(2, "0")}</span>
+          {s}
+          {i < steps.length - 1 && <span className="ml-auto opacity-30">↓</span>}
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
+// ── Rotating Enso ─────────────────────────────────────────────────────────────
+function RotatingEnso({ filter, visible }: { filter: string; visible: boolean }) {
+  return (
+    <AnimatePresence>
+      {visible && (
+        <motion.div
+          key="enso"
+          initial={{ opacity: 0, rotate: -30, scale: 0.7 }}
+          animate={{ opacity: 0.07, rotate: 0, scale: 1 }}
+          exit={{ opacity: 0, rotate: 30, scale: 0.7 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden"
+          style={{ zIndex: 0 }}>
+          <img src="/enso-negro.png" alt="" style={{ width: "110%", height: "110%", objectFit: "contain", filter }} />
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
+// ── Service Card ──────────────────────────────────────────────────────────────
+function ServiceCard({ s, t, c, isActive }: {
+  s: typeof copy.es.servicios[0];
+  t: typeof themes.white;
+  c: typeof copy.es;
+  isActive: boolean;
+}) {
+  const [flipped, setFlipped] = useState(false);
+
+  // Reset flip when card changes
+  useEffect(() => { setFlipped(false); }, [s.paso]);
+
+  return (
+    <div className="relative w-full" style={{ height: 420, perspective: "1200px" }}>
+      <RotatingEnso filter={t.ensoFilter} visible={isActive && !flipped} />
+      <div
+        onClick={() => setFlipped(f => !f)}
+        className="absolute inset-0 cursor-pointer"
+        style={{ transformStyle: "preserve-3d", transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)", transition: "transform 0.55s cubic-bezier(0.4,0.2,0.2,1)" }}>
+
+        {/* ── FRONT ── */}
+        <div className="absolute inset-0 overflow-hidden border" style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", backgroundColor: t.bg, borderColor: `${t.accent}15`, zIndex: 1 }}>
+          {s.i ? (
+            <img src={s.i} alt={s.t} className="w-full object-cover" style={{ height: 180 }} loading="lazy" />
+          ) : (
+            <AIWorkflowVisual accent={t.accent} bg={t.card} />
+          )}
+          <div className="p-5" style={{ height: "calc(100% - 180px)", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-[9px] font-black px-2 py-0.5" style={{ backgroundColor: t.accent, color: t.bg }}>{c.servicios_paso} {s.paso}</span>
+                <span className="text-[9px] uppercase tracking-widest font-bold opacity-60" style={{ color: t.accent }}>{s.sub}</span>
+              </div>
+              <h3 className="text-lg font-bold mb-2 leading-tight">{s.t}</h3>
+              <p className="text-xs leading-relaxed" style={{ color: t.sub }}>{s.d}</p>
+            </div>
+            <span className="text-[10px] font-bold uppercase tracking-widest mt-3 flex items-center gap-1" style={{ color: t.accent }}>
+              {c.servicios_ver_mas} →
             </span>
           </div>
         </div>
-        {/* Back */}
-        <div className="absolute inset-0 flex flex-col justify-center p-8 border" style={{ backgroundColor: t.accent, color: t.bg, backfaceVisibility: "hidden", transform: "rotateY(180deg)", borderColor: t.accent }}>
-          <p className="text-[10px] uppercase tracking-widest mb-3 opacity-60 font-bold">{s.sub}</p>
-          <h3 className="text-2xl font-bold mb-4">{s.t}</h3>
+
+        {/* ── BACK ── */}
+        <div className="absolute inset-0 flex flex-col justify-center p-7 border" style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", transform: "rotateY(180deg)", backgroundColor: t.accent, color: t.bg, borderColor: t.accent, zIndex: 1 }}>
+          <span className="text-[9px] font-black mb-4 opacity-60">{c.servicios_paso} {s.paso} · {s.sub}</span>
+          <h3 className="text-2xl font-bold mb-4 leading-tight">{s.t}</h3>
           <p className="text-sm leading-relaxed opacity-90">{s.back}</p>
-          <span className="mt-6 text-xs font-bold uppercase tracking-widest opacity-60 flex items-center gap-1">
-            <RotateCcw size={12} /> Volver
-          </span>
+          <span className="mt-6 text-[10px] font-bold uppercase tracking-widest opacity-50">{c.servicios_volver}</span>
         </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Services Swiper ───────────────────────────────────────────────────────────
+function ServicesSwiper({ t, c }: { t: typeof themes.white; c: typeof copy.es }) {
+  const [active, setActive] = useState(0);
+  const total = c.servicios.length;
+  const dragStart = useRef<number | null>(null);
+
+  const prev = () => setActive(a => (a - 1 + total) % total);
+  const next = () => setActive(a => (a + 1) % total);
+
+  const onDragStart = (e: React.MouseEvent | React.TouchEvent) => {
+    dragStart.current = "touches" in e ? e.touches[0].clientX : e.clientX;
+  };
+  const onDragEnd = (e: React.MouseEvent | React.TouchEvent) => {
+    if (dragStart.current === null) return;
+    const endX = "changedTouches" in e ? e.changedTouches[0].clientX : e.clientX;
+    const diff = dragStart.current - endX;
+    if (Math.abs(diff) > 40) diff > 0 ? next() : prev();
+    dragStart.current = null;
+  };
+
+  return (
+    <div className="relative" style={{ position: "relative", zIndex: 1 }}>
+      {/* Step indicators */}
+      <div className="flex items-center justify-center gap-2 mb-8">
+        {c.servicios.map((s, i) => (
+          <button key={i} onClick={() => setActive(i)}
+            className="flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest transition-all"
+            style={{ backgroundColor: active === i ? t.accent : "transparent", color: active === i ? t.bg : t.sub, border: `1px solid ${active === i ? t.accent : t.accent + "30"}` }}>
+            {s.paso}. {s.t.split(" ")[0]}
+          </button>
+        ))}
+      </div>
+
+      {/* Card area */}
+      <div className="relative overflow-hidden"
+        onMouseDown={onDragStart} onMouseUp={onDragEnd}
+        onTouchStart={onDragStart} onTouchEnd={onDragEnd}>
+        <div className="flex justify-center items-center" style={{ minHeight: 440, position: "relative" }}>
+          {/* Adjacent cards preview */}
+          {[-1, 0, 1].map(offset => {
+            const idx = (active + offset + total) % total;
+            const s = c.servicios[idx];
+            return (
+              <div key={idx} onClick={() => offset !== 0 && setActive(idx)}
+                className="absolute transition-all duration-500"
+                style={{
+                  width: offset === 0 ? "min(420px, 90vw)" : "min(180px, 30vw)",
+                  left: offset === -1 ? 0 : offset === 1 ? undefined : "50%",
+                  right: offset === 1 ? 0 : undefined,
+                  transform: offset === 0 ? "translateX(-50%)" : undefined,
+                  opacity: offset === 0 ? 1 : 0.25,
+                  scale: offset === 0 ? "1" : "0.88",
+                  zIndex: offset === 0 ? 10 : 1,
+                  cursor: offset !== 0 ? "pointer" : "default",
+                  pointerEvents: offset !== 0 ? "auto" : "auto",
+                  overflow: "hidden",
+                }}>
+                <ServiceCard s={s} t={t} c={c} isActive={offset === 0} />
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Nav arrows */}
+      <div className="flex items-center justify-center gap-6 mt-8">
+        <button onClick={prev} className="p-3 border transition-all hover:scale-110" style={{ borderColor: `${t.accent}40`, color: t.accent }}>
+          <ChevronLeft size={20} />
+        </button>
+        <span className="text-xs font-bold uppercase tracking-widest" style={{ color: t.sub }}>
+          {active + 1} / {total}
+        </span>
+        <button onClick={next} className="p-3 border transition-all hover:scale-110" style={{ borderColor: `${t.accent}40`, color: t.accent }}>
+          <ChevronRight size={20} />
+        </button>
       </div>
     </div>
   );
@@ -299,21 +508,17 @@ export default function Home() {
   };
 
   const waLink = lang === "es" ? WHATSAPP_LINK : WHATSAPP_LINK_EN;
-
-  const invertLogo = theme === "white" || theme === "gold";
+  const isLight = theme === "white" || theme === "gold";
 
   return (
     <main style={{ backgroundColor: t.bg, color: t.text, minHeight: "100vh", position: "relative", transition: "all 0.5s ease" }}>
-      <MatrixBackground accentColor={t.matrixColor} />
+      <MatrixBackground color={t.matrixColor} />
 
-      {/* Language Popup */}
       <AnimatePresence>
-        {showPopup && (
-          <LangPopup t={t} onSelect={(l) => { setLang(l); setShowPopup(false); }} />
-        )}
+        {showPopup && <LangPopup t={t} onSelect={(l) => { setLang(l); setShowPopup(false); }} />}
       </AnimatePresence>
 
-      {/* ── FLOATING BUTTONS ── */}
+      {/* Floating buttons */}
       <a href={waLink} target="_blank" rel="noopener noreferrer"
         className="fixed z-[100] flex items-center gap-2 px-4 py-3 rounded-full shadow-2xl transition-all hover:scale-105 font-black text-xs uppercase"
         style={{ bottom: "6rem", right: "1.5rem", backgroundColor: "#25D366", color: "#000" }}>
@@ -338,11 +543,11 @@ export default function Home() {
         <Palette size={18} />
       </button>
 
-      {/* ── NAV ── */}
+      {/* NAV */}
       <nav className="w-full px-6 py-4 flex items-center justify-between fixed top-0 left-0 right-0 z-50 backdrop-blur-md border-b"
         style={{ borderColor: `${t.accent}15`, backgroundColor: t.navBg }}>
         <a href="#inicio">
-          <Image src="/logo-satori.png" alt="SATORI" width={120} height={36} className={invertLogo ? "" : "invert"} />
+          <Image src="/logo-satori.png" alt="SATORI" width={120} height={36} style={{ filter: t.ensoFilter }} />
         </a>
         <div className="hidden md:flex items-center gap-6">
           <a href="#problema" className="text-xs font-bold uppercase" style={{ color: t.sub }}>{c.nav.problema}</a>
@@ -350,64 +555,50 @@ export default function Home() {
           <a href="#precios"   className="text-xs font-bold uppercase" style={{ color: t.sub }}>{c.nav.precios}</a>
           <button onClick={() => setShowPopup(true)}
             className="flex items-center gap-1 px-3 py-1 border rounded-full text-xs font-bold uppercase transition-all hover:scale-105"
-            style={{ borderColor: `${t.accent}50`, color: t.text, backgroundColor: `${t.accent}10` }}>
+            style={{ borderColor: `${t.accent}40`, color: t.text, backgroundColor: `${t.accent}08` }}>
             <Globe size={13} />
             {lang === "es" ? "EN" : "ES"}
           </button>
           <a href={CALENDLY_LINK} target="_blank"
-            className="px-6 py-2 font-black text-xs uppercase rounded"
+            className="px-6 py-2 font-black text-xs uppercase"
             style={{ backgroundColor: t.accent, color: t.bg }}>
             {c.nav.cta}
           </a>
         </div>
-        <button onClick={() => setShowPopup(true)}
-          className="md:hidden flex items-center gap-1 px-3 py-1 border rounded-full text-xs font-bold uppercase"
-          style={{ borderColor: `${t.accent}50`, color: t.text, backgroundColor: `${t.accent}10` }}>
-          <Globe size={13} />
-          {lang === "es" ? "EN" : "ES"}
+        <button onClick={() => setShowPopup(true)} className="md:hidden flex items-center gap-1 px-3 py-1 border rounded-full text-xs font-bold uppercase"
+          style={{ borderColor: `${t.accent}40`, color: t.text, backgroundColor: `${t.accent}08` }}>
+          <Globe size={13} /> {lang === "es" ? "EN" : "ES"}
         </button>
       </nav>
 
-      {/* ── HERO ── */}
-      <section id="inicio" className="px-6 pt-36 pb-20 max-w-6xl mx-auto grid md:grid-cols-2 items-center gap-12"
-        style={{ position: "relative", zIndex: 1 }}>
+      {/* HERO */}
+      <section id="inicio" className="px-6 pt-36 pb-20 max-w-6xl mx-auto grid md:grid-cols-2 items-center gap-12" style={{ position: "relative", zIndex: 1 }}>
         <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
-          <div className="inline-block px-4 py-1 rounded-full border mb-6"
-            style={{ borderColor: `${t.accent}30`, backgroundColor: `${t.accent}08` }}>
+          <div className="inline-block px-4 py-1 rounded-full border mb-6" style={{ borderColor: `${t.accent}25`, backgroundColor: `${t.accent}06` }}>
             <p className="text-[10px] tracking-[0.3em] uppercase font-black" style={{ color: t.accent }}>{c.badge}</p>
           </div>
           <h1 className="text-6xl md:text-8xl font-serif font-bold leading-none mb-4 tracking-tighter">
             {c.h1a}<br />
             <span style={{ color: t.accent }} className="italic font-normal">{c.h1b}</span>
           </h1>
-          <p className="text-lg mb-10 opacity-80 max-w-md leading-relaxed">{c.hero_sub}</p>
+          <p className="text-lg mb-10 opacity-75 max-w-md leading-relaxed">{c.hero_sub}</p>
           <div className="flex flex-wrap gap-4">
-            <a href={CALENDLY_LINK} target="_blank"
-              className="px-10 py-4 font-black uppercase text-sm shadow-lg transition-transform hover:scale-105"
-              style={{ backgroundColor: t.accent, color: t.bg }}>
-              {c.cta1}
-            </a>
-            <a href="#servicios"
-              className="px-10 py-4 border font-bold uppercase text-sm"
-              style={{ borderColor: t.accent, color: t.accent }}>
-              {c.cta2}
-            </a>
+            <a href={CALENDLY_LINK} target="_blank" className="px-10 py-4 font-black uppercase text-sm shadow-lg transition-transform hover:scale-105" style={{ backgroundColor: t.accent, color: t.bg }}>{c.cta1}</a>
+            <a href="#servicios" className="px-10 py-4 border font-bold uppercase text-sm" style={{ borderColor: t.accent, color: t.accent }}>{c.cta2}</a>
           </div>
         </motion.div>
         <div className="flex justify-center">
-          <Image src="/enso-negro.png" alt="Enso" width={450} height={450}
-            className={`opacity-100 brightness-150 ${invertLogo ? "brightness-50" : "invert"}`} />
+          <Image src="/enso-negro.png" alt="Enso" width={450} height={450} style={{ filter: t.ensoFilter, opacity: 0.9 }} />
         </div>
       </section>
 
-      {/* ── PROBLEMA ── */}
-      <section id="problema" className="px-6 py-24 border-y"
-        style={{ backgroundColor: `${t.card}`, borderColor: `${t.accent}10`, position: "relative", zIndex: 1 }}>
+      {/* PROBLEMA */}
+      <section id="problema" className="px-6 py-24 border-y" style={{ backgroundColor: t.card, borderColor: `${t.accent}10`, position: "relative", zIndex: 1 }}>
         <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl md:text-5xl font-serif mb-14 leading-tight text-center">{c.problema_h}</h2>
           <div className="grid md:grid-cols-3 gap-8 text-left">
             {c.problemas.map(({ q, desc }, i) => (
-              <div key={i} className="p-8 border-l-2" style={{ borderColor: `${t.accent}40`, backgroundColor: `${t.accent}05` }}>
+              <div key={i} className="p-8 border-l-2" style={{ borderColor: `${t.accent}40`, backgroundColor: `${t.accent}04` }}>
                 <div className="mb-4">
                   {i === 0 && <HandCoins size={24} style={{ color: t.accent }} />}
                   {i === 1 && <Zap       size={24} style={{ color: t.accent }} />}
@@ -419,16 +610,14 @@ export default function Home() {
             ))}
           </div>
           <div className="text-center mt-12">
-            <a href={waLink} target="_blank"
-              className="inline-block font-bold tracking-widest uppercase hover:scale-105 transition-all"
-              style={{ color: t.accent }}>
+            <a href={waLink} target="_blank" className="inline-block font-bold tracking-widest uppercase hover:scale-105 transition-all" style={{ color: t.accent }}>
               {c.problema_cta}
             </a>
           </div>
         </div>
       </section>
 
-      {/* ── NÚMEROS ── */}
+      {/* NÚMEROS */}
       <section className="px-6 py-16" style={{ position: "relative", zIndex: 1 }}>
         <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
           {c.stats.map(({ n, d }, i) => (
@@ -440,46 +629,44 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── SERVICIOS ── */}
-      <section id="servicios" className="px-6 py-24" style={{ backgroundColor: t.card, position: "relative", zIndex: 1 }}>
-        <div className="max-w-6xl mx-auto">
-          <div className="mb-16">
-            <p className="text-xs uppercase tracking-[0.5em] mb-4 font-black" style={{ color: t.accent }}>{c.servicios_label}</p>
-            <h2 className="text-5xl font-serif font-bold leading-tight whitespace-pre-line">{c.servicios_h}</h2>
+      {/* SERVICIOS — SWIPER */}
+      <section id="servicios" className="px-6 py-24" style={{ backgroundColor: t.card, position: "relative", zIndex: 1, overflow: "hidden" }}>
+        <div className="max-w-5xl mx-auto">
+          <div className="mb-10 text-center">
+            <p className="text-xs uppercase tracking-[0.5em] mb-3 font-black" style={{ color: t.accent }}>{c.servicios_label}</p>
+            <h2 className="text-4xl md:text-5xl font-serif font-bold leading-tight whitespace-pre-line mb-4">{c.servicios_h}</h2>
+            <p className="text-sm opacity-60 max-w-md mx-auto leading-relaxed" style={{ color: t.sub }}>{c.servicios_sub}</p>
           </div>
-          <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-6">
-            {c.servicios.map((s, i) => (
-              <FlipCard key={i} s={s} t={t} c={c} />
-            ))}
-          </div>
+          <ServicesSwiper t={t} c={c} />
         </div>
       </section>
 
-      {/* ── PRECIOS ── */}
+      {/* PRECIOS */}
       <section id="precios" className="px-6 py-24 max-w-6xl mx-auto" style={{ position: "relative", zIndex: 1 }}>
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-serif font-bold mb-4 leading-tight whitespace-pre-line">{c.precios_h}</h2>
-          <p className="text-xs uppercase tracking-widest opacity-60" style={{ color: t.sub }}>{c.precios_sub}</p>
+        <div className="text-center mb-14">
+          <h2 className="text-4xl font-serif font-bold mb-3 leading-tight whitespace-pre-line">{c.precios_h}</h2>
+          <p className="text-xs uppercase tracking-widest opacity-50" style={{ color: t.sub }}>{c.precios_sub}</p>
         </div>
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-5 gap-4">
           {c.planes.map((plan, i) => (
-            <div key={i} className="p-8 border-t-4 shadow-xl transition-transform hover:scale-[1.02]"
+            <div key={i} className="p-6 border-t-4 shadow-xl transition-transform hover:scale-[1.02] flex flex-col"
               style={{ borderColor: t.accent, backgroundColor: t.card }}>
-              <p className="text-[9px] tracking-[0.3em] uppercase font-black mb-3" style={{ color: t.accent }}>{plan.et}</p>
-              <h3 className="text-2xl font-bold mb-1">{plan.n}</h3>
-              <p className="text-3xl font-serif font-bold mb-6">{plan.p}
-                <span className="text-xs font-sans opacity-50 ml-1">/mes MXN</span>
-              </p>
-              <ul className="space-y-3 mb-8">
+              {"badge" in plan && plan.badge && (
+                <span className="text-[8px] font-black uppercase px-2 py-0.5 mb-2 self-start" style={{ backgroundColor: t.accent, color: t.bg }}>{plan.badge}</span>
+              )}
+              <p className="text-[9px] tracking-[0.2em] uppercase font-bold mb-2 opacity-60" style={{ color: t.accent }}>{plan.et}</p>
+              <h3 className="text-lg font-bold mb-1">{plan.n}</h3>
+              <p className="text-2xl font-serif font-bold mb-1">{plan.p}</p>
+              <p className="text-[9px] opacity-40 mb-4">/MXN</p>
+              <p className="text-[10px] leading-relaxed opacity-60 mb-4" style={{ color: t.sub }}>{plan.desc}</p>
+              <ul className="space-y-2 mb-6 flex-1">
                 {plan.l.map(item => (
-                  <li key={item} className="text-xs opacity-80 flex items-start gap-2">
-                    <CheckCircle2 size={12} style={{ color: t.accent }} className="mt-0.5 shrink-0" /> {item}
+                  <li key={item} className="text-[10px] flex items-start gap-1.5">
+                    <CheckCircle2 size={10} style={{ color: t.accent }} className="mt-0.5 shrink-0" /> {item}
                   </li>
                 ))}
               </ul>
-              <a href={waLink} target="_blank"
-                className="block text-center py-3 font-black uppercase text-xs"
-                style={{ backgroundColor: t.accent, color: t.bg }}>
+              <a href={waLink} target="_blank" className="block text-center py-2.5 font-black uppercase text-[10px] mt-auto" style={{ backgroundColor: t.accent, color: t.bg }}>
                 {c.plan_cta}
               </a>
             </div>
@@ -487,12 +674,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── NOSOTROS ── */}
-      <section id="nosotros" className="px-6 py-24 max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center"
-        style={{ position: "relative", zIndex: 1 }}>
+      {/* NOSOTROS */}
+      <section id="nosotros" className="px-6 py-24 max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center" style={{ position: "relative", zIndex: 1 }}>
         <div className="relative">
-          <Image src="/rodrigo.png" alt="Rodrigo Tristán" width={500} height={600}
-            className="grayscale hover:grayscale-0 transition-all duration-700 object-cover" />
+          <Image src="/rodrigo.png" alt="Rodrigo Tristán" width={500} height={600} className="grayscale hover:grayscale-0 transition-all duration-700 object-cover" />
           <div className="absolute -top-6 -left-6 w-24 h-24 border-t-2 border-l-2" style={{ borderColor: t.accent }}></div>
         </div>
         <div>
@@ -503,29 +688,22 @@ export default function Home() {
             <p className="text-xl italic font-medium leading-snug">{c.nosotros_quote}</p>
             <p className="text-base opacity-70 leading-relaxed">{c.nosotros_p1}</p>
             <p className="text-base opacity-70 leading-relaxed">{c.nosotros_p2}</p>
-            <div className="p-6 border" style={{ borderColor: `${t.accent}30`, backgroundColor: `${t.accent}05` }}>
+            <div className="p-6 border" style={{ borderColor: `${t.accent}25`, backgroundColor: `${t.accent}05` }}>
               <p className="font-bold mb-2 text-sm" style={{ color: t.accent }}>{c.garantia_title}</p>
               <p className="text-sm opacity-70 leading-relaxed">{c.garantia_text}</p>
             </div>
           </div>
           <div className="flex gap-4 flex-wrap">
-            <a href={CALENDLY_LINK} target="_blank"
-              className="px-8 py-4 font-bold border transition-all hover:scale-105"
-              style={{ borderColor: t.accent, color: t.accent }}>
-              {c.btn_zoom}
-            </a>
-            <a href={`mailto:${EMAIL}`} className="px-8 py-4 font-bold opacity-60 hover:opacity-100 transition-all">
-              {c.btn_email}
-            </a>
+            <a href={CALENDLY_LINK} target="_blank" className="px-8 py-4 font-bold border transition-all hover:scale-105" style={{ borderColor: t.accent, color: t.accent }}>{c.btn_zoom}</a>
+            <a href={`mailto:${EMAIL}`} className="px-8 py-4 font-bold opacity-60 hover:opacity-100 transition-all">{c.btn_email}</a>
           </div>
         </div>
       </section>
 
-      {/* ── FOOTER ── */}
-      <footer className="px-6 py-12 border-t flex flex-col md:flex-row justify-between items-center gap-6"
-        style={{ borderColor: `${t.accent}10`, position: "relative", zIndex: 1 }}>
-        <Image src="/logo-satori.png" alt="SATORI" width={100} height={30} className={invertLogo ? "" : "invert"} />
-        <p className="text-[10px] tracking-[0.3em] uppercase opacity-50">{c.footer}</p>
+      {/* FOOTER */}
+      <footer className="px-6 py-12 border-t flex flex-col md:flex-row justify-between items-center gap-6" style={{ borderColor: `${t.accent}10`, position: "relative", zIndex: 1 }}>
+        <Image src="/logo-satori.png" alt="SATORI" width={100} height={30} style={{ filter: t.ensoFilter }} />
+        <p className="text-[10px] tracking-[0.3em] uppercase opacity-40">{c.footer}</p>
       </footer>
     </main>
   );
