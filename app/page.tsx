@@ -384,6 +384,44 @@ function ServicesSpotlight({ t, c }: { t: typeof themes.white; c: typeof copy.es
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// COUNT UP / DOWN ANIMATION
+// ─────────────────────────────────────────────────────────────────────────────
+function CountUp({ from, to, duration = 2, suffix = "" }: { from: number; to: number; duration?: number; suffix?: string }) {
+  const [val, setVal] = useState(from);
+  const ref = useRef<HTMLSpanElement>(null);
+  const started = useRef(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !started.current) {
+          started.current = true;
+          const steps = 60;
+          const stepTime = (duration * 1000) / steps;
+          let step = 0;
+          const timer = setInterval(() => {
+            step++;
+            const progress = step / steps;
+            // ease-out cubic
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const current = Math.round(from + (to - from) * eased);
+            setVal(current);
+            if (step >= steps) { clearInterval(timer); setVal(to); }
+          }, stepTime);
+        }
+      },
+      { threshold: 0.5 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [from, to, duration]);
+
+  return <span ref={ref}>{val}{suffix}</span>;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // MAIN PAGE
 // ─────────────────────────────────────────────────────────────────────────────
 export default function Home() {
@@ -505,49 +543,83 @@ export default function Home() {
       </section>
 
       {/* ── PROBLEMA ── */}
-      <section id="problema" style={{ padding: "5rem 1.5rem", backgroundColor: t.card, borderTop: `1px solid ${t.accent}10`, borderBottom: `1px solid ${t.accent}10`, position: "relative", zIndex: 1 }}>
-        <div style={{ maxWidth: "56rem", margin: "0 auto" }}>
-          <h2 style={{ fontSize: "clamp(1.8rem,4vw,3rem)", fontFamily: "serif", textAlign: "center", marginBottom: "3rem", lineHeight: 1.2 }}>{c.problema_h}</h2>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1.5rem" }}>
+      <section id="problema" style={{ padding: "6rem 1.5rem", position: "relative", zIndex: 1, overflow: "hidden" }}>
+        {/* Large faded number in background */}
+        <div style={{ position: "absolute", right: "-2rem", top: "50%", transform: "translateY(-50%)", fontSize: "clamp(12rem,25vw,22rem)", fontFamily: "serif", fontWeight: 900, color: t.accent, opacity: 0.03, lineHeight: 1, pointerEvents: "none", userSelect: "none" }}>?</div>
+
+        <div style={{ maxWidth: "60rem", margin: "0 auto", position: "relative" }}>
+          {/* Title */}
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
+            <p style={{ fontSize: "0.6rem", textTransform: "uppercase", letterSpacing: "0.4em", color: t.accent, fontWeight: 900, marginBottom: "0.75rem" }}>El problema</p>
+            <h2 style={{ fontSize: "clamp(2rem,4.5vw,3.5rem)", fontFamily: "serif", lineHeight: 1.1, marginBottom: "4rem", maxWidth: "36rem" }}>{c.problema_h}</h2>
+          </motion.div>
+
+          {/* Problems as numbered list — full width, stacked */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
             {c.problemas.map(({ q, desc }, i) => {
               const Icon = Icons[i];
               return (
                 <motion.div key={i}
-                  initial={{ opacity: 0, x: -60 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  whileHover={{ scale: 1.02, x: 4 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.18, duration: 0.55, ease: "easeOut" }}
-                  style={{ padding: "1.5rem", borderLeft: `2px solid ${t.accent}35`, backgroundColor: `${t.accent}04`, display: "flex", gap: "1rem", alignItems: "flex-start", cursor: "default" }}>
-                  <motion.div animate={{ scale: [1, 1.18, 1] }} transition={{ duration: 2.8, repeat: Infinity, delay: i * 0.5 }} style={{ flexShrink: 0, marginTop: "0.15rem" }}>
-                    <Icon size={20} style={{ color: nextAccent }} />
-                  </motion.div>
-                  <div>
-                    <p style={{ fontSize: "0.88rem", fontStyle: "italic", fontWeight: 600, marginBottom: "0.5rem", lineHeight: 1.4 }}>"{q}"</p>
-                    <p style={{ fontSize: "0.78rem", opacity: 0.58, lineHeight: 1.65, color: t.sub }}>{desc}</p>
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-60px" }}
+                  transition={{ delay: i * 0.15, duration: 0.5, ease: "easeOut" }}
+                  style={{ display: "grid", gridTemplateColumns: "3rem 1fr auto", gap: "1.5rem", alignItems: "start", padding: "2rem 0", borderBottom: i < 2 ? `1px solid ${t.accent}12` : "none" }}>
+                  {/* Number */}
+                  <div style={{ fontSize: "clamp(2rem,4vw,3rem)", fontFamily: "serif", fontWeight: 700, color: t.accent, opacity: 0.25, lineHeight: 1, paddingTop: "0.1rem" }}>
+                    {String(i + 1).padStart(2, "0")}
                   </div>
+                  {/* Text */}
+                  <div>
+                    <p style={{ fontSize: "clamp(1rem,2.2vw,1.3rem)", fontWeight: 700, lineHeight: 1.3, marginBottom: "0.6rem" }}>{q}</p>
+                    <p style={{ fontSize: "0.85rem", opacity: 0.55, lineHeight: 1.7, color: t.sub, maxWidth: "36rem" }}>{desc}</p>
+                  </div>
+                  {/* Icon — animated */}
+                  <motion.div
+                    animate={{ y: [0, -5, 0] }}
+                    transition={{ duration: 3, repeat: Infinity, delay: i * 0.8, ease: "easeInOut" }}
+                    style={{ paddingTop: "0.2rem" }}>
+                    <Icon size={22} style={{ color: nextAccent, opacity: 0.7 }} />
+                  </motion.div>
                 </motion.div>
               );
             })}
           </div>
-          <div style={{ textAlign: "center", marginTop: "2.5rem" }}>
-            <a href={waLink} target="_blank" style={{ fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: t.accent, fontSize: "0.72rem", textDecoration: "none" }}>{c.problema_cta}</a>
-          </div>
+
+          {/* CTA */}
+          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.5 }}
+            style={{ marginTop: "3rem", display: "flex", alignItems: "center", gap: "1.5rem", flexWrap: "wrap" }}>
+            <a href={waLink} target="_blank"
+              style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", color: t.bg, fontSize: "0.72rem", textDecoration: "none", backgroundColor: t.accent, padding: "0.85rem 2rem" }}>
+              {c.problema_cta}
+            </a>
+            <span style={{ fontSize: "0.72rem", opacity: 0.4, color: t.sub }}>— es gratis, sin compromiso</span>
+          </motion.div>
         </div>
       </section>
 
-      {/* ── STATS ── */}
-      <section style={{ padding: "4rem 1.5rem", position: "relative", zIndex: 1 }}>
-        <div style={{ maxWidth: "52rem", margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1.5rem", textAlign: "center" }}>
-          {c.stats.map(({ label, n }, i) => (
-            <motion.div key={i}
-              initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} whileHover={{ scale: 1.05, y: -3 }}
-              viewport={{ once: true }} transition={{ delay: i * 0.1 }}
-              style={{ padding: "2rem 1rem", backgroundColor: `${t.accent}06`, border: `1px solid ${t.accent}10`, cursor: "default" }}>
-              <p style={{ fontSize: "0.6rem", textTransform: "uppercase", letterSpacing: "0.2em", color: t.sub, marginBottom: "1rem", lineHeight: 1.6 }}>{label}</p>
-              <p style={{ fontSize: "clamp(2.8rem,5vw,4rem)", fontFamily: "serif", fontWeight: 700, color: t.accent, lineHeight: 1 }}>{n}</p>
-            </motion.div>
-          ))}
+      {/* ── STATS with CountUp ── */}
+      <section style={{ padding: "5rem 1.5rem", position: "relative", zIndex: 1, backgroundColor: t.card, borderTop: `1px solid ${t.accent}08` }}>
+        <div style={{ maxWidth: "56rem", margin: "0 auto" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(1rem,4vw,3rem)" }}>
+            {[
+              { label: c.stats[0].label, from: 1,   to: 24,  suffix: "/7",  desc: lang === "es" ? "Siempre disponible" : "Always available" },
+              { label: c.stats[1].label, from: 100, to: 0,   suffix: "",    desc: lang === "es" ? "Prospecto aprovechado" : "Every lead captured" },
+              { label: c.stats[2].label, from: 90,  to: 30,  suffix: " d",  desc: lang === "es" ? "Para ver resultados" : "To see results" },
+            ].map(({ label, from, to, suffix, desc }, i) => (
+              <motion.div key={i}
+                initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+                whileHover={{ y: -4 }}
+                viewport={{ once: true }} transition={{ delay: i * 0.12, duration: 0.5 }}
+                style={{ textAlign: "center", padding: "2.5rem 1rem", cursor: "default" }}>
+                <p style={{ fontSize: "0.55rem", textTransform: "uppercase", letterSpacing: "0.25em", color: t.sub, marginBottom: "1rem", lineHeight: 1.6 }}>{label}</p>
+                <p style={{ fontSize: "clamp(3rem,6vw,5rem)", fontFamily: "serif", fontWeight: 700, color: t.accent, lineHeight: 1, marginBottom: "0.5rem" }}>
+                  <CountUp from={from} to={to} duration={2.2} suffix={suffix} />
+                </p>
+                <p style={{ fontSize: "0.65rem", opacity: 0.4, textTransform: "uppercase", letterSpacing: "0.15em", color: t.sub }}>{desc}</p>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
