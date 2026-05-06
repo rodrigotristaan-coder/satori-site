@@ -241,137 +241,188 @@ function LangPopup({ onSelect, t }: { onSelect: (l: "es" | "en") => void; t: typ
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// SERVICES — FULLSCREEN SPOTLIGHT
+// SERVICES — HORIZONTAL TIMELINE
 // ─────────────────────────────────────────────────────────────────────────────
-function ServicesSpotlight({ t, c }: { t: typeof themes.white; c: typeof copy.es }) {
+function ServicesTimeline({ t, c }: { t: typeof themes.white; c: typeof copy.es }) {
   const [active, setActive] = useState(0);
-  const [expanded, setExpanded] = useState(false);
+  const [detailOpen, setDetailOpen] = useState(false);
   const total = c.servicios.length;
   const startX = useRef<number | null>(null);
   const dragged = useRef(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  const goTo = (i: number) => { setActive((i + total) % total); setExpanded(false); };
+  const goTo = (i: number) => {
+    setActive((i + total) % total);
+    setDetailOpen(false);
+  };
 
-  const onPointerDown = (e: React.PointerEvent) => { startX.current = e.clientX; dragged.current = false; };
-  const onPointerMove = (e: React.PointerEvent) => { if (startX.current !== null && Math.abs(e.clientX - startX.current) > 8) dragged.current = true; };
-  const onPointerUp   = (e: React.PointerEvent) => {
+  const onPointerDown = (e: React.PointerEvent) => {
+    startX.current = e.clientX;
+    dragged.current = false;
+  };
+  const onPointerMove = (e: React.PointerEvent) => {
+    if (startX.current !== null && Math.abs(e.clientX - startX.current) > 8) dragged.current = true;
+  };
+  const onPointerUp = (e: React.PointerEvent) => {
     if (!startX.current) return;
     const diff = startX.current - e.clientX;
     if (Math.abs(diff) > 50 && dragged.current) diff > 0 ? goTo(active + 1) : goTo(active - 1);
-    startX.current = null; dragged.current = false;
+    startX.current = null;
+    dragged.current = false;
   };
 
   const s = c.servicios[active];
 
-  // Fallback gradient for services without a photo
-  const bgImage = s.i
-    ? `url(${s.i})`
-    : `linear-gradient(135deg, ${t.card} 0%, ${t.bg} 100%)`;
+  // Unique gradient tint per service
+  const tints = ["#FF6B6B", "#4ECDC4", "#45B7D1", "#96CEB4", "#FFEAA7"];
+  const tint = tints[active];
 
   return (
-    <div style={{ position: "relative", overflow: "hidden" }}>
-      {/* Full-width image area */}
+    <div ref={containerRef} style={{ position: "relative", overflow: "hidden" }}>
+
+      {/* ── MAIN STAGE ── */}
       <div
-        style={{ position: "relative", height: "clamp(400px, 60vh, 640px)", userSelect: "none", touchAction: "pan-y", WebkitTapHighlightColor: "transparent" } as React.CSSProperties}
+        style={{ position: "relative", minHeight: "85vh", display: "flex", flexDirection: "column", justifyContent: "flex-end",
+          userSelect: "none", touchAction: "pan-y", WebkitTapHighlightColor: "transparent",
+          cursor: detailOpen ? "default" : "ew-resize",
+        } as React.CSSProperties}
         onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp}>
 
-        {/* BG image with crossfade */}
+        {/* Background — service image with strong overlay */}
         <AnimatePresence mode="wait">
           <motion.div key={`bg-${active}`}
-            initial={{ opacity: 0, scale: 1.04 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.97 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            style={{ position: "absolute", inset: 0, backgroundImage: bgImage, backgroundSize: "cover", backgroundPosition: "center" }} />
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            transition={{ duration: 0.7 }}
+            style={{ position: "absolute", inset: 0, zIndex: 0 }}>
+            {s.i && (
+              <img src={s.i} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", display: "block" }} />
+            )}
+            {/* Dark overlay — gets lighter toward center */}
+            <div style={{ position: "absolute", inset: 0, background: `linear-gradient(135deg, ${t.bg}F5 0%, ${t.bg}BB 40%, ${t.bg}88 70%, ${t.bg}CC 100%)` }} />
+            {/* Tint accent stripe */}
+            <div style={{ position: "absolute", inset: 0, background: `linear-gradient(to right, transparent 50%, ${tint}18 100%)` }} />
+          </motion.div>
         </AnimatePresence>
 
-        {/* Gradient overlay — darker at bottom */}
-        <div style={{ position: "absolute", inset: 0, background: `linear-gradient(to bottom, ${t.bg}22 0%, ${t.bg}99 55%, ${t.bg}EE 100%)` }} />
-
-        {/* Enso watermark */}
-        <div style={{ position: "absolute", right: "-5%", top: "50%", transform: "translateY(-50%)", width: "45%", maxWidth: 340, opacity: 0.06, pointerEvents: "none" }}>
-          <img src="/enso-negro.png" alt="" style={{ width: "100%", filter: t.ensoFilter.replace("opacity(0.06)", "opacity(1)") }} />
+        {/* Giant background number */}
+        <div style={{ position: "absolute", right: "clamp(1rem,5vw,4rem)", top: "50%", transform: "translateY(-60%)", zIndex: 1, pointerEvents: "none", lineHeight: 1, userSelect: "none" }}>
+          <AnimatePresence mode="wait">
+            <motion.span key={`num-${active}`}
+              initial={{ opacity: 0, y: 20, scale: 0.9 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -20, scale: 1.1 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              style={{ fontSize: "clamp(10rem,30vw,22rem)", fontFamily: "serif", fontWeight: 900, color: t.accent, opacity: 0.06, display: "block", lineHeight: 0.85 }}>
+              {String(active + 1).padStart(2, "0")}
+            </motion.span>
+          </AnimatePresence>
         </div>
 
-        {/* Content */}
-        <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "2.5rem clamp(1.5rem,5vw,4rem)" }}>
-          {/* Package number */}
-          <motion.p key={`num-${active}`} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-            style={{ fontSize: "0.6rem", textTransform: "uppercase", letterSpacing: "0.4em", color: t.accent, fontWeight: 900, marginBottom: "0.6rem", opacity: 0.8 }}>
-            {c.paquete} {s.num} · {s.sub}
-          </motion.p>
+        {/* Content — bottom aligned */}
+        <div style={{ position: "relative", zIndex: 2, padding: "0 clamp(1.5rem,6vw,5rem) 3rem" }}>
+          {/* Sub label */}
+          <AnimatePresence mode="wait">
+            <motion.p key={`sub-${active}`}
+              initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+              transition={{ duration: 0.35, delay: 0.1 }}
+              style={{ fontSize: "0.58rem", textTransform: "uppercase", letterSpacing: "0.4em", color: tint, fontWeight: 900, marginBottom: "0.75rem", opacity: 0.9 }}>
+              {c.paquete} {s.num} · {s.sub}
+            </motion.p>
+          </AnimatePresence>
 
-          {/* Title */}
+          {/* Big title */}
           <AnimatePresence mode="wait">
             <motion.h2 key={`title-${active}`}
-              initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 30 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
-              style={{ fontSize: "clamp(2.2rem,6vw,4.5rem)", fontFamily: "serif", fontWeight: 700, lineHeight: 1.05, color: t.text, marginBottom: "0.75rem", letterSpacing: "-0.01em" }}>
+              initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 40 }}
+              transition={{ duration: 0.45, ease: "easeOut" }}
+              style={{ fontSize: "clamp(2.8rem,7vw,5.5rem)", fontFamily: "serif", fontWeight: 700, lineHeight: 1.0, color: t.text, marginBottom: "1.2rem", letterSpacing: "-0.02em", maxWidth: "14ch" }}>
               {s.t}
             </motion.h2>
           </AnimatePresence>
 
-          {/* Short description */}
+          {/* Short desc + CTA row */}
           <AnimatePresence mode="wait">
-            <motion.p key={`desc-${active}`}
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              transition={{ delay: 0.15, duration: 0.4 }}
-              style={{ fontSize: "clamp(0.9rem,2vw,1.05rem)", color: t.text, opacity: 0.72, maxWidth: "42rem", lineHeight: 1.65, marginBottom: "1rem" }}>
-              {s.d}
-            </motion.p>
+            <motion.div key={`desc-${active}`}
+              initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+              transition={{ duration: 0.4, delay: 0.15 }}
+              style={{ display: "flex", alignItems: "flex-start", gap: "2rem", flexWrap: "wrap" }}>
+              <p style={{ fontSize: "clamp(0.95rem,1.8vw,1.1rem)", color: t.text, opacity: 0.7, maxWidth: "38rem", lineHeight: 1.65 }}>
+                {s.d}
+              </p>
+              <button
+                onClick={() => setDetailOpen(o => !o)}
+                style={{ flexShrink: 0, padding: "0.7rem 1.5rem", backgroundColor: "transparent", color: tint, border: `1.5px solid ${tint}`, cursor: "pointer", fontSize: "0.68rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.15em", transition: "all 0.25s", whiteSpace: "nowrap" }}
+                onMouseEnter={e => { e.currentTarget.style.backgroundColor = tint; e.currentTarget.style.color = "#000"; }}
+                onMouseLeave={e => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = tint; }}>
+                {detailOpen ? (c.volver) : (c.ver_mas + " →")}
+              </button>
+            </motion.div>
           </AnimatePresence>
-
-
         </div>
       </div>
 
-      {/* Detail panel — always visible */}
-      <AnimatePresence mode="wait">
-        <motion.div key={`back-${active}`}
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.35 }}
-          style={{ backgroundColor: t.accent, color: t.bg }}>
-          <p style={{ padding: "1.75rem clamp(1.5rem,5vw,4rem)", fontSize: "clamp(0.9rem,1.8vw,1.05rem)", lineHeight: 1.8, maxWidth: "52rem", opacity: 0.95 }}>
-            {s.back}
-          </p>
-        </motion.div>
+      {/* ── DETAIL PANEL — slides down ── */}
+      <AnimatePresence>
+        {detailOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.45, ease: "easeInOut" }}
+            style={{ overflow: "hidden", borderTop: `2px solid ${tint}60` }}>
+            <motion.div
+              initial={{ y: 12, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 12, opacity: 0 }}
+              transition={{ delay: 0.15 }}
+              style={{ padding: "2.5rem clamp(1.5rem,6vw,5rem)", display: "grid", gridTemplateColumns: "1fr auto", gap: "2rem", alignItems: "start" }}>
+              <p style={{ fontSize: "clamp(1rem,1.8vw,1.15rem)", lineHeight: 1.85, color: t.text, opacity: 0.85, maxWidth: "52rem" }}>
+                {s.back}
+              </p>
+              <div style={{ textAlign: "right", flexShrink: 0 }}>
+                <div style={{ fontSize: "clamp(3rem,6vw,5rem)", fontFamily: "serif", fontWeight: 900, color: tint, opacity: 0.2, lineHeight: 1 }}>
+                  {String(active + 1).padStart(2, "0")}
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
       </AnimatePresence>
 
-      {/* Navigation row */}
-      <div style={{ padding: "1.75rem clamp(1.5rem,5vw,4rem)", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem" }}>
-        {/* Pills */}
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}>
+      {/* ── TIMELINE TRACK ── */}
+      <div style={{ padding: "2rem clamp(1.5rem,6vw,5rem)", position: "relative", zIndex: 3 }}>
+        {/* Connecting line */}
+        <div style={{ position: "relative", display: "flex", alignItems: "center", gap: 0 }}>
+          {/* Base line */}
+          <div style={{ position: "absolute", top: "50%", left: 0, right: 0, height: 1, backgroundColor: `${t.accent}15`, transform: "translateY(-50%)" }} />
+          {/* Progress line */}
+          <motion.div
+            style={{ position: "absolute", top: "50%", left: 0, height: 2, backgroundColor: tint, transform: "translateY(-50%)", borderRadius: 1 }}
+            animate={{ width: `${(active / (total - 1)) * 100}%` }}
+            transition={{ duration: 0.5, ease: "easeOut" }} />
+
+          {/* Nodes */}
           {c.servicios.map((sv, i) => (
-            <button key={i} onClick={() => goTo(i)}
-              style={{ padding: "0.35rem 0.85rem", fontSize: "0.62rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.1em", backgroundColor: active === i ? t.accent : "transparent", color: active === i ? t.bg : t.sub, border: "none", cursor: "pointer", transition: "all 0.25s" }}>
-              {sv.num}. {sv.tag}
-            </button>
+            <div key={i} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: i === 0 ? "flex-start" : i === total - 1 ? "flex-end" : "center", position: "relative", zIndex: 1 }}>
+              <button
+                onClick={() => goTo(i)}
+                style={{ width: active === i ? 14 : 8, height: active === i ? 14 : 8, borderRadius: "50%", backgroundColor: active === i ? tint : `${t.accent}30`, border: active === i ? `2px solid ${tint}` : "none", cursor: "pointer", padding: 0, transition: "all 0.35s", boxShadow: active === i ? `0 0 12px ${tint}80` : "none" }} />
+              <span style={{ fontSize: "0.55rem", textTransform: "uppercase", letterSpacing: "0.1em", color: active === i ? tint : t.sub, fontWeight: active === i ? 900 : 400, marginTop: "0.6rem", transition: "all 0.3s", whiteSpace: "nowrap" }}>
+                {sv.tag}
+              </span>
+            </div>
           ))}
         </div>
-
-        {/* Arrows + dots */}
-        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-          <button onClick={() => goTo(active - 1)} style={{ background: "none", border: "none", color: t.accent, cursor: "pointer", opacity: 0.6, padding: "0.25rem" }}
-            onMouseEnter={e => (e.currentTarget.style.opacity = "1")} onMouseLeave={e => (e.currentTarget.style.opacity = "0.6")}>
-            <ChevronLeft size={22} />
-          </button>
-          <div style={{ display: "flex", gap: "0.35rem", alignItems: "center" }}>
-            {c.servicios.map((_, i) => (
-              <button key={i} onClick={() => goTo(i)}
-                style={{ width: active === i ? 24 : 6, height: 6, borderRadius: 3, backgroundColor: active === i ? t.accent : `${t.accent}35`, border: "none", cursor: "pointer", padding: 0, transition: "all 0.3s" }} />
-            ))}
-          </div>
-          <button onClick={() => goTo(active + 1)} style={{ background: "none", border: "none", color: t.accent, cursor: "pointer", opacity: 0.6, padding: "0.25rem" }}
-            onMouseEnter={e => (e.currentTarget.style.opacity = "1")} onMouseLeave={e => (e.currentTarget.style.opacity = "0.6")}>
-            <ChevronRight size={22} />
-          </button>
-        </div>
       </div>
+
+      {/* ── SWIPE HINT on mobile ── */}
+      <motion.div
+        animate={{ x: [0, 8, 0] }} transition={{ duration: 1.8, repeat: 3, delay: 1 }}
+        style={{ textAlign: "center", paddingBottom: "1.5rem", fontSize: "0.55rem", textTransform: "uppercase", letterSpacing: "0.2em", color: t.sub, opacity: 0.4 }}>
+        ← swipe →
+      </motion.div>
     </div>
   );
 }
+
 
 // ─────────────────────────────────────────────────────────────────────────────
 // COUNT UP / DOWN ANIMATION
@@ -669,7 +720,7 @@ export default function Home() {
           <h2 style={{ fontSize: "clamp(2.4rem,5vw,4rem)", fontFamily: "serif", fontWeight: 700, lineHeight: 1.08, marginBottom: "0.5rem" }}>{c.camino_h}</h2>
           <p style={{ fontSize: "0.88rem", opacity: 0.48, maxWidth: "32rem", lineHeight: 1.7, color: t.sub, marginBottom: "2rem" }}>{c.camino_sub}</p>
         </div>
-        <ServicesSpotlight t={t} c={c} />
+        <ServicesTimeline t={t} c={c} />
       </section>
 
       {/* ── COTIZAR ── */}
