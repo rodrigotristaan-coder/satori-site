@@ -390,6 +390,8 @@ function CountUp({ from, to, duration = 2, suffix = "" }: { from: number; to: nu
   const [val, setVal] = useState(from);
   const ref = useRef<HTMLSpanElement>(null);
   const started = useRef(false);
+  // Reset if from/to change (language switch)
+  useEffect(() => { setVal(from); started.current = false; }, [from, to]);
 
   useEffect(() => {
     const el = ref.current;
@@ -412,7 +414,7 @@ function CountUp({ from, to, duration = 2, suffix = "" }: { from: number; to: nu
           }, stepTime);
         }
       },
-      { threshold: 0.5 }
+      { threshold: 0.15, rootMargin: "0px 0px -50px 0px" }
     );
     observer.observe(el);
     return () => observer.disconnect();
@@ -430,20 +432,43 @@ export default function Home() {
   const [showPopup, setShowPopup] = useState(true);
   const [shake, setShake]         = useState(false);
   const [paletteActive, setPaletteActive] = useState(false);
+  const [logoThemeIdx, setLogoThemeIdx] = useState(0);
   const introRan = useRef(false);
 
   // Theme intro runs after lang is chosen
   const runThemeIntro = () => {
     if (introRan.current) return;
     introRan.current = true;
-    // Cycle every 0.5s: silver→rainbow→gold→white→blue, 5 steps
-    const order = [2, 3, 4, 0, 1];
-    order.forEach((idx, step) => {
-      setTimeout(() => setThemeIdx(idx), (step + 1) * 500);
+
+    // Step through themes with individual timeouts (reliable, no stale closure)
+    // Pattern: white→blue→silver→rainbow→gold — land on gold (idx 4)
+    const steps = [
+      [0,   0],  // white
+      [1, 500],  // blue
+      [2,1000],  // silver
+      [3,1500],  // rainbow
+      [0,2000],  // white
+      [1,2500],  // blue
+      [2,3000],  // silver
+      [3,3500],  // rainbow
+      [4,4000],  // gold — final
+    ];
+    steps.forEach(([idx, delay]) => {
+      setTimeout(() => setThemeIdx(idx), delay);
     });
-    // Palette button pulses color for 10s
-    setPaletteActive(true);
-    setTimeout(() => setPaletteActive(false), 10000);
+
+    // After landing on gold (4s), start infinite logo color cycling on the button
+    setTimeout(() => {
+      setPaletteActive(true);
+      // Cycle logo color every 600ms — infinite
+      let step = 0;
+      const cycle = () => {
+        step++;
+        setLogoThemeIdx(step % themeOrder.length);
+      };
+      // Store interval id so we never clear it (runs forever)
+      setInterval(cycle, 600);
+    }, 4200);
   };
 
   // Button shake every 15 seconds
@@ -502,7 +527,7 @@ export default function Home() {
         <span className="hidden md:inline">{c.btn_zoom}</span>
       </a>
 
-      <button onClick={() => setThemeIdx(i => (i + 1) % themeOrder.length)} style={{ position: "fixed", bottom: "10.5rem", right: "1.5rem", zIndex: 100, padding: "0.75rem", borderRadius: 999, backgroundColor: paletteActive ? t.accent : t.card, color: paletteActive ? t.bg : t.accent, border: `1px solid ${t.accent}30`, cursor: "pointer", boxShadow: paletteActive ? `0 0 20px ${t.accent}88` : "0 4px 20px rgba(0,0,0,0.15)", transition: "all 0.4s ease" }}>
+      <button onClick={() => setThemeIdx(i => (i + 1) % themeOrder.length)} style={{ position: "fixed", bottom: "10.5rem", right: "1.5rem", zIndex: 100, padding: "0.75rem", borderRadius: 999, backgroundColor: paletteActive ? themes[themeOrder[logoThemeIdx]].accent : t.card, color: paletteActive ? themes[themeOrder[logoThemeIdx]].bg : t.accent, border: `1px solid ${t.accent}30`, cursor: "pointer", boxShadow: paletteActive ? `0 0 24px ${themes[themeOrder[logoThemeIdx]].accent}99` : "0 4px 20px rgba(0,0,0,0.15)", transition: "background-color 0.4s, color 0.4s, box-shadow 0.4s" }}>
         <Palette size={18} />
       </button>
 
