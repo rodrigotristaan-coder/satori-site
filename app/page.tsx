@@ -83,7 +83,7 @@ const copy = {
         sub: "Agente IA · WhatsApp + Instagram",
         d: "Un agente que cotiza, agenda y cierra mientras duermes.",
         back: "Entrenado con tu negocio. Integrado a WhatsApp e Instagram DM. Responde, califica y agenda automáticamente — sin que tú intervengas.",
-        i: null,
+        i: "https://images.unsplash.com/photo-1676299081847-824916de030a?w=800&q=80&fm=jpg",
       },
       {
         num: 5, tag: "¿Satori?",
@@ -91,7 +91,7 @@ const copy = {
         sub: "Todo lo anterior + Estrategia y Branding",
         d: "Para dominar tu mercado. No un proveedor — un socio.",
         back: "Todos los servicios + identidad de marca, sesión mensual de estrategia, consultoría prioritaria y acceso anticipado a nuevas herramientas de IA.",
-        i: "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&q=80&fm=jpg",
+        i: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&q=80&fm=jpg",
       },
     ],
     cotizar_h: "¿Listo para crecer?",
@@ -139,7 +139,7 @@ const copy = {
       { num: 1, tag: "Social", t: "Digital Presence", sub: "Social Media + Content", d: "Your social media posting strategically every single day.", back: "Posts, reels, and stories designed to position you as the go-to expert. Monthly strategy, design, AI copywriting, and metrics report.", i: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=800&q=80&fm=jpg" },
       { num: 2, tag: "Website", t: "Your Website", sub: "Website or Landing Page", d: "Your digital storefront that turns visitors into clients.", back: "Professional design, strategic copywriting, mobile optimization. Delivery in 7–10 days. The foundation every serious business needs.", i: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&q=80&fm=jpg" },
       { num: 3, tag: "Social Ads", t: "Clients with Ads", sub: "Meta + Google Campaigns", d: "Ads that bring the right client straight to your door.", back: "Campaign setup, advanced targeting, creatives, weekly optimization and monthly report. Best when you already have a presence.", i: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80&fm=jpg" },
-      { num: 4, tag: "AI Bot", t: "24/7 Salesperson", sub: "AI Agent · WhatsApp + Instagram", d: "An agent that quotes, books, and closes while you sleep.", back: "Trained with your brand voice. Integrated into WhatsApp and Instagram DM. Responds, qualifies leads, and books appointments automatically.", i: null },
+      { num: 4, tag: "AI Bot", t: "24/7 Salesperson", sub: "AI Agent · WhatsApp + Instagram", d: "An agent that quotes, books, and closes while you sleep.", back: "Trained with your brand voice. Integrated into WhatsApp and Instagram DM. Responds, qualifies leads, and books appointments automatically.", i: "https://images.unsplash.com/photo-1676299081847-824916de030a?w=800&q=80&fm=jpg" },
       { num: 5, tag: "Satori?", t: "Satori Society", sub: "Everything + Strategy & Branding", d: "To dominate your local market. Not a vendor — a partner.", back: "All services + brand identity, monthly strategy session, priority consulting, and early access to new AI tools.", i: "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&q=80&fm=jpg" },
     ],
     cotizar_h: "Ready to grow?",
@@ -332,7 +332,7 @@ function ServicesSwiper({ t, c }: { t: typeof themes.white; c: typeof copy.es })
               padding: "0.45rem 1rem", fontSize: "0.68rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.12em",
               backgroundColor: active === i ? t.accent : "transparent",
               color: active === i ? t.bg : t.sub,
-              border: `1.5px solid ${active === i ? t.accent : t.accent + "30"}`,
+              border: "none",
               cursor: "pointer", transition: "all 0.25s",
             }}>
             {s.num}. {s.tag}
@@ -341,7 +341,7 @@ function ServicesSwiper({ t, c }: { t: typeof themes.white; c: typeof copy.es })
       </div>
 
       {/* Swipe zone */}
-      <div style={{ position: "relative", userSelect: "none", touchAction: "pan-y" }}
+      <div style={{ position: "relative", userSelect: "none", touchAction: "pan-y", WebkitTapHighlightColor: "transparent", WebkitUserSelect: "none" }}
         onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp}>
 
         {/* Enso bg */}
@@ -364,6 +364,7 @@ function ServicesSwiper({ t, c }: { t: typeof themes.white; c: typeof copy.es })
             width: SIDE_W, flexShrink: 0, cursor: "pointer",
             opacity: 0.18, filter: "blur(2px)", transform: "scale(0.86)",
             transition: "all 0.35s", pointerEvents: "auto",
+            WebkitTapHighlightColor: "transparent",
           }}>
             <ServiceCard s={c.servicios[(active - 1 + total) % total]} t={t} c={c} />
           </div>
@@ -385,6 +386,7 @@ function ServicesSwiper({ t, c }: { t: typeof themes.white; c: typeof copy.es })
             width: SIDE_W, flexShrink: 0, cursor: "pointer",
             opacity: 0.18, filter: "blur(2px)", transform: "scale(0.86)",
             transition: "all 0.35s", pointerEvents: "auto",
+            WebkitTapHighlightColor: "transparent",
           }}>
             <ServiceCard s={c.servicios[(active + 1) % total]} t={t} c={c} />
           </div>
@@ -394,10 +396,10 @@ function ServicesSwiper({ t, c }: { t: typeof themes.white; c: typeof copy.es })
       {/* Arrows + dots */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "1.5rem", marginTop: "0.5rem" }}>
         <button onClick={() => goTo(active - 1)}
-          style={{ padding: "0.6rem 0.8rem", border: `1px solid ${t.accent}30`, color: t.accent, backgroundColor: "transparent", cursor: "pointer", transition: "all 0.2s" }}
-          onMouseEnter={e => (e.currentTarget.style.backgroundColor = `${t.accent}12`)}
-          onMouseLeave={e => (e.currentTarget.style.backgroundColor = "transparent")}>
-          <ChevronLeft size={20} />
+          style={{ padding: "0.6rem 0.8rem", border: "none", color: t.accent, backgroundColor: "transparent", cursor: "pointer", transition: "all 0.2s", opacity: 0.7 }}
+          onMouseEnter={e => (e.currentTarget.style.opacity = "1")}
+          onMouseLeave={e => (e.currentTarget.style.opacity = "0.7")}>
+          <ChevronLeft size={24} />
         </button>
         <div style={{ display: "flex", gap: "0.4rem", alignItems: "center" }}>
           {c.servicios.map((_, i) => (
@@ -411,10 +413,10 @@ function ServicesSwiper({ t, c }: { t: typeof themes.white; c: typeof copy.es })
           ))}
         </div>
         <button onClick={() => goTo(active + 1)}
-          style={{ padding: "0.6rem 0.8rem", border: `1px solid ${t.accent}30`, color: t.accent, backgroundColor: "transparent", cursor: "pointer", transition: "all 0.2s" }}
-          onMouseEnter={e => (e.currentTarget.style.backgroundColor = `${t.accent}12`)}
-          onMouseLeave={e => (e.currentTarget.style.backgroundColor = "transparent")}>
-          <ChevronRight size={20} />
+          style={{ padding: "0.6rem 0.8rem", border: "none", color: t.accent, backgroundColor: "transparent", cursor: "pointer", transition: "all 0.2s", opacity: 0.7 }}
+          onMouseEnter={e => (e.currentTarget.style.opacity = "1")}
+          onMouseLeave={e => (e.currentTarget.style.opacity = "0.7")}>
+          <ChevronRight size={24} />
         </button>
       </div>
     </div>
@@ -506,7 +508,7 @@ export default function Home() {
             </div>
           </motion.div>
           <div style={{ display: "flex", justifyContent: "center" }}>
-            <Image src="/enso-negro.png" alt="Enso" width={420} height={420} style={{ filter: t.logoFilter, opacity: 0.82 }} />
+            <SpinningEnso filter={t.logoFilter} opacity={0.82} />
           </div>
         </div>
       </section>
@@ -560,7 +562,7 @@ export default function Home() {
         <div style={{ maxWidth: "62rem", margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: "2.5rem" }}>
             {/* Small label — "paso a paso o todo al mismo tiempo" */}
-            <p style={{ fontSize: "0.65rem", textTransform: "uppercase", letterSpacing: "0.4em", color: t.accent, fontWeight: 900, marginBottom: "0.75rem" }}>{c.camino_label}</p>
+            <Typewriter text={c.camino_label} style={{ fontSize: "0.65rem", textTransform: "uppercase", letterSpacing: "0.4em", color: t.accent, fontWeight: 900, marginBottom: "0.75rem", display: "block" }} />
             {/* Big title */}
             <h2 style={{ fontSize: "clamp(2.8rem,6vw,5rem)", fontFamily: "serif", fontWeight: 700, lineHeight: 1.05, marginBottom: "0.75rem" }}>{c.camino_h}</h2>
             <p style={{ fontSize: "0.88rem", opacity: 0.52, maxWidth: "34rem", margin: "0 auto", lineHeight: 1.7, color: t.sub }}>{c.camino_sub}</p>
