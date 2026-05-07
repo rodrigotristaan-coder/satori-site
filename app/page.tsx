@@ -389,116 +389,232 @@ function ServicesBento({ t, c }: { t: typeof themes.white; c: typeof copy.es }) 
 // MEXICO MAP
 // ─────────────────────────────────────────────────────────────────────────────
 function MexicoMap({ accent, bg, card }: { accent: string; bg: string; card: string }) {
-  // Simplified Mexico state paths (key states highlighted)
-  // CDMX = Mexico City, JAL = Jalisco (Guadalajara)
-  const states = [
-    // Baja California Norte
-    { id:"BC",  d:"M 68 58 L 82 45 L 88 55 L 78 72 Z", client: false },
-    // Baja California Sur
-    { id:"BCS", d:"M 72 72 L 80 70 L 85 90 L 75 105 Z", client: false },
-    // Sonora
-    { id:"SON", d:"M 88 40 L 120 35 L 125 55 L 105 70 L 88 60 Z", client: false },
-    // Chihuahua
-    { id:"CHIH",d:"M 120 35 L 160 30 L 168 60 L 148 72 L 125 55 Z", client: false },
-    // Coahuila
-    { id:"COAH",d:"M 160 30 L 200 28 L 208 55 L 185 65 L 168 60 Z", client: false },
-    // Nuevo Leon
-    { id:"NL",  d:"M 200 28 L 220 32 L 218 58 L 208 55 Z", client: false },
-    // Tamaulipas
-    { id:"TAM", d:"M 220 32 L 240 38 L 235 80 L 218 58 Z", client: false },
-    // Sinaloa
-    { id:"SIN", d:"M 105 70 L 125 55 L 138 75 L 128 95 L 110 90 Z", client: false },
-    // Durango
-    { id:"DGO", d:"M 125 55 L 148 72 L 152 90 L 138 95 L 128 95 L 138 75 Z", client: false },
-    // Zacatecas
-    { id:"ZAC", d:"M 148 72 L 168 65 L 175 85 L 165 98 L 152 90 Z", client: false },
-    // SLP
-    { id:"SLP", d:"M 168 65 L 185 65 L 195 80 L 188 98 L 175 85 Z", client: false },
-    // Nayarit
-    { id:"NAY", d:"M 128 95 L 140 92 L 145 108 L 132 112 Z", client: false },
-    // Jalisco — CLIENT (Guadalajara)
-    { id:"JAL", d:"M 140 92 L 165 98 L 170 118 L 155 130 L 140 125 L 135 112 Z", client: true },
-    // Aguascalientes
-    { id:"AGS", d:"M 165 98 L 172 96 L 174 105 L 167 108 Z", client: false },
-    // Guanajuato
-    { id:"GTO", d:"M 172 96 L 188 98 L 192 112 L 178 118 L 170 108 Z", client: false },
-    // Queretaro
-    { id:"QRO", d:"M 188 98 L 198 100 L 200 112 L 192 112 Z", client: false },
-    // Hidalgo
-    { id:"HGO", d:"M 198 100 L 210 100 L 212 112 L 200 112 Z", client: false },
-    // Michoacan
-    { id:"MICH",d:"M 155 130 L 170 118 L 180 128 L 172 145 L 158 148 Z", client: false },
-    // Mexico State
-    { id:"MEX", d:"M 192 112 L 210 112 L 212 125 L 198 128 L 190 120 Z", client: false },
-    // CDMX — CLIENT
-    { id:"CDMX",d:"M 202 120 L 210 118 L 212 125 L 204 127 Z", client: true },
-    // Morelos
-    { id:"MOR", d:"M 198 128 L 210 128 L 208 138 L 196 136 Z", client: false },
-    // Guerrero
-    { id:"GRO", d:"M 172 145 L 196 136 L 200 158 L 185 165 L 168 158 Z", client: false },
-    // Tlaxcala
-    { id:"TLAX",d:"M 210 112 L 218 112 L 218 120 L 210 120 Z", client: false },
-    // Puebla
-    { id:"PUE", d:"M 210 120 L 228 115 L 232 135 L 218 140 L 208 138 Z", client: false },
-    // Veracruz
-    { id:"VER", d:"M 210 100 L 240 88 L 248 115 L 232 135 L 228 115 L 218 112 L 212 112 Z", client: false },
-    // Oaxaca
-    { id:"OAX", d:"M 208 138 L 232 135 L 238 158 L 222 168 L 200 158 L 208 138 Z", client: false },
-    // Chiapas
-    { id:"CHIS",d:"M 222 168 L 248 158 L 252 178 L 232 185 Z", client: false },
-    // Tabasco
-    { id:"TAB", d:"M 240 140 L 258 138 L 260 155 L 248 158 Z", client: false },
-    // Campeche
-    { id:"CAM", d:"M 258 138 L 278 130 L 282 158 L 265 165 L 260 155 Z", client: false },
-    // Yucatan
-    { id:"YUC", d:"M 278 118 L 308 115 L 310 135 L 285 138 L 278 130 Z", client: false },
-    // Quintana Roo
-    { id:"QR",  d:"M 308 115 L 320 118 L 318 158 L 305 162 L 285 138 L 310 135 Z", client: false },
+  const clients = ["BC","JAL","CDMX"];
+  const states: { id: string; d: string }[] = [
+    { id:"BC",   d:"M 60 54 L 74 40 L 80 46 L 88 44 L 90 56 L 84 66 L 72 72 L 62 66 Z" },
+    { id:"BCS",  d:"M 72 72 L 84 66 L 88 86 L 84 108 L 74 112 L 68 96 Z" },
+    { id:"SON",  d:"M 90 44 L 122 38 L 130 52 L 126 68 L 108 72 L 90 68 L 90 56 Z" },
+    { id:"CHIH", d:"M 122 38 L 164 32 L 170 52 L 162 66 L 148 70 L 130 68 L 130 52 Z" },
+    { id:"COAH", d:"M 164 32 L 200 30 L 208 50 L 198 66 L 178 66 L 170 52 Z" },
+    { id:"NL",   d:"M 200 30 L 222 34 L 222 56 L 208 58 L 208 50 Z" },
+    { id:"TAM",  d:"M 222 34 L 240 40 L 238 82 L 222 78 L 222 56 Z" },
+    { id:"SIN",  d:"M 108 72 L 126 68 L 134 82 L 130 98 L 116 96 L 108 86 Z" },
+    { id:"DGO",  d:"M 130 68 L 148 70 L 154 84 L 148 100 L 134 98 L 130 98 L 134 82 Z" },
+    { id:"ZAC",  d:"M 148 70 L 162 66 L 168 78 L 164 96 L 154 98 L 148 100 Z" },
+    { id:"NAY",  d:"M 116 96 L 130 98 L 132 112 L 122 118 L 112 110 Z" },
+    { id:"SLP",  d:"M 162 66 L 178 66 L 188 80 L 182 96 L 168 96 L 164 84 Z" },
+    { id:"AGS",  d:"M 152 100 L 164 98 L 166 110 L 158 112 Z" },
+    { id:"JAL",  d:"M 130 98 L 148 100 L 152 100 L 158 112 L 164 118 L 158 134 L 144 136 L 132 128 L 126 116 L 122 118 L 132 112 Z" },
+    { id:"GTO",  d:"M 164 98 L 180 96 L 188 108 L 182 116 L 170 114 L 164 118 L 158 112 L 166 110 Z" },
+    { id:"QRO",  d:"M 180 96 L 192 98 L 194 110 L 188 116 L 182 116 L 188 108 Z" },
+    { id:"HGO",  d:"M 192 98 L 208 96 L 210 108 L 204 114 L 194 112 L 194 110 Z" },
+    { id:"MICH", d:"M 144 136 L 158 134 L 168 128 L 180 128 L 180 144 L 168 152 L 152 152 Z" },
+    { id:"MEX",  d:"M 182 116 L 194 112 L 202 118 L 202 128 L 192 132 L 182 128 L 180 128 L 168 128 L 170 118 Z" },
+    { id:"CDMX", d:"M 194 116 L 202 114 L 206 120 L 200 124 L 194 120 Z" },
+    { id:"TLX",  d:"M 202 114 L 212 112 L 214 120 L 206 122 L 202 120 Z" },
+    { id:"MOR",  d:"M 194 124 L 202 124 L 202 132 L 196 134 L 192 132 Z" },
+    { id:"PUE",  d:"M 206 120 L 222 114 L 228 126 L 224 140 L 210 140 L 200 134 L 202 124 L 202 120 Z" },
+    { id:"GRO",  d:"M 168 152 L 192 140 L 200 158 L 188 170 L 170 164 Z" },
+    { id:"OAX",  d:"M 192 140 L 224 140 L 230 156 L 220 170 L 200 166 L 188 170 L 200 158 Z" },
+    { id:"VER",  d:"M 208 96 L 236 88 L 244 108 L 240 126 L 228 126 L 222 114 L 210 112 L 210 108 Z" },
+    { id:"CHIS", d:"M 220 170 L 244 160 L 248 178 L 234 186 L 218 182 Z" },
+    { id:"TAB",  d:"M 236 138 L 254 136 L 256 152 L 244 156 L 240 148 L 240 126 L 228 126 L 230 140 Z" },
+    { id:"CAM",  d:"M 254 136 L 276 128 L 280 154 L 266 164 L 254 158 L 256 152 Z" },
+    { id:"YUC",  d:"M 276 116 L 308 112 L 312 132 L 284 136 L 276 128 Z" },
+    { id:"QR",   d:"M 308 112 L 322 116 L 320 160 L 306 162 L 288 150 L 284 136 L 312 132 Z" },
   ];
 
   return (
-    <div style={{ position: "relative", maxWidth: "700px", margin: "0 auto" }}>
-      <svg viewBox="40 25 295 170" style={{ width: "100%", height: "auto" }}>
+    <div style={{ maxWidth: 680, margin: "0 auto", padding: "0 1rem" }}>
+      <svg viewBox="55 28 275 168" xmlns="http://www.w3.org/2000/svg" style={{ width: "100%", height: "auto", display: "block" }}>
         <defs>
-          <filter id="glow">
-            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-            <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          <filter id="mapglow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="2.5" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
           </filter>
         </defs>
-        {states.map((s) => (
-          <motion.path key={s.id} d={s.d}
-            fill={s.client ? accent : `${accent}12`}
-            stroke={s.client ? accent : `${accent}30`}
-            strokeWidth={s.client ? 0.8 : 0.5}
-            filter={s.client ? "url(#glow)" : undefined}
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: s.client ? 0.2 : Math.random() * 0.6 }}
-          />
+        {states.map((s) => {
+          const isClient = clients.includes(s.id);
+          return (
+            <motion.path key={s.id} d={s.d}
+              fill={isClient ? accent : `${accent}14`}
+              stroke={isClient ? accent : `${accent}35`}
+              strokeWidth={isClient ? 0.6 : 0.4}
+              strokeLinejoin="round"
+              filter={isClient ? "url(#mapglow)" : undefined}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: isClient ? 0.3 : Math.random() * 0.5, duration: 0.4 }}
+            />
+          );
+        })}
+        {/* Pulse rings */}
+        {[
+          { cx: 70, cy: 56, label: "B.C." },
+          { cx: 145, cy: 116, label: "GDL" },
+          { cx: 199, cy: 119, label: "CDMX" },
+        ].map(({ cx, cy, label }, i) => (
+          <g key={label}>
+            <motion.circle cx={cx} cy={cy} r={2.5} fill={accent}
+              animate={{ r: [2.5,7,2.5], opacity:[1,0,1] }}
+              transition={{ duration: 2, repeat: Infinity, delay: i * 0.7 }} />
+            <circle cx={cx} cy={cy} r={2} fill={accent} />
+            <text x={cx} y={cy - 5} textAnchor="middle" fill={accent}
+              fontSize="3.8" fontWeight="900" fontFamily="sans-serif">{label}</text>
+          </g>
         ))}
-        {/* CDMX label */}
-        <text x="215" y="116" fill={accent} fontSize="3.5" fontWeight="900" textAnchor="middle" style={{ filter: "url(#glow)" }}>CDMX</text>
-        {/* GDL label */}
-        <text x="152" y="108" fill={accent} fontSize="3.5" fontWeight="900" textAnchor="middle" style={{ filter: "url(#glow)" }}>GDL</text>
-        {/* Pulse rings on client cities */}
-        <motion.circle cx="206" cy="122" r="3" fill="none" stroke={accent} strokeWidth="0.8"
-          animate={{ r: [3, 8, 3], opacity: [1, 0, 1] }} transition={{ duration: 2, repeat: Infinity }} />
-        <motion.circle cx="153" cy="112" r="3" fill="none" stroke={accent} strokeWidth="0.8"
-          animate={{ r: [3, 8, 3], opacity: [1, 0, 1] }} transition={{ duration: 2, repeat: Infinity, delay: 0.5 }} />
       </svg>
-      {/* Legend */}
-      <div style={{ display: "flex", justifyContent: "center", gap: "2rem", marginTop: "1rem" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.1em", color: accent, fontWeight: 700 }}>
-          <div style={{ width: 10, height: 10, borderRadius: "50%", backgroundColor: accent }} />
-          CDMX
-        </div>
-        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.1em", color: accent, fontWeight: 700 }}>
-          <div style={{ width: 10, height: 10, borderRadius: "50%", backgroundColor: accent }} />
-          Guadalajara
-        </div>
+      <div style={{ display: "flex", justifyContent: "center", gap: "2rem", marginTop: "1.5rem", flexWrap: "wrap" }}>
+        {["Baja California","Guadalajara","CDMX"].map((city) => (
+          <div key={city} style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontSize: "0.68rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em", color: accent }}>
+            <div style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: accent }} />
+            {city}
+          </div>
+        ))}
       </div>
     </div>
+  );
+}
+
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PRICING FLIP CARD
+// ─────────────────────────────────────────────────────────────────────────────
+function PricingFlipCard({ plan, i, t, accent, bg, text, waLink, lang }: {
+  plan: { name: string; price: string; badge: string; features: string[]; popular: boolean; soldOut?: boolean };
+  i: number; t: typeof themes.white; accent: string; bg: string; text: string; waLink: string; lang: "es" | "en";
+}) {
+  const [flipped, setFlipped] = useState(false);
+  const [form, setForm] = useState({ nombre: "", telefono: "", email: "", solicitud: "" });
+  const [sent, setSent] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const msg = encodeURIComponent(`Hola Rodrigo, me interesa el paquete *${plan.name}*.
+
+Nombre: ${form.nombre}
+Teléfono: ${form.telefono}
+Email: ${form.email}
+Solicitud: ${form.solicitud}`);
+    window.open(`https://wa.me/525625018281?text=${msg}`, "_blank");
+    setSent(true);
+  };
+
+  const cardBg = plan.popular ? accent : bg;
+  const cardText = plan.popular ? bg : text;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.12 }}
+      style={{ perspective: "1200px", height: plan.soldOut ? "auto" : 520 }}>
+      <div style={{
+        width: "100%", height: "100%", position: "relative",
+        transformStyle: "preserve-3d",
+        transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)",
+        transition: "transform 0.5s cubic-bezier(0.4,0.2,0.2,1)",
+      }}>
+
+        {/* FRONT */}
+        <div style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden",
+          padding: "2rem", backgroundColor: cardBg, color: cardText, borderRadius: "1.5rem",
+          border: `1px solid ${plan.popular ? "transparent" : accent + "15"}`,
+          boxShadow: plan.popular ? `0 12px 40px ${accent}40` : "0 4px 20px rgba(0,0,0,0.06)",
+          display: "flex", flexDirection: "column", opacity: plan.soldOut ? 0.6 : 1 }}>
+
+          {/* Sold out banner */}
+          {plan.soldOut && (
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, display: "flex", alignItems: "center", justifyContent: "center", zIndex: 10, borderRadius: "1.5rem", backgroundColor: "rgba(0,0,0,0.55)", backdropFilter: "blur(3px)" }}>
+              <div style={{ textAlign: "center" }}>
+                <p style={{ fontSize: "1.8rem" }}>🔒</p>
+                <p style={{ fontSize: "0.72rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.2em", color: "#fff", marginTop: "0.5rem" }}>{lang === "es" ? "Agotado por ahora" : "Currently sold out"}</p>
+                <p style={{ fontSize: "0.65rem", color: "rgba(255,255,255,0.6)", marginTop: "0.25rem" }}>{lang === "es" ? "Lista de espera disponible" : "Join the waitlist"}</p>
+              </div>
+            </div>
+          )}
+
+          {plan.popular && (
+            <div style={{ position: "absolute", top: "-0.75rem", left: "50%", transform: "translateX(-50%)", backgroundColor: bg, color: accent, fontSize: "0.55rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.15em", padding: "0.3rem 1rem", borderRadius: "999px", whiteSpace: "nowrap" }}>
+              ★ {plan.badge}
+            </div>
+          )}
+          {!plan.popular && <p style={{ fontSize: "0.55rem", textTransform: "uppercase", letterSpacing: "0.15em", opacity: 0.6, marginBottom: "0.5rem", fontWeight: 700 }}>{plan.badge}</p>}
+
+          <h3 style={{ fontSize: "1.3rem", fontFamily: "serif", fontWeight: 700, marginBottom: "0.5rem", lineHeight: 1.2 }}>{plan.name}</h3>
+          <p style={{ fontSize: "2.5rem", fontFamily: "serif", fontWeight: 700, marginBottom: "0.25rem", lineHeight: 1 }}>{plan.price}</p>
+          <p style={{ fontSize: "0.62rem", opacity: 0.5, marginBottom: "1.25rem", textTransform: "uppercase", letterSpacing: "0.1em" }}>MXN · pago único</p>
+
+          <ul style={{ display: "flex", flexDirection: "column", gap: "0.55rem", marginBottom: "1.5rem", flex: 1 }}>
+            {plan.features.map((f, j) => (
+              <li key={j} style={{ display: "flex", alignItems: "flex-start", gap: "0.5rem", fontSize: "0.8rem", lineHeight: 1.5, opacity: 0.85 }}>
+                <span style={{ color: plan.popular ? bg : accent, flexShrink: 0 }}>✓</span>{f}
+              </li>
+            ))}
+          </ul>
+
+          {!plan.soldOut ? (
+            <button onClick={() => setFlipped(true)}
+              style={{ width: "100%", padding: "0.85rem", borderRadius: "999px", backgroundColor: plan.popular ? bg : accent, color: plan.popular ? accent : bg, fontWeight: 900, fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.1em", border: "none", cursor: "pointer" }}>
+              {lang === "es" ? "Quiero este →" : "I want this →"}
+            </button>
+          ) : (
+            <button onClick={() => setFlipped(true)}
+              style={{ width: "100%", padding: "0.85rem", borderRadius: "999px", backgroundColor: "transparent", color: cardText, fontWeight: 900, fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.1em", border: `1px solid ${cardText}40`, cursor: "pointer", opacity: 0.7 }}>
+              {lang === "es" ? "Lista de espera →" : "Join waitlist →"}
+            </button>
+          )}
+        </div>
+
+        {/* BACK — Form */}
+        <div style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden",
+          transform: "rotateY(180deg)", padding: "1.75rem", backgroundColor: bg, color: text,
+          borderRadius: "1.5rem", border: `1px solid ${accent}20`, display: "flex", flexDirection: "column" }}>
+
+          {!sent ? (
+            <>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem" }}>
+                <h3 style={{ fontSize: "1rem", fontFamily: "serif", fontWeight: 700 }}>{plan.soldOut ? (lang === "es" ? "Lista de espera" : "Waitlist") : plan.name}</h3>
+                <button onClick={() => setFlipped(false)} style={{ background: "none", border: "none", cursor: "pointer", color: text, opacity: 0.5, fontSize: "1.2rem" }}>←</button>
+              </div>
+              <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "0.65rem", flex: 1 }}>
+                {[
+                  { key: "nombre",    label: lang === "es" ? "Nombre completo" : "Full name",      type: "text" },
+                  { key: "telefono",  label: lang === "es" ? "Teléfono"       : "Phone number",   type: "tel" },
+                  { key: "email",     label: lang === "es" ? "Correo"         : "Email",           type: "email" },
+                  { key: "solicitud", label: lang === "es" ? "¿Qué necesitas?": "What do you need?", type: "textarea" },
+                ].map(({ key, label, type }) => (
+                  <div key={key} style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+                    <label style={{ fontSize: "0.62rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", opacity: 0.6 }}>{label}</label>
+                    {type === "textarea" ? (
+                      <textarea rows={2} required value={(form as any)[key]}
+                        onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
+                        style={{ padding: "0.5rem 0.75rem", borderRadius: "0.75rem", border: `1px solid ${accent}25`, backgroundColor: `${accent}06`, color: text, fontSize: "0.82rem", resize: "none", fontFamily: "inherit", outline: "none" }} />
+                    ) : (
+                      <input required type={type} value={(form as any)[key]}
+                        onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
+                        style={{ padding: "0.5rem 0.75rem", borderRadius: "0.75rem", border: `1px solid ${accent}25`, backgroundColor: `${accent}06`, color: text, fontSize: "0.82rem", fontFamily: "inherit", outline: "none" }} />
+                    )}
+                  </div>
+                ))}
+                <button type="submit"
+                  style={{ marginTop: "0.5rem", padding: "0.75rem", borderRadius: "999px", backgroundColor: accent, color: bg, fontWeight: 900, fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.1em", border: "none", cursor: "pointer" }}>
+                  {lang === "es" ? "Enviar por WhatsApp →" : "Send via WhatsApp →"}
+                </button>
+              </form>
+            </>
+          ) : (
+            <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", gap: "1rem" }}>
+              <p style={{ fontSize: "2.5rem" }}>✅</p>
+              <p style={{ fontWeight: 700, fontSize: "1rem" }}>{lang === "es" ? "¡Listo! Te contactaremos pronto." : "Done! We'll reach out soon."}</p>
+              <button onClick={() => { setFlipped(false); setSent(false); setForm({ nombre:"", telefono:"", email:"", solicitud:"" }); }}
+                style={{ padding: "0.6rem 1.5rem", borderRadius: "999px", border: `1px solid ${accent}`, color: accent, backgroundColor: "transparent", cursor: "pointer", fontSize: "0.72rem", fontWeight: 700 }}>
+                {lang === "es" ? "Volver" : "Back"}
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </motion.div>
   );
 }
 
@@ -791,7 +907,7 @@ export default function Home() {
       </section>
 
       {/* ── STATS with CountUp ── */}
-      <section style={{ padding: "5rem 1.5rem", position: "relative", zIndex: 1, backgroundColor: t.card, borderTop: `1px solid ${t.accent}08` }}>
+      <section style={{ padding: "5rem 1.5rem", position: "relative", zIndex: 1, backgroundColor: "transparent" }}>
         <div style={{ maxWidth: "56rem", margin: "0 auto" }}>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(1rem,4vw,3rem)" }}>
             {[
@@ -931,6 +1047,7 @@ export default function Home() {
                 name: lang === "es" ? "Landing Page" : "Landing Page",
                 price: "$8,000",
                 badge: lang === "es" ? "Ideal para empezar" : "Great starting point",
+                soldOut: false,
                 features: lang === "es"
                   ? ["1 página de ventas optimizada", "Copywriting estratégico incluido", "Formulario + integración WhatsApp", "Entrega en 7 días hábiles", "Dominio y hosting no incluidos"]
                   : ["1 optimized sales page", "Strategic copywriting included", "Form + WhatsApp integration", "Delivery in 7 business days", "Domain & hosting not included"],
@@ -940,6 +1057,7 @@ export default function Home() {
                 name: lang === "es" ? "Página Web Profesional" : "Professional Website",
                 price: "$15,000",
                 badge: lang === "es" ? "El más elegido" : "Most popular",
+                soldOut: false,
                 features: lang === "es"
                   ? ["Hasta 5 secciones personalizadas", "Diseño a medida de tu marca", "SEO básico + velocidad optimizada", "Integración WhatsApp + redes", "Entrega en 10–14 días hábiles"]
                   : ["Up to 5 custom sections", "Brand-tailored design", "Basic SEO + speed optimization", "WhatsApp + social integration", "Delivery in 10–14 business days"],
@@ -947,43 +1065,16 @@ export default function Home() {
               },
               {
                 name: lang === "es" ? "Web + Agente IA" : "Web + AI Agent",
-                price: "$22,000",
+                price: "$30,000",
                 badge: lang === "es" ? "Máximo impacto" : "Maximum impact",
+                soldOut: true,
                 features: lang === "es"
                   ? ["Todo lo de Página Web Pro", "Agente IA entrenado con tu negocio", "Integración WhatsApp Business", "Responde 24/7 sin intervención", "Setup + primer mes de soporte"]
                   : ["Everything in Pro Website", "AI agent trained on your business", "WhatsApp Business integration", "Responds 24/7 automatically", "Setup + first month support"],
                 popular: false,
               },
             ].map((plan, i) => (
-              <motion.div key={i}
-                initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.12 }}
-                whileHover={{ y: -6, boxShadow: `0 20px 60px ${t.accent}25` }}
-                style={{ padding: "2rem", backgroundColor: plan.popular ? t.accent : t.bg, color: plan.popular ? t.bg : t.text, borderRadius: "1.5rem", border: `1px solid ${plan.popular ? "transparent" : t.accent + "15"}`, position: "relative", boxShadow: plan.popular ? `0 12px 40px ${t.accent}40` : "0 4px 20px rgba(0,0,0,0.06)", transition: "box-shadow 0.3s" }}>
-                {plan.popular && (
-                  <div style={{ position: "absolute", top: "-0.75rem", left: "50%", transform: "translateX(-50%)", backgroundColor: t.bg, color: t.accent, fontSize: "0.55rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.15em", padding: "0.3rem 1rem", borderRadius: "999px", whiteSpace: "nowrap" }}>
-                    ★ {plan.badge}
-                  </div>
-                )}
-                {!plan.popular && (
-                  <p style={{ fontSize: "0.55rem", textTransform: "uppercase", letterSpacing: "0.15em", opacity: 0.6, marginBottom: "0.5rem", fontWeight: 700 }}>{plan.badge}</p>
-                )}
-                <h3 style={{ fontSize: "1.3rem", fontFamily: "serif", fontWeight: 700, marginBottom: "0.5rem", lineHeight: 1.2 }}>{plan.name}</h3>
-                <p style={{ fontSize: "2.5rem", fontFamily: "serif", fontWeight: 700, marginBottom: "0.25rem", lineHeight: 1 }}>{plan.price}</p>
-                <p style={{ fontSize: "0.62rem", opacity: 0.5, marginBottom: "1.5rem", textTransform: "uppercase", letterSpacing: "0.1em" }}>MXN · pago único</p>
-                <ul style={{ display: "flex", flexDirection: "column", gap: "0.6rem", marginBottom: "1.75rem" }}>
-                  {plan.features.map((f, j) => (
-                    <li key={j} style={{ display: "flex", alignItems: "flex-start", gap: "0.5rem", fontSize: "0.82rem", lineHeight: 1.5, opacity: 0.85 }}>
-                      <span style={{ color: plan.popular ? t.bg : t.accent, flexShrink: 0, marginTop: "0.1rem" }}>✓</span>
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-                <motion.a href={waLink} target="_blank"
-                  animate={{ scale: [1, 1.04, 1] }} transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut", delay: i * 0.3 }}
-                  style={{ display: "block", textAlign: "center", padding: "0.85rem", borderRadius: "999px", backgroundColor: plan.popular ? t.bg : t.accent, color: plan.popular ? t.accent : t.bg, fontWeight: 900, fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.1em", textDecoration: "none" }}>
-                  {lang === "es" ? "Quiero este →" : "I want this →"}
-                </motion.a>
-              </motion.div>
+              <PricingFlipCard key={i} plan={plan} i={i} t={t} accent={t.accent} bg={t.bg} text={t.text} waLink={waLink} lang={lang} />
             ))}
           </div>
           <p style={{ textAlign: "center", marginTop: "2rem", fontSize: "0.72rem", opacity: 0.4, color: t.sub }}>{lang === "es" ? "* Los precios no incluyen hosting ni dominio. Consulta opciones de pago." : "* Prices do not include hosting or domain. Payment plans available."}</p>
