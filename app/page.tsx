@@ -437,10 +437,11 @@ function MexicoMap({ accent, bg, card }: { accent: string; bg: string; card: str
           const isClient = clients.includes(s.id);
           return (
             <motion.path key={s.id} d={s.d}
-              fill={isClient ? accent : `${accent}14`}
-              stroke={isClient ? accent : `${accent}35`}
-              strokeWidth={isClient ? 0.6 : 0.4}
+              fill={isClient ? accent : `${accent}22`}
+              stroke={accent}
+              strokeWidth={isClient ? 0.8 : 0.35}
               strokeLinejoin="round"
+              strokeOpacity={isClient ? 1 : 0.5}
               filter={isClient ? "url(#mapglow)" : undefined}
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
@@ -486,7 +487,7 @@ function PricingFlipCard({ plan, i, t, accent, bg, text, waLink, lang }: {
   i: number; t: typeof themes.white; accent: string; bg: string; text: string; waLink: string; lang: "es" | "en";
 }) {
   const [flipped, setFlipped] = useState(false);
-  const [form, setForm] = useState({ nombre: "", telefono: "", email: "", solicitud: "" });
+  const [form, setForm] = useState({ nombre: "", telefono: "", email: "", web: "", solicitud: "" });
   const [sent, setSent] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -495,9 +496,13 @@ function PricingFlipCard({ plan, i, t, accent, bg, text, waLink, lang }: {
 
 Nombre: ${form.nombre}
 Teléfono: ${form.telefono}
-Email: ${form.email}
+Email: ${form.email}${form.web ? `
+Web: ${form.web}` : ""}
 Solicitud: ${form.solicitud}`);
-    window.open(`https://wa.me/525625018281?text=${msg}`, "_blank");
+    // Use location.href on mobile for native app open, window.open on desktop
+    const isMobile = /iPhone|Android|iPad/i.test(navigator.userAgent);
+    const waUrl = `https://wa.me/525625018281?text=${msg}`;
+    if (isMobile) { window.location.href = waUrl; } else { window.open(waUrl, "_blank"); }
     setSent(true);
   };
 
@@ -578,21 +583,28 @@ Solicitud: ${form.solicitud}`);
               </div>
               <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "0.65rem", flex: 1 }}>
                 {[
-                  { key: "nombre",    label: lang === "es" ? "Nombre completo" : "Full name",      type: "text" },
-                  { key: "telefono",  label: lang === "es" ? "Teléfono"       : "Phone number",   type: "tel" },
-                  { key: "email",     label: lang === "es" ? "Correo"         : "Email",           type: "email" },
-                  { key: "solicitud", label: lang === "es" ? "¿Qué necesitas?": "What do you need?", type: "textarea" },
-                ].map(({ key, label, type }) => (
-                  <div key={key} style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
-                    <label style={{ fontSize: "0.62rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", opacity: 0.6 }}>{label}</label>
+                  { key: "nombre",    label: lang === "es" ? "Nombre completo" : "Full name",        type: "text",     required: true,  autoFocus: true },
+                  { key: "telefono",  label: lang === "es" ? "Teléfono"        : "Phone number",     type: "tel",      required: true,  autoFocus: false },
+                  { key: "email",     label: lang === "es" ? "Correo"          : "Email",             type: "email",    required: true,  autoFocus: false },
+                  { key: "web",       label: lang === "es" ? "Página web (opcional)" : "Website (optional)", type: "url", required: false, autoFocus: false },
+                  { key: "solicitud", label: lang === "es" ? "¿Qué necesitas?" : "What do you need?", type: "textarea", required: true,  autoFocus: false },
+                ].map(({ key, label, type, required, autoFocus }, fi) => (
+                  <div key={key} style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+                    <label style={{ fontSize: "0.6rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", opacity: 0.55 }}>
+                      {label}
+                    </label>
                     {type === "textarea" ? (
-                      <textarea rows={2} required value={(form as any)[key]}
+                      <textarea rows={2} required={required} value={(form as any)[key]}
+                        tabIndex={fi + 1}
                         onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
-                        style={{ padding: "0.5rem 0.75rem", borderRadius: "0.75rem", border: `1px solid ${accent}25`, backgroundColor: `${accent}06`, color: text, fontSize: "0.82rem", resize: "none", fontFamily: "inherit", outline: "none" }} />
+                        style={{ padding: "0.5rem 0.75rem", borderRadius: "0.75rem", border: `1px solid ${accent}25`, backgroundColor: `${accent}06`, color: text, fontSize: "0.82rem", resize: "none", fontFamily: "inherit", outline: "none", WebkitAppearance: "none" }} />
                     ) : (
-                      <input required type={type} value={(form as any)[key]}
+                      <input required={required} type={type} value={(form as any)[key]}
+                        tabIndex={fi + 1}
+                        autoFocus={autoFocus}
                         onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
-                        style={{ padding: "0.5rem 0.75rem", borderRadius: "0.75rem", border: `1px solid ${accent}25`, backgroundColor: `${accent}06`, color: text, fontSize: "0.82rem", fontFamily: "inherit", outline: "none" }} />
+                        onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); const next = document.querySelector(`[tabindex="${fi + 2}"]`) as HTMLElement; next?.focus(); }}}
+                        style={{ padding: "0.5rem 0.75rem", borderRadius: "0.75rem", border: `1px solid ${accent}25`, backgroundColor: `${accent}06`, color: text, fontSize: "0.82rem", fontFamily: "inherit", outline: "none", WebkitAppearance: "none" }} />
                     )}
                   </div>
                 ))}
@@ -606,7 +618,7 @@ Solicitud: ${form.solicitud}`);
             <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", gap: "1rem" }}>
               <p style={{ fontSize: "2.5rem" }}>✅</p>
               <p style={{ fontWeight: 700, fontSize: "1rem" }}>{lang === "es" ? "¡Listo! Te contactaremos pronto." : "Done! We'll reach out soon."}</p>
-              <button onClick={() => { setFlipped(false); setSent(false); setForm({ nombre:"", telefono:"", email:"", solicitud:"" }); }}
+              <button onClick={() => { setFlipped(false); setSent(false); setForm({ nombre:"", telefono:"", email:"", web:"", solicitud:"" }); }}
                 style={{ padding: "0.6rem 1.5rem", borderRadius: "999px", border: `1px solid ${accent}`, color: accent, backgroundColor: "transparent", cursor: "pointer", fontSize: "0.72rem", fontWeight: 700 }}>
                 {lang === "es" ? "Volver" : "Back"}
               </button>
@@ -1039,7 +1051,7 @@ export default function Home() {
         <div style={{ maxWidth: "62rem", margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: "3rem" }}>
             <p style={{ fontSize: "0.6rem", textTransform: "uppercase", letterSpacing: "0.4em", color: t.accent, fontWeight: 900, marginBottom: "0.5rem" }}>{lang === "es" ? "Paquetes de inicio" : "Starter packages"}</p>
-            <h2 style={{ fontSize: "clamp(2.2rem,4.5vw,3.5rem)", fontFamily: "serif", fontWeight: 700 }}>{lang === "es" ? "Precios claros." : "Clear pricing."}<br/><span style={{ fontStyle: "italic", fontWeight: 400 }}>{lang === "es" ? "Sin sorpresas." : "No surprises."}</span></h2>
+            <h2 style={{ fontSize: "clamp(2.2rem,4.5vw,3.5rem)", fontFamily: "serif", fontWeight: 700 }}>{lang === "es" ? "Precios claros." : "Clear pricing."}</h2>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1.5rem" }}>
             {[
@@ -1078,6 +1090,16 @@ export default function Home() {
             ))}
           </div>
           <p style={{ textAlign: "center", marginTop: "2rem", fontSize: "0.72rem", opacity: 0.4, color: t.sub }}>{lang === "es" ? "* Los precios no incluyen hosting ni dominio. Consulta opciones de pago." : "* Prices do not include hosting or domain. Payment plans available."}</p>
+          <div style={{ textAlign: "center", marginTop: "2.5rem" }}>
+            <p style={{ fontSize: "0.8rem", opacity: 0.55, marginBottom: "1.25rem", color: t.sub }}>{lang === "es" ? "¿Tienes algo más específico en mente?" : "Have something more specific in mind?"}</p>
+            <motion.a href={waLink} target="_blank"
+              animate={{ scale: [1, 1.06, 1] }}
+              transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+              whileHover={{ scale: 1.12 }}
+              style={{ display: "inline-block", padding: "1rem 2.5rem", borderRadius: "999px", border: `2px solid ${t.accent}`, color: t.accent, fontWeight: 900, fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.1em", textDecoration: "none", boxShadow: `0 0 24px ${t.accent}25` }}>
+              {lang === "es" ? "💬 Cotización personalizada" : "💬 Custom quote"}
+            </motion.a>
+          </div>
         </div>
       </section>
 
