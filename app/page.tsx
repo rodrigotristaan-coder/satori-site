@@ -326,25 +326,27 @@ function MexicoMap({ accent, bg, card }: { accent: string; bg: string; card: str
   ];
   return (
     <div style={{ maxWidth: 680, margin: "0 auto", padding: "0 1rem" }}>
-      <svg viewBox="55 28 275 168" xmlns="http://www.w3.org/2000/svg" style={{ width: "100%", height: "auto", display: "block" }}>
+      <svg viewBox="56 26 270 164" xmlns="http://www.w3.org/2000/svg" style={{ width: "100%", height: "auto", display: "block", maxHeight: "420px" }}>
         <defs>
           <filter id="mapglow" x="-20%" y="-20%" width="140%" height="140%">
             <feGaussianBlur stdDeviation="2.5" result="blur"/>
             <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
           </filter>
         </defs>
+        {/* Background so states render on any theme */}
+        <rect x="56" y="26" width="270" height="164" fill="transparent" />
         {states.map((s) => {
           const isClient = clients.includes(s.id);
           return (
             <motion.path key={s.id} d={s.d}
-              fill={isClient ? accent : `${accent}22`}
-              stroke={accent} strokeWidth={isClient ? 0.8 : 0.35} strokeLinejoin="round" strokeOpacity={isClient ? 1 : 0.5}
+              fill={isClient ? accent : `${accent}18`}
+              stroke={accent} strokeWidth={isClient ? 1 : 0.5} strokeLinejoin="round" strokeOpacity={isClient ? 1 : 0.65}
               filter={isClient ? "url(#mapglow)" : undefined}
               initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
               transition={{ delay: isClient ? 0.3 : Math.random() * 0.5, duration: 0.4 }} />
           );
         })}
-        {[{ cx: 70, cy: 56, label: "B.C." }, { cx: 145, cy: 116, label: "GDL" }, { cx: 199, cy: 119, label: "CDMX" }].map(({ cx, cy, label }, i) => (
+        {[{ cx: 72, cy: 55, label: "B.C." }, { cx: 142, cy: 116, label: "GDL" }, { cx: 200, cy: 118, label: "CDMX" }].map(({ cx, cy, label }, i) => (
           <g key={label}>
             <motion.circle cx={cx} cy={cy} r={2.5} fill={accent} animate={{ r: [2.5,7,2.5], opacity:[1,0,1] }} transition={{ duration: 2, repeat: Infinity, delay: i * 0.7 }} />
             <circle cx={cx} cy={cy} r={2} fill={accent} />
