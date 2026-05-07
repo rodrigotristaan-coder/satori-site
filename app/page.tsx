@@ -64,7 +64,7 @@ const copy = {
     nosotros_label: "Tu Socio Digital", nosotros_nombre: "Rodrigo Tristán", nosotros_cargo: "Fundador de SATORI",
     nosotros_quote: '"La IA no reemplaza tu negocio. Lo potencia."',
     nosotros_p1: "Sé lo que cuesta construir un negocio desde adentro: las horas, las decisiones, la incertidumbre. Por eso fundé Satori — para que cada emprendedor y empresario mexicano tenga acceso a las mismas herramientas que usan las empresas más avanzadas del mundo, sin necesitar un equipo de 50 personas ni un presupuesto millonario.",
-    nosotros_p2: "Mi compromiso no es venderte un servicio. Es que entiendas exactamente qué estás haciendo, por qué funciona, y que veas los resultados. Si no hay claridad, no hay confianza. Y sin confianza, no hay nada.",
+    nosotros_p2: "Me comprometo a tres cosas: que el trabajo sea impecable, que los resultados sean medibles, y que nunca te quedes con dudas. No trabajo para acumular clientes — trabajo para que los pocos que confían en mí no necesiten buscar a alguien más.",
     garantia_title: "Garantía de 30 días:",
     garantia_text: "Si en 30 días no sientes que el valor recibido supera lo que invertiste, seguimos trabajando contigo 20 días más sin costo adicional. Sin preguntas, sin drama.",
     btn_zoom: "Agendar Zoom", btn_email: "Enviar Email",
@@ -124,7 +124,7 @@ const copy = {
     nosotros_label: "Your Digital Partner", nosotros_nombre: "Rodrigo Tristán", nosotros_cargo: "Founder of SATORI",
     nosotros_quote: '"AI doesn\'t replace your business. It supercharges it."',
     nosotros_p1: "I know what it costs to build a business from the inside: the hours, the decisions, the uncertainty. That's why I founded Satori — so every Mexican entrepreneur has access to the same tools used by the world's most advanced companies, without needing a team of 50 or a million-dollar budget.",
-    nosotros_p2: "My commitment isn't to sell you a service. It's to make sure you understand exactly what you're doing, why it works, and that you see the results. No clarity, no trust. No trust, nothing.",
+    nosotros_p2: "I commit to three things: flawless work, measurable results, and no unanswered questions. I don't work to accumulate clients — I work so the few who trust me never need to look elsewhere.",
     garantia_title: "30-Day Guarantee:",
     garantia_text: "If within 30 days you don't feel the value far exceeds what you invested, we keep working with you for 20 more days at no additional cost. No questions, no drama.",
     btn_zoom: "Book a Zoom", btn_email: "Send Email",
@@ -218,22 +218,37 @@ function Typewriter({ text, style }: { text: string; style?: React.CSSProperties
   const [displayed, setDisplayed] = useState("");
   const [idx, setIdx] = useState(0);
   const [done, setDone] = useState(false);
+  const [started, setStarted] = useState(false);
+  const ref = useRef<HTMLSpanElement>(null);
 
-  useEffect(() => { setDisplayed(""); setIdx(0); setDone(false); }, [text]);
+  // Reset when text changes
+  useEffect(() => { setDisplayed(""); setIdx(0); setDone(false); setStarted(false); }, [text]);
+
+  // Start only when visible
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting && !started) setStarted(true); },
+      { threshold: 0.5 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [started]);
 
   useEffect(() => {
-    if (done || idx >= text.length) { setDone(true); return; }
+    if (!started || done || idx >= text.length) { if (idx >= text.length) setDone(true); return; }
     const timer = setTimeout(() => {
       setDisplayed(p => p + text[idx]);
       setIdx(i => i + 1);
     }, 80);
     return () => clearTimeout(timer);
-  }, [idx, text, done]);
+  }, [idx, text, done, started]);
 
   return (
-    <span style={style}>
+    <span ref={ref} style={{ textAlign: "center", display: "block", ...style }}>
       {displayed}
-      {!done && <span style={{ opacity: 0.5, animation: "blink 0.8s step-end infinite" }}>|</span>}
+      {started && !done && <span style={{ opacity: 0.5, animation: "blink 0.8s step-end infinite" }}>|</span>}
       <style>{`@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }`}</style>
     </span>
   );
@@ -366,6 +381,123 @@ function ServicesBento({ t, c }: { t: typeof themes.white; c: typeof copy.es }) 
           .bento-names > *, .bento-grid > * { grid-column: span 6 !important; min-height: 200px !important; }
         }
       `}</style>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// MEXICO MAP
+// ─────────────────────────────────────────────────────────────────────────────
+function MexicoMap({ accent, bg, card }: { accent: string; bg: string; card: string }) {
+  // Simplified Mexico state paths (key states highlighted)
+  // CDMX = Mexico City, JAL = Jalisco (Guadalajara)
+  const states = [
+    // Baja California Norte
+    { id:"BC",  d:"M 68 58 L 82 45 L 88 55 L 78 72 Z", client: false },
+    // Baja California Sur
+    { id:"BCS", d:"M 72 72 L 80 70 L 85 90 L 75 105 Z", client: false },
+    // Sonora
+    { id:"SON", d:"M 88 40 L 120 35 L 125 55 L 105 70 L 88 60 Z", client: false },
+    // Chihuahua
+    { id:"CHIH",d:"M 120 35 L 160 30 L 168 60 L 148 72 L 125 55 Z", client: false },
+    // Coahuila
+    { id:"COAH",d:"M 160 30 L 200 28 L 208 55 L 185 65 L 168 60 Z", client: false },
+    // Nuevo Leon
+    { id:"NL",  d:"M 200 28 L 220 32 L 218 58 L 208 55 Z", client: false },
+    // Tamaulipas
+    { id:"TAM", d:"M 220 32 L 240 38 L 235 80 L 218 58 Z", client: false },
+    // Sinaloa
+    { id:"SIN", d:"M 105 70 L 125 55 L 138 75 L 128 95 L 110 90 Z", client: false },
+    // Durango
+    { id:"DGO", d:"M 125 55 L 148 72 L 152 90 L 138 95 L 128 95 L 138 75 Z", client: false },
+    // Zacatecas
+    { id:"ZAC", d:"M 148 72 L 168 65 L 175 85 L 165 98 L 152 90 Z", client: false },
+    // SLP
+    { id:"SLP", d:"M 168 65 L 185 65 L 195 80 L 188 98 L 175 85 Z", client: false },
+    // Nayarit
+    { id:"NAY", d:"M 128 95 L 140 92 L 145 108 L 132 112 Z", client: false },
+    // Jalisco — CLIENT (Guadalajara)
+    { id:"JAL", d:"M 140 92 L 165 98 L 170 118 L 155 130 L 140 125 L 135 112 Z", client: true },
+    // Aguascalientes
+    { id:"AGS", d:"M 165 98 L 172 96 L 174 105 L 167 108 Z", client: false },
+    // Guanajuato
+    { id:"GTO", d:"M 172 96 L 188 98 L 192 112 L 178 118 L 170 108 Z", client: false },
+    // Queretaro
+    { id:"QRO", d:"M 188 98 L 198 100 L 200 112 L 192 112 Z", client: false },
+    // Hidalgo
+    { id:"HGO", d:"M 198 100 L 210 100 L 212 112 L 200 112 Z", client: false },
+    // Michoacan
+    { id:"MICH",d:"M 155 130 L 170 118 L 180 128 L 172 145 L 158 148 Z", client: false },
+    // Mexico State
+    { id:"MEX", d:"M 192 112 L 210 112 L 212 125 L 198 128 L 190 120 Z", client: false },
+    // CDMX — CLIENT
+    { id:"CDMX",d:"M 202 120 L 210 118 L 212 125 L 204 127 Z", client: true },
+    // Morelos
+    { id:"MOR", d:"M 198 128 L 210 128 L 208 138 L 196 136 Z", client: false },
+    // Guerrero
+    { id:"GRO", d:"M 172 145 L 196 136 L 200 158 L 185 165 L 168 158 Z", client: false },
+    // Tlaxcala
+    { id:"TLAX",d:"M 210 112 L 218 112 L 218 120 L 210 120 Z", client: false },
+    // Puebla
+    { id:"PUE", d:"M 210 120 L 228 115 L 232 135 L 218 140 L 208 138 Z", client: false },
+    // Veracruz
+    { id:"VER", d:"M 210 100 L 240 88 L 248 115 L 232 135 L 228 115 L 218 112 L 212 112 Z", client: false },
+    // Oaxaca
+    { id:"OAX", d:"M 208 138 L 232 135 L 238 158 L 222 168 L 200 158 L 208 138 Z", client: false },
+    // Chiapas
+    { id:"CHIS",d:"M 222 168 L 248 158 L 252 178 L 232 185 Z", client: false },
+    // Tabasco
+    { id:"TAB", d:"M 240 140 L 258 138 L 260 155 L 248 158 Z", client: false },
+    // Campeche
+    { id:"CAM", d:"M 258 138 L 278 130 L 282 158 L 265 165 L 260 155 Z", client: false },
+    // Yucatan
+    { id:"YUC", d:"M 278 118 L 308 115 L 310 135 L 285 138 L 278 130 Z", client: false },
+    // Quintana Roo
+    { id:"QR",  d:"M 308 115 L 320 118 L 318 158 L 305 162 L 285 138 L 310 135 Z", client: false },
+  ];
+
+  return (
+    <div style={{ position: "relative", maxWidth: "700px", margin: "0 auto" }}>
+      <svg viewBox="40 25 295 170" style={{ width: "100%", height: "auto" }}>
+        <defs>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+            <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        {states.map((s) => (
+          <motion.path key={s.id} d={s.d}
+            fill={s.client ? accent : `${accent}12`}
+            stroke={s.client ? accent : `${accent}30`}
+            strokeWidth={s.client ? 0.8 : 0.5}
+            filter={s.client ? "url(#glow)" : undefined}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: s.client ? 0.2 : Math.random() * 0.6 }}
+          />
+        ))}
+        {/* CDMX label */}
+        <text x="215" y="116" fill={accent} fontSize="3.5" fontWeight="900" textAnchor="middle" style={{ filter: "url(#glow)" }}>CDMX</text>
+        {/* GDL label */}
+        <text x="152" y="108" fill={accent} fontSize="3.5" fontWeight="900" textAnchor="middle" style={{ filter: "url(#glow)" }}>GDL</text>
+        {/* Pulse rings on client cities */}
+        <motion.circle cx="206" cy="122" r="3" fill="none" stroke={accent} strokeWidth="0.8"
+          animate={{ r: [3, 8, 3], opacity: [1, 0, 1] }} transition={{ duration: 2, repeat: Infinity }} />
+        <motion.circle cx="153" cy="112" r="3" fill="none" stroke={accent} strokeWidth="0.8"
+          animate={{ r: [3, 8, 3], opacity: [1, 0, 1] }} transition={{ duration: 2, repeat: Infinity, delay: 0.5 }} />
+      </svg>
+      {/* Legend */}
+      <div style={{ display: "flex", justifyContent: "center", gap: "2rem", marginTop: "1rem" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.1em", color: accent, fontWeight: 700 }}>
+          <div style={{ width: 10, height: 10, borderRadius: "50%", backgroundColor: accent }} />
+          CDMX
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.1em", color: accent, fontWeight: 700 }}>
+          <div style={{ width: 10, height: 10, borderRadius: "50%", backgroundColor: accent }} />
+          Guadalajara
+        </div>
+      </div>
     </div>
   );
 }
@@ -545,7 +677,7 @@ export default function Home() {
       </AnimatePresence>
 
       {/* ── FLOATING BUTTONS ── */}
-      <a href={waLink} target="_blank" rel="noopener noreferrer" style={{ position: "fixed", bottom: "6rem", right: "1.5rem", zIndex: 100, display: "flex", alignItems: "center", gap: "0.5rem", padding: "0.75rem 1rem", borderRadius: 999, backgroundColor: "#25D366", color: "#000", fontWeight: 900, fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.05em", boxShadow: "0 8px 30px rgba(0,0,0,0.25)", textDecoration: "none", ...shakeStyle }}>
+      <a href={waLink} target="_blank" rel="noopener noreferrer" style={{ position: "fixed", bottom: "6rem", right: "1.5rem", zIndex: 100, display: "flex", alignItems: "center", gap: "0.5rem", padding: "0.75rem 1rem", borderRadius: 999, backgroundColor: "#25D366", color: "#000", fontWeight: 900, fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.05em", boxShadow: "0 8px 30px rgba(37,211,102,0.4)", textDecoration: "none", ...shakeStyle }}>
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         <span className="hidden md:inline">WhatsApp</span>
       </a>
@@ -569,7 +701,7 @@ export default function Home() {
       <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 50, backdropFilter: "blur(14px)", backgroundColor: t.navBg, borderBottom: `1px solid ${t.accent}12`, padding: "0.9rem 1.5rem", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <a href="#inicio"><Image src="/logo-satori.png" alt="SATORI" width={110} height={34} style={{ filter: t.logoFilter }} /></a>
         <div className="hidden md:flex items-center" style={{ gap: "1.75rem" }}>
-          {([["#problema", c.nav.problema], ["#servicios", c.nav.soluciones], ["#cotizar", c.nav.precios]] as [string,string][]).map(([href, label]) => (
+          {([["#problema", c.nav.problema], ["#servicios", c.nav.soluciones], ["#precios", lang === "es" ? "Precios" : "Pricing"], ["#cotizar", c.nav.precios]] as [string,string][]).map(([href, label]) => (
             <motion.a key={href} href={href} whileHover={{ y: -1 }} style={{ fontSize: "0.68rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", color: t.sub, textDecoration: "none" }}>{label}</motion.a>
           ))}
           <a href={CALENDLY_LINK} target="_blank" style={{ padding: "0.45rem 1.3rem", backgroundColor: t.accent, color: t.bg, fontWeight: 900, fontSize: "0.68rem", textTransform: "uppercase", textDecoration: "none", borderRadius: "999px" }}>{c.nav.cta}</a>
@@ -653,7 +785,7 @@ export default function Home() {
               style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", color: t.bg, fontSize: "0.72rem", textDecoration: "none", backgroundColor: t.accent, padding: "0.85rem 2rem", borderRadius: "999px" }}>
               {c.problema_cta}
             </a>
-            <span style={{ fontSize: "0.72rem", opacity: 0.4, color: t.sub }}>— es gratis, sin compromiso</span>
+            <span style={{ fontSize: "0.88rem", fontWeight: 800, color: t.accent, opacity: 0.85 }}>— es gratis, sin compromiso</span>
           </motion.div>
         </div>
       </section>
@@ -723,8 +855,8 @@ export default function Home() {
               </div>
             </div>
             <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
-              <motion.a href={CALENDLY_LINK} target="_blank" whileHover={{ scale: 1.03 }} style={{ padding: "0.85rem 1.75rem", border: `1px solid ${t.accent}`, color: t.accent, fontWeight: 700, fontSize: "0.78rem", textDecoration: "none" }}>{c.btn_zoom}</motion.a>
-              <a href={`mailto:${EMAIL}`} style={{ padding: "0.85rem 1.75rem", fontWeight: 700, opacity: 0.5, fontSize: "0.78rem", textDecoration: "none" }}>{c.btn_email}</a>
+              <motion.a href={CALENDLY_LINK} target="_blank" animate={{ scale: [1, 1.05, 1] }} transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }} whileHover={{ scale: 1.1 }} style={{ padding: "0.85rem 1.75rem", backgroundColor: t.accent, color: t.bg, fontWeight: 700, fontSize: "0.78rem", textDecoration: "none", borderRadius: "999px", display: "inline-block" }}>{c.btn_zoom}</motion.a>
+              <motion.a href={`mailto:${EMAIL}`} animate={{ scale: [1, 1.04, 1] }} transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut", delay: 0.4 }} whileHover={{ scale: 1.08 }} style={{ padding: "0.85rem 1.75rem", fontWeight: 700, fontSize: "0.78rem", textDecoration: "none", borderRadius: "999px", border: `1px solid ${t.accent}40`, color: t.text, display: "inline-block", opacity: 0.75 }}>{c.btn_email}</motion.a>
             </div>
           </div>
         </div>
@@ -761,6 +893,16 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── MAPA ── */}
+      <section style={{ padding: "5rem 1.5rem", position: "relative", zIndex: 1 }}>
+        <div style={{ maxWidth: "62rem", margin: "0 auto", textAlign: "center" }}>
+          <p style={{ fontSize: "0.6rem", textTransform: "uppercase", letterSpacing: "0.4em", color: t.accent, fontWeight: 900, marginBottom: "0.5rem" }}>{lang === "es" ? "Presencia nacional" : "National presence"}</p>
+          <h2 style={{ fontSize: "clamp(2rem,4vw,3rem)", fontFamily: "serif", fontWeight: 700, marginBottom: "0.75rem" }}>{lang === "es" ? "Clientes en todo México." : "Clients across Mexico."}</h2>
+          <p style={{ fontSize: "0.88rem", opacity: 0.5, marginBottom: "3rem", color: t.sub }}>{lang === "es" ? "Y creciendo." : "And growing."}</p>
+          <MexicoMap accent={t.accent} bg={t.bg} card={t.card} />
+        </div>
+      </section>
+
       {/* ── FAQ ── */}
       <section style={{ padding: "5rem 1.5rem", position: "relative", zIndex: 1, backgroundColor: `${t.card}E8` }}>
         <div style={{ maxWidth: "52rem", margin: "0 auto" }}>
@@ -773,6 +915,78 @@ export default function Home() {
               <FaqItem key={i} q={f.q} a={f.a} t={t} last={i === c.faqs.length - 1} />
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ── PRECIOS ── */}
+      <section id="precios" style={{ padding: "5rem 1.5rem", backgroundColor: t.card, position: "relative", zIndex: 1 }}>
+        <div style={{ maxWidth: "62rem", margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: "3rem" }}>
+            <p style={{ fontSize: "0.6rem", textTransform: "uppercase", letterSpacing: "0.4em", color: t.accent, fontWeight: 900, marginBottom: "0.5rem" }}>{lang === "es" ? "Paquetes de inicio" : "Starter packages"}</p>
+            <h2 style={{ fontSize: "clamp(2.2rem,4.5vw,3.5rem)", fontFamily: "serif", fontWeight: 700 }}>{lang === "es" ? "Precios claros." : "Clear pricing."}<br/><span style={{ fontStyle: "italic", fontWeight: 400 }}>{lang === "es" ? "Sin sorpresas." : "No surprises."}</span></h2>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1.5rem" }}>
+            {[
+              {
+                name: lang === "es" ? "Landing Page" : "Landing Page",
+                price: "$8,000",
+                badge: lang === "es" ? "Ideal para empezar" : "Great starting point",
+                features: lang === "es"
+                  ? ["1 página de ventas optimizada", "Copywriting estratégico incluido", "Formulario + integración WhatsApp", "Entrega en 7 días hábiles", "Dominio y hosting no incluidos"]
+                  : ["1 optimized sales page", "Strategic copywriting included", "Form + WhatsApp integration", "Delivery in 7 business days", "Domain & hosting not included"],
+                popular: false,
+              },
+              {
+                name: lang === "es" ? "Página Web Profesional" : "Professional Website",
+                price: "$15,000",
+                badge: lang === "es" ? "El más elegido" : "Most popular",
+                features: lang === "es"
+                  ? ["Hasta 5 secciones personalizadas", "Diseño a medida de tu marca", "SEO básico + velocidad optimizada", "Integración WhatsApp + redes", "Entrega en 10–14 días hábiles"]
+                  : ["Up to 5 custom sections", "Brand-tailored design", "Basic SEO + speed optimization", "WhatsApp + social integration", "Delivery in 10–14 business days"],
+                popular: true,
+              },
+              {
+                name: lang === "es" ? "Web + Agente IA" : "Web + AI Agent",
+                price: "$22,000",
+                badge: lang === "es" ? "Máximo impacto" : "Maximum impact",
+                features: lang === "es"
+                  ? ["Todo lo de Página Web Pro", "Agente IA entrenado con tu negocio", "Integración WhatsApp Business", "Responde 24/7 sin intervención", "Setup + primer mes de soporte"]
+                  : ["Everything in Pro Website", "AI agent trained on your business", "WhatsApp Business integration", "Responds 24/7 automatically", "Setup + first month support"],
+                popular: false,
+              },
+            ].map((plan, i) => (
+              <motion.div key={i}
+                initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.12 }}
+                whileHover={{ y: -6, boxShadow: `0 20px 60px ${t.accent}25` }}
+                style={{ padding: "2rem", backgroundColor: plan.popular ? t.accent : t.bg, color: plan.popular ? t.bg : t.text, borderRadius: "1.5rem", border: `1px solid ${plan.popular ? "transparent" : t.accent + "15"}`, position: "relative", boxShadow: plan.popular ? `0 12px 40px ${t.accent}40` : "0 4px 20px rgba(0,0,0,0.06)", transition: "box-shadow 0.3s" }}>
+                {plan.popular && (
+                  <div style={{ position: "absolute", top: "-0.75rem", left: "50%", transform: "translateX(-50%)", backgroundColor: t.bg, color: t.accent, fontSize: "0.55rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.15em", padding: "0.3rem 1rem", borderRadius: "999px", whiteSpace: "nowrap" }}>
+                    ★ {plan.badge}
+                  </div>
+                )}
+                {!plan.popular && (
+                  <p style={{ fontSize: "0.55rem", textTransform: "uppercase", letterSpacing: "0.15em", opacity: 0.6, marginBottom: "0.5rem", fontWeight: 700 }}>{plan.badge}</p>
+                )}
+                <h3 style={{ fontSize: "1.3rem", fontFamily: "serif", fontWeight: 700, marginBottom: "0.5rem", lineHeight: 1.2 }}>{plan.name}</h3>
+                <p style={{ fontSize: "2.5rem", fontFamily: "serif", fontWeight: 700, marginBottom: "0.25rem", lineHeight: 1 }}>{plan.price}</p>
+                <p style={{ fontSize: "0.62rem", opacity: 0.5, marginBottom: "1.5rem", textTransform: "uppercase", letterSpacing: "0.1em" }}>MXN · pago único</p>
+                <ul style={{ display: "flex", flexDirection: "column", gap: "0.6rem", marginBottom: "1.75rem" }}>
+                  {plan.features.map((f, j) => (
+                    <li key={j} style={{ display: "flex", alignItems: "flex-start", gap: "0.5rem", fontSize: "0.82rem", lineHeight: 1.5, opacity: 0.85 }}>
+                      <span style={{ color: plan.popular ? t.bg : t.accent, flexShrink: 0, marginTop: "0.1rem" }}>✓</span>
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <motion.a href={waLink} target="_blank"
+                  animate={{ scale: [1, 1.04, 1] }} transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut", delay: i * 0.3 }}
+                  style={{ display: "block", textAlign: "center", padding: "0.85rem", borderRadius: "999px", backgroundColor: plan.popular ? t.bg : t.accent, color: plan.popular ? t.accent : t.bg, fontWeight: 900, fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.1em", textDecoration: "none" }}>
+                  {lang === "es" ? "Quiero este →" : "I want this →"}
+                </motion.a>
+              </motion.div>
+            ))}
+          </div>
+          <p style={{ textAlign: "center", marginTop: "2rem", fontSize: "0.72rem", opacity: 0.4, color: t.sub }}>{lang === "es" ? "* Los precios no incluyen hosting ni dominio. Consulta opciones de pago." : "* Prices do not include hosting or domain. Payment plans available."}</p>
         </div>
       </section>
 
