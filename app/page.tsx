@@ -160,19 +160,28 @@ function MatrixBackground({ color }: { color: string }) {
   useEffect(() => { colorRef.current = color; }, [color]);
   useEffect(() => {
     const canvas = ref.current!;
-    const ctx = canvas.getContext("2d")!;
+    // Use alpha:false for better mobile compositing — no transparency blending issues
+    const ctx = canvas.getContext("2d", { alpha: false })!;
     let id: number;
-    const resize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
+    let bgColor = "#000000";
+    const resize = () => {
+      // Preserve background color across resize
+      const computed = getComputedStyle(document.body).backgroundColor;
+      bgColor = computed || "#000000";
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
     resize();
     window.addEventListener("resize", resize);
     const cols = Math.floor(canvas.width / 20);
     const drops = Array(cols).fill(1);
     const draw = () => {
-      ctx.fillStyle = "rgba(0,0,0,0.035)";
+      // Use solid fill matching page bg — no alpha compositing needed
+      ctx.fillStyle = bgColor + "F5"; // near-opaque, creates trail effect
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.font = "14px monospace";
       drops.forEach((y, i) => {
-        ctx.fillStyle = Math.random() > 0.93 ? colorRef.current : colorRef.current + "55";
+        ctx.fillStyle = Math.random() > 0.93 ? colorRef.current : colorRef.current + "88";
         ctx.fillText(Math.random() < 0.5 ? "1" : "0", i * 20, y * 20);
         if (y * 20 > canvas.height && Math.random() > 0.975) drops[i] = 0;
         drops[i]++;
@@ -182,7 +191,12 @@ function MatrixBackground({ color }: { color: string }) {
     draw();
     return () => { cancelAnimationFrame(id); window.removeEventListener("resize", resize); };
   }, []);
-  return <canvas ref={ref} style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", opacity: 0.28, pointerEvents: "none", zIndex: 0, willChange: "transform" }} />;
+  return <canvas ref={ref} style={{
+    position: "fixed", top: 0, left: 0, width: "100%", height: "100%",
+    opacity: 1, pointerEvents: "none", zIndex: 0,
+    transform: "translateZ(0)", // force GPU layer — prevents iOS repaint on scroll
+    WebkitTransform: "translateZ(0)",
+  }} />;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -297,11 +311,30 @@ function LangPopup({ onSelect, t }: { onSelect: (l: "es" | "en") => void; t: typ
 // ─────────────────────────────────────────────────────────────────────────────
 // SERVICES — BENTO GRID
 // ─────────────────────────────────────────────────────────────────────────────
-function ServicesBento({ t, c }: { t: typeof themes.white; c: typeof copy.es }) {
-  const [active, setActive] = useState<number | null>(null);
-  const accents = ["#FF6B6B", "#4ECDC4", "#45B7D1", "#A29BFE", "#FD79A8"];
+const BENTO_BENEFITS: Record<string, string[][]> = {
+  es: [
+    ["Consistencia diaria sin esfuerzo", "Te posicionas como el experto de tu rubro", "Más mensajes de clientes potenciales", "Contenido que trabaja mientras duermes"],
+    ["Primera impresión profesional, siempre", "Capta clientes mientras duermes", "Te diferencias visualmente de la competencia", "Base sólida para crecer"],
+    ["Llegas a quienes ya quieren comprar", "Control total sobre tu inversión", "Resultados medibles desde el día 1", "Escala cuando lo decidas"],
+    ["Nunca pierdes un prospecto por tiempo", "Respuesta inmediata = más cierres", "Tu negocio abierto de verdad las 24 hrs", "Sin contratar personal adicional"],
+    ["Estrategia completa desde el inicio", "Identidad de marca que genera confianza", "Todas las herramientas integradas", "Tu equipo digital completo"],
+  ],
+  en: [
+    ["Daily consistency without the effort", "Positioned as the expert in your field", "More messages from potential clients", "Content working while you sleep"],
+    ["Professional first impression, always", "Capture leads while you sleep", "Stand out visually from competitors", "Solid foundation for growth"],
+    ["Reach people already ready to buy", "Full control over your investment", "Measurable results from day 1", "Scale whenever you decide"],
+    ["Never lose a prospect to slow response", "Instant response = more closed deals", "Your business truly open 24/7", "No additional staff needed"],
+    ["Complete strategy from day one", "Brand identity that builds trust", "All tools integrated", "Your complete digital team"],
+  ],
+};
 
-  const cells = c.servicios.map((s, i) => ({ s, i, color: accents[i], isActive: active === i }));
+function ServicesBento({ t, c, lang }: { t: typeof themes.white; c: typeof copy.es; lang: "es" | "en" }) {
+  const [active, setActive] = useState<number | null>(null);
+  const [flipped, setFlipped] = useState<number | null>(null);
+  const accents = ["#FF6B6B", "#4ECDC4", "#45B7D1", "#A29BFE", "#FD79A8"];
+  const benefits = BENTO_BENEFITS[lang];
+
+  const cells = c.servicios.map((s, i) => ({ s, i, color: accents[i], isActive: active === i, isFlipped: flipped === i }));
 
   return (
     <div style={{ padding: "0 clamp(1rem,4vw,3rem) 3rem" }}>
@@ -316,63 +349,67 @@ function ServicesBento({ t, c }: { t: typeof themes.white; c: typeof copy.es }) 
         ))}
       </div>
 
-      {/* Bento grid */}
+      {/* Bento grid with flip */}
       <div style={{ display: "grid", gap: "0.75rem", gridTemplateColumns: "repeat(6,1fr)" }}>
-        {cells.map(({ s, i, color, isActive }) => (
-          <motion.div key={i}
-            onHoverStart={() => setActive(i)}
-            onHoverEnd={() => setActive(null)}
-            onTap={() => setActive(active === i ? null : i)}
-            animate={{ scale: isActive ? 1.02 : 1, y: isActive ? -4 : 0 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            style={{
-              gridColumn: i < 2 ? "span 3" : "span 2",
-              position: "relative", overflow: "hidden", cursor: "pointer",
-              minHeight: i < 2 ? "clamp(260px,35vh,380px)" : "clamp(200px,28vh,300px)",
-              borderRadius: "1.25rem",
-              boxShadow: isActive ? `0 20px 60px ${color}35, 0 8px 20px rgba(0,0,0,0.15)` : "0 4px 20px rgba(0,0,0,0.08)",
-              transition: "box-shadow 0.4s",
+        {cells.map(({ s, i, color, isActive, isFlipped }) => (
+          <div key={i} style={{
+            gridColumn: i < 2 ? "span 3" : "span 2",
+            minHeight: i < 2 ? "clamp(260px,35vh,380px)" : "clamp(200px,28vh,300px)",
+            perspective: "1000px",
+          }}
+            onMouseEnter={() => setActive(i)} onMouseLeave={() => setActive(null)}>
+            <div style={{
+              width: "100%", height: "100%", position: "relative",
+              transformStyle: "preserve-3d",
+              transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
+              transition: "transform 0.55s cubic-bezier(0.4,0.2,0.2,1)",
             }}>
-
-            {/* Image — no blur, full crispness */}
-            {s.i ? (
-              <img src={s.i} alt={s.t} loading="lazy"
-                style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", transition: "transform 0.55s ease", transform: isActive ? "scale(1.07)" : "scale(1)", display: "block" }} />
-            ) : (
-              <div style={{ position: "absolute", inset: 0, background: `linear-gradient(135deg, ${color}30, ${t.card})` }} />
-            )}
-
-            {/* Overlay — lighter than before, no blur */}
-            <div style={{ position: "absolute", inset: 0, background: `linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.28) 55%, rgba(0,0,0,0.05) 100%)` }} />
-
-            {/* Color accent border on hover */}
-            <motion.div animate={{ opacity: isActive ? 1 : 0 }} transition={{ duration: 0.3 }}
-              style={{ position: "absolute", inset: 0, borderRadius: "1.25rem", border: `2px solid ${color}`, pointerEvents: "none" }} />
-
-            {/* Number watermark */}
-            <div style={{ position: "absolute", top: "0.6rem", right: "0.9rem", fontSize: "clamp(2.5rem,5vw,4rem)", fontFamily: "serif", fontWeight: 900, color: "#fff", opacity: isActive ? 0.15 : 0.07, lineHeight: 1, pointerEvents: "none", userSelect: "none", transition: "opacity 0.3s" }}>
-              {String(i + 1).padStart(2, "0")}
+              {/* FRONT */}
+              <div onClick={() => setFlipped(flipped === i ? null : i)} style={{
+                position: "absolute", inset: 0, cursor: "pointer",
+                backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden",
+                borderRadius: "1.25rem", overflow: "hidden",
+                boxShadow: isActive ? `0 20px 60px ${color}35, 0 8px 20px rgba(0,0,0,0.15)` : "0 4px 20px rgba(0,0,0,0.08)",
+              }}>
+                {s.i
+                  ? <img src={s.i} alt={s.t} loading="lazy" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.55s", transform: isActive ? "scale(1.07)" : "scale(1)", display: "block" }} />
+                  : <div style={{ position: "absolute", inset: 0, background: `linear-gradient(135deg, ${color}30, ${t.card})` }} />
+                }
+                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.25) 55%, rgba(0,0,0,0.04) 100%)" }} />
+                {isActive && <div style={{ position: "absolute", inset: 0, borderRadius: "1.25rem", border: `2px solid ${color}`, pointerEvents: "none" }} />}
+                <div style={{ position: "absolute", top: "0.6rem", right: "0.9rem", fontSize: "clamp(2.5rem,5vw,4rem)", fontFamily: "serif", fontWeight: 900, color: "#fff", opacity: isActive ? 0.15 : 0.07, lineHeight: 1, pointerEvents: "none", userSelect: "none" }}>
+                  {String(i + 1).padStart(2, "0")}
+                </div>
+                <div style={{ position: "absolute", inset: 0, padding: "1.2rem 1.35rem", display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
+                  <h3 style={{ fontSize: "clamp(1rem,2.2vw,1.45rem)", fontFamily: "serif", fontWeight: 700, color: "#fff", lineHeight: 1.2, marginBottom: "0.4rem", textShadow: "0 1px 8px rgba(0,0,0,0.4)" }}>{s.t}</h3>
+                  <p style={{ fontSize: "0.56rem", textTransform: "uppercase", letterSpacing: "0.15em", color, fontWeight: 700, marginBottom: "0.3rem" }}>{s.sub}</p>
+                  {isActive && <>
+                    <p style={{ fontSize: "clamp(0.72rem,1.3vw,0.82rem)", color: "rgba(255,255,255,0.82)", lineHeight: 1.55, marginBottom: "0.5rem" }}>{s.d}</p>
+                    <span style={{ fontSize: "0.54rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.12em", color }}>Ver beneficios →</span>
+                  </>}
+                </div>
+              </div>
+              {/* BACK — Benefits */}
+              <div onClick={() => setFlipped(null)} style={{
+                position: "absolute", inset: 0, cursor: "pointer",
+                backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden",
+                transform: "rotateY(180deg)",
+                borderRadius: "1.25rem", backgroundColor: color,
+                padding: "1.4rem", display: "flex", flexDirection: "column", justifyContent: "center",
+              }}>
+                <p style={{ fontSize: "0.52rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.18em", color: "rgba(0,0,0,0.5)", marginBottom: "0.6rem" }}>Beneficios · {s.tag}</p>
+                <h3 style={{ fontSize: "1.05rem", fontWeight: 700, color: "#000", marginBottom: "0.85rem", lineHeight: 1.2 }}>{s.t}</h3>
+                <ul style={{ display: "flex", flexDirection: "column", gap: "0.5rem", flex: 1 }}>
+                  {(benefits[i] || []).map((b: string, bi: number) => (
+                    <li key={bi} style={{ display: "flex", gap: "0.5rem", fontSize: "0.8rem", color: "rgba(0,0,0,0.85)", lineHeight: 1.4 }}>
+                      <span style={{ flexShrink: 0, fontWeight: 900 }}>✓</span>{b}
+                    </li>
+                  ))}
+                </ul>
+                <span style={{ fontSize: "0.52rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(0,0,0,0.38)", marginTop: "0.65rem" }}>← volver</span>
+              </div>
             </div>
-
-            {/* Content */}
-            <div style={{ position: "absolute", inset: 0, padding: "1.2rem 1.35rem", display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
-              {/* Title always visible */}
-              <h3 style={{ fontSize: "clamp(1rem,2.2vw,1.45rem)", fontFamily: "serif", fontWeight: 700, color: "#fff", lineHeight: 1.2, marginBottom: "0.45rem", textShadow: "0 1px 8px rgba(0,0,0,0.4)" }}>
-                {s.t}
-              </h3>
-              {/* Sub */}
-              <p style={{ fontSize: "0.58rem", textTransform: "uppercase", letterSpacing: "0.15em", color: color, fontWeight: 700, marginBottom: "0.35rem", opacity: 0.9 }}>
-                {s.sub}
-              </p>
-              {/* Detail on hover */}
-              <motion.div animate={{ height: isActive ? "auto" : 0, opacity: isActive ? 1 : 0 }} transition={{ duration: 0.35, ease: "easeOut" }} style={{ overflow: "hidden" }}>
-                <p style={{ fontSize: "clamp(0.75rem,1.3vw,0.83rem)", color: "rgba(255,255,255,0.82)", lineHeight: 1.6, marginBottom: "0.6rem" }}>{s.d}</p>
-                <span style={{ fontSize: "0.58rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.15em", color }}>
-                  {c.ver_mas} →
-                </span>
-              </motion.div>
-            </div>
-          </motion.div>
+          </div>
         ))}
       </div>
 
@@ -389,85 +426,91 @@ function ServicesBento({ t, c }: { t: typeof themes.white; c: typeof copy.es }) 
 // MEXICO MAP
 // ─────────────────────────────────────────────────────────────────────────────
 function MexicoMap({ accent, bg, card }: { accent: string; bg: string; card: string }) {
-  const clients = ["BC","JAL","CDMX"];
-  const states: { id: string; d: string }[] = [
-    { id:"BC",   d:"M 60 54 L 74 40 L 80 46 L 88 44 L 90 56 L 84 66 L 72 72 L 62 66 Z" },
-    { id:"BCS",  d:"M 72 72 L 84 66 L 88 86 L 84 108 L 74 112 L 68 96 Z" },
-    { id:"SON",  d:"M 90 44 L 122 38 L 130 52 L 126 68 L 108 72 L 90 68 L 90 56 Z" },
-    { id:"CHIH", d:"M 122 38 L 164 32 L 170 52 L 162 66 L 148 70 L 130 68 L 130 52 Z" },
-    { id:"COAH", d:"M 164 32 L 200 30 L 208 50 L 198 66 L 178 66 L 170 52 Z" },
-    { id:"NL",   d:"M 200 30 L 222 34 L 222 56 L 208 58 L 208 50 Z" },
-    { id:"TAM",  d:"M 222 34 L 240 40 L 238 82 L 222 78 L 222 56 Z" },
-    { id:"SIN",  d:"M 108 72 L 126 68 L 134 82 L 130 98 L 116 96 L 108 86 Z" },
-    { id:"DGO",  d:"M 130 68 L 148 70 L 154 84 L 148 100 L 134 98 L 130 98 L 134 82 Z" },
-    { id:"ZAC",  d:"M 148 70 L 162 66 L 168 78 L 164 96 L 154 98 L 148 100 Z" },
-    { id:"NAY",  d:"M 116 96 L 130 98 L 132 112 L 122 118 L 112 110 Z" },
-    { id:"SLP",  d:"M 162 66 L 178 66 L 188 80 L 182 96 L 168 96 L 164 84 Z" },
-    { id:"AGS",  d:"M 152 100 L 164 98 L 166 110 L 158 112 Z" },
-    { id:"JAL",  d:"M 130 98 L 148 100 L 152 100 L 158 112 L 164 118 L 158 134 L 144 136 L 132 128 L 126 116 L 122 118 L 132 112 Z" },
-    { id:"GTO",  d:"M 164 98 L 180 96 L 188 108 L 182 116 L 170 114 L 164 118 L 158 112 L 166 110 Z" },
-    { id:"QRO",  d:"M 180 96 L 192 98 L 194 110 L 188 116 L 182 116 L 188 108 Z" },
-    { id:"HGO",  d:"M 192 98 L 208 96 L 210 108 L 204 114 L 194 112 L 194 110 Z" },
-    { id:"MICH", d:"M 144 136 L 158 134 L 168 128 L 180 128 L 180 144 L 168 152 L 152 152 Z" },
-    { id:"MEX",  d:"M 182 116 L 194 112 L 202 118 L 202 128 L 192 132 L 182 128 L 180 128 L 168 128 L 170 118 Z" },
-    { id:"CDMX", d:"M 194 116 L 202 114 L 206 120 L 200 124 L 194 120 Z" },
-    { id:"TLX",  d:"M 202 114 L 212 112 L 214 120 L 206 122 L 202 120 Z" },
-    { id:"MOR",  d:"M 194 124 L 202 124 L 202 132 L 196 134 L 192 132 Z" },
-    { id:"PUE",  d:"M 206 120 L 222 114 L 228 126 L 224 140 L 210 140 L 200 134 L 202 124 L 202 120 Z" },
-    { id:"GRO",  d:"M 168 152 L 192 140 L 200 158 L 188 170 L 170 164 Z" },
-    { id:"OAX",  d:"M 192 140 L 224 140 L 230 156 L 220 170 L 200 166 L 188 170 L 200 158 Z" },
-    { id:"VER",  d:"M 208 96 L 236 88 L 244 108 L 240 126 L 228 126 L 222 114 L 210 112 L 210 108 Z" },
-    { id:"CHIS", d:"M 220 170 L 244 160 L 248 178 L 234 186 L 218 182 Z" },
-    { id:"TAB",  d:"M 236 138 L 254 136 L 256 152 L 244 156 L 240 148 L 240 126 L 228 126 L 230 140 Z" },
-    { id:"CAM",  d:"M 254 136 L 276 128 L 280 154 L 266 164 L 254 158 L 256 152 Z" },
-    { id:"YUC",  d:"M 276 116 L 308 112 L 312 132 L 284 136 L 276 128 Z" },
-    { id:"QR",   d:"M 308 112 L 322 116 L 320 160 L 306 162 L 288 150 L 284 136 L 312 132 Z" },
+  const clientStates = ["BC","JAL","CDMX"];
+
+  // Real simplified Mexico state SVG paths (scaled to viewBox 0 0 800 600)
+  const states = [
+    { id:"BC",   name:"Baja California",  d:"M 52 120 L 78 60 L 95 68 L 105 90 L 98 130 L 80 155 L 60 148 Z" },
+    { id:"BCS",  name:"Baja California Sur", d:"M 60 148 L 80 155 L 88 185 L 90 230 L 78 265 L 62 260 L 52 225 L 48 185 Z" },
+    { id:"SON",  name:"Sonora",           d:"M 98 130 L 105 90 L 145 75 L 168 80 L 172 110 L 165 148 L 140 162 L 115 158 Z" },
+    { id:"CHIH", name:"Chihuahua",        d:"M 168 80 L 210 70 L 245 75 L 250 105 L 242 140 L 220 158 L 190 162 L 172 148 L 172 110 Z" },
+    { id:"COAH", name:"Coahuila",         d:"M 245 75 L 290 68 L 318 80 L 320 108 L 308 138 L 280 148 L 255 142 L 250 115 Z" },
+    { id:"NL",   name:"Nuevo León",       d:"M 290 68 L 330 62 L 342 85 L 335 118 L 318 125 L 308 110 L 308 80 Z" },
+    { id:"TAM",  name:"Tamaulipas",       d:"M 330 62 L 358 68 L 368 95 L 362 148 L 342 165 L 322 158 L 318 128 L 335 118 L 342 85 Z" },
+    { id:"SIN",  name:"Sinaloa",          d:"M 115 158 L 140 162 L 155 180 L 155 220 L 140 242 L 118 235 L 108 210 L 108 185 Z" },
+    { id:"DGO",  name:"Durango",          d:"M 165 148 L 190 162 L 205 178 L 200 215 L 185 228 L 165 225 L 152 208 L 155 180 L 140 162 Z" },
+    { id:"ZAC",  name:"Zacatecas",        d:"M 220 158 L 242 148 L 262 155 L 268 180 L 258 205 L 238 212 L 215 205 L 205 185 L 205 178 L 220 165 Z" },
+    { id:"NAY",  name:"Nayarit",          d:"M 140 242 L 155 228 L 168 235 L 172 258 L 162 275 L 145 270 L 132 258 Z" },
+    { id:"SLP",  name:"San Luis Potosí",  d:"M 262 155 L 292 148 L 308 158 L 312 185 L 300 208 L 278 215 L 258 210 L 258 180 Z" },
+    { id:"AGS",  name:"Aguascalientes",   d:"M 238 212 L 258 210 L 260 228 L 248 235 L 235 228 Z" },
+    { id:"JAL",  name:"Jalisco",          d:"M 172 258 L 185 240 L 205 235 L 215 248 L 235 245 L 248 255 L 252 278 L 240 298 L 218 308 L 198 305 L 182 292 L 172 278 Z" },
+    { id:"GTO",  name:"Guanajuato",       d:"M 258 210 L 278 215 L 295 222 L 298 242 L 282 252 L 258 248 L 248 235 L 260 228 Z" },
+    { id:"QRO",  name:"Querétaro",        d:"M 295 222 L 315 218 L 322 235 L 315 250 L 298 248 L 295 235 Z" },
+    { id:"HGO",  name:"Hidalgo",          d:"M 315 218 L 338 215 L 345 232 L 338 248 L 320 252 L 315 238 Z" },
+    { id:"COL",  name:"Colima",           d:"M 198 305 L 212 298 L 220 310 L 215 322 L 202 320 Z" },
+    { id:"MICH", name:"Michoacán",        d:"M 218 308 L 240 298 L 258 295 L 270 308 L 272 330 L 258 348 L 235 352 L 215 342 L 208 325 Z" },
+    { id:"MEX",  name:"Estado de México", d:"M 322 235 L 342 232 L 352 245 L 348 262 L 332 268 L 318 262 L 318 248 L 322 242 Z" },
+    { id:"CDMX", name:"CDMX",            d:"M 338 252 L 352 248 L 358 260 L 350 268 L 338 265 Z" },
+    { id:"TLAX", name:"Tlaxcala",         d:"M 352 245 L 365 242 L 368 255 L 358 260 L 352 252 Z" },
+    { id:"MOR",  name:"Morelos",          d:"M 332 268 L 348 265 L 352 280 L 340 288 L 328 282 Z" },
+    { id:"PUE",  name:"Puebla",           d:"M 352 248 L 380 238 L 392 252 L 388 278 L 368 290 L 348 285 L 350 268 L 358 260 Z" },
+    { id:"VER",  name:"Veracruz",         d:"M 338 215 L 370 205 L 400 218 L 415 245 L 408 278 L 392 295 L 375 295 L 355 280 L 352 262 L 365 248 L 380 238 L 380 215 Z" },
+    { id:"GRO",  name:"Guerrero",         d:"M 258 348 L 272 332 L 295 328 L 315 338 L 322 360 L 310 380 L 285 388 L 262 375 Z" },
+    { id:"OAX",  name:"Oaxaca",           d:"M 315 338 L 348 325 L 375 332 L 388 352 L 378 375 L 355 390 L 328 392 L 308 382 L 310 362 Z" },
+    { id:"CHIS", name:"Chiapas",          d:"M 355 390 L 390 375 L 415 382 L 420 405 L 402 420 L 375 418 L 355 408 Z" },
+    { id:"TAB",  name:"Tabasco",          d:"M 388 295 L 415 285 L 430 298 L 428 318 L 408 325 L 392 315 Z" },
+    { id:"CAM",  name:"Campeche",         d:"M 430 298 L 462 285 L 475 305 L 470 345 L 448 358 L 428 348 L 428 320 Z" },
+    { id:"YUC",  name:"Yucatán",          d:"M 462 272 L 508 268 L 518 285 L 512 308 L 478 312 L 462 300 L 462 285 Z" },
+    { id:"QR",   name:"Quintana Roo",     d:"M 508 268 L 532 272 L 538 305 L 530 348 L 510 360 L 488 352 L 478 328 L 478 308 L 512 308 L 518 285 Z" },
   ];
 
   return (
-    <div style={{ maxWidth: 680, margin: "0 auto", padding: "0 1rem" }}>
-      <svg viewBox="55 28 275 168" xmlns="http://www.w3.org/2000/svg" style={{ width: "100%", height: "auto", display: "block" }}>
+    <div style={{ maxWidth: 700, margin: "0 auto", padding: "0 1rem" }}>
+      <svg viewBox="40 50 510 390" xmlns="http://www.w3.org/2000/svg"
+        style={{ width: "100%", height: "auto", display: "block" }}>
         <defs>
-          <filter id="mapglow" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="2.5" result="blur"/>
+          <filter id="mglow" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="4" result="blur"/>
             <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
           </filter>
         </defs>
-        {states.map((s) => {
-          const isClient = clients.includes(s.id);
+        {states.map((s, idx) => {
+          const isClient = clientStates.includes(s.id);
           return (
             <motion.path key={s.id} d={s.d}
-              fill={isClient ? accent : `${accent}22`}
+              fill={isClient ? accent : "transparent"}
               stroke={accent}
-              strokeWidth={isClient ? 0.8 : 0.35}
+              strokeWidth={isClient ? 1.5 : 0.8}
               strokeLinejoin="round"
-              strokeOpacity={isClient ? 1 : 0.5}
-              filter={isClient ? "url(#mapglow)" : undefined}
+              strokeOpacity={isClient ? 1 : 0.45}
+              filter={isClient ? "url(#mglow)" : undefined}
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              transition={{ delay: isClient ? 0.3 : Math.random() * 0.5, duration: 0.4 }}
+              transition={{ delay: idx * 0.015, duration: 0.3 }}
             />
           );
         })}
-        {/* Pulse rings */}
+        {/* City dots + labels */}
         {[
-          { cx: 70, cy: 56, label: "B.C." },
-          { cx: 145, cy: 116, label: "GDL" },
-          { cx: 199, cy: 119, label: "CDMX" },
-        ].map(({ cx, cy, label }, i) => (
+          { cx: 70, cy: 120, label: "B.C.", dy: -8 },
+          { cx: 218, cy: 278, label: "GDL", dy: -8 },
+          { cx: 348, cy: 258, label: "CDMX", dy: -8 },
+        ].map(({ cx, cy, label, dy }, i) => (
           <g key={label}>
-            <motion.circle cx={cx} cy={cy} r={2.5} fill={accent}
-              animate={{ r: [2.5,7,2.5], opacity:[1,0,1] }}
-              transition={{ duration: 2, repeat: Infinity, delay: i * 0.7 }} />
-            <circle cx={cx} cy={cy} r={2} fill={accent} />
-            <text x={cx} y={cy - 5} textAnchor="middle" fill={accent}
-              fontSize="3.8" fontWeight="900" fontFamily="sans-serif">{label}</text>
+            <motion.circle cx={cx} cy={cy} r={5} fill={accent}
+              filter="url(#mglow)" />
+            <motion.circle cx={cx} cy={cy} r={4} fill="none" stroke={accent} strokeWidth={1.5}
+              animate={{ r: [4, 14, 4], opacity: [0.9, 0, 0.9] }}
+              transition={{ duration: 2.2, repeat: Infinity, delay: i * 0.7 }} />
+            <text x={cx} y={cy + dy} textAnchor="middle"
+              fill={accent} fontSize="11" fontWeight="800" fontFamily="sans-serif"
+              style={{ filter: "url(#mglow)" }}>{label}</text>
           </g>
         ))}
       </svg>
       <div style={{ display: "flex", justifyContent: "center", gap: "2rem", marginTop: "1.5rem", flexWrap: "wrap" }}>
-        {["Baja California","Guadalajara","CDMX"].map((city) => (
+        {["Baja California", "Guadalajara", "CDMX"].map((city) => (
           <div key={city} style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontSize: "0.68rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em", color: accent }}>
             <div style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: accent }} />
             {city}
@@ -478,157 +521,6 @@ function MexicoMap({ accent, bg, card }: { accent: string; bg: string; card: str
   );
 }
 
-
-// ─────────────────────────────────────────────────────────────────────────────
-// PRICING FLIP CARD
-// ─────────────────────────────────────────────────────────────────────────────
-function PricingFlipCard({ plan, i, t, accent, bg, text, waLink, lang }: {
-  plan: { name: string; price: string; badge: string; features: string[]; popular: boolean; soldOut?: boolean };
-  i: number; t: typeof themes.white; accent: string; bg: string; text: string; waLink: string; lang: "es" | "en";
-}) {
-  const [flipped, setFlipped] = useState(false);
-  const [form, setForm] = useState({ nombre: "", telefono: "", email: "", web: "", solicitud: "" });
-  const [sent, setSent] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const msg = encodeURIComponent(`Hola Rodrigo, me interesa el paquete *${plan.name}*.
-
-Nombre: ${form.nombre}
-Teléfono: ${form.telefono}
-Email: ${form.email}${form.web ? `
-Web: ${form.web}` : ""}
-Solicitud: ${form.solicitud}`);
-    // Use location.href on mobile for native app open, window.open on desktop
-    const isMobile = /iPhone|Android|iPad/i.test(navigator.userAgent);
-    const waUrl = `https://wa.me/525625018281?text=${msg}`;
-    if (isMobile) { window.location.href = waUrl; } else { window.open(waUrl, "_blank"); }
-    setSent(true);
-  };
-
-  const cardBg = plan.popular ? accent : bg;
-  const cardText = plan.popular ? bg : text;
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.12 }}
-      style={{ perspective: "1200px", height: plan.soldOut ? "auto" : 520 }}>
-      <div style={{
-        width: "100%", height: "100%", position: "relative",
-        transformStyle: "preserve-3d",
-        transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)",
-        transition: "transform 0.5s cubic-bezier(0.4,0.2,0.2,1)",
-      }}>
-
-        {/* FRONT */}
-        <div style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden",
-          padding: "2rem", backgroundColor: cardBg, color: cardText, borderRadius: "1.5rem",
-          border: `1px solid ${plan.popular ? "transparent" : accent + "15"}`,
-          boxShadow: plan.popular ? `0 12px 40px ${accent}40` : "0 4px 20px rgba(0,0,0,0.06)",
-          display: "flex", flexDirection: "column", opacity: plan.soldOut ? 0.6 : 1 }}>
-
-          {/* Sold out banner */}
-          {plan.soldOut && (
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, display: "flex", alignItems: "center", justifyContent: "center", zIndex: 10, borderRadius: "1.5rem", backgroundColor: "rgba(0,0,0,0.55)", backdropFilter: "blur(3px)" }}>
-              <div style={{ textAlign: "center" }}>
-                <p style={{ fontSize: "1.8rem" }}>🔒</p>
-                <p style={{ fontSize: "0.72rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.2em", color: "#fff", marginTop: "0.5rem" }}>{lang === "es" ? "Agotado por ahora" : "Currently sold out"}</p>
-                <p style={{ fontSize: "0.65rem", color: "rgba(255,255,255,0.6)", marginTop: "0.25rem" }}>{lang === "es" ? "Lista de espera disponible" : "Join the waitlist"}</p>
-              </div>
-            </div>
-          )}
-
-          {plan.popular && (
-            <div style={{ position: "absolute", top: "-0.75rem", left: "50%", transform: "translateX(-50%)", backgroundColor: bg, color: accent, fontSize: "0.55rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.15em", padding: "0.3rem 1rem", borderRadius: "999px", whiteSpace: "nowrap" }}>
-              ★ {plan.badge}
-            </div>
-          )}
-          {!plan.popular && <p style={{ fontSize: "0.55rem", textTransform: "uppercase", letterSpacing: "0.15em", opacity: 0.6, marginBottom: "0.5rem", fontWeight: 700 }}>{plan.badge}</p>}
-
-          <h3 style={{ fontSize: "1.3rem", fontFamily: "serif", fontWeight: 700, marginBottom: "0.5rem", lineHeight: 1.2 }}>{plan.name}</h3>
-          <p style={{ fontSize: "2.5rem", fontFamily: "serif", fontWeight: 700, marginBottom: "0.25rem", lineHeight: 1 }}>{plan.price}</p>
-          <p style={{ fontSize: "0.62rem", opacity: 0.5, marginBottom: "1.25rem", textTransform: "uppercase", letterSpacing: "0.1em" }}>MXN · pago único</p>
-
-          <ul style={{ display: "flex", flexDirection: "column", gap: "0.55rem", marginBottom: "1.5rem", flex: 1 }}>
-            {plan.features.map((f, j) => (
-              <li key={j} style={{ display: "flex", alignItems: "flex-start", gap: "0.5rem", fontSize: "0.8rem", lineHeight: 1.5, opacity: 0.85 }}>
-                <span style={{ color: plan.popular ? bg : accent, flexShrink: 0 }}>✓</span>{f}
-              </li>
-            ))}
-          </ul>
-
-          {!plan.soldOut ? (
-            <button onClick={() => setFlipped(true)}
-              style={{ width: "100%", padding: "0.85rem", borderRadius: "999px", backgroundColor: plan.popular ? bg : accent, color: plan.popular ? accent : bg, fontWeight: 900, fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.1em", border: "none", cursor: "pointer" }}>
-              {lang === "es" ? "Quiero este →" : "I want this →"}
-            </button>
-          ) : (
-            <button onClick={() => setFlipped(true)}
-              style={{ width: "100%", padding: "0.85rem", borderRadius: "999px", backgroundColor: "transparent", color: cardText, fontWeight: 900, fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.1em", border: `1px solid ${cardText}40`, cursor: "pointer", opacity: 0.7 }}>
-              {lang === "es" ? "Lista de espera →" : "Join waitlist →"}
-            </button>
-          )}
-        </div>
-
-        {/* BACK — Form */}
-        <div style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden",
-          transform: "rotateY(180deg)", padding: "1.75rem", backgroundColor: bg, color: text,
-          borderRadius: "1.5rem", border: `1px solid ${accent}20`, display: "flex", flexDirection: "column" }}>
-
-          {!sent ? (
-            <>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem" }}>
-                <h3 style={{ fontSize: "1rem", fontFamily: "serif", fontWeight: 700 }}>{plan.soldOut ? (lang === "es" ? "Lista de espera" : "Waitlist") : plan.name}</h3>
-                <button onClick={() => setFlipped(false)} style={{ background: "none", border: "none", cursor: "pointer", color: text, opacity: 0.5, fontSize: "1.2rem" }}>←</button>
-              </div>
-              <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "0.65rem", flex: 1 }}>
-                {[
-                  { key: "nombre",    label: lang === "es" ? "Nombre completo" : "Full name",        type: "text",     required: true,  autoFocus: true },
-                  { key: "telefono",  label: lang === "es" ? "Teléfono"        : "Phone number",     type: "tel",      required: true,  autoFocus: false },
-                  { key: "email",     label: lang === "es" ? "Correo"          : "Email",             type: "email",    required: true,  autoFocus: false },
-                  { key: "web",       label: lang === "es" ? "Página web (opcional)" : "Website (optional)", type: "url", required: false, autoFocus: false },
-                  { key: "solicitud", label: lang === "es" ? "¿Qué necesitas?" : "What do you need?", type: "textarea", required: true,  autoFocus: false },
-                ].map(({ key, label, type, required, autoFocus }, fi) => (
-                  <div key={key} style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
-                    <label style={{ fontSize: "0.6rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", opacity: 0.55 }}>
-                      {label}
-                    </label>
-                    {type === "textarea" ? (
-                      <textarea rows={2} required={required} value={(form as any)[key]}
-                        tabIndex={fi + 1}
-                        onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
-                        style={{ padding: "0.5rem 0.75rem", borderRadius: "0.75rem", border: `1px solid ${accent}25`, backgroundColor: `${accent}06`, color: text, fontSize: "0.82rem", resize: "none", fontFamily: "inherit", outline: "none", WebkitAppearance: "none" }} />
-                    ) : (
-                      <input required={required} type={type} value={(form as any)[key]}
-                        tabIndex={fi + 1}
-                        autoFocus={autoFocus}
-                        onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
-                        onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); const next = document.querySelector(`[tabindex="${fi + 2}"]`) as HTMLElement; next?.focus(); }}}
-                        style={{ padding: "0.5rem 0.75rem", borderRadius: "0.75rem", border: `1px solid ${accent}25`, backgroundColor: `${accent}06`, color: text, fontSize: "0.82rem", fontFamily: "inherit", outline: "none", WebkitAppearance: "none" }} />
-                    )}
-                  </div>
-                ))}
-                <button type="submit"
-                  style={{ marginTop: "0.5rem", padding: "0.75rem", borderRadius: "999px", backgroundColor: accent, color: bg, fontWeight: 900, fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.1em", border: "none", cursor: "pointer" }}>
-                  {lang === "es" ? "Enviar por WhatsApp →" : "Send via WhatsApp →"}
-                </button>
-              </form>
-            </>
-          ) : (
-            <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", gap: "1rem" }}>
-              <p style={{ fontSize: "2.5rem" }}>✅</p>
-              <p style={{ fontWeight: 700, fontSize: "1rem" }}>{lang === "es" ? "¡Listo! Te contactaremos pronto." : "Done! We'll reach out soon."}</p>
-              <button onClick={() => { setFlipped(false); setSent(false); setForm({ nombre:"", telefono:"", email:"", web:"", solicitud:"" }); }}
-                style={{ padding: "0.6rem 1.5rem", borderRadius: "999px", border: `1px solid ${accent}`, color: accent, backgroundColor: "transparent", cursor: "pointer", fontSize: "0.72rem", fontWeight: 700 }}>
-                {lang === "es" ? "Volver" : "Back"}
-              </button>
-            </div>
-          )}
-        </div>
-      </div>
-    </motion.div>
-  );
-}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // FAQ ACCORDION ITEM
@@ -697,6 +589,148 @@ function CountUp({ from, to, duration = 2, suffix = "" }: { from: number; to: nu
 
   return <span ref={ref}>{val}{suffix}</span>;
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PRICING FLIP CARD
+// ─────────────────────────────────────────────────────────────────────────────
+function PricingFlipCard({ plan, i, t, accent, bg, text, waLink, lang }: {
+  plan: { name: string; price: string; badge: string; features: string[]; popular: boolean; soldOut?: boolean };
+  i: number; t: typeof themes.white; accent: string; bg: string; text: string; waLink: string; lang: "es" | "en";
+}) {
+  const [flipped, setFlipped] = useState(false);
+  const [form, setForm] = useState({ nombre: "", telefono: "", email: "", web: "", solicitud: "" });
+  const [sent, setSent] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const webLine = form.web ? `
+Web: ${form.web}` : "";
+    const msg = encodeURIComponent(
+      `Hola Rodrigo, me interesa el paquete *${plan.name}*.
+
+Nombre: ${form.nombre}
+Teléfono: ${form.telefono}
+Email: ${form.email}${webLine}
+Solicitud: ${form.solicitud}`
+    );
+    const waUrl = `https://wa.me/525625018281?text=${msg}`;
+    const isMobile = /iPhone|Android|iPad/i.test(navigator.userAgent);
+    if (isMobile) { window.location.href = waUrl; } else { window.open(waUrl, "_blank"); }
+    setSent(true);
+  };
+
+  const cardBg = plan.popular ? accent : bg;
+  const cardText = plan.popular ? bg : text;
+  const fields = [
+    { key: "nombre",   label: lang === "es" ? "Nombre completo"        : "Full name",           type: "text",     required: true  },
+    { key: "telefono", label: lang === "es" ? "Teléfono"               : "Phone number",        type: "tel",      required: true  },
+    { key: "email",    label: lang === "es" ? "Correo"                 : "Email",               type: "email",    required: true  },
+    { key: "web",      label: lang === "es" ? "Página web (opcional)"  : "Website (optional)",  type: "url",      required: false },
+    { key: "solicitud",label: lang === "es" ? "¿Qué necesitas?"        : "What do you need?",   type: "textarea", required: true  },
+  ];
+
+  return (
+    <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.12 }}
+      style={{ perspective: "1200px", minHeight: 520 }}>
+      <div style={{ width: "100%", height: "100%", position: "relative", transformStyle: "preserve-3d",
+        transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)",
+        transition: "transform 0.5s cubic-bezier(0.4,0.2,0.2,1)" }}>
+
+        {/* FRONT */}
+        <div style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden",
+          padding: "2rem", backgroundColor: cardBg, color: cardText, borderRadius: "1.5rem",
+          border: `1px solid ${plan.popular ? "transparent" : accent + "15"}`,
+          boxShadow: plan.popular ? `0 12px 40px ${accent}40` : "0 4px 20px rgba(0,0,0,0.06)",
+          display: "flex", flexDirection: "column", opacity: plan.soldOut ? 0.65 : 1 }}>
+
+          {plan.soldOut && (
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, display: "flex", alignItems: "center", justifyContent: "center", zIndex: 10, borderRadius: "1.5rem", backgroundColor: "rgba(0,0,0,0.55)", backdropFilter: "blur(4px)" }}>
+              <div style={{ textAlign: "center" }}>
+                <p style={{ fontSize: "2rem" }}>🔒</p>
+                <p style={{ fontSize: "0.72rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.2em", color: "#fff", marginTop: "0.5rem" }}>{lang === "es" ? "Agotado por ahora" : "Currently sold out"}</p>
+                <p style={{ fontSize: "0.65rem", color: "rgba(255,255,255,0.6)", marginTop: "0.25rem" }}>{lang === "es" ? "Lista de espera disponible" : "Join the waitlist"}</p>
+              </div>
+            </div>
+          )}
+
+          {plan.popular && (
+            <div style={{ position: "absolute", top: "-0.75rem", left: "50%", transform: "translateX(-50%)", backgroundColor: bg, color: accent, fontSize: "0.55rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.15em", padding: "0.3rem 1rem", borderRadius: "999px", whiteSpace: "nowrap" }}>
+              ★ {plan.badge}
+            </div>
+          )}
+          {!plan.popular && <p style={{ fontSize: "0.55rem", textTransform: "uppercase", letterSpacing: "0.15em", opacity: 0.6, marginBottom: "0.5rem", fontWeight: 700 }}>{plan.badge}</p>}
+
+          <h3 style={{ fontSize: "1.3rem", fontFamily: "serif", fontWeight: 700, marginBottom: "0.5rem", lineHeight: 1.2 }}>{plan.name}</h3>
+          <p style={{ fontSize: "2.5rem", fontFamily: "serif", fontWeight: 700, marginBottom: "0.25rem", lineHeight: 1 }}>{plan.price}</p>
+          <p style={{ fontSize: "0.62rem", opacity: 0.5, marginBottom: "1.25rem", textTransform: "uppercase", letterSpacing: "0.1em" }}>MXN · pago único</p>
+
+          <ul style={{ display: "flex", flexDirection: "column", gap: "0.55rem", marginBottom: "1.5rem", flex: 1 }}>
+            {plan.features.map((f, j) => (
+              <li key={j} style={{ display: "flex", alignItems: "flex-start", gap: "0.5rem", fontSize: "0.8rem", lineHeight: 1.5, opacity: 0.85 }}>
+                <span style={{ color: plan.popular ? bg : accent, flexShrink: 0 }}>✓</span>{f}
+              </li>
+            ))}
+          </ul>
+
+          <button onClick={() => setFlipped(true)}
+            style={{ width: "100%", padding: "0.85rem", borderRadius: "999px", backgroundColor: plan.popular ? bg : accent, color: plan.popular ? accent : bg, fontWeight: 900, fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.1em", border: "none", cursor: "pointer" }}>
+            {plan.soldOut ? (lang === "es" ? "Lista de espera →" : "Join waitlist →") : (lang === "es" ? "Quiero este →" : "I want this →")}
+          </button>
+        </div>
+
+        {/* BACK — Form */}
+        <div style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden",
+          transform: "rotateY(180deg)", padding: "1.5rem", backgroundColor: bg, color: text,
+          borderRadius: "1.5rem", border: `1px solid ${accent}20`, display: "flex", flexDirection: "column" }}>
+
+          {!sent ? (<>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
+              <h3 style={{ fontSize: "1rem", fontFamily: "serif", fontWeight: 700 }}>
+                {plan.soldOut ? (lang === "es" ? "Lista de espera" : "Waitlist") : plan.name}
+              </h3>
+              <button onClick={() => setFlipped(false)} style={{ background: "none", border: "none", cursor: "pointer", color: text, opacity: 0.4, fontSize: "1.1rem" }}>←</button>
+            </div>
+            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "0.55rem", flex: 1 }}>
+              {fields.map(({ key, label, type, required }, fi) => (
+                <div key={key} style={{ display: "flex", flexDirection: "column", gap: "0.2rem" }}>
+                  <label htmlFor={`pf-${i}-${key}`} style={{ fontSize: "0.58rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", opacity: 0.5, cursor: "pointer" }}>
+                    {label}
+                  </label>
+                  {type === "textarea" ? (
+                    <textarea id={`pf-${i}-${key}`} rows={2} required={required} value={(form as any)[key]}
+                      autoFocus={fi === 0 && flipped}
+                      onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
+                      style={{ padding: "0.5rem 0.75rem", borderRadius: "0.65rem", border: `1px solid ${accent}28`, backgroundColor: `${accent}07`, color: text, fontSize: "0.82rem", resize: "none", fontFamily: "inherit", outline: "none", width: "100%", boxSizing: "border-box" as const }} />
+                  ) : (
+                    <input id={`pf-${i}-${key}`} required={required} type={type} value={(form as any)[key]}
+                      autoFocus={fi === 0 && flipped}
+                      onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
+                      onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); const next = document.getElementById(`pf-${i}-${fields[fi+1]?.key}`); if(next) next.focus(); }}}
+                      style={{ padding: "0.5rem 0.75rem", borderRadius: "0.65rem", border: `1px solid ${accent}28`, backgroundColor: `${accent}07`, color: text, fontSize: "0.82rem", fontFamily: "inherit", outline: "none", width: "100%", boxSizing: "border-box" as const }} />
+                  )}
+                </div>
+              ))}
+              <button type="submit"
+                style={{ marginTop: "0.4rem", padding: "0.75rem", borderRadius: "999px", backgroundColor: accent, color: bg, fontWeight: 900, fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.1em", border: "none", cursor: "pointer" }}>
+                {lang === "es" ? "Enviar por WhatsApp →" : "Send via WhatsApp →"}
+              </button>
+            </form>
+          </>) : (
+            <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", gap: "1rem" }}>
+              <p style={{ fontSize: "2.5rem" }}>✅</p>
+              <p style={{ fontWeight: 700, fontSize: "1rem" }}>{lang === "es" ? "¡Listo! Rodrigo te contactará pronto." : "Done! Rodrigo will reach out soon."}</p>
+              <button onClick={() => { setFlipped(false); setSent(false); setForm({ nombre:"", telefono:"", email:"", web:"", solicitud:"" }); }}
+                style={{ padding: "0.6rem 1.5rem", borderRadius: "999px", border: `1px solid ${accent}`, color: accent, backgroundColor: "transparent", cursor: "pointer", fontSize: "0.72rem", fontWeight: 700 }}>
+                {lang === "es" ? "Volver" : "Back"}
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
 
 // ─────────────────────────────────────────────────────────────────────────────
 // MAIN PAGE
@@ -776,12 +810,19 @@ export default function Home() {
         }
         html, body {
           overscroll-behavior: none;
-          -webkit-overflow-scrolling: touch;
+          overscroll-behavior-y: none;
+          -webkit-overflow-scrolling: auto;
+          background-color: #000;
         }
         canvas {
           backface-visibility: hidden;
           -webkit-backface-visibility: hidden;
-          will-change: transform;
+          transform: translateZ(0);
+          -webkit-transform: translateZ(0);
+        }
+        * { -webkit-tap-highlight-color: transparent; }
+        @supports (-webkit-touch-callout: none) {
+          body { position: fixed; width: 100%; overflow-y: scroll; }
         }
         @media (max-width: 768px) {
           section p:not(.no-scale),
@@ -959,7 +1000,7 @@ export default function Home() {
           {/* Sub — below title, centered, single line */}
           <p style={{ fontSize: "0.88rem", opacity: 0.5, lineHeight: 1.4, color: t.sub, marginBottom: "2.5rem", textAlign: "center", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{c.camino_sub}</p>
         </div>
-        <ServicesBento t={t} c={c} />
+        <ServicesBento t={t} c={c} lang={lang} />
       </section>
 
       {/* ── NOSOTROS ── */}
