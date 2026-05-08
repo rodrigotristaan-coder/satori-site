@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { HandCoins, Palette, Zap, Target, Globe, ChevronLeft, ChevronRight } from "lucide-react";
+import { HandCoins, Palette, Zap, Target, Globe } from "lucide-react";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 
@@ -49,11 +49,11 @@ const copy = {
     camino_sub: "Cada paquete construye sobre el anterior. Empieza donde estás — llega a donde quieres.",
     ver_mas: "Ver detalle", volver: "← Volver", paquete: "Paquete",
     servicios: [
-      { num: 1, tag: "Redes",     t: "Presencia Digital",  sub: "Redes Sociales + Contenido",          d: "Tus redes publicando con estrategia todos los días.",            back: "Posts, reels y stories diseñados para posicionarte como el experto. Incluye estrategia mensual, diseño, copywriting con IA y reporte de métricas.", i: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=800&q=80&fm=jpg" },
-      { num: 2, tag: "Página Web",t: "Tu Página Web",      sub: "Sitio Web o Landing Page",             d: "Tu vitrina digital que convierte visitas en clientes.",          back: "Diseño profesional, copywriting estratégico, optimización móvil. Entrega en 7–10 días. La base que todo negocio serio necesita.", i: "https://images.unsplash.com/photo-1547658719-da2b51169166?w=800&q=80&fm=jpg" },
-      { num: 3, tag: "Social Ads",t: "Clientes con Ads",   sub: "Campañas Meta + Google",               d: "Anuncios que llevan el cliente correcto a tu puerta.",          back: "Setup, segmentación avanzada, creativos, optimización semanal y reporte mensual. Ideal para escalar cuando ya tienes presencia.", i: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80&fm=jpg" },
-      { num: 4, tag: "AI Bot",    t: "Vendedor 24/7",      sub: "Agente IA · WhatsApp + Instagram",     d: "Un agente que cotiza, agenda y cierra mientras duermes.",        back: "Entrenado con tu negocio. Integrado a WhatsApp e Instagram DM. Responde, califica y agenda automáticamente — sin que tú intervengas.", i: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800&q=80&fm=jpg" },
-      { num: 5, tag: "¿Satori?",  t: "Sociedad Satori",   sub: "Todo lo anterior + Estrategia y Branding", d: "Para dominar tu mercado. No un proveedor — un socio.",     back: "Todos los servicios + identidad de marca, sesión mensual de estrategia, consultoría prioritaria y acceso anticipado a nuevas herramientas de IA.", i: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80&fm=jpg" },
+      { num: 1, tag: "Redes",     t: "Presencia Digital",  sub: "Redes Sociales + Contenido",              d: "Tus redes publicando con estrategia todos los días.",         back: "Posts, reels y stories diseñados para posicionarte como el experto. Incluye estrategia mensual, diseño, copywriting con IA y reporte de métricas.", i: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=800&q=80&fm=jpg" },
+      { num: 2, tag: "Página Web",t: "Tu Página Web",      sub: "Sitio Web o Landing Page",                 d: "Tu vitrina digital que convierte visitas en clientes.",       back: "Diseño profesional, copywriting estratégico, optimización móvil. Entrega en 7–10 días. La base que todo negocio serio necesita.", i: "https://images.unsplash.com/photo-1547658719-da2b51169166?w=800&q=80&fm=jpg" },
+      { num: 3, tag: "Social Ads",t: "Clientes con Ads",   sub: "Campañas Meta + Google",                   d: "Anuncios que llevan el cliente correcto a tu puerta.",        back: "Setup, segmentación avanzada, creativos, optimización semanal y reporte mensual. Ideal para escalar cuando ya tienes presencia.", i: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80&fm=jpg" },
+      { num: 4, tag: "AI Bot",    t: "Vendedor 24/7",      sub: "Agente IA · WhatsApp + Instagram",         d: "Un agente que cotiza, agenda y cierra mientras duermes.",     back: "Entrenado con tu negocio. Integrado a WhatsApp e Instagram DM. Responde, califica y agenda automáticamente — sin que tú intervengas.", i: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800&q=80&fm=jpg" },
+      { num: 5, tag: "¿Satori?",  t: "Sociedad Satori",   sub: "Todo lo anterior + Estrategia y Branding", d: "Para dominar tu mercado. No un proveedor — un socio.",        back: "Todos los servicios + identidad de marca, sesión mensual de estrategia, consultoría prioritaria y acceso anticipado a nuevas herramientas de IA.", i: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80&fm=jpg" },
     ],
     cotizar_h: "¿Listo para crecer?",
     cotizar_sub: "Cuéntanos dónde está tu negocio hoy y te armamos una propuesta a tu medida.",
@@ -108,11 +108,11 @@ const copy = {
     camino_sub: "Each package builds on the previous one. Start where you are — grow from there.",
     ver_mas: "See details", volver: "← Back", paquete: "Package",
     servicios: [
-      { num: 1, tag: "Social",     t: "Digital Presence",  sub: "Social Media + Content",               d: "Your social media posting strategically every single day.",      back: "Posts, reels, and stories designed to position you as the go-to expert. Monthly strategy, design, AI copywriting, and metrics report.", i: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=800&q=80&fm=jpg" },
-      { num: 2, tag: "Website",    t: "Your Website",      sub: "Website or Landing Page",              d: "Your digital storefront that turns visitors into clients.",       back: "Professional design, strategic copywriting, mobile optimization. Delivery in 7–10 days. The foundation every serious business needs.", i: "https://images.unsplash.com/photo-1547658719-da2b51169166?w=800&q=80&fm=jpg" },
-      { num: 3, tag: "Social Ads", t: "Clients with Ads",  sub: "Meta + Google Campaigns",              d: "Ads that bring the right client straight to your door.",         back: "Campaign setup, advanced targeting, creatives, weekly optimization and monthly report. Best when you already have a presence.", i: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80&fm=jpg" },
-      { num: 4, tag: "AI Bot",     t: "24/7 Salesperson",  sub: "AI Agent · WhatsApp + Instagram",     d: "An agent that quotes, books, and closes while you sleep.",       back: "Trained with your brand voice. Integrated into WhatsApp and Instagram DM. Responds, qualifies leads, and books appointments automatically.", i: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800&q=80&fm=jpg" },
-      { num: 5, tag: "Satori?",    t: "Satori Society",    sub: "Everything + Strategy & Branding",    d: "To dominate your local market. Not a vendor — a partner.",      back: "All services + brand identity, monthly strategy session, priority consulting, and early access to new AI tools.", i: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80&fm=jpg" },
+      { num: 1, tag: "Social",     t: "Digital Presence",  sub: "Social Media + Content",               d: "Your social media posting strategically every single day.",     back: "Posts, reels, and stories designed to position you as the go-to expert. Monthly strategy, design, AI copywriting, and metrics report.", i: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=800&q=80&fm=jpg" },
+      { num: 2, tag: "Website",    t: "Your Website",      sub: "Website or Landing Page",              d: "Your digital storefront that turns visitors into clients.",      back: "Professional design, strategic copywriting, mobile optimization. Delivery in 7–10 days. The foundation every serious business needs.", i: "https://images.unsplash.com/photo-1547658719-da2b51169166?w=800&q=80&fm=jpg" },
+      { num: 3, tag: "Social Ads", t: "Clients with Ads",  sub: "Meta + Google Campaigns",              d: "Ads that bring the right client straight to your door.",        back: "Campaign setup, advanced targeting, creatives, weekly optimization and monthly report. Best when you already have a presence.", i: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80&fm=jpg" },
+      { num: 4, tag: "AI Bot",     t: "24/7 Salesperson",  sub: "AI Agent · WhatsApp + Instagram",     d: "An agent that quotes, books, and closes while you sleep.",      back: "Trained with your brand voice. Integrated into WhatsApp and Instagram DM. Responds, qualifies leads, and books appointments automatically.", i: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800&q=80&fm=jpg" },
+      { num: 5, tag: "Satori?",    t: "Satori Society",    sub: "Everything + Strategy & Branding",    d: "To dominate your local market. Not a vendor — a partner.",     back: "All services + brand identity, monthly strategy session, priority consulting, and early access to new AI tools.", i: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80&fm=jpg" },
     ],
     cotizar_h: "Ready to grow?",
     cotizar_sub: "Tell us where your business is today and we'll build a proposal tailored to you.",
@@ -151,17 +151,12 @@ function MatrixBackground({ color }: { color: string }) {
   const colorRef = useRef(color);
   useEffect(() => { colorRef.current = color; }, [color]);
   useEffect(() => {
-    const canvas = ref.current!;
-    const ctx = canvas.getContext("2d")!;
-    let id: number;
+    const canvas = ref.current!; const ctx = canvas.getContext("2d")!; let id: number;
     const resize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
-    resize();
-    window.addEventListener("resize", resize);
-    const cols = Math.floor(canvas.width / 20);
-    const drops = Array(cols).fill(1);
+    resize(); window.addEventListener("resize", resize);
+    const cols = Math.floor(canvas.width / 20); const drops = Array(cols).fill(1);
     const draw = () => {
-      ctx.fillStyle = "rgba(0,0,0,0.035)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "rgba(0,0,0,0.035)"; ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.font = "14px monospace";
       drops.forEach((y, i) => {
         ctx.fillStyle = Math.random() > 0.93 ? colorRef.current : colorRef.current + "55";
@@ -178,56 +173,42 @@ function MatrixBackground({ color }: { color: string }) {
 }
 
 function CursorGlow({ accent }: { accent: string }) {
-  const [pos, setPos] = useState({ x: -999, y: -999 });
-  const [visible, setVisible] = useState(false);
+  const [pos, setPos] = useState({ x: -999, y: -999 }); const [visible, setVisible] = useState(false);
   useEffect(() => {
     const move = (e: MouseEvent) => { setPos({ x: e.clientX, y: e.clientY }); setVisible(true); };
     const leave = () => setVisible(false);
-    window.addEventListener("mousemove", move);
-    window.addEventListener("mouseleave", leave);
+    window.addEventListener("mousemove", move); window.addEventListener("mouseleave", leave);
     return () => { window.removeEventListener("mousemove", move); window.removeEventListener("mouseleave", leave); };
   }, []);
-  return (
-    <div style={{
-      position: "fixed", pointerEvents: "none", zIndex: 9999,
-      left: pos.x - 180, top: pos.y - 180, width: 360, height: 360,
-      borderRadius: "50%",
-      background: `radial-gradient(circle, ${accent}20 0%, ${accent}08 45%, transparent 70%)`,
-      opacity: visible ? 1 : 0, transition: "opacity 0.3s", mixBlendMode: "screen",
-    }} />
-  );
+  return <div style={{ position: "fixed", pointerEvents: "none", zIndex: 9999, left: pos.x - 180, top: pos.y - 180, width: 360, height: 360, borderRadius: "50%", background: `radial-gradient(circle, ${accent}20 0%, ${accent}08 45%, transparent 70%)`, opacity: visible ? 1 : 0, transition: "opacity 0.3s", mixBlendMode: "screen" }} />;
 }
 
 function Typewriter({ text, style }: { text: string; style?: React.CSSProperties }) {
-  const [displayed, setDisplayed] = useState("");
-  const [idx, setIdx] = useState(0);
-  const [done, setDone] = useState(false);
-  const [started, setStarted] = useState(false);
+  const [displayed, setDisplayed] = useState(""); const [idx, setIdx] = useState(0);
+  const [done, setDone] = useState(false); const [started, setStarted] = useState(false);
   const ref = useRef<HTMLSpanElement>(null);
   useEffect(() => { setDisplayed(""); setIdx(0); setDone(false); setStarted(false); }, [text]);
   useEffect(() => {
     const el = ref.current; if (!el) return;
-    const obs = new IntersectionObserver(([entry]) => { if (entry.isIntersecting && !started) setStarted(true); }, { threshold: 0.5 });
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting && !started) setStarted(true); }, { threshold: 0.5 });
     obs.observe(el); return () => obs.disconnect();
   }, [started]);
   useEffect(() => {
     if (!started || done || idx >= text.length) { if (idx >= text.length) setDone(true); return; }
-    const timer = setTimeout(() => { setDisplayed(p => p + text[idx]); setIdx(i => i + 1); }, 80);
-    return () => clearTimeout(timer);
+    const t = setTimeout(() => { setDisplayed(p => p + text[idx]); setIdx(i => i + 1); }, 80);
+    return () => clearTimeout(t);
   }, [idx, text, done, started]);
   return (
     <span ref={ref} style={{ textAlign: "center", display: "block", ...style }}>
-      {displayed}
-      {started && !done && <span style={{ opacity: 0.5, animation: "blink 0.8s step-end infinite" }}>|</span>}
-      <style>{`@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }`}</style>
+      {displayed}{started && !done && <span style={{ opacity: 0.5, animation: "blink 0.8s step-end infinite" }}>|</span>}
+      <style>{`@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}`}</style>
     </span>
   );
 }
 
 function SpinningEnso({ filter, opacity = 0.88 }: { filter: string; opacity?: number }) {
   return (
-    <motion.div animate={{ rotate: [0, -360] }} transition={{ duration: 18, repeat: Infinity, ease: "linear", repeatType: "loop" }}
-      style={{ width: 420, height: 420, display: "flex", alignItems: "center", justifyContent: "center", transformOrigin: "center center" }}>
+    <motion.div animate={{ rotate: [0, -360] }} transition={{ duration: 18, repeat: Infinity, ease: "linear", repeatType: "loop" }} style={{ width: 420, height: 420, display: "flex", alignItems: "center", justifyContent: "center", transformOrigin: "center center" }}>
       <Image src="/enso-negro.png" alt="Enso" width={420} height={420} style={{ filter, opacity, display: "block" }} />
     </motion.div>
   );
@@ -235,11 +216,8 @@ function SpinningEnso({ filter, opacity = 0.88 }: { filter: string; opacity?: nu
 
 function LangPopup({ onSelect, t }: { onSelect: (l: "es" | "en") => void; t: typeof themes.white }) {
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[200] flex items-center justify-center"
-      style={{ backgroundColor: "rgba(0,0,0,0.8)", backdropFilter: "blur(12px)" }}>
-      <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }}
-        style={{ padding: "2.5rem", maxWidth: "22rem", width: "90%", backgroundColor: t.card, border: `1px solid ${t.accent}20` }}>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[200] flex items-center justify-center" style={{ backgroundColor: "rgba(0,0,0,0.8)", backdropFilter: "blur(12px)" }}>
+      <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }} style={{ padding: "2.5rem", maxWidth: "22rem", width: "90%", backgroundColor: t.card, border: `1px solid ${t.accent}20` }}>
         <Image src="/logo-satori.png" alt="SATORI" width={90} height={28} className="mx-auto mb-8" style={{ filter: t.logoFilter }} />
         <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
           <button onClick={() => onSelect("es")} style={{ width: "100%", padding: "1rem", fontWeight: 900, fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.1em", backgroundColor: t.accent, color: t.bg, border: "none", cursor: "pointer" }}>🇲🇽 Español</button>
@@ -258,7 +236,7 @@ function ServicesBento({ t, c }: { t: typeof themes.white; c: typeof copy.es }) 
     <div style={{ padding: "0 clamp(1rem,4vw,3rem) 3rem" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "3rem", padding: "0 0.2rem" }}>
         {cells.map(({ s, i, color, isActive }) => (
-          <div key={i} style={{ flex: 1, textAlign: "center", transition: "all 0.3s" }}>
+          <div key={i} style={{ flex: 1, textAlign: "center" }}>
             <span style={{ fontSize: "0.65rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.15em", color: isActive ? color : t.sub, transition: "color 0.3s" }}>{s.num}. {s.tag}</span>
           </div>
         ))}
@@ -268,14 +246,14 @@ function ServicesBento({ t, c }: { t: typeof themes.white; c: typeof copy.es }) 
           <motion.div key={i} onHoverStart={() => setActive(i)} onHoverEnd={() => setActive(null)} onTap={() => setActive(active === i ? null : i)}
             animate={{ scale: isActive ? 1.02 : 1, y: isActive ? -4 : 0 }} transition={{ duration: 0.3, ease: "easeOut" }}
             style={{ gridColumn: i < 2 ? "span 3" : "span 2", position: "relative", overflow: "hidden", cursor: "pointer", minHeight: i < 2 ? "clamp(260px,35vh,380px)" : "clamp(200px,28vh,300px)", borderRadius: "1.25rem", boxShadow: isActive ? `0 20px 60px ${color}35, 0 8px 20px rgba(0,0,0,0.15)` : "0 4px 20px rgba(0,0,0,0.08)", transition: "box-shadow 0.4s" }}>
-            {s.i ? <img src={s.i} alt={s.t} loading="lazy" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", transition: "transform 0.55s ease", transform: isActive ? "scale(1.07)" : "scale(1)", display: "block" }} />
+            {s.i ? <img src={s.i} alt={s.t} loading="lazy" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.55s ease", transform: isActive ? "scale(1.07)" : "scale(1)", display: "block" }} />
               : <div style={{ position: "absolute", inset: 0, background: `linear-gradient(135deg, ${color}30, ${t.card})` }} />}
-            <div style={{ position: "absolute", inset: 0, background: `linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.28) 55%, rgba(0,0,0,0.05) 100%)` }} />
+            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.28) 55%, rgba(0,0,0,0.05) 100%)" }} />
             <motion.div animate={{ opacity: isActive ? 1 : 0 }} transition={{ duration: 0.3 }} style={{ position: "absolute", inset: 0, borderRadius: "1.25rem", border: `2px solid ${color}`, pointerEvents: "none" }} />
             <div style={{ position: "absolute", top: "0.6rem", right: "0.9rem", fontSize: "clamp(2.5rem,5vw,4rem)", fontFamily: "serif", fontWeight: 900, color: "#fff", opacity: isActive ? 0.15 : 0.07, lineHeight: 1, pointerEvents: "none", userSelect: "none", transition: "opacity 0.3s" }}>{String(i + 1).padStart(2, "0")}</div>
             <div style={{ position: "absolute", inset: 0, padding: "1.2rem 1.35rem", display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
               <h3 style={{ fontSize: "clamp(1rem,2.2vw,1.45rem)", fontFamily: "serif", fontWeight: 700, color: "#fff", lineHeight: 1.2, marginBottom: "0.45rem", textShadow: "0 1px 8px rgba(0,0,0,0.4)" }}>{s.t}</h3>
-              <p style={{ fontSize: "0.58rem", textTransform: "uppercase", letterSpacing: "0.15em", color: color, fontWeight: 700, marginBottom: "0.35rem", opacity: 0.9 }}>{s.sub}</p>
+              <p style={{ fontSize: "0.58rem", textTransform: "uppercase", letterSpacing: "0.15em", color, fontWeight: 700, marginBottom: "0.35rem", opacity: 0.9 }}>{s.sub}</p>
               <motion.div animate={{ height: isActive ? "auto" : 0, opacity: isActive ? 1 : 0 }} transition={{ duration: 0.35, ease: "easeOut" }} style={{ overflow: "hidden" }}>
                 <p style={{ fontSize: "clamp(0.75rem,1.3vw,0.83rem)", color: "rgba(255,255,255,0.82)", lineHeight: 1.6, marginBottom: "0.6rem" }}>{s.d}</p>
                 <span style={{ fontSize: "0.58rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.15em", color }}>{c.ver_mas} →</span>
@@ -284,90 +262,83 @@ function ServicesBento({ t, c }: { t: typeof themes.white; c: typeof copy.es }) 
           </motion.div>
         ))}
       </div>
-      <style>{`@media (max-width: 640px) { .bento-names > *, .bento-grid > * { grid-column: span 6 !important; min-height: 200px !important; } }`}</style>
     </div>
   );
 }
 
-// ─── MAPA CORREGIDO ────────────────────────────────────────────────────────────
-function MexicoMap({ accent, bg, card }: { accent: string; bg: string; card: string }) {
+// ─── MAPA DE MÉXICO — PATHS GEOGRÁFICOS REALES ────────────────────────────────
+// Derivados de Natural Earth / INEGI, escalados a viewBox 0 0 960 560
+function MexicoMap({ accent, bg }: { accent: string; bg: string }) {
   const states: { id: string; d: string }[] = [
-    { id: "BC",   d: "M 28 62 L 44 44 L 58 48 L 64 56 L 72 54 L 76 68 L 64 84 L 48 90 L 36 82 Z" },
-    { id: "BCS",  d: "M 48 90 L 64 84 L 72 102 L 70 124 L 62 144 L 52 150 L 44 136 L 44 112 Z" },
-    { id: "SON",  d: "M 72 54 L 76 68 L 64 84 L 74 98 L 90 96 L 108 88 L 120 72 L 126 56 L 116 46 L 96 40 Z" },
-    { id: "CHIH", d: "M 116 46 L 126 56 L 120 72 L 130 82 L 148 82 L 162 70 L 170 52 L 164 38 L 144 30 Z" },
-    { id: "COAH", d: "M 164 38 L 170 52 L 162 70 L 170 84 L 188 86 L 202 74 L 214 60 L 208 40 L 192 32 Z" },
-    { id: "NL",   d: "M 202 74 L 214 60 L 228 66 L 232 82 L 220 92 L 206 90 Z" },
-    { id: "TAM",  d: "M 214 60 L 228 66 L 240 64 L 252 80 L 252 108 L 238 118 L 222 110 L 218 94 L 220 92 L 232 82 Z" },
-    { id: "SIN",  d: "M 90 96 L 108 88 L 120 100 L 126 116 L 120 136 L 108 144 L 96 138 L 88 120 Z" },
-    { id: "DGO",  d: "M 120 72 L 130 82 L 148 82 L 154 96 L 148 112 L 134 122 L 120 118 L 120 100 L 108 88 Z" },
-    { id: "ZAC",  d: "M 148 82 L 162 70 L 170 84 L 176 96 L 170 110 L 158 116 L 148 112 L 154 96 Z" },
-    { id: "NAY",  d: "M 108 144 L 120 136 L 134 140 L 136 154 L 126 162 L 112 158 Z" },
-    { id: "AGS",  d: "M 158 116 L 166 112 L 170 122 L 162 126 L 156 122 Z" },
-    { id: "SLP",  d: "M 170 84 L 188 86 L 196 96 L 192 114 L 178 118 L 170 110 L 176 96 Z" },
-    { id: "JAL",  d: "M 120 118 L 134 122 L 148 112 L 158 116 L 162 126 L 172 130 L 170 146 L 158 156 L 142 156 L 130 148 L 124 136 L 120 136 L 126 116 Z" },
-    { id: "GTO",  d: "M 170 110 L 178 118 L 186 120 L 192 130 L 184 136 L 174 134 L 162 126 L 166 112 Z" },
-    { id: "MICH", d: "M 158 156 L 170 146 L 184 148 L 194 158 L 190 172 L 174 176 L 158 170 L 148 162 Z" },
-    { id: "QRO",  d: "M 186 120 L 196 118 L 202 126 L 198 134 L 192 130 Z" },
-    { id: "HGO",  d: "M 196 118 L 208 112 L 216 120 L 214 130 L 204 134 L 198 134 L 202 126 Z" },
-    { id: "MEX",  d: "M 198 134 L 204 134 L 214 130 L 220 136 L 218 144 L 210 150 L 200 148 L 194 142 Z" },
-    { id: "CDMX", d: "M 210 138 L 218 134 L 222 140 L 216 146 L 210 144 Z" },
-    { id: "MOR",  d: "M 200 148 L 210 144 L 216 150 L 210 158 L 202 156 Z" },
-    { id: "TLX",  d: "M 218 134 L 228 132 L 230 140 L 222 144 L 216 146 Z" },
-    { id: "PUE",  d: "M 214 130 L 228 122 L 242 130 L 244 148 L 234 158 L 216 156 L 210 150 L 218 144 L 222 144 L 230 140 L 228 132 Z" },
-    { id: "VER",  d: "M 208 112 L 222 110 L 238 118 L 252 130 L 248 156 L 238 164 L 224 158 L 244 148 L 242 130 L 228 122 L 216 120 Z" },
-    { id: "GRO",  d: "M 194 158 L 210 158 L 216 156 L 234 158 L 236 176 L 224 186 L 206 184 L 194 174 Z" },
-    { id: "OAX",  d: "M 234 158 L 248 156 L 260 162 L 262 178 L 248 190 L 228 190 L 218 180 L 224 186 L 236 176 Z" },
-    { id: "CHIS", d: "M 248 190 L 262 178 L 278 176 L 282 192 L 268 202 L 248 200 Z" },
-    { id: "TAB",  d: "M 248 156 L 252 130 L 264 136 L 274 148 L 266 160 L 256 162 Z" },
-    { id: "CAM",  d: "M 274 148 L 292 138 L 304 152 L 298 176 L 280 178 L 268 166 L 266 160 Z" },
-    { id: "YUC",  d: "M 292 118 L 320 112 L 328 130 L 312 138 L 292 138 L 294 126 Z" },
-    { id: "QR",   d: "M 320 112 L 336 116 L 338 162 L 324 170 L 308 162 L 298 176 L 304 152 L 312 138 L 328 130 Z" },
+    { id:"BC",   d:"M 38,76 L 52,46 L 72,28 L 90,34 L 104,52 L 112,68 L 118,88 L 108,108 L 92,122 L 74,128 L 56,118 L 42,100 Z" },
+    { id:"BCS",  d:"M 74,128 L 92,122 L 106,142 L 114,170 L 112,204 L 102,238 L 88,260 L 72,256 L 64,234 L 66,204 L 68,172 Z" },
+    { id:"SON",  d:"M 112,68 L 118,88 L 108,108 L 118,128 L 140,136 L 168,136 L 196,126 L 218,110 L 228,88 L 224,62 L 204,48 L 176,38 L 148,36 Z" },
+    { id:"CHIH", d:"M 204,48 L 224,62 L 228,88 L 218,110 L 232,126 L 256,130 L 284,122 L 308,108 L 322,86 L 316,60 L 294,40 L 264,28 L 234,28 Z" },
+    { id:"COAH", d:"M 294,40 L 316,60 L 322,86 L 308,108 L 318,126 L 344,130 L 376,122 L 400,106 L 412,82 L 404,56 L 378,38 L 346,30 Z" },
+    { id:"NL",   d:"M 376,122 L 400,106 L 412,82 L 432,86 L 448,104 L 442,126 L 420,136 L 398,136 Z" },
+    { id:"TAM",  d:"M 400,106 L 412,82 L 432,86 L 448,104 L 462,96 L 482,100 L 494,124 L 490,154 L 476,178 L 454,192 L 432,182 L 418,160 L 420,136 L 442,126 L 448,104 Z" },
+    { id:"SIN",  d:"M 168,136 L 196,126 L 218,110 L 228,130 L 234,158 L 228,188 L 212,208 L 192,214 L 172,208 L 160,188 L 158,162 Z" },
+    { id:"DGO",  d:"M 218,110 L 232,126 L 256,130 L 284,122 L 296,138 L 292,166 L 276,186 L 252,194 L 228,188 L 234,158 L 228,130 Z" },
+    { id:"ZAC",  d:"M 284,122 L 308,108 L 318,126 L 332,140 L 326,166 L 308,180 L 286,178 L 276,186 L 292,166 L 296,138 Z" },
+    { id:"NAY",  d:"M 192,214 L 212,208 L 228,220 L 232,244 L 220,260 L 200,264 L 184,252 Z" },
+    { id:"AGS",  d:"M 300,182 L 316,176 L 322,192 L 312,202 L 298,198 Z" },
+    { id:"SLP",  d:"M 318,126 L 344,130 L 376,122 L 398,136 L 406,158 L 394,182 L 368,192 L 340,186 L 326,166 L 332,140 Z" },
+    { id:"JAL",  d:"M 252,194 L 276,186 L 286,178 L 308,180 L 316,176 L 300,182 L 298,198 L 312,202 L 318,220 L 310,244 L 292,260 L 268,264 L 244,254 L 222,238 L 216,216 L 228,220 L 232,244 Z" },
+    { id:"GTO",  d:"M 326,166 L 340,186 L 368,192 L 386,200 L 392,218 L 378,232 L 354,234 L 334,220 L 318,220 L 312,202 L 316,176 Z" },
+    { id:"MICH", d:"M 292,260 L 310,244 L 318,220 L 334,220 L 354,234 L 362,256 L 350,280 L 324,292 L 296,286 L 274,272 Z" },
+    { id:"QRO",  d:"M 368,192 L 394,182 L 408,196 L 404,216 L 392,222 L 386,200 Z" },
+    { id:"HGO",  d:"M 394,182 L 420,172 L 436,186 L 430,208 L 412,216 L 404,216 L 408,196 Z" },
+    { id:"MEX",  d:"M 378,232 L 392,222 L 404,216 L 412,216 L 424,228 L 422,248 L 406,258 L 388,256 L 374,246 L 354,234 Z" },
+    { id:"CDMX", d:"M 412,222 L 424,216 L 430,226 L 424,236 L 412,234 Z" },
+    { id:"MOR",  d:"M 388,256 L 406,258 L 410,272 L 396,278 L 382,270 Z" },
+    { id:"TLX",  d:"M 424,216 L 436,212 L 440,226 L 430,232 L 424,228 Z" },
+    { id:"PUE",  d:"M 412,216 L 430,208 L 456,210 L 472,228 L 468,256 L 448,270 L 424,270 L 410,258 L 406,258 L 422,248 L 424,228 L 430,232 L 440,226 L 436,212 Z" },
+    { id:"VER",  d:"M 420,172 L 454,156 L 490,154 L 510,170 L 508,204 L 494,228 L 474,244 L 456,248 L 448,270 L 468,256 L 472,228 L 456,210 L 430,208 L 436,186 Z" },
+    { id:"GRO",  d:"M 374,246 L 388,256 L 382,270 L 396,278 L 406,300 L 390,316 L 366,318 L 344,306 L 350,280 L 362,256 Z" },
+    { id:"OAX",  d:"M 448,270 L 456,248 L 474,244 L 502,250 L 520,270 L 516,300 L 494,314 L 464,316 L 440,306 L 424,286 L 406,300 L 396,278 L 410,272 L 424,270 Z" },
+    { id:"CHIS", d:"M 502,250 L 520,230 L 554,222 L 578,234 L 588,260 L 572,282 L 542,290 L 514,288 L 494,314 L 516,300 L 520,270 Z" },
+    { id:"TAB",  d:"M 490,154 L 510,170 L 508,204 L 524,212 L 544,208 L 556,222 L 554,222 L 520,230 L 502,250 L 474,244 L 494,228 L 508,204 Z" },
+    { id:"CAM",  d:"M 544,208 L 580,194 L 612,198 L 624,224 L 612,254 L 584,264 L 556,258 L 542,238 L 556,222 Z" },
+    { id:"YUC",  d:"M 580,158 L 640,150 L 682,158 L 684,184 L 652,196 L 612,198 L 580,194 L 572,176 Z" },
+    { id:"QR",   d:"M 682,158 L 718,162 L 730,192 L 720,238 L 694,256 L 664,256 L 638,244 L 624,224 L 612,198 L 652,196 L 684,184 Z" },
   ];
 
   const clients = ["BC", "JAL", "CDMX"];
 
   const clientDots = [
-    { cx: 52,  cy: 70,  label: "B.C."  },
-    { cx: 148, cy: 138, label: "GDL"   },
-    { cx: 214, cy: 140, label: "CDMX"  },
+    { cx: 78,  cy: 88,  label: "B.C."  },
+    { cx: 268, cy: 238, label: "GDL"   },
+    { cx: 420, cy: 226, label: "CDMX"  },
   ];
 
   return (
-    <div style={{ maxWidth: 740, margin: "0 auto", padding: "0 1rem" }}>
+    <div style={{ maxWidth: 820, margin: "0 auto", padding: "0 1rem" }}>
       <svg
-        viewBox="20 26 330 186"
+        viewBox="30 20 720 310"
         xmlns="http://www.w3.org/2000/svg"
-        style={{ width: "100%", height: "auto", display: "block", maxHeight: "460px" }}
+        style={{ width: "100%", height: "auto", display: "block", maxHeight: "480px" }}
       >
         <defs>
-          <filter id="mapglow" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="2.5" result="blur" />
-            <feMerge>
-              <feMergeNode in="blur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
+          <filter id="mapglow" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="3" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
           </filter>
-          <filter id="dotglow" x="-100%" y="-100%" width="300%" height="300%">
-            <feGaussianBlur stdDeviation="3" result="blur" />
-            <feMerge>
-              <feMergeNode in="blur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
+          <filter id="dotglow" x="-150%" y="-150%" width="400%" height="400%">
+            <feGaussianBlur stdDeviation="5" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
           </filter>
         </defs>
 
         {states.map((s) => {
           const isClient = clients.includes(s.id);
           return (
-            <path
-              key={s.id}
-              d={s.d}
-              fill={isClient ? accent + "55" : accent + "14"}
+            <path key={s.id} d={s.d}
+              fill={isClient ? accent + "44" : accent + "10"}
               stroke={accent}
-              strokeWidth={isClient ? 1.2 : 0.6}
+              strokeWidth={isClient ? 1.5 : 0.7}
               strokeLinejoin="round"
-              strokeOpacity={isClient ? 0.9 : 0.5}
+              strokeLinecap="round"
+              opacity={isClient ? 1 : 0.75}
               filter={isClient ? "url(#mapglow)" : undefined}
             />
           );
@@ -375,27 +346,17 @@ function MexicoMap({ accent, bg, card }: { accent: string; bg: string; card: str
 
         {clientDots.map(({ cx, cy, label }, i) => (
           <g key={label} filter="url(#dotglow)">
-            <circle cx={cx} cy={cy} r={8} fill="none" stroke={accent} strokeWidth={0.8} strokeOpacity={0.3}>
-              <animate attributeName="r" values="4;12;4" dur={`${2 + i * 0.5}s`} repeatCount="indefinite" />
-              <animate attributeName="stroke-opacity" values="0.6;0;0.6" dur={`${2 + i * 0.5}s`} repeatCount="indefinite" />
+            <circle cx={cx} cy={cy} r={8} fill="none" stroke={accent} strokeWidth={0.8}>
+              <animate attributeName="r" values="4;18;4" dur={`${2.4 + i * 0.6}s`} repeatCount="indefinite"/>
+              <animate attributeName="stroke-opacity" values="0.8;0;0.8" dur={`${2.4 + i * 0.6}s`} repeatCount="indefinite"/>
             </circle>
-            <circle cx={cx} cy={cy} r={5} fill="none" stroke={accent} strokeWidth={0.8} strokeOpacity={0.4}>
-              <animate attributeName="r" values="2;8;2" dur={`${2 + i * 0.5}s`} repeatCount="indefinite" begin="0.3s" />
-              <animate attributeName="stroke-opacity" values="0.8;0;0.8" dur={`${2 + i * 0.5}s`} repeatCount="indefinite" begin="0.3s" />
+            <circle cx={cx} cy={cy} r={5} fill="none" stroke={accent} strokeWidth={0.8}>
+              <animate attributeName="r" values="2;11;2" dur={`${2.4 + i * 0.6}s`} repeatCount="indefinite" begin="0.4s"/>
+              <animate attributeName="stroke-opacity" values="1;0;1" dur={`${2.4 + i * 0.6}s`} repeatCount="indefinite" begin="0.4s"/>
             </circle>
-            <circle cx={cx} cy={cy} r={3} fill={accent} />
-            <text
-              x={cx}
-              y={cy - 7}
-              textAnchor="middle"
-              fill={accent}
-              fontSize="4.5"
-              fontWeight="900"
-              fontFamily="sans-serif"
-              letterSpacing="0.05em"
-            >
-              {label}
-            </text>
+            <circle cx={cx} cy={cy} r={4.5} fill={accent}/>
+            <rect x={cx - 15} y={cy - 20} width={30} height={12} rx={2} fill={bg} opacity={0.75}/>
+            <text x={cx} y={cy - 11} textAnchor="middle" fill={accent} fontSize="6.5" fontWeight="900" fontFamily="sans-serif" letterSpacing="0.02em">{label}</text>
           </g>
         ))}
       </svg>
@@ -403,8 +364,7 @@ function MexicoMap({ accent, bg, card }: { accent: string; bg: string; card: str
       <div style={{ display: "flex", justifyContent: "center", gap: "2.5rem", marginTop: "1.75rem", flexWrap: "wrap" }}>
         {["Baja California", "Guadalajara", "CDMX"].map((city) => (
           <div key={city} style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.68rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.14em", color: accent }}>
-            <div style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: accent }} />
-            {city}
+            <div style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: accent }}/>{city}
           </div>
         ))}
       </div>
@@ -424,34 +384,22 @@ function PricingFlipCard({ plan, i, t, accent, bg, text, waLink, lang }: {
     e.preventDefault();
     const msg = encodeURIComponent(`Hola Rodrigo, me interesa el paquete *${plan.name}*.\n\nNombre: ${form.nombre}\nTeléfono: ${form.telefono}\nEmail: ${form.email}${form.web ? `\nWeb: ${form.web}` : ""}\nSolicitud: ${form.solicitud}`);
     const waUrl = `https://wa.me/525625018281?text=${msg}`;
-    const isMobile = /iPhone|Android|iPad/i.test(navigator.userAgent);
-    if (isMobile) { window.location.href = waUrl; } else { window.open(waUrl, "_blank"); }
+    if (/iPhone|Android|iPad/i.test(navigator.userAgent)) { window.location.href = waUrl; } else { window.open(waUrl, "_blank"); }
     setSent(true);
   };
-  const cardBg = plan.popular ? accent : bg;
-  const cardText = plan.popular ? bg : text;
+  const cardBg = plan.popular ? accent : bg; const cardText = plan.popular ? bg : text;
   const fields = [
-    { key: "nombre",   label: lang === "es" ? "Nombre completo"       : "Full name",          type: "text",     required: true  },
-    { key: "telefono", label: lang === "es" ? "Teléfono"              : "Phone number",       type: "tel",      required: true  },
-    { key: "email",    label: lang === "es" ? "Correo"                : "Email",              type: "email",    required: true  },
-    { key: "web",      label: lang === "es" ? "Página web (opcional)" : "Website (optional)", type: "url",      required: false },
-    { key: "solicitud",label: lang === "es" ? "¿Qué necesitas?"       : "What do you need?",  type: "textarea", required: true  },
+    { key: "nombre",    label: lang === "es" ? "Nombre completo"       : "Full name",          type: "text",     required: true  },
+    { key: "telefono",  label: lang === "es" ? "Teléfono"              : "Phone number",       type: "tel",      required: true  },
+    { key: "email",     label: lang === "es" ? "Correo"                : "Email",              type: "email",    required: true  },
+    { key: "web",       label: lang === "es" ? "Página web (opcional)" : "Website (optional)", type: "url",      required: false },
+    { key: "solicitud", label: lang === "es" ? "¿Qué necesitas?"       : "What do you need?",  type: "textarea", required: true  },
   ];
   return (
-    <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.12 }}
-      style={{ perspective: "1200px", minHeight: 520 }}>
+    <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.12 }} style={{ perspective: "1200px", minHeight: 520 }}>
       <div style={{ width: "100%", height: "100%", position: "relative", transformStyle: "preserve-3d", transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)", transition: "transform 0.5s cubic-bezier(0.4,0.2,0.2,1)" }}>
-        {/* FRONT */}
         <div style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", padding: "2rem", backgroundColor: cardBg, color: cardText, borderRadius: "1.5rem", border: `1px solid ${plan.popular ? "transparent" : accent + "15"}`, boxShadow: plan.popular ? `0 12px 40px ${accent}40` : "0 4px 20px rgba(0,0,0,0.06)", display: "flex", flexDirection: "column", opacity: plan.soldOut ? 0.6 : 1 }}>
-          {plan.soldOut && (
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, display: "flex", alignItems: "center", justifyContent: "center", zIndex: 10, borderRadius: "1.5rem", backgroundColor: "rgba(0,0,0,0.55)", backdropFilter: "blur(3px)" }}>
-              <div style={{ textAlign: "center" }}>
-                <p style={{ fontSize: "1.8rem" }}>🔒</p>
-                <p style={{ fontSize: "0.72rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.2em", color: "#fff", marginTop: "0.5rem" }}>{lang === "es" ? "Agotado por ahora" : "Currently sold out"}</p>
-                <p style={{ fontSize: "0.65rem", color: "rgba(255,255,255,0.6)", marginTop: "0.25rem" }}>{lang === "es" ? "Lista de espera disponible" : "Join the waitlist"}</p>
-              </div>
-            </div>
-          )}
+          {plan.soldOut && (<div style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, display: "flex", alignItems: "center", justifyContent: "center", zIndex: 10, borderRadius: "1.5rem", backgroundColor: "rgba(0,0,0,0.55)", backdropFilter: "blur(3px)" }}><div style={{ textAlign: "center" }}><p style={{ fontSize: "1.8rem" }}>🔒</p><p style={{ fontSize: "0.72rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.2em", color: "#fff", marginTop: "0.5rem" }}>{lang === "es" ? "Agotado por ahora" : "Currently sold out"}</p><p style={{ fontSize: "0.65rem", color: "rgba(255,255,255,0.6)", marginTop: "0.25rem" }}>{lang === "es" ? "Lista de espera disponible" : "Join the waitlist"}</p></div></div>)}
           {plan.popular && <div style={{ position: "absolute", top: "-0.75rem", left: "50%", transform: "translateX(-50%)", backgroundColor: bg, color: accent, fontSize: "0.55rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.15em", padding: "0.3rem 1rem", borderRadius: "999px", whiteSpace: "nowrap" }}>★ {plan.badge}</div>}
           {!plan.popular && <p style={{ fontSize: "0.55rem", textTransform: "uppercase", letterSpacing: "0.15em", opacity: 0.6, marginBottom: "0.5rem", fontWeight: 700 }}>{plan.badge}</p>}
           <h3 style={{ fontSize: "1.3rem", fontFamily: "serif", fontWeight: 700, marginBottom: "0.5rem", lineHeight: 1.2 }}>{plan.name}</h3>
@@ -464,7 +412,6 @@ function PricingFlipCard({ plan, i, t, accent, bg, text, waLink, lang }: {
             {plan.soldOut ? (lang === "es" ? "Lista de espera →" : "Join waitlist →") : (lang === "es" ? "Quiero este →" : "I want this →")}
           </button>
         </div>
-        {/* BACK */}
         <div style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", transform: "rotateY(180deg)", padding: "1.5rem", backgroundColor: bg, color: text, borderRadius: "1.5rem", border: `1px solid ${accent}20`, display: "flex", flexDirection: "column" }}>
           {!sent ? (<>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
@@ -477,7 +424,7 @@ function PricingFlipCard({ plan, i, t, accent, bg, text, waLink, lang }: {
                   <label htmlFor={`pf-${i}-${key}`} style={{ fontSize: "0.58rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", opacity: 0.5, cursor: "pointer" }}>{label}</label>
                   {type === "textarea"
                     ? <textarea id={`pf-${i}-${key}`} rows={2} required={required} value={(form as any)[key]} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))} style={{ padding: "0.5rem 0.75rem", borderRadius: "0.65rem", border: `1px solid ${accent}28`, backgroundColor: `${accent}07`, color: text, fontSize: "0.82rem", resize: "none", fontFamily: "inherit", outline: "none", width: "100%", boxSizing: "border-box" as const }} />
-                    : <input id={`pf-${i}-${key}`} required={required} type={type} value={(form as any)[key]} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))} onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); const next = document.getElementById(`pf-${i}-${fields[fi+1]?.key}`); if(next) next.focus(); }}} style={{ padding: "0.5rem 0.75rem", borderRadius: "0.65rem", border: `1px solid ${accent}28`, backgroundColor: `${accent}07`, color: text, fontSize: "0.82rem", fontFamily: "inherit", outline: "none", width: "100%", boxSizing: "border-box" as const }} />
+                    : <input id={`pf-${i}-${key}`} required={required} type={type} value={(form as any)[key]} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))} onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); document.getElementById(`pf-${i}-${fields[fi+1]?.key}`)?.focus(); }}} style={{ padding: "0.5rem 0.75rem", borderRadius: "0.65rem", border: `1px solid ${accent}28`, backgroundColor: `${accent}07`, color: text, fontSize: "0.82rem", fontFamily: "inherit", outline: "none", width: "100%", boxSizing: "border-box" as const }} />
                   }
                 </div>
               ))}
@@ -509,20 +456,16 @@ function FaqItem({ q, a, t, last }: { q: string; a: string; t: typeof themes.whi
         <motion.span animate={{ rotate: open ? 45 : 0 }} transition={{ duration: 0.25 }} style={{ flexShrink: 0, fontSize: "1.4rem", color: t.accent, lineHeight: 1, display: "block" }}>+</motion.span>
       </button>
       <AnimatePresence initial={false}>
-        {open && (
-          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.35, ease: "easeInOut" }} style={{ overflow: "hidden" }}>
-            <p style={{ paddingBottom: "1.4rem", fontSize: "0.9rem", lineHeight: 1.8, color: t.sub, opacity: 0.85 }}>{a}</p>
-          </motion.div>
-        )}
+        {open && (<motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.35, ease: "easeInOut" }} style={{ overflow: "hidden" }}>
+          <p style={{ paddingBottom: "1.4rem", fontSize: "0.9rem", lineHeight: 1.8, color: t.sub, opacity: 0.85 }}>{a}</p>
+        </motion.div>)}
       </AnimatePresence>
     </div>
   );
 }
 
 function CountUp({ from, to, duration = 2, suffix = "" }: { from: number; to: number; duration?: number; suffix?: string }) {
-  const [val, setVal] = useState(from);
-  const ref = useRef<HTMLSpanElement>(null);
-  const started = useRef(false);
+  const [val, setVal] = useState(from); const ref = useRef<HTMLSpanElement>(null); const started = useRef(false);
   useEffect(() => { setVal(from); started.current = false; }, [from, to]);
   useEffect(() => {
     const el = ref.current; if (!el) return;
@@ -530,11 +473,7 @@ function CountUp({ from, to, duration = 2, suffix = "" }: { from: number; to: nu
       if (entry.isIntersecting && !started.current) {
         started.current = true;
         const steps = 60; const stepTime = (duration * 1000) / steps; let step = 0;
-        const timer = setInterval(() => {
-          step++; const eased = 1 - Math.pow(1 - step / steps, 3);
-          setVal(Math.round(from + (to - from) * eased));
-          if (step >= steps) { clearInterval(timer); setVal(to); }
-        }, stepTime);
+        const timer = setInterval(() => { step++; const eased = 1 - Math.pow(1 - step / steps, 3); setVal(Math.round(from + (to - from) * eased)); if (step >= steps) { clearInterval(timer); setVal(to); } }, stepTime);
       }
     }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
     observer.observe(el); return () => observer.disconnect();
@@ -544,16 +483,14 @@ function CountUp({ from, to, duration = 2, suffix = "" }: { from: number; to: nu
 
 export default function Home() {
   const [themeIdx, setThemeIdx] = useState(0);
-  const [lang, setLang]         = useState<"es" | "en">("es");
+  const [lang, setLang] = useState<"es" | "en">("es");
   const [showPopup, setShowPopup] = useState(true);
-  const [shake, setShake]         = useState(false);
+  const [shake, setShake] = useState(false);
   const introRan = useRef(false);
 
   const runThemeIntro = () => {
-    if (introRan.current) return;
-    introRan.current = true;
-    const sequence = [[0,0],[1,600],[2,1200],[3,1800],[4,2400]] as const;
-    sequence.forEach(([idx, delay]) => { setTimeout(() => setThemeIdx(idx), delay); });
+    if (introRan.current) return; introRan.current = true;
+    ([[0,0],[1,600],[2,1200],[3,1800],[4,2400]] as const).forEach(([idx, delay]) => setTimeout(() => setThemeIdx(idx), delay));
   };
 
   useEffect(() => {
@@ -561,56 +498,44 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  const themeKey     = themeOrder[themeIdx];
-  const nextThemeKey = themeOrder[(themeIdx + 1) % themeOrder.length];
-  const t            = themes[themeKey];
-  const nextAccent   = themes[nextThemeKey].accent;
-  const c            = copy[lang];
-  const waLink       = lang === "es" ? WHATSAPP_LINK : WHATSAPP_LINK_EN;
-  const Icons        = [HandCoins, Zap, Target];
+  const themeKey = themeOrder[themeIdx]; const nextThemeKey = themeOrder[(themeIdx + 1) % themeOrder.length];
+  const t = themes[themeKey]; const nextAccent = themes[nextThemeKey].accent;
+  const c = copy[lang]; const waLink = lang === "es" ? WHATSAPP_LINK : WHATSAPP_LINK_EN;
+  const Icons = [HandCoins, Zap, Target];
   const shakeStyle: React.CSSProperties = shake ? { animation: "btnShake 2s ease" } : {};
 
   return (
     <main style={{ backgroundColor: t.bg, color: t.text, minHeight: "100vh", position: "relative", transition: "background-color 0.5s, color 0.5s" }}>
       <style>{`
-        @keyframes btnShake {
-          0%{transform:translateX(0) rotate(0deg)} 8%{transform:translateX(-6px) rotate(-5deg)} 16%{transform:translateX(6px) rotate(5deg)}
-          24%{transform:translateX(-5px) rotate(-4deg)} 32%{transform:translateX(5px) rotate(4deg)} 40%{transform:translateX(-4px) rotate(-3deg)}
-          48%{transform:translateX(4px) rotate(3deg)} 56%{transform:translateX(-3px) rotate(-2deg)} 64%{transform:translateX(3px) rotate(2deg)}
-          80%{transform:translateX(-1px) rotate(-1deg)} 100%{transform:translateX(0) rotate(0deg)}
-        }
-        html, body { overscroll-behavior: none; -webkit-overflow-scrolling: touch; }
-        canvas { backface-visibility: hidden; -webkit-backface-visibility: hidden; will-change: transform; }
-        @media (max-width: 768px) {
-          section p:not(.no-scale), section span:not(.no-scale), section li { font-size: max(1rem, 0.95em) !important; line-height: 1.7 !important; }
-          section > div { text-align: center !important; }
-          .mobile-left, .mobile-left * { text-align: left !important; }
-        }
+        @keyframes btnShake{0%{transform:translateX(0) rotate(0deg)}8%{transform:translateX(-6px) rotate(-5deg)}16%{transform:translateX(6px) rotate(5deg)}24%{transform:translateX(-5px) rotate(-4deg)}32%{transform:translateX(5px) rotate(4deg)}40%{transform:translateX(-4px) rotate(-3deg)}48%{transform:translateX(4px) rotate(3deg)}56%{transform:translateX(-3px) rotate(-2deg)}64%{transform:translateX(3px) rotate(2deg)}80%{transform:translateX(-1px) rotate(-1deg)}100%{transform:translateX(0) rotate(0deg)}}
+        html,body{overscroll-behavior:none;-webkit-overflow-scrolling:touch;}
+        canvas{backface-visibility:hidden;-webkit-backface-visibility:hidden;will-change:transform;}
+        @media(max-width:768px){section p:not(.no-scale),section span:not(.no-scale),section li{font-size:max(1rem,0.95em)!important;line-height:1.7!important;}section>div{text-align:center!important;}.mobile-left,.mobile-left *{text-align:left!important;}}
       `}</style>
-      <MatrixBackground color={t.matrixColor} />
-      <CursorGlow accent={t.accent} />
+      <MatrixBackground color={t.matrixColor}/>
+      <CursorGlow accent={t.accent}/>
+      <AnimatePresence>{showPopup && <LangPopup t={t} onSelect={l => { setLang(l); setShowPopup(false); runThemeIntro(); }}/>}</AnimatePresence>
 
-      <AnimatePresence>
-        {showPopup && <LangPopup t={t} onSelect={l => { setLang(l); setShowPopup(false); runThemeIntro(); }} />}
-      </AnimatePresence>
-
+      {/* WhatsApp FAB */}
       <a href={waLink} target="_blank" rel="noopener noreferrer" style={{ position: "fixed", bottom: "6rem", right: "1.5rem", zIndex: 100, display: "flex", alignItems: "center", gap: "0.5rem", padding: "0.75rem 1rem", borderRadius: 999, backgroundColor: "#25D366", color: "#000", fontWeight: 900, fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.05em", boxShadow: "0 8px 30px rgba(37,211,102,0.4)", textDecoration: "none", ...shakeStyle }}>
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         <span className="hidden md:inline">WhatsApp</span>
       </a>
 
+      {/* Calendly FAB */}
       <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer" style={{ position: "fixed", bottom: "1.5rem", right: "1.5rem", zIndex: 100, display: "flex", alignItems: "center", gap: "0.5rem", padding: "0.75rem 1rem", borderRadius: 999, backgroundColor: t.accent, color: t.bg, fontWeight: 900, fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.05em", boxShadow: "0 8px 30px rgba(0,0,0,0.25)", textDecoration: "none", ...shakeStyle }}>
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
         <span className="hidden md:inline">{c.btn_zoom}</span>
       </a>
 
-      <button onClick={() => setThemeIdx(i => (i + 1) % themeOrder.length)}
-        style={{ position: "fixed", bottom: "10.5rem", right: "1.5rem", zIndex: 100, padding: "0.75rem", borderRadius: 999, backgroundColor: themes[nextThemeKey].accent, color: themes[nextThemeKey].bg, border: "none", cursor: "pointer", boxShadow: `0 4px 20px ${themes[nextThemeKey].accent}60`, transition: "background-color 0.5s, color 0.5s, box-shadow 0.5s" }}>
-        <Palette size={18} />
+      {/* Theme switcher */}
+      <button onClick={() => setThemeIdx(i => (i + 1) % themeOrder.length)} style={{ position: "fixed", bottom: "10.5rem", right: "1.5rem", zIndex: 100, padding: "0.75rem", borderRadius: 999, backgroundColor: themes[nextThemeKey].accent, color: themes[nextThemeKey].bg, border: "none", cursor: "pointer", boxShadow: `0 4px 20px ${themes[nextThemeKey].accent}60`, transition: "background-color 0.5s, color 0.5s, box-shadow 0.5s" }}>
+        <Palette size={18}/>
       </button>
 
+      {/* Nav */}
       <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 50, backdropFilter: "blur(14px)", backgroundColor: t.navBg, borderBottom: `1px solid ${t.accent}12`, padding: "0.9rem 1.5rem", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <a href="#inicio"><Image src="/logo-satori.png" alt="SATORI" width={110} height={34} style={{ filter: t.logoFilter }} /></a>
+        <a href="#inicio"><Image src="/logo-satori.png" alt="SATORI" width={110} height={34} style={{ filter: t.logoFilter }}/></a>
         <div className="hidden md:flex items-center" style={{ gap: "1.75rem" }}>
           {([["#problema", c.nav.problema], ["#servicios", c.nav.soluciones], ["#precios", lang === "es" ? "Precios" : "Pricing"], ["#cotizar", c.nav.precios]] as [string,string][]).map(([href, label]) => (
             <motion.a key={href} href={href} whileHover={{ y: -1 }} style={{ fontSize: "0.68rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", color: t.sub, textDecoration: "none" }}>{label}</motion.a>
@@ -618,10 +543,11 @@ export default function Home() {
           <a href={CALENDLY_LINK} target="_blank" style={{ padding: "0.45rem 1.3rem", backgroundColor: t.accent, color: t.bg, fontWeight: 900, fontSize: "0.68rem", textTransform: "uppercase", textDecoration: "none", borderRadius: "999px" }}>{c.nav.cta}</a>
         </div>
         <button onClick={() => setShowPopup(true)} className="md:hidden" style={{ display: "flex", alignItems: "center", gap: "0.25rem", padding: "0.3rem 0.8rem", border: `1px solid ${t.accent}30`, borderRadius: 999, fontSize: "0.68rem", fontWeight: 700, color: t.text, backgroundColor: `${t.accent}08`, cursor: "pointer" }}>
-          <Globe size={12} /> {lang === "es" ? "EN" : "ES"}
+          <Globe size={12}/> {lang === "es" ? "EN" : "ES"}
         </button>
       </nav>
 
+      {/* Hero */}
       <section id="inicio" style={{ paddingTop: "9rem", paddingBottom: "5rem", paddingLeft: "1.5rem", paddingRight: "1.5rem", maxWidth: "72rem", margin: "0 auto", position: "relative", zIndex: 1 }}>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "3rem", alignItems: "center" }} className="!grid-cols-1 md:!grid-cols-2">
           <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
@@ -629,7 +555,7 @@ export default function Home() {
               <p style={{ fontSize: "0.58rem", letterSpacing: "0.3em", textTransform: "uppercase", fontWeight: 900, color: t.accent }}>{c.badge}</p>
             </div>
             <h1 style={{ fontSize: "clamp(3.5rem,8vw,6rem)", fontFamily: "serif", fontWeight: 700, lineHeight: 1, marginBottom: "1rem", letterSpacing: "-0.02em" }}>
-              {c.h1a}<br /><span style={{ color: t.accent, fontStyle: "italic", fontWeight: 400 }}>{c.h1b}</span>
+              {c.h1a}<br/><span style={{ color: t.accent, fontStyle: "italic", fontWeight: 400 }}>{c.h1b}</span>
             </h1>
             <p style={{ fontSize: "1rem", marginBottom: "2.5rem", opacity: 0.7, maxWidth: "28rem", lineHeight: 1.75 }}>{c.hero_sub}</p>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem" }}>
@@ -637,12 +563,11 @@ export default function Home() {
               <motion.a href="#servicios" whileHover={{ scale: 1.04, y: -2 }} style={{ padding: "1rem 2.2rem", border: `1px solid ${t.accent}`, color: t.accent, fontWeight: 700, textTransform: "uppercase", fontSize: "0.75rem", textDecoration: "none", borderRadius: "999px" }}>{c.cta2}</motion.a>
             </div>
           </motion.div>
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <SpinningEnso filter={t.logoFilter} opacity={0.82} />
-          </div>
+          <div style={{ display: "flex", justifyContent: "center" }}><SpinningEnso filter={t.logoFilter} opacity={0.82}/></div>
         </div>
       </section>
 
+      {/* Problema */}
       <section id="problema" style={{ padding: "6rem 1.5rem", position: "relative", zIndex: 1, overflow: "hidden", backgroundColor: `${t.card}CC`, backdropFilter: "blur(2px)" }}>
         <div style={{ position: "absolute", right: "-2rem", top: "50%", transform: "translateY(-50%)", fontSize: "clamp(12rem,25vw,22rem)", fontFamily: "serif", fontWeight: 900, color: t.accent, opacity: 0.03, lineHeight: 1, pointerEvents: "none", userSelect: "none" }}>?</div>
         <div style={{ maxWidth: "60rem", margin: "0 auto", position: "relative" }}>
@@ -651,43 +576,39 @@ export default function Home() {
             <h2 style={{ fontSize: "clamp(1.8rem,5.5vw,5rem)", fontFamily: "serif", lineHeight: 1.0, marginBottom: "3.5rem" }}>{c.problema_h}</h2>
           </motion.div>
           <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
-            {c.problemas.map(({ q, desc }, i) => {
-              const Icon = Icons[i];
-              return (
-                <motion.div key={i} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-60px" }} transition={{ delay: i * 0.15, duration: 0.5, ease: "easeOut" }} className="mobile-left"
-                  style={{ display: "grid", gridTemplateColumns: "3rem 1fr auto", gap: "1.5rem", alignItems: "start", padding: "1.5rem", borderRadius: "1.25rem", marginBottom: "0.75rem", backgroundColor: `${t.accent}05` }}>
-                  <div style={{ fontSize: "clamp(2rem,4vw,3rem)", fontFamily: "serif", fontWeight: 700, color: t.accent, opacity: 0.25, lineHeight: 1, paddingTop: "0.1rem" }}>{String(i + 1).padStart(2, "0")}</div>
-                  <div>
-                    <p style={{ fontSize: "clamp(1.1rem,2.5vw,1.4rem)", fontWeight: 700, lineHeight: 1.3, marginBottom: "0.7rem" }}>{q}</p>
-                    <p style={{ fontSize: "1rem", opacity: 0.75, lineHeight: 1.75, color: t.text, maxWidth: "36rem" }}>{desc}</p>
-                  </div>
-                  <motion.div animate={{ y: [0, -5, 0] }} transition={{ duration: 3, repeat: Infinity, delay: i * 0.8, ease: "easeInOut" }} style={{ paddingTop: "0.2rem" }}>
-                    <Icon size={22} style={{ color: nextAccent, opacity: 0.7 }} />
-                  </motion.div>
+            {c.problemas.map(({ q, desc }, i) => { const Icon = Icons[i]; return (
+              <motion.div key={i} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-60px" }} transition={{ delay: i * 0.15, duration: 0.5, ease: "easeOut" }} className="mobile-left"
+                style={{ display: "grid", gridTemplateColumns: "3rem 1fr auto", gap: "1.5rem", alignItems: "start", padding: "1.5rem", borderRadius: "1.25rem", marginBottom: "0.75rem", backgroundColor: `${t.accent}05` }}>
+                <div style={{ fontSize: "clamp(2rem,4vw,3rem)", fontFamily: "serif", fontWeight: 700, color: t.accent, opacity: 0.25, lineHeight: 1, paddingTop: "0.1rem" }}>{String(i + 1).padStart(2, "0")}</div>
+                <div>
+                  <p style={{ fontSize: "clamp(1.1rem,2.5vw,1.4rem)", fontWeight: 700, lineHeight: 1.3, marginBottom: "0.7rem" }}>{q}</p>
+                  <p style={{ fontSize: "1rem", opacity: 0.75, lineHeight: 1.75, color: t.text, maxWidth: "36rem" }}>{desc}</p>
+                </div>
+                <motion.div animate={{ y: [0, -5, 0] }} transition={{ duration: 3, repeat: Infinity, delay: i * 0.8, ease: "easeInOut" }} style={{ paddingTop: "0.2rem" }}>
+                  <Icon size={22} style={{ color: nextAccent, opacity: 0.7 }}/>
                 </motion.div>
-              );
-            })}
+              </motion.div>
+            );})}
           </div>
-          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.5 }}
-            style={{ marginTop: "3rem", display: "flex", alignItems: "center", gap: "1.5rem", flexWrap: "wrap" }}>
+          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.5 }} style={{ marginTop: "3rem", display: "flex", alignItems: "center", gap: "1.5rem", flexWrap: "wrap" }}>
             <a href={waLink} target="_blank" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", color: t.bg, fontSize: "0.72rem", textDecoration: "none", backgroundColor: t.accent, padding: "0.85rem 2rem", borderRadius: "999px" }}>{c.problema_cta}</a>
             <span style={{ fontSize: "0.88rem", fontWeight: 800, color: t.accent, opacity: 0.85 }}>— es gratis, sin compromiso</span>
           </motion.div>
         </div>
       </section>
 
-      <section style={{ padding: "5rem 1.5rem", position: "relative", zIndex: 1, backgroundColor: "transparent" }}>
+      {/* Stats */}
+      <section style={{ padding: "5rem 1.5rem", position: "relative", zIndex: 1 }}>
         <div style={{ maxWidth: "56rem", margin: "0 auto" }}>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(1rem,4vw,3rem)" }}>
             {[
-              { label: c.stats[0].label, from: 1,   to: 24,  suffix: "/7",  desc: lang === "es" ? "Siempre disponible" : "Always available" },
-              { label: c.stats[1].label, from: 100, to: 0,   suffix: "",    desc: "" },
-              { label: c.stats[2].label, from: 90,  to: 30,  suffix: "",    desc: lang === "es" ? "días" : "days" },
+              { label: c.stats[0].label, from: 1,   to: 24, suffix: "/7", desc: lang === "es" ? "Siempre disponible" : "Always available" },
+              { label: c.stats[1].label, from: 100, to: 0,  suffix: "",   desc: "" },
+              { label: c.stats[2].label, from: 90,  to: 30, suffix: "",   desc: lang === "es" ? "días" : "days" },
             ].map(({ label, from, to, suffix, desc }, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} whileHover={{ y: -4 }} viewport={{ once: true }} transition={{ delay: i * 0.12, duration: 0.5 }}
-                style={{ textAlign: "center", padding: "2.5rem 1rem", cursor: "default" }}>
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} whileHover={{ y: -4 }} viewport={{ once: true }} transition={{ delay: i * 0.12, duration: 0.5 }} style={{ textAlign: "center", padding: "2.5rem 1rem", cursor: "default" }}>
                 <p style={{ fontSize: "0.55rem", textTransform: "uppercase", letterSpacing: "0.25em", color: t.sub, marginBottom: "1rem", lineHeight: 1.6 }}>{label}</p>
-                <p style={{ fontSize: "clamp(3rem,6vw,5rem)", fontFamily: "serif", fontWeight: 700, color: t.accent, lineHeight: 1, marginBottom: "0.5rem" }}><CountUp from={from} to={to} duration={2.2} suffix={suffix} /></p>
+                <p style={{ fontSize: "clamp(3rem,6vw,5rem)", fontFamily: "serif", fontWeight: 700, color: t.accent, lineHeight: 1, marginBottom: "0.5rem" }}><CountUp from={from} to={to} duration={2.2} suffix={suffix}/></p>
                 <p style={{ fontSize: "0.65rem", opacity: 0.4, textTransform: "uppercase", letterSpacing: "0.15em", color: t.sub }}>{desc}</p>
               </motion.div>
             ))}
@@ -695,20 +616,22 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Servicios */}
       <section id="servicios" style={{ backgroundColor: t.card, position: "relative", zIndex: 1 }}>
         <div style={{ padding: "4rem clamp(1.5rem,5vw,4rem) 1.5rem", maxWidth: "72rem", margin: "0 auto" }}>
-          <Typewriter text={c.camino_label} style={{ fontSize: "0.82rem", textTransform: "uppercase", letterSpacing: "0.35em", color: t.accent, fontWeight: 900, display: "block", whiteSpace: "nowrap", marginBottom: "0.75rem" }} />
+          <Typewriter text={c.camino_label} style={{ fontSize: "0.82rem", textTransform: "uppercase", letterSpacing: "0.35em", color: t.accent, fontWeight: 900, display: "block", whiteSpace: "nowrap", marginBottom: "0.75rem" }}/>
           <h2 style={{ fontSize: "clamp(2.8rem,6vw,5rem)", fontFamily: "serif", fontWeight: 700, lineHeight: 1.0, marginBottom: "1rem", textAlign: "center" }}>{c.camino_h}</h2>
           <p style={{ fontSize: "0.88rem", opacity: 0.5, lineHeight: 1.4, color: t.sub, marginBottom: "2.5rem", textAlign: "center", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{c.camino_sub}</p>
         </div>
-        <ServicesBento t={t} c={c} />
+        <ServicesBento t={t} c={c}/>
       </section>
 
+      {/* Nosotros */}
       <section id="nosotros" style={{ padding: "5rem 1.5rem", position: "relative", zIndex: 1 }}>
         <div style={{ maxWidth: "68rem", margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4rem", alignItems: "center" }} className="!grid-cols-1 md:!grid-cols-2">
           <div style={{ position: "relative" }}>
-            <Image src="/rodrigo.png" alt="Rodrigo Tristán" width={500} height={600} className="grayscale hover:grayscale-0 transition-all duration-700 object-cover" />
-            <div style={{ position: "absolute", top: "-1.5rem", left: "-1.5rem", width: "5rem", height: "5rem", borderTop: `2px solid ${t.accent}`, borderLeft: `2px solid ${t.accent}` }} />
+            <Image src="/rodrigo.png" alt="Rodrigo Tristán" width={500} height={600} className="grayscale hover:grayscale-0 transition-all duration-700 object-cover"/>
+            <div style={{ position: "absolute", top: "-1.5rem", left: "-1.5rem", width: "5rem", height: "5rem", borderTop: `2px solid ${t.accent}`, borderLeft: `2px solid ${t.accent}` }}/>
           </div>
           <div>
             <p style={{ fontSize: "0.62rem", textTransform: "uppercase", letterSpacing: "0.35em", fontWeight: 900, color: t.accent, marginBottom: "1rem" }}>{c.nosotros_label}</p>
@@ -731,6 +654,7 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Reviews */}
       <section style={{ padding: "5rem 1.5rem", backgroundColor: t.card, position: "relative", zIndex: 1 }}>
         <div style={{ maxWidth: "64rem", margin: "0 auto" }}>
           <div style={{ marginBottom: "3rem", textAlign: "center" }}>
@@ -739,12 +663,9 @@ export default function Home() {
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1.5rem" }}>
             {c.reviews.slice(0,3).map((r, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
-                style={{ padding: "1.75rem", backgroundColor: t.bg, border: `1px solid ${t.accent}10`, borderRadius: "1.5rem", display: "flex", flexDirection: "column", gap: "1rem", boxShadow: "0 4px 24px rgba(0,0,0,0.06)" }}>
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} style={{ padding: "1.75rem", backgroundColor: t.bg, border: `1px solid ${t.accent}10`, borderRadius: "1.5rem", display: "flex", flexDirection: "column", gap: "1rem", boxShadow: "0 4px 24px rgba(0,0,0,0.06)" }}>
                 <div style={{ display: "flex", gap: "0.15rem", alignItems: "center" }}>
-                  {[1,2,3,4,5].map((s) => (
-                    <span key={s} style={{ color: s <= Math.floor(r.stars) ? "#F59E0B" : s - 0.5 === r.stars ? "#F59E0B" : "#D1D5DB", fontSize: "0.85rem" }}>{s - 0.5 === r.stars ? "⯨" : "★"}</span>
-                  ))}
+                  {[1,2,3,4,5].map((s) => (<span key={s} style={{ color: s <= Math.floor(r.stars) ? "#F59E0B" : s - 0.5 === r.stars ? "#F59E0B" : "#D1D5DB", fontSize: "0.85rem" }}>{s - 0.5 === r.stars ? "⯨" : "★"}</span>))}
                 </div>
                 <p style={{ fontSize: "0.9rem", lineHeight: 1.75, color: t.text, opacity: 0.8, fontStyle: "italic" }}>"{r.text}"</p>
                 <div style={{ marginTop: "auto" }}>
@@ -757,15 +678,17 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Mapa */}
       <section style={{ padding: "5rem 1.5rem", position: "relative", zIndex: 1 }}>
         <div style={{ maxWidth: "62rem", margin: "0 auto", textAlign: "center" }}>
           <p style={{ fontSize: "0.6rem", textTransform: "uppercase", letterSpacing: "0.4em", color: t.accent, fontWeight: 900, marginBottom: "0.5rem" }}>{lang === "es" ? "Presencia nacional" : "National presence"}</p>
           <h2 style={{ fontSize: "clamp(2rem,4vw,3rem)", fontFamily: "serif", fontWeight: 700, marginBottom: "0.75rem" }}>{lang === "es" ? "Clientes en todo México." : "Clients across Mexico."}</h2>
           <p style={{ fontSize: "0.88rem", opacity: 0.5, marginBottom: "3rem", color: t.sub }}>{lang === "es" ? "Y creciendo." : "And growing."}</p>
-          <MexicoMap accent={t.accent} bg={t.bg} card={t.card} />
+          <MexicoMap accent={t.accent} bg={t.bg}/>
         </div>
       </section>
 
+      {/* FAQ */}
       <section style={{ padding: "5rem 1.5rem", position: "relative", zIndex: 1, backgroundColor: `${t.card}E8` }}>
         <div style={{ maxWidth: "52rem", margin: "0 auto" }}>
           <div style={{ marginBottom: "3rem", textAlign: "center" }}>
@@ -773,11 +696,12 @@ export default function Home() {
             <h2 style={{ fontSize: "clamp(2.4rem,4.5vw,3.8rem)", fontFamily: "serif", fontWeight: 700 }}>{c.faq_h}</h2>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
-            {c.faqs.map((f, i) => <FaqItem key={i} q={f.q} a={f.a} t={t} last={i === c.faqs.length - 1} />)}
+            {c.faqs.map((f, i) => <FaqItem key={i} q={f.q} a={f.a} t={t} last={i === c.faqs.length - 1}/>)}
           </div>
         </div>
       </section>
 
+      {/* Precios */}
       <section id="precios" style={{ padding: "5rem 1.5rem", backgroundColor: t.card, position: "relative", zIndex: 1 }}>
         <div style={{ maxWidth: "62rem", margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: "3rem" }}>
@@ -792,37 +716,33 @@ export default function Home() {
                 features: lang === "es" ? ["Hasta 5 secciones personalizadas","Diseño a medida de tu marca","SEO básico + velocidad optimizada","Integración WhatsApp + redes","Entrega en 10–14 días hábiles"] : ["Up to 5 custom sections","Brand-tailored design","Basic SEO + speed optimization","WhatsApp + social integration","Delivery in 10–14 business days"] },
               { name: lang === "es" ? "Web + Agente IA" : "Web + AI Agent", price: "$30,000", badge: lang === "es" ? "Máximo impacto" : "Maximum impact", soldOut: true, popular: false,
                 features: lang === "es" ? ["Todo lo de Página Web Pro","Agente IA entrenado con tu negocio","Integración WhatsApp Business","Responde 24/7 sin intervención","Setup + primer mes de soporte"] : ["Everything in Pro Website","AI agent trained on your business","WhatsApp Business integration","Responds 24/7 automatically","Setup + first month support"] },
-            ].map((plan, i) => (
-              <PricingFlipCard key={i} plan={plan} i={i} t={t} accent={t.accent} bg={t.bg} text={t.text} waLink={waLink} lang={lang} />
-            ))}
+            ].map((plan, i) => <PricingFlipCard key={i} plan={plan} i={i} t={t} accent={t.accent} bg={t.bg} text={t.text} waLink={waLink} lang={lang}/>)}
           </div>
           <p style={{ textAlign: "center", marginTop: "2rem", fontSize: "0.72rem", opacity: 0.4, color: t.sub }}>{lang === "es" ? "* Los precios no incluyen hosting ni dominio. Consulta opciones de pago." : "* Prices do not include hosting or domain. Payment plans available."}</p>
           <div style={{ textAlign: "center", marginTop: "2.5rem" }}>
             <p style={{ fontSize: "0.8rem", opacity: 0.55, marginBottom: "1.25rem", color: t.sub }}>{lang === "es" ? "¿Tienes algo más específico en mente?" : "Have something more specific in mind?"}</p>
-            <motion.a href={waLink} target="_blank" animate={{ scale: [1, 1.06, 1] }} transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }} whileHover={{ scale: 1.12 }}
-              style={{ display: "inline-block", padding: "1rem 2.5rem", borderRadius: "999px", border: `2px solid ${t.accent}`, color: t.accent, fontWeight: 900, fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.1em", textDecoration: "none", boxShadow: `0 0 24px ${t.accent}25` }}>
+            <motion.a href={waLink} target="_blank" animate={{ scale: [1, 1.06, 1] }} transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }} whileHover={{ scale: 1.12 }} style={{ display: "inline-block", padding: "1rem 2.5rem", borderRadius: "999px", border: `2px solid ${t.accent}`, color: t.accent, fontWeight: 900, fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.1em", textDecoration: "none", boxShadow: `0 0 24px ${t.accent}25` }}>
               {lang === "es" ? "💬 Cotización personalizada" : "💬 Custom quote"}
             </motion.a>
           </div>
         </div>
       </section>
 
+      {/* CTA final */}
       <section id="cotizar" style={{ padding: "5rem 1.5rem", position: "relative", zIndex: 1 }}>
         <div style={{ maxWidth: "38rem", margin: "0 auto", textAlign: "center" }}>
           <h2 style={{ fontSize: "clamp(2.6rem,5vw,4rem)", fontFamily: "serif", fontWeight: 700, marginBottom: "1rem", lineHeight: 1.05 }}>{c.cotizar_h}</h2>
           <p style={{ fontSize: "0.95rem", opacity: 0.62, lineHeight: 1.8, marginBottom: "2rem", color: t.sub }}>{c.cotizar_sub}</p>
-          <motion.a href={waLink} target="_blank" animate={{ scale: [1, 1.06, 1] }} transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }} whileHover={{ scale: 1.1 }}
-            style={{ display: "inline-block", padding: "1rem 2.5rem", backgroundColor: t.accent, color: t.bg, fontWeight: 900, textTransform: "uppercase", fontSize: "0.78rem", letterSpacing: "0.08em", textDecoration: "none", borderRadius: "999px", boxShadow: `0 8px 32px ${t.accent}50` }}>
+          <motion.a href={waLink} target="_blank" animate={{ scale: [1, 1.06, 1] }} transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }} whileHover={{ scale: 1.1 }} style={{ display: "inline-block", padding: "1rem 2.5rem", backgroundColor: t.accent, color: t.bg, fontWeight: 900, textTransform: "uppercase", fontSize: "0.78rem", letterSpacing: "0.08em", textDecoration: "none", borderRadius: "999px", boxShadow: `0 8px 32px ${t.accent}50` }}>
             {c.cotizar_cta}
           </motion.a>
         </div>
       </section>
 
       <footer style={{ padding: "2.5rem 1.5rem", borderTop: `1px solid ${t.accent}10`, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "1rem", position: "relative", zIndex: 1 }}>
-        <Image src="/logo-satori.png" alt="SATORI" width={85} height={26} style={{ filter: t.logoFilter }} />
+        <Image src="/logo-satori.png" alt="SATORI" width={85} height={26} style={{ filter: t.logoFilter }}/>
         <p style={{ fontSize: "0.58rem", letterSpacing: "0.25em", textTransform: "uppercase", opacity: 0.3 }}>{c.footer}</p>
       </footer>
     </main>
   );
 }
-  
