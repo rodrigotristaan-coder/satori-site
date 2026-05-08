@@ -44,11 +44,18 @@ const copy = {
     camino_label: "Tres soluciones. Un solo socio.",
     camino_h: "Lo que hacemos",
     camino_sub: "Cada servicio está diseñado para empresarios que quieren crecer con estrategia.",
+    ruta: [
+      { paso: "01", label: "Redes Activas", desc: "Presencia consistente que genera confianza y atrae seguidores reales." },
+      { paso: "02", label: "Marca Clara",   desc: "Identidad visual y mensaje que te diferencian de la competencia." },
+      { paso: "03", label: "Visibilidad",   desc: "Google, medios y comunidad online trabajando a tu favor." },
+      { paso: "04", label: "Conversión",    desc: "Sistemas automáticos que convierten interés en prospectos calificados." },
+      { paso: "05", label: "Ventas",        desc: "Clientes llegando solos. Tú solo cierras y entregas." },
+    ],
     ver_mas: "Ver detalle",
     servicios: [
-      { num: 1, tag: "Marca Propia", t: "Marca Propia", sub: "Identidad · Presencia · Autoridad",        d: "La identidad de marca que un empresario serio merece.",              back: "Estrategia de marca, identidad visual, posicionamiento de CEO y presencia digital de alto impacto para empresarios que quieren ser referentes en su industria.", i: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80&fm=jpg" },
-      { num: 2, tag: "Imagen",    t: "Posicionamiento Online", sub: "Reputación · Visibilidad · Confianza", d: "Tu empresa en el lugar correcto, frente a las personas correctas.",  back: "Gestión de reputación digital, posicionamiento en Google, presencia en medios y estrategia de contenido para que tu empresa sea la primera opción en su mercado.", i: "https://images.unsplash.com/photo-1547658719-da2b51169166?w=800&q=80&fm=jpg" },
-      { num: 3, tag: "IA",        t: "Marketing con IA",       sub: "Conversión · Automatización · Escala", d: "Sistemas de marketing impulsados por inteligencia artificial.",       back: "Embudos automáticos, agentes de IA para calificación y cierre, campañas optimizadas en tiempo real. Tu motor de crecimiento que nunca duerme.", i: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800&q=80&fm=jpg" },
+      { num: 1, tag: "Marca", t: "Marca Propia", sub: "Identidad · Presencia · Autoridad",        d: "La identidad de marca que un empresario serio merece.",              back: "Estrategia de marca, identidad visual, posicionamiento de CEO y presencia digital de alto impacto para empresarios que quieren ser referentes en su industria.", benefits: ["Imagen que genera confianza instantánea", "Diferenciación frente a tu competencia", "Posicionamiento de CEO en LinkedIn y medios", "Kit de marca completo listo para usar"], i: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&q=80&fm=jpg" },
+      { num: 2, tag: "Imagen",    t: "Posicionamiento Online", sub: "Reputación · Visibilidad · Confianza", d: "Tu empresa en el lugar correcto, frente a las personas correctas.",  back: "Gestión de reputación digital, posicionamiento en Google, presencia en medios y estrategia de contenido para que tu empresa sea la primera opción en su mercado.", benefits: ["Aparecer primero en Google en tu industria", "Reputación digital sólida y verificable", "Presencia activa en los medios correctos", "Contenido que atrae prospectos calificados"], i: "https://images.unsplash.com/photo-1547658719-da2b51169166?w=800&q=80&fm=jpg" },
+      { num: 3, tag: "IA",        t: "Marketing con IA",       sub: "Conversión · Automatización · Escala", d: "Sistemas de marketing impulsados por inteligencia artificial.",       back: "Embudos automáticos, agentes de IA para calificación y cierre, campañas optimizadas en tiempo real. Tu motor de crecimiento que nunca duerme.", benefits: ["Prospectos calificados en piloto automático", "Seguimiento sin perder ninguna oportunidad", "Campañas que se optimizan solas 24/7", "ROI visible desde el primer mes"], i: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800&q=80&fm=jpg" },
     ],
     cotizar_h: "¿Listo para crecer?",
     cotizar_sub: "Cuéntanos dónde está tu negocio hoy y te armamos una propuesta a tu medida.",
@@ -101,11 +108,18 @@ const copy = {
     camino_label: "Three solutions. One partner.",
     camino_h: "What we do",
     camino_sub: "Each service is designed for executives who want to grow with strategy.",
+    ruta: [
+      { paso: "01", label: "Active Social",  desc: "Consistent presence that builds trust and attracts real followers." },
+      { paso: "02", label: "Clear Brand",    desc: "Visual identity and message that set you apart from competitors." },
+      { paso: "03", label: "Visibility",     desc: "Google, media and online community working in your favor." },
+      { paso: "04", label: "Conversion",     desc: "Automatic systems turning interest into qualified prospects." },
+      { paso: "05", label: "Sales",          desc: "Clients coming to you. You just close and deliver." },
+    ],
     ver_mas: "See details",
     servicios: [
-      { num: 1, tag: "Marca Propia", t: "Marca Propia · Brand Identity", sub: "Identity · Presence · Authority",         d: "The brand identity a serious executive deserves.",                  back: "Brand strategy, visual identity, CEO positioning and high-impact digital presence for entrepreneurs who want to become the reference in their industry.", i: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80&fm=jpg" },
-      { num: 2, tag: "Image",     t: "Online Positioning",    sub: "Reputation · Visibility · Trust",      d: "Your company in the right place, in front of the right people.",    back: "Digital reputation management, Google positioning, media presence and content strategy so your company becomes the first choice in its market.", i: "https://images.unsplash.com/photo-1547658719-da2b51169166?w=800&q=80&fm=jpg" },
-      { num: 3, tag: "AI",        t: "AI-Powered Marketing",  sub: "Conversion · Automation · Scale",      d: "Marketing systems powered by artificial intelligence.",              back: "Automated funnels, AI agents for lead qualification and closing, real-time optimized campaigns. Your growth engine that never sleeps.", i: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800&q=80&fm=jpg" },
+      { num: 1, tag: "Brand", t: "Brand Identity", sub: "Identity · Presence · Authority",         d: "The brand identity a serious executive deserves.",                  back: "Brand strategy, visual identity, CEO positioning and high-impact digital presence for entrepreneurs who want to become the reference in their industry.", benefits: ["Instant trust through a powerful image", "Stand out clearly from competitors", "CEO positioning on LinkedIn and media", "Complete brand kit ready to deploy"], i: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&q=80&fm=jpg" },
+      { num: 2, tag: "Image",     t: "Online Positioning",    sub: "Reputation · Visibility · Trust",      d: "Your company in the right place, in front of the right people.",    back: "Digital reputation management, Google positioning, media presence and content strategy so your company becomes the first choice in its market.", benefits: ["Rank first on Google in your industry", "Solid and verifiable digital reputation", "Active presence in the right media", "Content that attracts qualified prospects"], i: "https://images.unsplash.com/photo-1547658719-da2b51169166?w=800&q=80&fm=jpg" },
+      { num: 3, tag: "AI",        t: "AI-Powered Marketing",  sub: "Conversion · Automation · Scale",      d: "Marketing systems powered by artificial intelligence.",              back: "Automated funnels, AI agents for lead qualification and closing, real-time optimized campaigns. Your growth engine that never sleeps.", benefits: ["Qualified leads on autopilot", "No opportunity slips through the cracks", "Self-optimizing campaigns 24/7", "Visible ROI from month one"], i: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800&q=80&fm=jpg" },
     ],
     cotizar_h: "Ready to grow?",
     cotizar_sub: "Tell us where your business is today and we'll build a proposal tailored to you.",
@@ -120,7 +134,7 @@ const copy = {
     faq_label: "Frequently asked questions",
     faq_h: "Everything you need to know.",
     faqs: [
-      { q: "How long until I see results?",             a: "Depends on the service. Marca Propia: first weeks. Positioning: 1–3 months. AI Marketing: from day one of activation." },
+      { q: "How long until I see results?",             a: "Depends on the service. Brand Identity: first weeks. Positioning: 1–3 months. AI Marketing: from day one of activation." },
       { q: "Do I need to be tech-savvy?",               a: "Not at all. We handle every technical detail. Just tell us how your business works and we take care of the rest." },
       { q: "Do I sign a long-term contract?",           a: "No. We work month to month. Cancel anytime." },
       { q: "What do I need to get started?",            a: "Just a 30-minute call. We learn your business, propose the best path, and give you a clear price. No surprises." },
@@ -221,41 +235,103 @@ function LangPopup({ onSelect, t }: { onSelect: (l: "es" | "en") => void; t: typ
   );
 }
 
+function RutaTimeline({ t, c }: { t: typeof theme; c: typeof copy.es }) {
+  const [hovered, setHovered] = useState<number | null>(null);
+  return (
+    <div style={{ padding: "4rem clamp(1.5rem,5vw,4rem) 2rem", maxWidth: "72rem", margin: "0 auto" }}>
+      <p style={{ fontSize: "0.62rem", textTransform: "uppercase", letterSpacing: "0.35em", color: t.accent, fontWeight: 900, marginBottom: "2.5rem", textAlign: "center" }}>
+        {c.ruta[0].label === "Active Social" ? "Your growth roadmap" : "Tu ruta de crecimiento"}
+      </p>
+      <div style={{ position: "relative", display: "flex", alignItems: "flex-start", gap: 0 }}>
+        {/* Line */}
+        <div style={{ position: "absolute", top: "2rem", left: "calc(10% + 1rem)", right: "calc(10% + 1rem)", height: "2px", background: `linear-gradient(to right, ${t.accent}22, ${t.accent}, ${t.accent}22)`, zIndex: 0 }} />
+        {c.ruta.map((step, i) => {
+          const isH = hovered === i;
+          return (
+            <motion.div key={i}
+              onHoverStart={() => setHovered(i)} onHoverEnd={() => setHovered(null)}
+              animate={{ y: isH ? -8 : 0 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
+              style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", padding: "0 0.5rem", position: "relative", zIndex: 1, cursor: "default" }}>
+              <motion.div
+                animate={{ scale: isH ? 1.15 : 1, backgroundColor: isH ? t.accent : t.bg, borderColor: t.accent }}
+                transition={{ duration: 0.25 }}
+                style={{ width: "4rem", height: "4rem", borderRadius: "50%", border: `2px solid ${t.accent}`, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "1rem", boxShadow: isH ? `0 8px 24px ${t.accent}40` : "none" }}>
+                <span style={{ fontSize: "0.65rem", fontWeight: 900, color: isH ? t.bg : t.accent, letterSpacing: "0.05em" }}>{step.paso}</span>
+              </motion.div>
+              <p style={{ fontSize: "0.72rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.1em", color: isH ? t.accent : t.text, marginBottom: "0.5rem", transition: "color 0.25s" }}>{step.label}</p>
+              <motion.p animate={{ opacity: isH ? 1 : 0, height: isH ? "auto" : 0 }} transition={{ duration: 0.25 }} style={{ fontSize: "0.7rem", lineHeight: 1.6, color: t.sub, overflow: "hidden" }}>{step.desc}</motion.p>
+              {i < c.ruta.length - 1 && (
+                <motion.div animate={{ opacity: isH ? 1 : 0 }} style={{ position: "absolute", right: "-4px", top: "1.4rem", fontSize: "0.8rem", color: t.accent }}>›</motion.div>
+              )}
+            </motion.div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 function ServicesBento({ t, c }: { t: typeof theme; c: typeof copy.es }) {
-  const [active, setActive] = useState<number | null>(null);
+  const [flipped, setFlipped] = useState<number | null>(null);
   const accents = ["#C9920A", "#8B6914", "#5C4A10"];
-  const cells = c.servicios.map((s, i) => ({ s, i, color: accents[i], isActive: active === i }));
   return (
     <div style={{ padding: "0 clamp(1rem,4vw,3rem) 3rem" }}>
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginBottom: "3rem", gap: "3rem" }}>
-        {cells.map(({ s, i, color, isActive }) => (
-          <div key={i} style={{ textAlign: "center" }}>
-            <span style={{ fontSize: "0.65rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.15em", color: isActive ? color : t.sub, transition: "color 0.3s" }}>{s.num}. {s.tag}</span>
-          </div>
-        ))}
-      </div>
-      <div style={{ display: "grid", gap: "1.25rem", gridTemplateColumns: "repeat(3,1fr)" }}>
-        {cells.map(({ s, i, color, isActive }) => (
-          <motion.div key={i}
-            onHoverStart={() => setActive(i)} onHoverEnd={() => setActive(null)}
-            onTap={() => setActive(active === i ? null : i)}
-            animate={{ scale: isActive ? 1.02 : 1, y: isActive ? -6 : 0 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            style={{ position: "relative", overflow: "hidden", cursor: "pointer", minHeight: "clamp(320px,42vh,480px)", borderRadius: "1.25rem", boxShadow: isActive ? `0 24px 64px ${color}40, 0 8px 20px rgba(0,0,0,0.12)` : "0 4px 20px rgba(0,0,0,0.07)", transition: "box-shadow 0.4s" }}>
-            <img src={s.i} alt={s.t} loading="lazy" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.6s ease", transform: isActive ? "scale(1.08)" : "scale(1)", display: "block" }} />
-            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.35) 50%, rgba(0,0,0,0.08) 100%)" }} />
-            <motion.div animate={{ opacity: isActive ? 1 : 0 }} transition={{ duration: 0.3 }} style={{ position: "absolute", inset: 0, borderRadius: "1.25rem", border: `2px solid ${color}`, pointerEvents: "none" }} />
-            <div style={{ position: "absolute", top: "0.8rem", right: "1rem", fontSize: "clamp(3rem,5vw,4.5rem)", fontFamily: "serif", fontWeight: 900, color: "#fff", opacity: isActive ? 0.12 : 0.06, lineHeight: 1, pointerEvents: "none", userSelect: "none", transition: "opacity 0.3s" }}>{String(i + 1).padStart(2, "0")}</div>
-            <div style={{ position: "absolute", inset: 0, padding: "1.5rem 1.75rem", display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
-              <p style={{ fontSize: "0.6rem", textTransform: "uppercase", letterSpacing: "0.18em", color, fontWeight: 900, marginBottom: "0.5rem", opacity: 0.95 }}>{s.sub}</p>
-              <h3 style={{ fontSize: "clamp(1.3rem,2.5vw,1.7rem)", fontFamily: "serif", fontWeight: 700, color: "#fff", lineHeight: 1.15, marginBottom: "0.5rem", textShadow: "0 2px 12px rgba(0,0,0,0.5)" }}>{s.t}</h3>
-              <motion.div animate={{ height: isActive ? "auto" : 0, opacity: isActive ? 1 : 0 }} transition={{ duration: 0.35, ease: "easeOut" }} style={{ overflow: "hidden" }}>
-                <p style={{ fontSize: "0.88rem", color: "rgba(255,255,255,0.85)", lineHeight: 1.65, marginTop: "0.5rem", marginBottom: "0.75rem" }}>{s.back}</p>
-                <a href={`https://wa.me/525625018281?text=Hola%20Rodrigo,%20me%20interesa%20${encodeURIComponent(s.t)}`} target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", fontSize: "0.62rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.15em", color, textDecoration: "none" }}>{c.ver_mas} →</a>
+      <div style={{ display: "grid", gap: "1.5rem", gridTemplateColumns: "repeat(3,1fr)" }}>
+        {c.servicios.map((s, i) => {
+          const color = accents[i];
+          const isFlipped = flipped === i;
+          return (
+            <div key={i}
+              onMouseEnter={() => setFlipped(i)} onMouseLeave={() => setFlipped(null)}
+              onClick={() => setFlipped(isFlipped ? null : i)}
+              style={{ perspective: "1000px", cursor: "pointer", minHeight: "clamp(340px,44vh,500px)" }}>
+              <motion.div
+                animate={{ rotateY: isFlipped ? 180 : 0 }}
+                transition={{ duration: 0.55, ease: [0.23, 1, 0.32, 1] }}
+                style={{ width: "100%", height: "100%", position: "relative", transformStyle: "preserve-3d", borderRadius: "1.25rem" }}>
+                {/* FRONT */}
+                <div style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", borderRadius: "1.25rem", overflow: "hidden", boxShadow: `0 6px 28px rgba(0,0,0,0.12)` }}>
+                  <img src={s.i} alt={s.t} loading="lazy" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                  <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.3) 55%, rgba(0,0,0,0.05) 100%)" }} />
+                  <div style={{ position: "absolute", top: "1.25rem", left: "1.5rem" }}>
+                    <span style={{ fontSize: "0.55rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.2em", color, background: "rgba(0,0,0,0.45)", padding: "0.25rem 0.6rem", borderRadius: "99px" }}>{s.tag}</span>
+                  </div>
+                  <div style={{ position: "absolute", top: "0.75rem", right: "1rem", fontSize: "clamp(3rem,5vw,4.5rem)", fontFamily: "serif", fontWeight: 900, color: "#fff", opacity: 0.06, lineHeight: 1, userSelect: "none" }}>{String(i + 1).padStart(2, "0")}</div>
+                  <div style={{ position: "absolute", inset: 0, padding: "1.75rem", display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
+                    <p style={{ fontSize: "0.55rem", textTransform: "uppercase", letterSpacing: "0.18em", color, fontWeight: 900, marginBottom: "0.4rem" }}>{s.sub}</p>
+                    <h3 style={{ fontSize: "clamp(1.4rem,2.5vw,1.8rem)", fontFamily: "serif", fontWeight: 700, color: "#fff", lineHeight: 1.1, marginBottom: "0.6rem", textShadow: "0 2px 12px rgba(0,0,0,0.6)" }}>{s.t}</h3>
+                    <p style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.7)", lineHeight: 1.5 }}>{s.d}</p>
+                    <div style={{ marginTop: "1rem", display: "flex", alignItems: "center", gap: "0.35rem", opacity: 0.6 }}>
+                      <span style={{ fontSize: "0.55rem", textTransform: "uppercase", letterSpacing: "0.15em", color: "#fff" }}>hover para ver beneficios</span>
+                      <span style={{ color, fontSize: "0.8rem" }}>↻</span>
+                    </div>
+                  </div>
+                </div>
+                {/* BACK */}
+                <div style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", transform: "rotateY(180deg)", borderRadius: "1.25rem", overflow: "hidden", backgroundColor: t.bg, border: `2px solid ${color}`, boxShadow: `0 12px 48px ${color}35` }}>
+                  <div style={{ position: "absolute", inset: 0, background: `linear-gradient(135deg, ${color}08 0%, transparent 60%)` }} />
+                  <div style={{ position: "absolute", top: "0.75rem", right: "1rem", fontSize: "clamp(3rem,5vw,4.5rem)", fontFamily: "serif", fontWeight: 900, color: t.accent, opacity: 0.06, lineHeight: 1, userSelect: "none" }}>{String(i + 1).padStart(2, "0")}</div>
+                  <div style={{ padding: "2rem 1.75rem", height: "100%", display: "flex", flexDirection: "column", position: "relative", zIndex: 1 }}>
+                    <p style={{ fontSize: "0.55rem", textTransform: "uppercase", letterSpacing: "0.2em", color, fontWeight: 900, marginBottom: "0.35rem" }}>{s.sub}</p>
+                    <h3 style={{ fontSize: "clamp(1.1rem,2vw,1.35rem)", fontFamily: "serif", fontWeight: 700, color: t.text, lineHeight: 1.15, marginBottom: "1.25rem" }}>{s.t}</h3>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", flex: 1 }}>
+                      {s.benefits.map((b: string, bi: number) => (
+                        <div key={bi} style={{ display: "flex", alignItems: "flex-start", gap: "0.6rem" }}>
+                          <div style={{ width: "18px", height: "18px", borderRadius: "50%", backgroundColor: color, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: "1px" }}>
+                            <span style={{ color: "#fff", fontSize: "0.55rem", fontWeight: 900 }}>✓</span>
+                          </div>
+                          <p style={{ fontSize: "0.82rem", color: t.text, lineHeight: 1.5, opacity: 0.85 }}>{b}</p>
+                        </div>
+                      ))}
+                    </div>
+                    <a href={`https://wa.me/525625018281?text=Hola%20Rodrigo,%20me%20interesa%20${encodeURIComponent(s.t)}`} target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", marginTop: "1.5rem", fontSize: "0.65rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.12em", color: t.bg, textDecoration: "none", backgroundColor: color, padding: "0.6rem 1.25rem", borderRadius: "99px" }}>{c.ver_mas} →</a>
+                  </div>
+                </div>
               </motion.div>
             </div>
-          </motion.div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
@@ -505,11 +581,12 @@ export default function Home() {
       </section>
 
       <section id="servicios" style={{ backgroundColor: t.card, position: "relative", zIndex: 1 }}>
-        <div style={{ padding: "4rem clamp(1.5rem,5vw,4rem) 1.5rem", maxWidth: "72rem", margin: "0 auto" }}>
+        <div style={{ padding: "4rem clamp(1.5rem,5vw,4rem) 0.5rem", maxWidth: "72rem", margin: "0 auto" }}>
           <Typewriter text={c.camino_label} style={{ fontSize: "0.82rem", textTransform: "uppercase", letterSpacing: "0.35em", color: t.accent, fontWeight: 900, display: "block", whiteSpace: "nowrap", marginBottom: "0.75rem" }}/>
           <h2 style={{ fontSize: "clamp(2.8rem,6vw,5rem)", fontFamily: "serif", fontWeight: 700, lineHeight: 1.0, marginBottom: "1rem", textAlign: "center" }}>{c.camino_h}</h2>
-          <p style={{ fontSize: "0.88rem", opacity: 0.5, lineHeight: 1.4, color: t.sub, marginBottom: "2.5rem", textAlign: "center" }}>{c.camino_sub}</p>
+          <p style={{ fontSize: "0.88rem", opacity: 0.5, lineHeight: 1.4, color: t.sub, marginBottom: "0rem", textAlign: "center" }}>{c.camino_sub}</p>
         </div>
+        <RutaTimeline t={t} c={c}/>
         <ServicesBento t={t} c={c}/>
       </section>
 
