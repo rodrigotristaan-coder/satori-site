@@ -24,40 +24,38 @@ const theme = {
 
 const copy = {
   es: {
-    nav: { problema: "El Problema", soluciones: "Servicios", precios: "Cotizar", cta: "Agendar Zoom" },
-    badge: "Tu negocio local + Inteligencia Artificial",
+    nav: { problema: "El Problema", soluciones: "Servicios", cotizar: "Cotizar", cta: "Agendar Zoom" },
+    badge: "Estrategia · Marca · Crecimiento",
     h1a: "Más clientes.", h1b: "Menos caos.",
     hero_sub: "Sabemos lo que es atender el negocio, contestar mensajes, publicar en redes y encima intentar crecer. Satori automatiza lo repetitivo para que tú te enfoques en lo que importa: vender.",
     cta1: "Quiero mi Auditoría Gratis", cta2: "Ver Cómo Funciona",
     problema_h: "¿Te suena alguno de estos?",
     problemas: [
-      { q: "Pago anuncios y no me llega el cliente correcto.",      desc: "Tu dinero en ads se va sin convertir porque no tienes un sistema que filtre prospectos." },
-      { q: "Se me van clientes por no contestar rápido.",           desc: "El 78% de las ventas las gana quien responde primero. Sin automatización, pierdes sin saberlo." },
-      { q: "Mis redes están muertas y la competencia me gana.",     desc: "La consistencia es lo que genera confianza — y ventas. Sin tiempo, no hay consistencia." },
+      { q: "Pago anuncios y no me llega el cliente correcto.",    desc: "Tu dinero en ads se va sin convertir porque no tienes un sistema que filtre prospectos." },
+      { q: "Se me van clientes por no contestar rápido.",         desc: "El 78% de las ventas las gana quien responde primero. Sin automatización, pierdes sin saberlo." },
+      { q: "Mis redes están muertas y la competencia me gana.",   desc: "La consistencia es lo que genera confianza — y ventas. Sin tiempo, no hay consistencia." },
     ],
     problema_cta: "Identifiqué mi problema — quiero la solución →",
     stats: [
       { label: "Tu negocio siempre abierto", n: "24/7" },
-      { label: "Prospectos perdidos",          n: "0"   },
-      { label: "Días para ver resultados",     n: "30"  },
+      { label: "Prospectos perdidos",         n: "0"   },
+      { label: "Días para ver resultados",    n: "30"  },
     ],
-    camino_label: "Paso a paso, o todo al mismo tiempo.",
-    camino_h: "El camino al crecimiento",
-    camino_sub: "Cada paquete construye sobre el anterior. Empieza donde estás — llega a donde quieres.",
-    ver_mas: "Ver detalle", volver: "← Volver", paquete: "Paquete",
+    camino_label: "Tres soluciones. Un solo socio.",
+    camino_h: "Lo que hacemos",
+    camino_sub: "Cada servicio está diseñado para empresarios que quieren crecer con estrategia.",
+    ver_mas: "Ver detalle",
     servicios: [
-      { num: 1, tag: "Redes",     t: "Presencia Digital",  sub: "Redes Sociales + Contenido",              d: "Tus redes publicando con estrategia todos los días.",         back: "Posts, reels y stories diseñados para posicionarte como el experto.", i: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=800&q=80&fm=jpg" },
-      { num: 2, tag: "Página Web",t: "Tu Página Web",      sub: "Sitio Web o Landing Page",                 d: "Tu vitrina digital que convierte visitas en clientes.",       back: "Diseño profesional, copywriting estratégico, optimización móvil. Entrega en 7–10 días.", i: "https://images.unsplash.com/photo-1547658719-da2b51169166?w=800&q=80&fm=jpg" },
-      { num: 3, tag: "Social Ads",t: "Clientes con Ads",   sub: "Campañas Meta + Google",                   d: "Anuncios que llevan el cliente correcto a tu puerta.",        back: "Setup, segmentación avanzada, creativos, optimización semanal y reporte mensual.", i: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80&fm=jpg" },
-      { num: 4, tag: "AI Bot",    t: "Vendedor 24/7",      sub: "Agente IA · WhatsApp + Instagram",         d: "Un agente que cotiza, agenda y cierra mientras duermes.",     back: "Entrenado con tu negocio. Integrado a WhatsApp e Instagram DM.", i: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800&q=80&fm=jpg" },
-      { num: 5, tag: "¿Satori?",  t: "Sociedad Satori",   sub: "Todo lo anterior + Estrategia y Branding", d: "Para dominar tu mercado. No un proveedor — un socio.",        back: "Todos los servicios + identidad de marca, sesión mensual de estrategia.", i: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80&fm=jpg" },
+      { num: 1, tag: "Identiti",  t: "Identiti Branding",     sub: "Marca · Presencia · Autoridad",        d: "La identidad de marca que un empresario serio merece.",              back: "Estrategia de marca, identidad visual, posicionamiento de CEO y presencia digital de alto impacto para empresarios que quieren ser referentes en su industria.", i: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80&fm=jpg" },
+      { num: 2, tag: "Imagen",    t: "Posicionamiento Online", sub: "Reputación · Visibilidad · Confianza", d: "Tu empresa en el lugar correcto, frente a las personas correctas.",  back: "Gestión de reputación digital, posicionamiento en Google, presencia en medios y estrategia de contenido para que tu empresa sea la primera opción en su mercado.", i: "https://images.unsplash.com/photo-1547658719-da2b51169166?w=800&q=80&fm=jpg" },
+      { num: 3, tag: "IA",        t: "Marketing con IA",       sub: "Conversión · Automatización · Escala", d: "Sistemas de marketing impulsados por inteligencia artificial.",       back: "Embudos automáticos, agentes de IA para calificación y cierre, campañas optimizadas en tiempo real. Tu motor de crecimiento que nunca duerme.", i: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800&q=80&fm=jpg" },
     ],
     cotizar_h: "¿Listo para crecer?",
     cotizar_sub: "Cuéntanos dónde está tu negocio hoy y te armamos una propuesta a tu medida.",
     cotizar_cta: "Quiero mi cotización →",
     nosotros_label: "Tu Socio Digital", nosotros_nombre: "Rodrigo Tristán", nosotros_cargo: "Fundador de SATORI",
     nosotros_quote: '"La IA no reemplaza tu negocio. Lo potencia."',
-    nosotros_p1: "Sé lo que cuesta construir un negocio desde adentro: las horas, las decisiones, la incertidumbre. Por eso fundé Satori — para que cada emprendedor y empresario mexicano tenga acceso a las mismas herramientas que usan las empresas más avanzadas del mundo.",
+    nosotros_p1: "Sé lo que cuesta construir un negocio desde adentro: las horas, las decisiones, la incertidumbre. Por eso fundé Satori — para que cada empresario mexicano tenga acceso a las mismas herramientas que usan las empresas más avanzadas del mundo.",
     nosotros_p2: "La mayoría de las agencias te venden actividad. Yo te vendo claridad. Antes de tocar una sola herramienta, entendemos tu mercado, a tu cliente y qué es verdad en tu industria.",
     garantia_title: "Garantía de 30 días:",
     garantia_text: "Si en 30 días no sientes que el valor recibido supera lo que invertiste, seguimos trabajando contigo 20 días más sin costo adicional. Sin preguntas, sin drama.",
@@ -65,51 +63,49 @@ const copy = {
     faq_label: "Preguntas frecuentes",
     faq_h: "Todo lo que necesitas saber.",
     faqs: [
-      { q: "¿Cuánto tiempo tarda ver resultados?", a: "Depende del servicio. Contenido y redes: primeras semanas. Ads: desde el primer mes. Agente IA: desde el día de activación." },
-      { q: "¿Necesito saber de tecnología?", a: "Para nada. Nos encargamos de toda la parte técnica. Tú solo nos dices cómo funciona tu negocio y nosotros hacemos el resto." },
-      { q: "¿Firmo un contrato largo?", a: "No. Trabajamos mes a mes. Si no estás satisfecho, puedes cancelar cuando quieras." },
-      { q: "¿Qué necesito para empezar?", a: "Solo una llamada de 30 minutos. Ahí entendemos tu negocio, te proponemos la mejor ruta y te damos un precio claro. Sin sorpresas." },
-      { q: "¿Trabajan con cualquier tipo de negocio?", a: "Trabajamos con negocios locales y pymes en México — restaurantes, clínicas, despachos, tiendas, servicios profesionales, constructoras y más." },
-      { q: "¿Cómo funciona el agente de IA?", a: "Lo entrenamos con la información de tu negocio: precios, servicios, horarios, FAQs. Luego lo conectamos a tu WhatsApp Business e Instagram DM." },
+      { q: "¿Cuánto tiempo tarda ver resultados?",      a: "Depende del servicio. Identiti Branding: primeras semanas. Posicionamiento: 1–3 meses. Marketing con IA: desde el día de activación." },
+      { q: "¿Necesito saber de tecnología?",            a: "Para nada. Nos encargamos de toda la parte técnica. Tú solo nos dices cómo funciona tu negocio y nosotros hacemos el resto." },
+      { q: "¿Firmo un contrato largo?",                 a: "No. Trabajamos mes a mes. Si no estás satisfecho, puedes cancelar cuando quieras." },
+      { q: "¿Qué necesito para empezar?",               a: "Solo una llamada de 30 minutos. Ahí entendemos tu negocio, te proponemos la mejor ruta y te damos un precio claro. Sin sorpresas." },
+      { q: "¿Trabajan con cualquier tipo de negocio?",  a: "Trabajamos con empresarios y pymes en México — despachos, constructoras, clínicas, consultoras, servicios profesionales y más." },
+      { q: "¿Cómo funciona el marketing con IA?",       a: "Diseñamos embudos automáticos entrenados con tu negocio, integramos agentes de IA y conectamos campañas que se optimizan solas. Tú ves los resultados en un dashboard en tiempo real." },
     ],
     reviews_label: "Lo que dicen nuestros clientes",
     reviews_h: "Resultados reales.",
     reviews: [
-      { name: "Carlos M.", role: "Dueño de restaurante", text: "Antes perdía clientes porque no contestaba rápido. Ahora el bot de Satori responde solo y ya agendé 3 mesas más esta semana.", stars: 5 },
-      { name: "Fernanda R.", role: "Directora de clínica dental", text: "Mi página web nueva me ha traído pacientes de Google que antes ni sabían que existíamos. El ROI fue visible en el primer mes.", stars: 5 },
-      { name: "Diego L.", role: "Consultor independiente", text: "Contraté el servicio de redes y en 6 semanas duplicamos los mensajes de posibles clientes. El contenido es de muy buena calidad.", stars: 5 },
-      { name: "Ana P.", role: "Dueña de boutique", text: "El agente de IA es muy bueno. Rodrigo resolvió el único problema que tuve rápido y desde entonces funciona de maravilla.", stars: 4.5 },
+      { name: "Carlos M.",   role: "Dueño de restaurante",  text: "Antes perdía clientes porque no contestaba rápido. Ahora el bot de Satori responde solo y ya agendé 3 mesas más esta semana.", stars: 5 },
+      { name: "Fernanda R.", role: "Directora de clínica",  text: "Mi página web nueva me ha traído pacientes de Google que antes ni sabían que existíamos. El ROI fue visible en el primer mes.", stars: 5 },
+      { name: "Diego L.",    role: "Consultor independiente", text: "Contraté el servicio de redes y en 6 semanas duplicamos los mensajes de posibles clientes. El contenido es de muy buena calidad.", stars: 5 },
+      { name: "Ana P.",      role: "Directora de boutique", text: "El agente de IA es muy bueno. Rodrigo resolvió el único problema que tuve rápido y desde entonces funciona de maravilla.", stars: 4.5 },
     ],
-    footer: "© 2026 SATORI · Soluciones Digitales con IA · México",
+    footer: "© 2026 SATORI · Estrategia Digital para Empresarios · México",
   },
   en: {
-    nav: { problema: "The Problem", soluciones: "Services", precios: "Quote", cta: "Book a Zoom" },
-    badge: "Your Local Business + Artificial Intelligence",
+    nav: { problema: "The Problem", soluciones: "Services", cotizar: "Quote", cta: "Book a Zoom" },
+    badge: "Strategy · Brand · Growth",
     h1a: "More clients.", h1b: "Less chaos.",
     hero_sub: "We know what it's like to run a business, answer messages, post on social media, and still try to grow. Satori automates the repetitive stuff so you can focus on what matters: selling.",
     cta1: "Get My Free Audit", cta2: "See How It Works",
     problema_h: "Do any of these sound familiar?",
     problemas: [
-      { q: "I pay for ads but the wrong people show up.",              desc: "Your ad spend leaks because there's no system to filter and nurture leads before they go cold." },
-      { q: "I lose customers because I can't reply fast enough.",      desc: "78% of sales go to whoever responds first. Without automation, you're losing deals you don't even know about." },
-      { q: "My social media is dead and my competitors are winning.",  desc: "Consistency is what builds trust — and trust drives sales. Without time, there's no consistency." },
+      { q: "I pay for ads but the wrong people show up.",            desc: "Your ad spend leaks because there's no system to filter and nurture leads before they go cold." },
+      { q: "I lose customers because I can't reply fast enough.",    desc: "78% of sales go to whoever responds first. Without automation, you're losing deals you don't even know about." },
+      { q: "My social media is dead and competitors are winning.",   desc: "Consistency is what builds trust — and trust drives sales. Without time, there's no consistency." },
     ],
     problema_cta: "I found my problem — show me the fix →",
     stats: [
       { label: "Your business always open", n: "24/7" },
-      { label: "Leads lost",                 n: "0"   },
-      { label: "Days to see results",         n: "30"  },
+      { label: "Leads lost",                n: "0"   },
+      { label: "Days to see results",       n: "30"  },
     ],
-    camino_label: "Step by step, or all at once.",
-    camino_h: "The path to growth",
-    camino_sub: "Each package builds on the previous one. Start where you are — grow from there.",
-    ver_mas: "See details", volver: "← Back", paquete: "Package",
+    camino_label: "Three solutions. One partner.",
+    camino_h: "What we do",
+    camino_sub: "Each service is designed for executives who want to grow with strategy.",
+    ver_mas: "See details",
     servicios: [
-      { num: 1, tag: "Social",     t: "Digital Presence",  sub: "Social Media + Content",               d: "Your social media posting strategically every single day.",     back: "Posts, reels, and stories designed to position you as the go-to expert.", i: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=800&q=80&fm=jpg" },
-      { num: 2, tag: "Website",    t: "Your Website",      sub: "Website or Landing Page",              d: "Your digital storefront that turns visitors into clients.",      back: "Professional design, strategic copywriting, mobile optimization. Delivery in 7–10 days.", i: "https://images.unsplash.com/photo-1547658719-da2b51169166?w=800&q=80&fm=jpg" },
-      { num: 3, tag: "Social Ads", t: "Clients with Ads",  sub: "Meta + Google Campaigns",              d: "Ads that bring the right client straight to your door.",        back: "Campaign setup, advanced targeting, creatives, weekly optimization and monthly report.", i: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80&fm=jpg" },
-      { num: 4, tag: "AI Bot",     t: "24/7 Salesperson",  sub: "AI Agent · WhatsApp + Instagram",     d: "An agent that quotes, books, and closes while you sleep.",      back: "Trained with your brand voice. Integrated into WhatsApp and Instagram DM.", i: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800&q=80&fm=jpg" },
-      { num: 5, tag: "Satori?",    t: "Satori Society",    sub: "Everything + Strategy & Branding",    d: "To dominate your local market. Not a vendor — a partner.",     back: "All services + brand identity, monthly strategy session, priority consulting.", i: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80&fm=jpg" },
+      { num: 1, tag: "Identiti",  t: "Identiti Branding",    sub: "Brand · Presence · Authority",         d: "The brand identity a serious executive deserves.",                  back: "Brand strategy, visual identity, CEO positioning and high-impact digital presence for entrepreneurs who want to become the reference in their industry.", i: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80&fm=jpg" },
+      { num: 2, tag: "Image",     t: "Online Positioning",    sub: "Reputation · Visibility · Trust",      d: "Your company in the right place, in front of the right people.",    back: "Digital reputation management, Google positioning, media presence and content strategy so your company becomes the first choice in its market.", i: "https://images.unsplash.com/photo-1547658719-da2b51169166?w=800&q=80&fm=jpg" },
+      { num: 3, tag: "AI",        t: "AI-Powered Marketing",  sub: "Conversion · Automation · Scale",      d: "Marketing systems powered by artificial intelligence.",              back: "Automated funnels, AI agents for lead qualification and closing, real-time optimized campaigns. Your growth engine that never sleeps.", i: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800&q=80&fm=jpg" },
     ],
     cotizar_h: "Ready to grow?",
     cotizar_sub: "Tell us where your business is today and we'll build a proposal tailored to you.",
@@ -124,22 +120,22 @@ const copy = {
     faq_label: "Frequently asked questions",
     faq_h: "Everything you need to know.",
     faqs: [
-      { q: "How long until I see results?", a: "Depends on the service. Content & social: first few weeks. Ads: from month one. AI Agent: from day one of activation." },
-      { q: "Do I need to be tech-savvy?", a: "Not at all. We handle every technical detail. Just tell us how your business works and we take care of the rest." },
-      { q: "Do I sign a long-term contract?", a: "No. We work month to month. Cancel anytime." },
-      { q: "What do I need to get started?", a: "Just a 30-minute call. We learn your business, propose the best path, and give you a clear price. No surprises." },
-      { q: "What types of businesses do you work with?", a: "Local businesses and SMEs in Mexico — restaurants, clinics, law firms, shops, professional services, construction and more." },
-      { q: "How does the AI agent work?", a: "We train it on your business info: prices, services, hours, FAQs. Then connect it to WhatsApp Business and Instagram DM." },
+      { q: "How long until I see results?",             a: "Depends on the service. Identiti Branding: first weeks. Positioning: 1–3 months. AI Marketing: from day one of activation." },
+      { q: "Do I need to be tech-savvy?",               a: "Not at all. We handle every technical detail. Just tell us how your business works and we take care of the rest." },
+      { q: "Do I sign a long-term contract?",           a: "No. We work month to month. Cancel anytime." },
+      { q: "What do I need to get started?",            a: "Just a 30-minute call. We learn your business, propose the best path, and give you a clear price. No surprises." },
+      { q: "What types of businesses do you work with?", a: "Entrepreneurs and SMEs in Mexico — law firms, construction, clinics, consultancies, professional services and more." },
+      { q: "How does AI marketing work?",               a: "We design automated funnels trained on your business, integrate AI agents and connect self-optimizing campaigns. You see results in a real-time dashboard." },
     ],
     reviews_label: "What our clients say",
     reviews_h: "Real results.",
     reviews: [
-      { name: "Carlos M.", role: "Restaurant owner", text: "I used to lose customers because I couldn't reply fast. Now Satori's bot handles it and I've booked 3 more tables this week alone.", stars: 5 },
-      { name: "Fernanda R.", role: "Dental clinic director", text: "My new website brought in patients from Google who didn't even know we existed. ROI was visible in the first month.", stars: 5 },
-      { name: "Diego L.", role: "Independent consultant", text: "I hired the social media service and in 6 weeks we doubled our inbound messages. The content quality is excellent.", stars: 5 },
-      { name: "Ana P.", role: "Boutique owner", text: "The AI agent is great. Rodrigo fixed the only issue I had quickly and since then it works flawlessly.", stars: 4.5 },
+      { name: "Carlos M.",   role: "Restaurant owner",       text: "I used to lose customers because I couldn't reply fast. Now Satori's bot handles it and I've booked 3 more tables this week.", stars: 5 },
+      { name: "Fernanda R.", role: "Clinic director",        text: "My new website brought in patients from Google who didn't even know we existed. ROI was visible in the first month.", stars: 5 },
+      { name: "Diego L.",    role: "Independent consultant", text: "I hired the social media service and in 6 weeks we doubled our inbound messages. The content quality is excellent.", stars: 5 },
+      { name: "Ana P.",      role: "Boutique director",      text: "The AI agent is great. Rodrigo fixed the only issue quickly and since then it works flawlessly.", stars: 4.5 },
     ],
-    footer: "© 2026 SATORI · AI-Powered Digital Solutions · México",
+    footer: "© 2026 SATORI · Digital Strategy for Executives · México",
   },
 };
 
@@ -166,7 +162,7 @@ function MatrixBackground({ color }: { color: string }) {
     draw();
     return () => { cancelAnimationFrame(id); window.removeEventListener("resize", resize); };
   }, []);
-  return <canvas ref={ref} style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", opacity: 0.28, pointerEvents: "none", zIndex: 0, willChange: "transform" }} />;
+  return <canvas ref={ref} style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", opacity: 0.18, pointerEvents: "none", zIndex: 0, willChange: "transform" }} />;
 }
 
 function CursorGlow({ accent }: { accent: string }) {
@@ -177,7 +173,7 @@ function CursorGlow({ accent }: { accent: string }) {
     window.addEventListener("mousemove", move); window.addEventListener("mouseleave", leave);
     return () => { window.removeEventListener("mousemove", move); window.removeEventListener("mouseleave", leave); };
   }, []);
-  return <div style={{ position: "fixed", pointerEvents: "none", zIndex: 9999, left: pos.x - 180, top: pos.y - 180, width: 360, height: 360, borderRadius: "50%", background: `radial-gradient(circle, ${accent}20 0%, ${accent}08 45%, transparent 70%)`, opacity: visible ? 1 : 0, transition: "opacity 0.3s", mixBlendMode: "screen" }} />;
+  return <div style={{ position: "fixed", pointerEvents: "none", zIndex: 9999, left: pos.x - 180, top: pos.y - 180, width: 360, height: 360, borderRadius: "50%", background: `radial-gradient(circle, ${accent}22 0%, ${accent}08 45%, transparent 70%)`, opacity: visible ? 1 : 0, transition: "opacity 0.3s", mixBlendMode: "multiply" }} />;
 }
 
 function Typewriter({ text, style }: { text: string; style?: React.CSSProperties }) {
@@ -192,8 +188,8 @@ function Typewriter({ text, style }: { text: string; style?: React.CSSProperties
   }, [started]);
   useEffect(() => {
     if (!started || done || idx >= text.length) { if (idx >= text.length) setDone(true); return; }
-    const t = setTimeout(() => { setDisplayed(p => p + text[idx]); setIdx(i => i + 1); }, 80);
-    return () => clearTimeout(t);
+    const timer = setTimeout(() => { setDisplayed(p => p + text[idx]); setIdx(i => i + 1); }, 80);
+    return () => clearTimeout(timer);
   }, [idx, text, done, started]);
   return (
     <span ref={ref} style={{ textAlign: "center", display: "block", ...style }}>
@@ -213,8 +209,8 @@ function SpinningEnso({ filter, opacity = 0.88 }: { filter: string; opacity?: nu
 
 function LangPopup({ onSelect, t }: { onSelect: (l: "es" | "en") => void; t: typeof theme }) {
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[200] flex items-center justify-center" style={{ backgroundColor: "rgba(0,0,0,0.8)", backdropFilter: "blur(12px)" }}>
-      <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }} style={{ padding: "2.5rem", maxWidth: "22rem", width: "90%", backgroundColor: t.card, border: `1px solid ${t.accent}20` }}>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[200] flex items-center justify-center" style={{ backgroundColor: "rgba(0,0,0,0.6)", backdropFilter: "blur(12px)" }}>
+      <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }} style={{ padding: "2.5rem", maxWidth: "22rem", width: "90%", backgroundColor: t.card, border: `1px solid ${t.accent}30` }}>
         <Image src="/logo-satori.png" alt="SATORI" width={90} height={28} className="mx-auto mb-8" style={{ filter: t.logoFilter }} />
         <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
           <button onClick={() => onSelect("es")} style={{ width: "100%", padding: "1rem", fontWeight: 900, fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.1em", backgroundColor: t.accent, color: t.bg, border: "none", cursor: "pointer" }}>🇲🇽 Español</button>
@@ -227,33 +223,35 @@ function LangPopup({ onSelect, t }: { onSelect: (l: "es" | "en") => void; t: typ
 
 function ServicesBento({ t, c }: { t: typeof theme; c: typeof copy.es }) {
   const [active, setActive] = useState<number | null>(null);
-  const accents = ["#FF6B6B", "#4ECDC4", "#45B7D1", "#A29BFE", "#FD79A8"];
+  const accents = ["#C9920A", "#8B6914", "#5C4A10"];
   const cells = c.servicios.map((s, i) => ({ s, i, color: accents[i], isActive: active === i }));
   return (
     <div style={{ padding: "0 clamp(1rem,4vw,3rem) 3rem" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "3rem", padding: "0 0.2rem" }}>
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginBottom: "3rem", gap: "3rem" }}>
         {cells.map(({ s, i, color, isActive }) => (
-          <div key={i} style={{ flex: 1, textAlign: "center" }}>
+          <div key={i} style={{ textAlign: "center" }}>
             <span style={{ fontSize: "0.65rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.15em", color: isActive ? color : t.sub, transition: "color 0.3s" }}>{s.num}. {s.tag}</span>
           </div>
         ))}
       </div>
-      <div style={{ display: "grid", gap: "0.75rem", gridTemplateColumns: "repeat(6,1fr)" }}>
+      <div style={{ display: "grid", gap: "1.25rem", gridTemplateColumns: "repeat(3,1fr)" }}>
         {cells.map(({ s, i, color, isActive }) => (
-          <motion.div key={i} onHoverStart={() => setActive(i)} onHoverEnd={() => setActive(null)} onTap={() => setActive(active === i ? null : i)}
-            animate={{ scale: isActive ? 1.02 : 1, y: isActive ? -4 : 0 }} transition={{ duration: 0.3, ease: "easeOut" }}
-            style={{ gridColumn: i < 2 ? "span 3" : "span 2", position: "relative", overflow: "hidden", cursor: "pointer", minHeight: i < 2 ? "clamp(260px,35vh,380px)" : "clamp(200px,28vh,300px)", borderRadius: "1.25rem", boxShadow: isActive ? `0 20px 60px ${color}35, 0 8px 20px rgba(0,0,0,0.15)` : "0 4px 20px rgba(0,0,0,0.08)", transition: "box-shadow 0.4s" }}>
-            {s.i ? <img src={s.i} alt={s.t} loading="lazy" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.55s ease", transform: isActive ? "scale(1.07)" : "scale(1)", display: "block" }} />
-              : <div style={{ position: "absolute", inset: 0, background: `linear-gradient(135deg, ${color}30, ${t.card})` }} />}
-            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.28) 55%, rgba(0,0,0,0.05) 100%)" }} />
+          <motion.div key={i}
+            onHoverStart={() => setActive(i)} onHoverEnd={() => setActive(null)}
+            onTap={() => setActive(active === i ? null : i)}
+            animate={{ scale: isActive ? 1.02 : 1, y: isActive ? -6 : 0 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            style={{ position: "relative", overflow: "hidden", cursor: "pointer", minHeight: "clamp(320px,42vh,480px)", borderRadius: "1.25rem", boxShadow: isActive ? `0 24px 64px ${color}40, 0 8px 20px rgba(0,0,0,0.12)` : "0 4px 20px rgba(0,0,0,0.07)", transition: "box-shadow 0.4s" }}>
+            <img src={s.i} alt={s.t} loading="lazy" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.6s ease", transform: isActive ? "scale(1.08)" : "scale(1)", display: "block" }} />
+            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.35) 50%, rgba(0,0,0,0.08) 100%)" }} />
             <motion.div animate={{ opacity: isActive ? 1 : 0 }} transition={{ duration: 0.3 }} style={{ position: "absolute", inset: 0, borderRadius: "1.25rem", border: `2px solid ${color}`, pointerEvents: "none" }} />
-            <div style={{ position: "absolute", top: "0.6rem", right: "0.9rem", fontSize: "clamp(2.5rem,5vw,4rem)", fontFamily: "serif", fontWeight: 900, color: "#fff", opacity: isActive ? 0.15 : 0.07, lineHeight: 1, pointerEvents: "none", userSelect: "none", transition: "opacity 0.3s" }}>{String(i + 1).padStart(2, "0")}</div>
-            <div style={{ position: "absolute", inset: 0, padding: "1.2rem 1.35rem", display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
-              <h3 style={{ fontSize: "clamp(1rem,2.2vw,1.45rem)", fontFamily: "serif", fontWeight: 700, color: "#fff", lineHeight: 1.2, marginBottom: "0.45rem", textShadow: "0 1px 8px rgba(0,0,0,0.4)" }}>{s.t}</h3>
-              <p style={{ fontSize: "0.58rem", textTransform: "uppercase", letterSpacing: "0.15em", color, fontWeight: 700, marginBottom: "0.35rem", opacity: 0.9 }}>{s.sub}</p>
+            <div style={{ position: "absolute", top: "0.8rem", right: "1rem", fontSize: "clamp(3rem,5vw,4.5rem)", fontFamily: "serif", fontWeight: 900, color: "#fff", opacity: isActive ? 0.12 : 0.06, lineHeight: 1, pointerEvents: "none", userSelect: "none", transition: "opacity 0.3s" }}>{String(i + 1).padStart(2, "0")}</div>
+            <div style={{ position: "absolute", inset: 0, padding: "1.5rem 1.75rem", display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
+              <p style={{ fontSize: "0.6rem", textTransform: "uppercase", letterSpacing: "0.18em", color, fontWeight: 900, marginBottom: "0.5rem", opacity: 0.95 }}>{s.sub}</p>
+              <h3 style={{ fontSize: "clamp(1.3rem,2.5vw,1.7rem)", fontFamily: "serif", fontWeight: 700, color: "#fff", lineHeight: 1.15, marginBottom: "0.5rem", textShadow: "0 2px 12px rgba(0,0,0,0.5)" }}>{s.t}</h3>
               <motion.div animate={{ height: isActive ? "auto" : 0, opacity: isActive ? 1 : 0 }} transition={{ duration: 0.35, ease: "easeOut" }} style={{ overflow: "hidden" }}>
-                <p style={{ fontSize: "clamp(0.75rem,1.3vw,0.83rem)", color: "rgba(255,255,255,0.82)", lineHeight: 1.6, marginBottom: "0.6rem" }}>{s.d}</p>
-                <span style={{ fontSize: "0.58rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.15em", color }}>{c.ver_mas} →</span>
+                <p style={{ fontSize: "0.88rem", color: "rgba(255,255,255,0.85)", lineHeight: 1.65, marginTop: "0.5rem", marginBottom: "0.75rem" }}>{s.back}</p>
+                <a href={`https://wa.me/525625018281?text=Hola%20Rodrigo,%20me%20interesa%20${encodeURIComponent(s.t)}`} target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", fontSize: "0.62rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.15em", color, textDecoration: "none" }}>{c.ver_mas} →</a>
               </motion.div>
             </div>
           </motion.div>
@@ -263,7 +261,6 @@ function ServicesBento({ t, c }: { t: typeof theme; c: typeof copy.es }) {
   );
 }
 
-// ─── MAPA DE MÉXICO — PATHS GEOGRÁFICOS REALES (simplemaps.com) ──────────────
 function MexicoMap({ accent, bg }: { accent: string; bg: string }) {
   const states: { id: string; d: string }[] = [
     { id: "MXSON", d: `M147.3 35.9l0.1 0 1.1 0.4 11.7 4.3 11.8 4.3 11.7 4.3 11.8 4.3 11.7 4.3 11.8 4.2 11.7 4.3 11.8 4.3 1.4 0.5 1.5 0.6 1.5 0.5 1.5 0.6 1.4 0.6 1.5 0.5 1.5 0.6 1.5 0.5 0.8 0.3 1.7 0.2 1.7 0 1.2 0 1.2 0 1.2 0 1.3 0 1.2 0 1.2 0 1.2 0 1.3 0 1.2 0 1.2 0 1.2 0 1.3 0 1.2 0 1.2 0 1.3 0 1.2 0 1.2 0 1.2 0 1.3 0 1.2 0 1.2 0 1.2 0 1.3 0 1.2 0 1.2 0 1.2 0 1.3 0 1.2 0 1.2 0 1.2 0 1.3 0 1.2 0 1.2 0 1.3 0 1.2 0 1.2 0 1.2 0 1.3 0 1.2 0 1.2 0 1.2 0 1.3 0 1.2 0 1.2 0 0.6 0 0.6 0 1.3 0 0.4 0-0.3 2.7-0.4 2.9-0.3 2.8-0.4 2.9-0.1 1-0.2 1.1-0.1 1-0.1 1.1-0.2 0.7 0 0.6 0 0.4 0.4 0.5 1.7 1.4 1.6 1.3 1.6 1.4 1.7 1.4 0.4 0.3 0.6 0.3 0.5 0.2 0.6 0.1 0.9 0.3 0.7 0.4 0.7 0.5 0.7 0.7 0.6 0.5 0.3 0.4 0.2 0.6 0.1 0.8 0 1 0.1 1.1 0.1 1 0.1 1 0 0.4 0.1 0.3 0 0.3 0 0.3 0.2 2.1 0.2 2.1 0.1 2.1 0.2 2.1 0.1 0.5 0 0.5-0.1 0.4-0.2 0.4-0.2 0.5-0.2 0.5 0 0.6 0 0.7 0 0.1 0 0.1-0.1 0.7-0.1 0.7 0 0.7-0.1 0.6-0.2 2.7-0.2 2.7-0.2 2.6-0.2 2.7-0.1 0.8-0.1 0.8 0 0.7-0.1 0.8 0 0.6-0.1 0.4-0.2 0.2-0.5 0-0.5 0-0.5 0-0.5 0-0.5 0 0.2 1.7 0.2 1.6 0.1 1.6 0.2 1.7 0.2 1.8 0.3 1.8 0.2 1.8 0.2 1.9 0.1 1.3 0.2 1.4 0.2 1.3 0.1 1.3 0.1 0.4 0 0.4 0 0.4 0.1 0.3 0.1 0.3 0.2 0.3 0.1 0.4-0.1 0.3-0.2 0.9-0.4 1.2-0.3 1.1 0 0.9 0.3 0.9 0.3 1 0.3 1 0.3 1 0.3 0.6 0.2 0.7 0.3 0.7 0.2 0.7 0.2 0.6 0.4 0.9 0.2 0.8 0 0.5-0.6 0.6-0.6 0.6-0.6 0.6-0.7 0.6-0.4 0.2-0.5 0-0.5-0.2-0.4-0.1-1-0.3-1-0.2-1-0.3-1-0.2-1.5-0.3-1.3-0.1-1.4 0-1.5 0.1-0.7 0.2-0.5 0.2-0.5 0.4-0.5 0.5-0.6 0.5-0.5 0.5-0.3 0.6 0.2 0.7 0.9 2.2 0.9 2.2 0.9 2.2 0.9 2.2 0.2 0.4 0.4 0.3 0.3 0.3 0.4 0.2 0.5 0.3 0.5 0.3 0.5 0.2 0.5 0.3 0.3 0.6 0.2 0.7 0.1 0.7 0.4 0.6 0.8 0.6 0.8 0.7 0.7 0.7 0.8 0.6-0.3 0.4-0.1 0.4-0.1 0.5 0.1 0.5 0.6 0.7 0.6 0.6 0.6 0.6 0.8 0.5 0.5 0.3 0.3 0.4 0.1 0.5 0.1 0.6 0 0.7-0.1 0.6-0.2 0.7-0.1 0.6 0 0.6 0.2 0.5 0.3 0.6 0.2 0.5 0.1 0.9-0.3 0.7-0.5 0.6-0.5 0.7-0.2 0.8 0.1 0.8 0.3 0.6 0.4 0.7 0.6 1 0.6 1 0.7 1 0.6 0.9 0.4 0.4 0.3 0.2 0.4 0 0.5-0.1 0.3 0 0.2-0.1 0.2 0 0.2 0.2 0.1 0.4 0.2 0.3 0.1 0.4 0.2 0.3-0.2 0.8-0.3 0.8-0.2 0.8-0.2 0.8 0 0.6 0 0.8-0.1 0.7-0.2 0.4-1.4 1.2-1.4 1.2-1.5 1.2-1.4 1.2-2.8 2.4-2.8 2.3-2.9 2.3-2.9 2.2-0.2 0.2-0.2 0.1-0.1 0.1-0.2 0.2-0.3 0.5-0.5-1-0.8-0.5 0.1 0.1 0.1 0.2 0.1 0.1 0.1 0.3-0.6-0.2-0.3-0.1-0.3 0.1-0.8 0.9-0.3 0-0.1-0.4 0.4-2.3-0.1-1.3-0.3-1.2-0.7-0.8-1-1.5-1.3-0.9-0.8-1.3-0.9-0.8-0.8-0.3-0.8-0.1-0.3-0.2 0.4-0.1 0.5 0.2 0.7 0.2-0.2-0.6-0.2-0.1 0.2-0.3-0.2-0.4-0.5 0-0.4-0.1-0.2-0.3-0.1-0.5-0.3 0.2-0.3 0.3-0.2-0.6-0.5-0.1-0.3 0.4-0.3 0.3-0.1 0.4 0.3 0.1 0.3 0.1 0.3 0 0.1 0.2-0.1 0.2 0 0.3 0.5 0.3 0.3 0.1 0 0.2-1-0.5-2.2-0.4-1.2 0.1-0.4 0.3-0.1 0.3-0.8-0.1-0.9-0.4-1.3-0.5-0.4-0.4-1.4-1.5-0.7-1.1-0.2-1.2-0.2-1.1-0.4-0.7-0.4-1-0.1-0.4-0.3-0.5-0.9-1.5 0.1-0.3 0.2 0.4 0.8 1.3 0.6 0.5-0.7-1.8 0-0.7-0.2-1.4-1-1.2-0.4-0.4-0.5-0.2-0.5-0.1-0.5 0-0.2 0.1-0.2 0.1-0.2 0.2-0.2 0.2-0.2 0.3-0.3 0.3-0.8-0.7-1.7-0.5-1.2-0.3-0.7-0.2-0.7-0.1-0.7-0.2-0.7-0.1-0.9-0.6-0.5-0.2-1-1.2-0.9-1.2-1.3-0.9-0.4-0.3-1.1-0.2-0.6 0-0.1-0.3 0.9 0 0.8 0.1 0.8 0.1 0.4-0.3-0.6-0.5-0.7-0.9-0.3-0.4 0.1-0.2 0.1-0.2 0-0.2-0.4-0.2-0.1-0.1-0.2-0.2-0.6 0.4-0.3 0.2-0.3 0-0.3-0.1-0.1-0.3 0-0.8-0.1-0.8-0.9-0.5 0-2-0.3-1-0.8-2.1 0-1.1 0.3-0.5 0.5-0.2 0.6-0.1 0.3-0.5-0.1-0.5-0.3-0.1-0.4 0.2-0.2 0.4 0.2-1 0.2-0.3 0.4-0.2 0.3 0 0.3-0.1 0.2-0.4-1 0-0.5-0.3-0.1-0.4 0.4-0.8-0.4-0.1-0.3-0.2-0.1-0.4 0.2-0.4 0.2 0.3 0.2 0.1 0.1-0.2 0.2-0.6 0.1-0.1 0.3 0.1 1.4-0.3 0.4-0.3-0.1-0.6-0.6 0.2-1.7-0.7-0.7 0.1 0.4 0.3-0.2 0.2-0.4-0.1-0.9-0.6-0.5-0.2-2-0.5-1-0.1-1 0.1-1.1 0.2 0-0.2 0.3-0.1 0.9-0.4-0.2-0.4-0.1-0.3-0.1-0.3 0-0.4-0.1-0.4-0.4-0.2-0.3 0-0.2 0.4 0 0.9-0.1 0.5-0.3 0.5-0.6 0.6 0.5 0 0.2 0.1 0.1 0.3 0 0.4-0.1 0.4-0.3 0.6-0.2 0.2-0.2-0.3-0.1-0.1-0.7-0.9-0.1-0.1-0.5 0-0.2-0.1-0.1-0.2-0.1-0.2-0.1-0.1-0.2-0.2 0.3-0.3 0.2-0.1 0.3 0-0.5-0.5-0.6-0.6-0.7-0.3-0.6 0-0.6 0.2-0.5 0.6-0.8 0.1-0.5 0 0.1-0.3 0.2-0.2-0.3-0.4-0.4-0.2-0.3 0-0.4-0.5-0.8-0.2-0.4-0.5-0.4-0.5-0.6-0.8-0.9-0.2-0.4-0.7-0.5-0.6-0.5-1.2-1-1-0.2-1.5-0.2-0.3-0.1-0.1-0.4 0.1-0.2-0.1-0.1-0.1 0-0.2-0.3-0.5-0.1-0.7-0.1-0.3-1.3-1.2-0.4-0.5-0.2-0.7 0.2-0.4 0.3-0.3 0.1-0.6-1 0.2-1.2-0.4-2-0.7-1.9-1-0.7-0.2-0.6-0.2-0.3-0.1-0.5-1.3-0.5-1.3-0.5-1.4-4.6-4.5-0.6-0.9-0.3-0.3 0.2-0.2 0.3 0 0.3-0.2 0.6-0.4 0.2 0 0.2 0.3 0.2 0.4 0.1 0.2 0.3 0.1 0.2-0.1 0.1-0.3 0-0.4 0-0.3-0.3-0.6-0.5 0-0.5 0.1-0.7-0.1-0.8-0.7-0.4-0.6-1-0.4-0.8-0.2-0.1-0.7-0.4-0.1 0-0.4-0.4-0.4-0.6-0.5-0.2-0.5-0.3-0.4-0.1-0.2-0.3-0.1-0.4-0.1-0.6 0-0.5-0.1-0.1-0.2 0.3-0.2 0.2-0.3-0.1-0.3 0-0.3-0.4-1.3-0.1-0.8-0.4-0.1 0.1-0.3 0.3-0.5 0.2-0.4 0-0.3-0.3-0.7-0.5-0.6 0.1-0.3-0.5-0.4-0.5-0.3 0.4-1.3 0-0.8-0.4-0.9-0.4-1.1-0.7-0.5-1.4 0-0.3 0.1-0.2 0.2-0.1 0.1 0.1 0.3-0.1 0.4-0.2-0.2-0.5-0.6-1-0.4-0.5-0.4-0.3-1 0.4-1 0.6-1.3 0.2-0.6 0-0.8-0.2-0.4-0.6-0.1-0.4-0.3-0.3-0.3 0.1-0.7-0.1-0.6-1-0.9-1.1-1-0.8-1.9-0.1-0.4-0.2-0.4-0.5 0.1-0.6-0.7-0.2-0.5-0.2-1.3-0.4-0.7-0.5-0.6-0.3-0.5-0.6-1.9-0.3-0.5-0.5-0.3-0.2 0.1-0.5-0.2-0.6 0.3-0.4-0.3-0.2-0.5 0.4-0.5-0.2-0.6 0.3-1 0.1-0.8-0.2-0.5-0.3-0.4-0.3-0.6 0-0.6 0.2-1.8 0-1.8-0.4-0.9-0.4-0.6-0.5-0.5-0.3-0.4-0.6-0.4-0.2 0-0.3-0.1-0.3 0.3-0.1-0.2 0.3-0.6 0.1-1.1-0.1-1.4-0.2-1.3-0.4-0.9-1.3-1.5-2-2-1.6-2.5-1.1-2.1-1-3.7-0.4-1 0.5-1 0.3-2.2 0.1-1.3-0.1-1.1-0.9-2.4 0-0.5 0.2 0 0.2 0.3 0.1 0.4 0.3 0.7 0.4 1.1 0.2 0.1 0.2-0.3 0.6-1.1 0-1.6 0-1.5 0.2-1.1-0.6-0.6-0.7-1-0.7-0.5-0.8 0 0 0.3 0.5 0.2 0.3 0.2-0.1 0.3-0.5-0.2-0.5-0.3-1.2-0.7-0.3-0.8-0.4-0.4-0.3-0.9-0.4 0-0.4 0.2-0.4 0.1 0.3 0.5 0.3 0.2 0.4 0.2 0.3 0.2-0.4 0.1-1-0.3-4.5-0.8-1.4-0.4-1.9-0.3-0.3-0.7-0.7-0.2-1.1-0.1-0.6-0.5 0.2-0.2 0.5 0 0.3-0.2-0.3-1-0.5-1.8 0.1-1-0.8-1.1-1.5-1.1-1.3-0.6-0.5-0.5-0.8 0-1.3-0.7-0.8-0.4-0.2-0.6-0.8 0.3-0.4 0.1-0.4 0-0.5-0.5-0.2-1.3-0.4-0.3-0.1 0.5 0 1.8 0 0.3 0.2 0.3 0.2 0 0.2 0 0-0.1 0.3 0.4-0.1 0.1-0.3 0.1-0.4 0.6-0.1 0.4-0.3 0.2-0.4 0.1-0.1 0.3-0.2 0.2-0.1 0.2-0.3 0.4-1.2 0-1.3 0-1.2-0.1-1.4-0.6-0.7-0.6-0.8-0.3-0.8-0.4-0.3-0.3-0.4-0.5-0.4-0.2 0-0.5-1-0.4-1.5-0.9-0.5-0.4-0.5-0.1-0.4-0.6-0.9-0.3-1.4-1.4-1.2-1.5-0.6-0.1-2.1 0-0.2 0-0.3-0.2-0.5-0.6-0.1-0.1-0.3-0.1-0.6-0.5-0.3-0.1-1-0.1-0.3-0.1-0.4-0.4-0.7-1.1-0.4-0.2-0.6-0.1-1.6-1.3-0.1-0.7 0-0.8 0-0.8 0.1-0.9 0-0.5-0.1-0.4-0.2-0.4-0.2-0.4-0.2-0.2-0.3-0.2-0.2-0.1-0.1-0.2-0.1-0.5 0.3-0.5 0.3-0.5 0.1-0.7-0.3-1.4-0.5-1-0.6-1-0.8-1-0.2-0.2 0.1-0.5 0.5-0.7 0.6-0.4 0.5-0.6 0.3-0.8 0-0.6 0-0.6 0.1-0.6 0.2-0.7 0.4-0.9 0.6-0.6 0.6-0.3 1.5 0.1 0.6-0.1 0.3-0.3z m137.1 179.1l0.2 0 0.6 0.2 0.9 0.4 0.8 0.6 0.6 1-0.2 0-0.7-0.9-0.7-0.5-0.7-0.4-0.5-0.1-0.3-0.3z m-16-7.4l-0.1-1.3 0-0.8 0.2-0.7 0.2-0.4-0.2 1.3 0.1 1.4 0.6 0.6 1.3 0.5-0.1 0.5-1.6-0.6-0.4-0.5z m-48-47.2l-0.4 0.2-0.6 0.5-0.5-0.5-0.5-0.1-0.4 0.2-0.3-0.4-0.4-0.1-0.5-0.6-0.4-0.2-0.3 0.1-0.3-0.2-0.6 0.1-0.3-0.2 0-0.5-0.8-0.1-0.1-0.3-0.7-0.4-0.8-0.4-0.4-0.4-0.3 0-0.3-0.2 0.8-0.5 0.9-0.6 0.4-0.6 0.2-0.1 0.1-0.3 0.2-0.4 0.1-0.2 0.1-0.4-0.1-0.4-0.3-0.3-0.1-1.3 0.1-1.5 0.3-1.3 0.3-1.3 0.2-0.4 0.2-0.5 0.4-0.3 0.4-0.3 0.5 0.4 0.6 0 0.6-0.5 0.5-0.4 0.5-0.1 0.8 0 0.5-0.1 0.3-0.3 0.3-0.3 0.4-0.2-0.1 0.3-0.4 0.4 0.1 0.6 0.4 0.3 0 0.2-0.1 0.3 0 0.3-0.2 0.3 0.2 0.4-0.1 0.5 1 1.4 1.2 2.4-0.5 1.2-0.1 1-0.4 1.7-0.4 0.4 0.2 0.5-0.5 0.6-0.2 0.7-0.3 0.4-0.1 0.6 0.1 0.7 0.3 0.1 0.2 0.4-0.3 0.2-0.3-0.2z m-72.1-100.9l0.9 0.2 1.3 1.1 1.1 1.5 0.5 1-0.4 0-0.3-0.1-0.3-0.3-0.1-0.3-0.7 0.6-1.3-0.7-1-1.4 0.3-1.6z m159.5 182l0.1-0.6 0-1.7 0.3-0.3 0.6 0 0.5 0.2 0.4 0.2 0.2 0.6 0 0.2-0.3 0.2-0.5 0.4-0.6 0.4-0.6 0.3-0.1 0.1z m-1.8 0.9l0.1-0.3 0.6-1 0.1-0.6 0.1-0.3 0.2 0.1 0.1 0.4-0.3 0.7-0.2 0.1-0.2 0.3-0.1 0.2-0.1 0.2-0.1 0.1-0.1 0-0.1 0 0 0.1z m-60.2-55.9l-0.2-0.3 0.3-0.3 0.4 0.6 0.2 0.5-0.5-0.1-0.2-0.4z` },
@@ -299,22 +296,15 @@ function MexicoMap({ accent, bg }: { accent: string; bg: string }) {
     { id: "MXTLA", d: `M611.8 453.6l-0.1-0.4 0-0.4 0-0.4-0.1-0.4-0.9-0.2-0.4-0.4-0.3-0.5-0.2-1 0.4 0 0.3-0.1 0.4 0 0.3 0 0.4 0 0.2-0.2 0.1-0.3 0.1-0.3 0.4 0.1 0.3-0.1 0.3-0.3 0.3-0.3 0.4-0.1 0.4 0.3 0.4 0.3 0.5 0 0.4-0.3 0.4-0.4 0.4-0.2 0.4 0.4 0.1 0.1 0.1 0.1 0.1 0.1 0.6 0.1 0.6 0 0.6 0.1 0.6 0.1 0.1 0 0.1 0.1 0 0.1 0.1 0 0.6 0.3 0.5-0.3 0.3-0.8 0.3-0.7 0.2-0.4 0.3-0.3 0.2-0.3 0.3-0.3 0.1-0.2 0-0.2 0.1-0.1 0.4-0.2 0.2 0 0.1 0.2 0.1 0.2 0.1 0.1 0.6 0.4 0.6 0.3 0.7 0.3 0.8-0.1 0.4 0.1 0.3 0 0.4 0 0.4 0 0.5-0.2 0.1-0.3-0.1-0.3 0-0.6 0.3-0.4 0.5 0.3 0.5 0.9-0.1 0.9-0.3 0.5 0.2 0.3 0.4 0.1 0.6 0.1 0.5 0.2 0.4 0.4 0.3 0.5 0.5 0.4 0.8 0.3 1.1 0.3 0.9 0.5-0.2 0.8-0.3 0.1-0.3 0-0.2 0.1-0.1 0.3 0 0.3 0.1 0.2 0.2 0.1 0.2 0 0.2 0.4 0.1 0.6 0.2 0.4 0.5-0.2 0.5-0.3 0.5-0.2 0.5 0 0.5 0.3 0.3 0.3 0.4 0.4 0.3 0.4 0.3 0.4 0.3 0.3 0.3 0.2 0.3 0.3 0.4 0.1 0.8-0.1 0.5 0.2 0.3 0.6-0.2 0.8-0.6 0.7-0.8 0.4-0.9 0-0.7-0.4 0-0.1-0.1 0 0-0.1-0.1-0.1-0.5 0.4-0.8-0.1-0.8-0.2-0.7-0.2-0.1 0.1-0.1 0.1-0.2 0.2-0.1 0.1-0.3 0.1-0.3 0.2-0.3 0.2-0.2 0.3 0 0.1 0.3 0.6 0.4 0.5 0.4 0.5-0.2 0.5-0.2 0.2-0.2 0.2-0.3 0.3-0.2 0.2-0.6 0.3-0.7-0.1-0.6-0.3-0.7-0.3-0.1-0.1-0.2-0.1-0.2 0-0.2-0.1-0.1-0.1-0.1 0-0.1-0.1-0.1 0-0.1 0-0.2-0.2-0.3-0.1-0.2-0.1-0.3 0-0.5 0.7-0.5 0.8-0.6 0.7-0.7 0.3-0.6 0.1-0.6 0.3-0.6 0.2-0.6-0.2-0.3-0.3-0.2-0.4-0.2-0.3-0.2-0.3-0.1-0.1-0.1-0.1-0.1-0.1 0-0.1-0.2-0.1-0.1-0.1-0.1 0-0.1-0.1-0.1-0.1-0.1-0.1 0-0.1-0.1 0-0.1-0.1-0.1-0.1-0.2-0.1-0.1-0.1-0.1 0 0-0.1-0.3-0.1-0.2-0.1-0.2-0.2-0.2-0.2-0.2-0.1-0.1-0.2-0.1-0.2-0.1-0.2-0.1-0.2-0.1-0.3-0.1-0.2-0.1-0.2-0.2-0.5-0.3-0.4-0.4-0.4-0.4-0.4-0.1 0-0.1-0.1-0.1 0-0.3-0.2 0-0.4-0.1-0.3-0.2-0.4-0.2-0.3-0.1-0.3-0.2-0.4 0-0.4 0-0.1 0-0.1 0-0.1-0.1-0.1-0.5-0.4-0.3-0.1-0.3 0.1-0.5 0.3-0.8 0.1-0.9-0.2-0.9-0.3-0.8-0.2z` },
     { id: "MXCMX", d: `M593.3 463.3l-0.1-0.1-0.1-0.1-0.1 0-0.1-0.2-0.2-0.4-0.2-0.5 0-0.6 0-0.5 0-0.1 0-0.1-0.1-0.1-0.1 0-0.1-0.1-0.3-0.1 0-0.3 0.1-0.3 0.2-0.2 0-0.1 0-0.1-0.1-0.1-0.1-0.1-0.1-0.6 0.2-0.7 0.3-0.7 0.2-0.6 0.5 0.1 0.5 0.1 0.4-0.2 0.2-0.5 0.1-0.1 0-0.1 0.1-0.1 0.3-0.5 0.3-0.5 0.4-0.4 0.3-0.5 0.1-0.2 0.1-0.1 0.2-0.2 0.1-0.2 0.1-0.1 0.1-0.1 0.2-0.1 0.2 0 0.3-0.2 0.1-0.3-0.1-0.2-0.4-0.2 0.3-0.2 0-0.3 0-0.3 0.3-0.3 0.1-0.1 0.2-0.2 0.2-0.2 0.1-0.2 0.1 0.1 0 0.1 0.1 0 0.1 0.1 0.2 0.2 0.2 0.2 0.1 0.2 0 0.3 0 0.1 0 0.1 0 0.4 0.2 0.3 0.2 0.3 0.3 0.2 0.1 0.2 0.1 0.2 0.1 0.3 0.2 0.2 0 0.1 0.1 0.1 0.1 0.2 0 0.1 0 0.1 0.1 0 0.2 0.3-0.1 0.3-0.2 0.2-0.3 0.2 0.1 0.1 0.1 0.2 0.1 0.1 0.1 0.1-0.1 0.1-0.1 0-0.1 0.1-0.1 0.1 0.4 0.5 0.5 0.2 0.6 0.3 0.5 0.3 0.1 0.2 0.2 0.2 0.1 0.2 0.1 0.2 0.1 0.1 0 0.1 0 0.1 0.2 0.4 0 0.4 0.1 0.4-0.1 0.4 0 0.3-0.1 0.4 0 0.3-0.1 0.4 0.2 0.5 0.2 0.4 0.3 0.5 0.1 0.5 0 0.1-0.1 0.4-0.1 0.4-0.3 0.3-0.2 0.3-0.4 0-0.4 0-0.4 0-0.3 0.1-0.3 0.3-0.2 0.3-0.3 0.3-0.3-0.2-0.5-0.3-0.5-0.3-0.6-0.3-0.6-0.1-0.2 0-0.2 0-0.2-0.1-0.3 0-0.9-0.1-1-0.2-0.9-0.3-0.7-0.7z` },
   ];
-
   const clients = ["MXBCN", "MXJAL", "MXCMX"];
-
   const clientDots = [
     { cx: 119.2, cy: 58.9,  label: "B.C."  },
     { cx: 468.0, cy: 422.9, label: "GDL"   },
     { cx: 597.2, cy: 460.0, label: "CDMX"  },
   ];
-
   return (
     <div style={{ maxWidth: 840, margin: "0 auto", padding: "0 1rem" }}>
-      <svg
-        viewBox="0 0 1000 630"
-        xmlns="http://www.w3.org/2000/svg"
-        style={{ width: "100%", height: "auto", display: "block", maxHeight: "500px" }}
-      >
+      <svg viewBox="0 0 1000 630" xmlns="http://www.w3.org/2000/svg" style={{ width: "100%", height: "auto", display: "block", maxHeight: "500px" }}>
         <defs>
           <filter id="mapglow" x="-20%" y="-20%" width="140%" height="140%">
             <feGaussianBlur stdDeviation="3" result="blur"/>
@@ -325,24 +315,10 @@ function MexicoMap({ accent, bg }: { accent: string; bg: string }) {
             <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
           </filter>
         </defs>
-
         {states.map((s) => {
           const isClient = clients.includes(s.id);
-          return (
-            <path
-              key={s.id}
-              d={s.d}
-              fill={isClient ? accent + "44" : accent + "0F"}
-              stroke={accent}
-              strokeWidth={isClient ? 1.5 : 0.5}
-              strokeLinejoin="round"
-              strokeLinecap="round"
-              opacity={isClient ? 1 : 0.8}
-              filter={isClient ? "url(#mapglow)" : undefined}
-            />
-          );
+          return <path key={s.id} d={s.d} fill={isClient ? accent + "44" : accent + "0F"} stroke={accent} strokeWidth={isClient ? 1.5 : 0.5} strokeLinejoin="round" strokeLinecap="round" opacity={isClient ? 1 : 0.8} filter={isClient ? "url(#mapglow)" : undefined} />;
         })}
-
         {clientDots.map(({ cx, cy, label }, i) => (
           <g key={label} filter="url(#dotglow)">
             <circle cx={cx} cy={cy} r={12} fill="none" stroke={accent} strokeWidth={1}>
@@ -355,11 +331,10 @@ function MexicoMap({ accent, bg }: { accent: string; bg: string }) {
             </circle>
             <circle cx={cx} cy={cy} r={7} fill={accent}/>
             <rect x={cx - 30} y={cy - 24} width={60} height={17} rx={3} fill={bg} opacity={0.82}/>
-            <text x={cx} y={cy - 11} textAnchor="middle" fill={accent} fontSize="11" fontWeight="900" fontFamily="sans-serif" letterSpacing="0.04em">{label}</text>
+            <text x={cx} y={cy - 11} textAnchor="middle" fill={accent} fontSize="11" fontWeight="900" fontFamily="sans-serif">{label}</text>
           </g>
         ))}
       </svg>
-
       <div style={{ display: "flex", justifyContent: "center", gap: "2.5rem", marginTop: "1.75rem", flexWrap: "wrap" }}>
         {["Baja California", "Guadalajara", "CDMX"].map((city) => (
           <div key={city} style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.68rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.14em", color: accent }}>
@@ -370,94 +345,21 @@ function MexicoMap({ accent, bg }: { accent: string; bg: string }) {
     </div>
   );
 }
-// ─────────────────────────────────────────────────────────────────────────────
-
-function PricingFlipCard({ plan, i, t, accent, bg, text, waLink, lang }: {
-  plan: { name: string; price: string; badge: string; features: string[]; popular: boolean; soldOut?: boolean };
-  i: number; t: typeof theme; accent: string; bg: string; text: string; waLink: string; lang: "es" | "en";
-}) {
-  const [flipped, setFlipped] = useState(false);
-  const [form, setForm] = useState({ nombre: "", telefono: "", email: "", web: "", solicitud: "" });
-  const [sent, setSent] = useState(false);
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const msg = encodeURIComponent(`Hola Rodrigo, me interesa el paquete *${plan.name}*.\n\nNombre: ${form.nombre}\nTeléfono: ${form.telefono}\nEmail: ${form.email}${form.web ? `\nWeb: ${form.web}` : ""}\nSolicitud: ${form.solicitud}`);
-    const waUrl = `https://wa.me/525625018281?text=${msg}`;
-    if (/iPhone|Android|iPad/i.test(navigator.userAgent)) { window.location.href = waUrl; } else { window.open(waUrl, "_blank"); }
-    setSent(true);
-  };
-  const cardBg = plan.popular ? accent : bg; const cardText = plan.popular ? bg : text;
-  const fields = [
-    { key: "nombre",    label: lang === "es" ? "Nombre completo"       : "Full name",          type: "text",     required: true  },
-    { key: "telefono",  label: lang === "es" ? "Teléfono"              : "Phone number",       type: "tel",      required: true  },
-    { key: "email",     label: lang === "es" ? "Correo"                : "Email",              type: "email",    required: true  },
-    { key: "web",       label: lang === "es" ? "Página web (opcional)" : "Website (optional)", type: "url",      required: false },
-    { key: "solicitud", label: lang === "es" ? "¿Qué necesitas?"       : "What do you need?",  type: "textarea", required: true  },
-  ];
-  return (
-    <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.12 }} style={{ perspective: "1200px", minHeight: 520 }}>
-      <div style={{ width: "100%", height: "100%", position: "relative", transformStyle: "preserve-3d", transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)", transition: "transform 0.5s cubic-bezier(0.4,0.2,0.2,1)" }}>
-        <div style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", padding: "2rem", backgroundColor: cardBg, color: cardText, borderRadius: "1.5rem", border: `1px solid ${plan.popular ? "transparent" : accent + "15"}`, boxShadow: plan.popular ? `0 12px 40px ${accent}40` : "0 4px 20px rgba(0,0,0,0.06)", display: "flex", flexDirection: "column", opacity: plan.soldOut ? 0.6 : 1 }}>
-          {plan.soldOut && (<div style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, display: "flex", alignItems: "center", justifyContent: "center", zIndex: 10, borderRadius: "1.5rem", backgroundColor: "rgba(0,0,0,0.55)", backdropFilter: "blur(3px)" }}><div style={{ textAlign: "center" }}><p style={{ fontSize: "1.8rem" }}>🔒</p><p style={{ fontSize: "0.72rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.2em", color: "#fff", marginTop: "0.5rem" }}>{lang === "es" ? "Agotado por ahora" : "Currently sold out"}</p><p style={{ fontSize: "0.65rem", color: "rgba(255,255,255,0.6)", marginTop: "0.25rem" }}>{lang === "es" ? "Lista de espera disponible" : "Join the waitlist"}</p></div></div>)}
-          {plan.popular && <div style={{ position: "absolute", top: "-0.75rem", left: "50%", transform: "translateX(-50%)", backgroundColor: bg, color: accent, fontSize: "0.55rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.15em", padding: "0.3rem 1rem", borderRadius: "999px", whiteSpace: "nowrap" }}>★ {plan.badge}</div>}
-          {!plan.popular && <p style={{ fontSize: "0.55rem", textTransform: "uppercase", letterSpacing: "0.15em", opacity: 0.6, marginBottom: "0.5rem", fontWeight: 700 }}>{plan.badge}</p>}
-          <h3 style={{ fontSize: "1.3rem", fontFamily: "serif", fontWeight: 700, marginBottom: "0.5rem", lineHeight: 1.2 }}>{plan.name}</h3>
-          <p style={{ fontSize: "2.5rem", fontFamily: "serif", fontWeight: 700, marginBottom: "0.25rem", lineHeight: 1 }}>{plan.price}</p>
-          <p style={{ fontSize: "0.62rem", opacity: 0.5, marginBottom: "1.25rem", textTransform: "uppercase", letterSpacing: "0.1em" }}>MXN · pago único</p>
-          <ul style={{ display: "flex", flexDirection: "column", gap: "0.55rem", marginBottom: "1.5rem", flex: 1 }}>
-            {plan.features.map((f, j) => <li key={j} style={{ display: "flex", alignItems: "flex-start", gap: "0.5rem", fontSize: "0.8rem", lineHeight: 1.5, opacity: 0.85 }}><span style={{ color: plan.popular ? bg : accent, flexShrink: 0 }}>✓</span>{f}</li>)}
-          </ul>
-          <button onClick={() => setFlipped(true)} style={{ width: "100%", padding: "0.85rem", borderRadius: "999px", backgroundColor: plan.popular ? bg : accent, color: plan.popular ? accent : bg, fontWeight: 900, fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.1em", border: "none", cursor: "pointer" }}>
-            {plan.soldOut ? (lang === "es" ? "Lista de espera →" : "Join waitlist →") : (lang === "es" ? "Quiero este →" : "I want this →")}
-          </button>
-        </div>
-        <div style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", transform: "rotateY(180deg)", padding: "1.5rem", backgroundColor: bg, color: text, borderRadius: "1.5rem", border: `1px solid ${accent}20`, display: "flex", flexDirection: "column" }}>
-          {!sent ? (<>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
-              <h3 style={{ fontSize: "1rem", fontFamily: "serif", fontWeight: 700 }}>{plan.soldOut ? (lang === "es" ? "Lista de espera" : "Waitlist") : plan.name}</h3>
-              <button onClick={() => setFlipped(false)} style={{ background: "none", border: "none", cursor: "pointer", color: text, opacity: 0.4, fontSize: "1.1rem" }}>←</button>
-            </div>
-            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "0.55rem", flex: 1 }}>
-              {fields.map(({ key, label, type, required }, fi) => (
-                <div key={key} style={{ display: "flex", flexDirection: "column", gap: "0.2rem" }}>
-                  <label htmlFor={`pf-${i}-${key}`} style={{ fontSize: "0.58rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", opacity: 0.5, cursor: "pointer" }}>{label}</label>
-                  {type === "textarea"
-                    ? <textarea id={`pf-${i}-${key}`} rows={2} required={required} value={(form as any)[key]} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))} style={{ padding: "0.5rem 0.75rem", borderRadius: "0.65rem", border: `1px solid ${accent}28`, backgroundColor: `${accent}07`, color: text, fontSize: "0.82rem", resize: "none", fontFamily: "inherit", outline: "none", width: "100%", boxSizing: "border-box" as const }} />
-                    : <input id={`pf-${i}-${key}`} required={required} type={type} value={(form as any)[key]} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))} onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); document.getElementById(`pf-${i}-${fields[fi+1]?.key}`)?.focus(); }}} style={{ padding: "0.5rem 0.75rem", borderRadius: "0.65rem", border: `1px solid ${accent}28`, backgroundColor: `${accent}07`, color: text, fontSize: "0.82rem", fontFamily: "inherit", outline: "none", width: "100%", boxSizing: "border-box" as const }} />
-                  }
-                </div>
-              ))}
-              <button type="submit" style={{ marginTop: "0.4rem", padding: "0.75rem", borderRadius: "999px", backgroundColor: accent, color: bg, fontWeight: 900, fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.1em", border: "none", cursor: "pointer" }}>
-                {lang === "es" ? "Enviar por WhatsApp →" : "Send via WhatsApp →"}
-              </button>
-            </form>
-          </>) : (
-            <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", gap: "1rem" }}>
-              <p style={{ fontSize: "2.5rem" }}>✅</p>
-              <p style={{ fontWeight: 700, fontSize: "1rem" }}>{lang === "es" ? "¡Listo! Rodrigo te contactará pronto." : "Done! Rodrigo will reach out soon."}</p>
-              <button onClick={() => { setFlipped(false); setSent(false); setForm({ nombre:"", telefono:"", email:"", web:"", solicitud:"" }); }} style={{ padding: "0.6rem 1.5rem", borderRadius: "999px", border: `1px solid ${accent}`, color: accent, backgroundColor: "transparent", cursor: "pointer", fontSize: "0.72rem", fontWeight: 700 }}>
-                {lang === "es" ? "Volver" : "Back"}
-              </button>
-            </div>
-          )}
-        </div>
-      </div>
-    </motion.div>
-  );
-}
 
 function FaqItem({ q, a, t, last }: { q: string; a: string; t: typeof theme; last: boolean }) {
   const [open, setOpen] = useState(false);
   return (
-    <div style={{ borderTop: `1px solid ${t.accent}12`, borderBottom: last ? `1px solid ${t.accent}12` : "none" }}>
+    <div style={{ borderTop: `1px solid ${t.accent}18`, borderBottom: last ? `1px solid ${t.accent}18` : "none" }}>
       <button onClick={() => setOpen(o => !o)} style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", padding: "1.4rem 0", background: "none", border: "none", cursor: "pointer", textAlign: "left", gap: "1rem" }}>
         <span style={{ fontSize: "clamp(0.95rem,1.8vw,1.05rem)", fontWeight: 600, color: t.text, lineHeight: 1.4 }}>{q}</span>
         <motion.span animate={{ rotate: open ? 45 : 0 }} transition={{ duration: 0.25 }} style={{ flexShrink: 0, fontSize: "1.4rem", color: t.accent, lineHeight: 1, display: "block" }}>+</motion.span>
       </button>
       <AnimatePresence initial={false}>
-        {open && (<motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.35, ease: "easeInOut" }} style={{ overflow: "hidden" }}>
-          <p style={{ paddingBottom: "1.4rem", fontSize: "0.9rem", lineHeight: 1.8, color: t.sub, opacity: 0.85 }}>{a}</p>
-        </motion.div>)}
+        {open && (
+          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.35, ease: "easeInOut" }} style={{ overflow: "hidden" }}>
+            <p style={{ paddingBottom: "1.4rem", fontSize: "0.9rem", lineHeight: 1.8, color: t.sub, opacity: 0.9 }}>{a}</p>
+          </motion.div>
+        )}
       </AnimatePresence>
     </div>
   );
@@ -472,7 +374,11 @@ function CountUp({ from, to, duration = 2, suffix = "" }: { from: number; to: nu
       if (entry.isIntersecting && !started.current) {
         started.current = true;
         const steps = 60; const stepTime = (duration * 1000) / steps; let step = 0;
-        const timer = setInterval(() => { step++; const eased = 1 - Math.pow(1 - step / steps, 3); setVal(Math.round(from + (to - from) * eased)); if (step >= steps) { clearInterval(timer); setVal(to); } }, stepTime);
+        const timer = setInterval(() => {
+          step++; const eased = 1 - Math.pow(1 - step / steps, 3);
+          setVal(Math.round(from + (to - from) * eased));
+          if (step >= steps) { clearInterval(timer); setVal(to); }
+        }, stepTime);
       }
     }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
     observer.observe(el); return () => observer.disconnect();
@@ -484,14 +390,15 @@ export default function Home() {
   const [lang, setLang] = useState<"es" | "en">("es");
   const [showPopup, setShowPopup] = useState(true);
   const [shake, setShake] = useState(false);
+  const t = theme;
 
   useEffect(() => {
     const interval = setInterval(() => { setShake(true); setTimeout(() => setShake(false), 2100); }, 15000);
     return () => clearInterval(interval);
   }, []);
 
-  const t = theme; const nextAccent = theme.accent;
-  const c = copy[lang]; const waLink = lang === "es" ? WHATSAPP_LINK : WHATSAPP_LINK_EN;
+  const c = copy[lang];
+  const waLink = lang === "es" ? WHATSAPP_LINK : WHATSAPP_LINK_EN;
   const Icons = [HandCoins, Zap, Target];
   const shakeStyle: React.CSSProperties = shake ? { animation: "btnShake 2s ease" } : {};
 
@@ -503,6 +410,7 @@ export default function Home() {
         canvas{backface-visibility:hidden;-webkit-backface-visibility:hidden;will-change:transform;}
         @media(max-width:768px){section p:not(.no-scale),section span:not(.no-scale),section li{font-size:max(1rem,0.95em)!important;line-height:1.7!important;}section>div{text-align:center!important;}.mobile-left,.mobile-left *{text-align:left!important;}}
       `}</style>
+
       <MatrixBackground color={t.matrixColor}/>
       <CursorGlow accent={t.accent}/>
       <AnimatePresence>{showPopup && <LangPopup t={t} onSelect={l => { setLang(l); setShowPopup(false); }}/>}</AnimatePresence>
@@ -512,15 +420,15 @@ export default function Home() {
         <span className="hidden md:inline">WhatsApp</span>
       </a>
 
-      <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer" style={{ position: "fixed", bottom: "1.5rem", right: "1.5rem", zIndex: 100, display: "flex", alignItems: "center", gap: "0.5rem", padding: "0.75rem 1rem", borderRadius: 999, backgroundColor: t.accent, color: t.bg, fontWeight: 900, fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.05em", boxShadow: "0 8px 30px rgba(0,0,0,0.25)", textDecoration: "none", ...shakeStyle }}>
+      <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer" style={{ position: "fixed", bottom: "1.5rem", right: "1.5rem", zIndex: 100, display: "flex", alignItems: "center", gap: "0.5rem", padding: "0.75rem 1rem", borderRadius: 999, backgroundColor: t.accent, color: t.bg, fontWeight: 900, fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.05em", boxShadow: "0 8px 30px rgba(0,0,0,0.2)", textDecoration: "none", ...shakeStyle }}>
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
         <span className="hidden md:inline">{c.btn_zoom}</span>
       </a>
 
-      <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 50, backdropFilter: "blur(14px)", backgroundColor: t.navBg, borderBottom: `1px solid ${t.accent}12`, padding: "0.9rem 1.5rem", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+      <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 50, backdropFilter: "blur(14px)", backgroundColor: t.navBg, borderBottom: `1px solid ${t.accent}18`, padding: "0.9rem 1.5rem", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <a href="#inicio"><Image src="/logo-satori.png" alt="SATORI" width={110} height={34} style={{ filter: t.logoFilter }}/></a>
         <div className="hidden md:flex items-center" style={{ gap: "1.75rem" }}>
-          {([["#problema", c.nav.problema], ["#servicios", c.nav.soluciones], ["#precios", lang === "es" ? "Precios" : "Pricing"], ["#cotizar", c.nav.precios]] as [string,string][]).map(([href, label]) => (
+          {([["#problema", c.nav.problema], ["#servicios", c.nav.soluciones], ["#cotizar", c.nav.cotizar]] as [string,string][]).map(([href, label]) => (
             <motion.a key={href} href={href} whileHover={{ y: -1 }} style={{ fontSize: "0.68rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", color: t.sub, textDecoration: "none" }}>{label}</motion.a>
           ))}
           <a href={CALENDLY_LINK} target="_blank" style={{ padding: "0.45rem 1.3rem", backgroundColor: t.accent, color: t.bg, fontWeight: 900, fontSize: "0.68rem", textTransform: "uppercase", textDecoration: "none", borderRadius: "999px" }}>{c.nav.cta}</a>
@@ -533,24 +441,24 @@ export default function Home() {
       <section id="inicio" style={{ paddingTop: "9rem", paddingBottom: "5rem", paddingLeft: "1.5rem", paddingRight: "1.5rem", maxWidth: "72rem", margin: "0 auto", position: "relative", zIndex: 1 }}>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "3rem", alignItems: "center" }} className="!grid-cols-1 md:!grid-cols-2">
           <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
-            <div style={{ display: "inline-block", padding: "0.2rem 1rem", borderRadius: 999, border: `1px solid ${t.accent}22`, backgroundColor: `${t.accent}06`, marginBottom: "1.5rem" }}>
+            <div style={{ display: "inline-block", padding: "0.2rem 1rem", borderRadius: 999, border: `1px solid ${t.accent}30`, backgroundColor: `${t.accent}08`, marginBottom: "1.5rem" }}>
               <p style={{ fontSize: "0.58rem", letterSpacing: "0.3em", textTransform: "uppercase", fontWeight: 900, color: t.accent }}>{c.badge}</p>
             </div>
             <h1 style={{ fontSize: "clamp(3.5rem,8vw,6rem)", fontFamily: "serif", fontWeight: 700, lineHeight: 1, marginBottom: "1rem", letterSpacing: "-0.02em" }}>
               {c.h1a}<br/><span style={{ color: t.accent, fontStyle: "italic", fontWeight: 400 }}>{c.h1b}</span>
             </h1>
-            <p style={{ fontSize: "1rem", marginBottom: "2.5rem", opacity: 0.7, maxWidth: "28rem", lineHeight: 1.75 }}>{c.hero_sub}</p>
+            <p style={{ fontSize: "1rem", marginBottom: "2.5rem", opacity: 0.65, maxWidth: "28rem", lineHeight: 1.75 }}>{c.hero_sub}</p>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem" }}>
               <motion.a href={CALENDLY_LINK} target="_blank" whileHover={{ scale: 1.04, y: -2 }} style={{ padding: "1rem 2.2rem", backgroundColor: t.accent, color: t.bg, fontWeight: 900, textTransform: "uppercase", fontSize: "0.75rem", letterSpacing: "0.05em", textDecoration: "none", borderRadius: "999px" }}>{c.cta1}</motion.a>
               <motion.a href="#servicios" whileHover={{ scale: 1.04, y: -2 }} style={{ padding: "1rem 2.2rem", border: `1px solid ${t.accent}`, color: t.accent, fontWeight: 700, textTransform: "uppercase", fontSize: "0.75rem", textDecoration: "none", borderRadius: "999px" }}>{c.cta2}</motion.a>
             </div>
           </motion.div>
-          <div style={{ display: "flex", justifyContent: "center" }}><SpinningEnso filter={t.logoFilter} opacity={0.82}/></div>
+          <div style={{ display: "flex", justifyContent: "center" }}><SpinningEnso filter={t.logoFilter} opacity={0.75}/></div>
         </div>
       </section>
 
       <section id="problema" style={{ padding: "6rem 1.5rem", position: "relative", zIndex: 1, overflow: "hidden", backgroundColor: `${t.card}CC`, backdropFilter: "blur(2px)" }}>
-        <div style={{ position: "absolute", right: "-2rem", top: "50%", transform: "translateY(-50%)", fontSize: "clamp(12rem,25vw,22rem)", fontFamily: "serif", fontWeight: 900, color: t.accent, opacity: 0.03, lineHeight: 1, pointerEvents: "none", userSelect: "none" }}>?</div>
+        <div style={{ position: "absolute", right: "-2rem", top: "50%", transform: "translateY(-50%)", fontSize: "clamp(12rem,25vw,22rem)", fontFamily: "serif", fontWeight: 900, color: t.accent, opacity: 0.04, lineHeight: 1, pointerEvents: "none", userSelect: "none" }}>?</div>
         <div style={{ maxWidth: "60rem", margin: "0 auto", position: "relative" }}>
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
             <p style={{ fontSize: "0.82rem", textTransform: "uppercase", letterSpacing: "0.35em", color: t.accent, fontWeight: 900, marginBottom: "1rem" }}>El problema</p>
@@ -559,21 +467,21 @@ export default function Home() {
           <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
             {c.problemas.map(({ q, desc }, i) => { const Icon = Icons[i]; return (
               <motion.div key={i} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-60px" }} transition={{ delay: i * 0.15, duration: 0.5, ease: "easeOut" }} className="mobile-left"
-                style={{ display: "grid", gridTemplateColumns: "3rem 1fr auto", gap: "1.5rem", alignItems: "start", padding: "1.5rem", borderRadius: "1.25rem", marginBottom: "0.75rem", backgroundColor: `${t.accent}05` }}>
-                <div style={{ fontSize: "clamp(2rem,4vw,3rem)", fontFamily: "serif", fontWeight: 700, color: t.accent, opacity: 0.25, lineHeight: 1, paddingTop: "0.1rem" }}>{String(i + 1).padStart(2, "0")}</div>
+                style={{ display: "grid", gridTemplateColumns: "3rem 1fr auto", gap: "1.5rem", alignItems: "start", padding: "1.5rem", borderRadius: "1.25rem", marginBottom: "0.75rem", backgroundColor: `${t.accent}06` }}>
+                <div style={{ fontSize: "clamp(2rem,4vw,3rem)", fontFamily: "serif", fontWeight: 700, color: t.accent, opacity: 0.22, lineHeight: 1, paddingTop: "0.1rem" }}>{String(i + 1).padStart(2, "0")}</div>
                 <div>
                   <p style={{ fontSize: "clamp(1.1rem,2.5vw,1.4rem)", fontWeight: 700, lineHeight: 1.3, marginBottom: "0.7rem" }}>{q}</p>
-                  <p style={{ fontSize: "1rem", opacity: 0.75, lineHeight: 1.75, color: t.text, maxWidth: "36rem" }}>{desc}</p>
+                  <p style={{ fontSize: "1rem", opacity: 0.7, lineHeight: 1.75, color: t.text, maxWidth: "36rem" }}>{desc}</p>
                 </div>
                 <motion.div animate={{ y: [0, -5, 0] }} transition={{ duration: 3, repeat: Infinity, delay: i * 0.8, ease: "easeInOut" }} style={{ paddingTop: "0.2rem" }}>
-                  <Icon size={22} style={{ color: nextAccent, opacity: 0.7 }}/>
+                  <Icon size={22} style={{ color: t.accent, opacity: 0.5 }}/>
                 </motion.div>
               </motion.div>
             );})}
           </div>
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.5 }} style={{ marginTop: "3rem", display: "flex", alignItems: "center", gap: "1.5rem", flexWrap: "wrap" }}>
             <a href={waLink} target="_blank" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", color: t.bg, fontSize: "0.72rem", textDecoration: "none", backgroundColor: t.accent, padding: "0.85rem 2rem", borderRadius: "999px" }}>{c.problema_cta}</a>
-            <span style={{ fontSize: "0.88rem", fontWeight: 800, color: t.accent, opacity: 0.85 }}>— es gratis, sin compromiso</span>
+            <span style={{ fontSize: "0.88rem", fontWeight: 800, color: t.accent, opacity: 0.8 }}>— es gratis, sin compromiso</span>
           </motion.div>
         </div>
       </section>
@@ -600,7 +508,7 @@ export default function Home() {
         <div style={{ padding: "4rem clamp(1.5rem,5vw,4rem) 1.5rem", maxWidth: "72rem", margin: "0 auto" }}>
           <Typewriter text={c.camino_label} style={{ fontSize: "0.82rem", textTransform: "uppercase", letterSpacing: "0.35em", color: t.accent, fontWeight: 900, display: "block", whiteSpace: "nowrap", marginBottom: "0.75rem" }}/>
           <h2 style={{ fontSize: "clamp(2.8rem,6vw,5rem)", fontFamily: "serif", fontWeight: 700, lineHeight: 1.0, marginBottom: "1rem", textAlign: "center" }}>{c.camino_h}</h2>
-          <p style={{ fontSize: "0.88rem", opacity: 0.5, lineHeight: 1.4, color: t.sub, marginBottom: "2.5rem", textAlign: "center", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{c.camino_sub}</p>
+          <p style={{ fontSize: "0.88rem", opacity: 0.5, lineHeight: 1.4, color: t.sub, marginBottom: "2.5rem", textAlign: "center" }}>{c.camino_sub}</p>
         </div>
         <ServicesBento t={t} c={c}/>
       </section>
@@ -608,7 +516,7 @@ export default function Home() {
       <section id="nosotros" style={{ padding: "5rem 1.5rem", position: "relative", zIndex: 1 }}>
         <div style={{ maxWidth: "68rem", margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4rem", alignItems: "center" }} className="!grid-cols-1 md:!grid-cols-2">
           <div style={{ position: "relative" }}>
-            <Image src="/rodrigo.png" alt="Rodrigo Tristán" width={500} height={600} className="grayscale hover:grayscale-0 transition-all duration-700 object-cover"/>
+            <Image src="/rodrigo.png" alt="Rodrigo Tristán" width={500} height={600} className="object-cover" style={{ width: "100%", height: "auto" }}/>
             <div style={{ position: "absolute", top: "-1.5rem", left: "-1.5rem", width: "5rem", height: "5rem", borderTop: `2px solid ${t.accent}`, borderLeft: `2px solid ${t.accent}` }}/>
           </div>
           <div>
@@ -619,7 +527,7 @@ export default function Home() {
               <p style={{ fontSize: "1.2rem", fontStyle: "italic", fontWeight: 600, lineHeight: 1.4 }}>{c.nosotros_quote}</p>
               <p style={{ fontSize: "0.9rem", opacity: 0.7, lineHeight: 1.8 }}>{c.nosotros_p1}</p>
               <p style={{ fontSize: "0.9rem", opacity: 0.7, lineHeight: 1.8 }}>{c.nosotros_p2}</p>
-              <div style={{ padding: "1.25rem", border: `1px solid ${t.accent}20`, backgroundColor: `${t.accent}05`, borderRadius: "1.25rem" }}>
+              <div style={{ padding: "1.25rem", border: `1px solid ${t.accent}22`, backgroundColor: `${t.accent}06`, borderRadius: "1.25rem" }}>
                 <p style={{ fontWeight: 700, fontSize: "0.78rem", color: t.accent, marginBottom: "0.4rem" }}>{c.garantia_title}</p>
                 <p style={{ fontSize: "0.8rem", opacity: 0.68, lineHeight: 1.7 }}>{c.garantia_text}</p>
               </div>
@@ -640,9 +548,9 @@ export default function Home() {
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1.5rem" }}>
             {c.reviews.slice(0,3).map((r, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} style={{ padding: "1.75rem", backgroundColor: t.bg, border: `1px solid ${t.accent}10`, borderRadius: "1.5rem", display: "flex", flexDirection: "column", gap: "1rem", boxShadow: "0 4px 24px rgba(0,0,0,0.06)" }}>
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} style={{ padding: "1.75rem", backgroundColor: t.bg, border: `1px solid ${t.accent}12`, borderRadius: "1.5rem", display: "flex", flexDirection: "column", gap: "1rem", boxShadow: "0 4px 24px rgba(0,0,0,0.05)" }}>
                 <div style={{ display: "flex", gap: "0.15rem", alignItems: "center" }}>
-                  {[1,2,3,4,5].map((s) => (<span key={s} style={{ color: s <= Math.floor(r.stars) ? "#F59E0B" : s - 0.5 === r.stars ? "#F59E0B" : "#D1D5DB", fontSize: "0.85rem" }}>{s - 0.5 === r.stars ? "⯨" : "★"}</span>))}
+                  {[1,2,3,4,5].map((s) => (<span key={s} style={{ color: s <= Math.floor(r.stars) ? "#C9920A" : s - 0.5 === r.stars ? "#C9920A" : "#D1D5DB", fontSize: "0.85rem" }}>{s - 0.5 === r.stars ? "⯨" : "★"}</span>))}
                 </div>
                 <p style={{ fontSize: "0.9rem", lineHeight: 1.75, color: t.text, opacity: 0.8, fontStyle: "italic" }}>"{r.text}"</p>
                 <div style={{ marginTop: "auto" }}>
@@ -659,7 +567,7 @@ export default function Home() {
         <div style={{ maxWidth: "62rem", margin: "0 auto", textAlign: "center" }}>
           <p style={{ fontSize: "0.6rem", textTransform: "uppercase", letterSpacing: "0.4em", color: t.accent, fontWeight: 900, marginBottom: "0.5rem" }}>{lang === "es" ? "Presencia nacional" : "National presence"}</p>
           <h2 style={{ fontSize: "clamp(2rem,4vw,3rem)", fontFamily: "serif", fontWeight: 700, marginBottom: "0.75rem" }}>{lang === "es" ? "Clientes en todo México." : "Clients across Mexico."}</h2>
-          <p style={{ fontSize: "0.88rem", opacity: 0.5, marginBottom: "3rem", color: t.sub }}>{lang === "es" ? "Y creciendo." : "And growing."}</p>
+          <p style={{ fontSize: "0.88rem", opacity: 0.45, marginBottom: "3rem", color: t.sub }}>{lang === "es" ? "Y creciendo." : "And growing."}</p>
           <MexicoMap accent={t.accent} bg={t.bg}/>
         </div>
       </section>
@@ -676,43 +584,17 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="precios" style={{ padding: "5rem 1.5rem", backgroundColor: t.card, position: "relative", zIndex: 1 }}>
-        <div style={{ maxWidth: "62rem", margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: "3rem" }}>
-            <p style={{ fontSize: "0.6rem", textTransform: "uppercase", letterSpacing: "0.4em", color: t.accent, fontWeight: 900, marginBottom: "0.5rem" }}>{lang === "es" ? "Paquetes de inicio" : "Starter packages"}</p>
-            <h2 style={{ fontSize: "clamp(2.2rem,4.5vw,3.5rem)", fontFamily: "serif", fontWeight: 700 }}>{lang === "es" ? "Precios claros." : "Clear pricing."}</h2>
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1.5rem" }}>
-            {[
-              { name: lang === "es" ? "Landing Page" : "Landing Page", price: "$8,000", badge: lang === "es" ? "Ideal para empezar" : "Great starting point", soldOut: false, popular: false,
-                features: lang === "es" ? ["1 página de ventas optimizada","Copywriting estratégico incluido","Formulario + integración WhatsApp","Entrega en 7 días hábiles","Dominio y hosting no incluidos"] : ["1 optimized sales page","Strategic copywriting included","Form + WhatsApp integration","Delivery in 7 business days","Domain & hosting not included"] },
-              { name: lang === "es" ? "Página Web Profesional" : "Professional Website", price: "$15,000", badge: lang === "es" ? "El más elegido" : "Most popular", soldOut: false, popular: true,
-                features: lang === "es" ? ["Hasta 5 secciones personalizadas","Diseño a medida de tu marca","SEO básico + velocidad optimizada","Integración WhatsApp + redes","Entrega en 10–14 días hábiles"] : ["Up to 5 custom sections","Brand-tailored design","Basic SEO + speed optimization","WhatsApp + social integration","Delivery in 10–14 business days"] },
-              { name: lang === "es" ? "Web + Agente IA" : "Web + AI Agent", price: "$30,000", badge: lang === "es" ? "Máximo impacto" : "Maximum impact", soldOut: true, popular: false,
-                features: lang === "es" ? ["Todo lo de Página Web Pro","Agente IA entrenado con tu negocio","Integración WhatsApp Business","Responde 24/7 sin intervención","Setup + primer mes de soporte"] : ["Everything in Pro Website","AI agent trained on your business","WhatsApp Business integration","Responds 24/7 automatically","Setup + first month support"] },
-            ].map((plan, i) => <PricingFlipCard key={i} plan={plan} i={i} t={t} accent={t.accent} bg={t.bg} text={t.text} waLink={waLink} lang={lang}/>)}
-          </div>
-          <p style={{ textAlign: "center", marginTop: "2rem", fontSize: "0.72rem", opacity: 0.4, color: t.sub }}>{lang === "es" ? "* Los precios no incluyen hosting ni dominio. Consulta opciones de pago." : "* Prices do not include hosting or domain. Payment plans available."}</p>
-          <div style={{ textAlign: "center", marginTop: "2.5rem" }}>
-            <p style={{ fontSize: "0.8rem", opacity: 0.55, marginBottom: "1.25rem", color: t.sub }}>{lang === "es" ? "¿Tienes algo más específico en mente?" : "Have something more specific in mind?"}</p>
-            <motion.a href={waLink} target="_blank" animate={{ scale: [1, 1.06, 1] }} transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }} whileHover={{ scale: 1.12 }} style={{ display: "inline-block", padding: "1rem 2.5rem", borderRadius: "999px", border: `2px solid ${t.accent}`, color: t.accent, fontWeight: 900, fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.1em", textDecoration: "none", boxShadow: `0 0 24px ${t.accent}25` }}>
-              {lang === "es" ? "💬 Cotización personalizada" : "💬 Custom quote"}
-            </motion.a>
-          </div>
-        </div>
-      </section>
-
       <section id="cotizar" style={{ padding: "5rem 1.5rem", position: "relative", zIndex: 1 }}>
         <div style={{ maxWidth: "38rem", margin: "0 auto", textAlign: "center" }}>
           <h2 style={{ fontSize: "clamp(2.6rem,5vw,4rem)", fontFamily: "serif", fontWeight: 700, marginBottom: "1rem", lineHeight: 1.05 }}>{c.cotizar_h}</h2>
           <p style={{ fontSize: "0.95rem", opacity: 0.62, lineHeight: 1.8, marginBottom: "2rem", color: t.sub }}>{c.cotizar_sub}</p>
-          <motion.a href={waLink} target="_blank" animate={{ scale: [1, 1.06, 1] }} transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }} whileHover={{ scale: 1.1 }} style={{ display: "inline-block", padding: "1rem 2.5rem", backgroundColor: t.accent, color: t.bg, fontWeight: 900, textTransform: "uppercase", fontSize: "0.78rem", letterSpacing: "0.08em", textDecoration: "none", borderRadius: "999px", boxShadow: `0 8px 32px ${t.accent}50` }}>
+          <motion.a href={waLink} target="_blank" animate={{ scale: [1, 1.06, 1] }} transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }} whileHover={{ scale: 1.1 }} style={{ display: "inline-block", padding: "1rem 2.5rem", backgroundColor: t.accent, color: t.bg, fontWeight: 900, textTransform: "uppercase", fontSize: "0.78rem", letterSpacing: "0.08em", textDecoration: "none", borderRadius: "999px", boxShadow: `0 8px 32px ${t.accent}40` }}>
             {c.cotizar_cta}
           </motion.a>
         </div>
       </section>
 
-      <footer style={{ padding: "2.5rem 1.5rem", borderTop: `1px solid ${t.accent}10`, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "1rem", position: "relative", zIndex: 1 }}>
+      <footer style={{ padding: "2.5rem 1.5rem", borderTop: `1px solid ${t.accent}14`, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "1rem", position: "relative", zIndex: 1 }}>
         <Image src="/logo-satori.png" alt="SATORI" width={85} height={26} style={{ filter: t.logoFilter }}/>
         <p style={{ fontSize: "0.58rem", letterSpacing: "0.25em", textTransform: "uppercase", opacity: 0.3 }}>{c.footer}</p>
       </footer>
