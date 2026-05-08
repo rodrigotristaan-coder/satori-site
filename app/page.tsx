@@ -53,7 +53,7 @@ const copy = {
     ],
     ver_mas: "Ver detalle",
     servicios: [
-      { num: 1, tag: "Marca", t: "Marca Propia", sub: "Identidad · Presencia · Autoridad",        d: "La identidad de marca que un empresario serio merece.",              back: "Estrategia de marca, identidad visual, posicionamiento de CEO y presencia digital de alto impacto para empresarios que quieren ser referentes en su industria.", benefits: ["Imagen que genera confianza instantánea", "Diferenciación frente a tu competencia", "Posicionamiento de CEO en LinkedIn y medios", "Kit de marca completo listo para usar"], i: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&q=80&fm=jpg" },
+      { num: 1, tag: "Marca", t: "Marca Propia", sub: "Identidad · Presencia · Autoridad",        d: "La identidad de marca que un empresario serio merece.",              back: "Estrategia de marca, identidad visual, posicionamiento de CEO y presencia digital de alto impacto para empresarios que quieren ser referentes en su industria.", benefits: ["Imagen que genera confianza instantánea", "Diferenciación frente a tu competencia", "Posicionamiento de CEO en LinkedIn y medios", "Kit de marca completo listo para usar"], i: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=800&q=80&fm=jpg" },
       { num: 2, tag: "Imagen",    t: "Posicionamiento Online", sub: "Reputación · Visibilidad · Confianza", d: "Tu empresa en el lugar correcto, frente a las personas correctas.",  back: "Gestión de reputación digital, posicionamiento en Google, presencia en medios y estrategia de contenido para que tu empresa sea la primera opción en su mercado.", benefits: ["Aparecer primero en Google en tu industria", "Reputación digital sólida y verificable", "Presencia activa en los medios correctos", "Contenido que atrae prospectos calificados"], i: "https://images.unsplash.com/photo-1547658719-da2b51169166?w=800&q=80&fm=jpg" },
       { num: 3, tag: "IA",        t: "Marketing con IA",       sub: "Conversión · Automatización · Escala", d: "Sistemas de marketing impulsados por inteligencia artificial.",       back: "Embudos automáticos, agentes de IA para calificación y cierre, campañas optimizadas en tiempo real. Tu motor de crecimiento que nunca duerme.", benefits: ["Prospectos calificados en piloto automático", "Seguimiento sin perder ninguna oportunidad", "Campañas que se optimizan solas 24/7", "ROI visible desde el primer mes"], i: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800&q=80&fm=jpg" },
     ],
@@ -117,7 +117,7 @@ const copy = {
     ],
     ver_mas: "See details",
     servicios: [
-      { num: 1, tag: "Brand", t: "Brand Identity", sub: "Identity · Presence · Authority",         d: "The brand identity a serious executive deserves.",                  back: "Brand strategy, visual identity, CEO positioning and high-impact digital presence for entrepreneurs who want to become the reference in their industry.", benefits: ["Instant trust through a powerful image", "Stand out clearly from competitors", "CEO positioning on LinkedIn and media", "Complete brand kit ready to deploy"], i: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&q=80&fm=jpg" },
+      { num: 1, tag: "Brand", t: "Brand Identity", sub: "Identity · Presence · Authority",         d: "The brand identity a serious executive deserves.",                  back: "Brand strategy, visual identity, CEO positioning and high-impact digital presence for entrepreneurs who want to become the reference in their industry.", benefits: ["Instant trust through a powerful image", "Stand out clearly from competitors", "CEO positioning on LinkedIn and media", "Complete brand kit ready to deploy"], i: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=800&q=80&fm=jpg" },
       { num: 2, tag: "Image",     t: "Online Positioning",    sub: "Reputation · Visibility · Trust",      d: "Your company in the right place, in front of the right people.",    back: "Digital reputation management, Google positioning, media presence and content strategy so your company becomes the first choice in its market.", benefits: ["Rank first on Google in your industry", "Solid and verifiable digital reputation", "Active presence in the right media", "Content that attracts qualified prospects"], i: "https://images.unsplash.com/photo-1547658719-da2b51169166?w=800&q=80&fm=jpg" },
       { num: 3, tag: "AI",        t: "AI-Powered Marketing",  sub: "Conversion · Automation · Scale",      d: "Marketing systems powered by artificial intelligence.",              back: "Automated funnels, AI agents for lead qualification and closing, real-time optimized campaigns. Your growth engine that never sleeps.", benefits: ["Qualified leads on autopilot", "No opportunity slips through the cracks", "Self-optimizing campaigns 24/7", "Visible ROI from month one"], i: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800&q=80&fm=jpg" },
     ],
@@ -274,58 +274,86 @@ function RutaTimeline({ t, c }: { t: typeof theme; c: typeof copy.es }) {
 
 function ServicesBento({ t, c }: { t: typeof theme; c: typeof copy.es }) {
   const [flipped, setFlipped] = useState<number | null>(null);
+  const [mousePos, setMousePos] = useState<{x: number, y: number}[]>([{x: 0, y: 0},{x: 0, y: 0},{x: 0, y: 0}]);
   const accents = ["#C9920A", "#8B6914", "#5C4A10"];
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>, i: number) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+    const y = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+    setMousePos(prev => { const n = [...prev]; n[i] = {x, y}; return n; });
+  };
+  const sectionLabel = c.ruta[0].label === "Active Social" ? "Our main services" : "Nuestros servicios principales";
   return (
     <div style={{ padding: "0 clamp(1rem,4vw,3rem) 3rem" }}>
+      <p style={{ textAlign: "center", fontSize: "0.62rem", textTransform: "uppercase", letterSpacing: "0.35em", color: t.accent, fontWeight: 900, marginBottom: "2.5rem" }}>{sectionLabel}</p>
       <div style={{ display: "grid", gap: "1.5rem", gridTemplateColumns: "repeat(3,1fr)" }}>
         {c.servicios.map((s, i) => {
           const color = accents[i];
           const isFlipped = flipped === i;
+          const mx = mousePos[i]?.x ?? 0;
+          const my = mousePos[i]?.y ?? 0;
           return (
             <div key={i}
-              onMouseEnter={() => setFlipped(i)} onMouseLeave={() => setFlipped(null)}
+              onMouseEnter={() => setFlipped(i)}
+              onMouseLeave={() => { setFlipped(null); setMousePos(prev => { const n = [...prev]; n[i] = {x:0,y:0}; return n; }); }}
+              onMouseMove={(e) => handleMouseMove(e, i)}
               onClick={() => setFlipped(isFlipped ? null : i)}
-              style={{ perspective: "1000px", cursor: "pointer", minHeight: "clamp(340px,44vh,500px)" }}>
+              style={{ perspective: "900px", cursor: "pointer", minHeight: "clamp(360px,46vh,520px)" }}>
               <motion.div
-                animate={{ rotateY: isFlipped ? 180 : 0 }}
-                transition={{ duration: 0.55, ease: [0.23, 1, 0.32, 1] }}
-                style={{ width: "100%", height: "100%", position: "relative", transformStyle: "preserve-3d", borderRadius: "1.25rem" }}>
+                animate={{
+                  rotateY: isFlipped ? 180 : mx * 8,
+                  rotateX: isFlipped ? 0 : -my * 6,
+                }}
+                transition={{ duration: isFlipped ? 0.65 : 0.1, ease: isFlipped ? [0.23, 1, 0.32, 1] : "linear" }}
+                style={{ width: "100%", height: "100%", position: "relative", transformStyle: "preserve-3d", borderRadius: "1.5rem" }}>
                 {/* FRONT */}
-                <div style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", borderRadius: "1.25rem", overflow: "hidden", boxShadow: `0 6px 28px rgba(0,0,0,0.12)` }}>
-                  <img src={s.i} alt={s.t} loading="lazy" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-                  <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.3) 55%, rgba(0,0,0,0.05) 100%)" }} />
+                <div style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", borderRadius: "1.5rem", overflow: "hidden", boxShadow: isFlipped ? "none" : `0 ${8 + Math.abs(my)*12}px ${32 + Math.abs(my)*16}px rgba(0,0,0,${0.15 + Math.abs(mx)*0.1})` }}>
+                  <img src={s.i} alt={s.t} loading="lazy" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block", transition: "transform 0.4s ease", transform: `scale(1.06) translate(${mx*-4}px, ${my*-3}px)` }} />
+                  {/* Gloss overlay that moves with mouse */}
+                  <div style={{ position: "absolute", inset: 0, background: `radial-gradient(ellipse at ${50 + mx*30}% ${50 + my*25}%, rgba(255,255,255,0.12) 0%, transparent 65%)`, pointerEvents: "none" }} />
+                  <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.2) 55%, rgba(0,0,0,0.0) 100%)" }} />
+                  {/* Accent glow on hover edge */}
+                  <div style={{ position: "absolute", inset: 0, borderRadius: "1.5rem", boxShadow: `inset 0 0 0 1.5px ${color}${isFlipped ? "00" : "55"}`, transition: "box-shadow 0.3s", pointerEvents: "none" }} />
                   <div style={{ position: "absolute", top: "1.25rem", left: "1.5rem" }}>
-                    <span style={{ fontSize: "0.55rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.2em", color, background: "rgba(0,0,0,0.45)", padding: "0.25rem 0.6rem", borderRadius: "99px" }}>{s.tag}</span>
+                    <span style={{ fontSize: "0.52rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.22em", color, background: "rgba(0,0,0,0.5)", padding: "0.22rem 0.65rem", borderRadius: "99px", backdropFilter: "blur(4px)" }}>{s.tag}</span>
                   </div>
-                  <div style={{ position: "absolute", top: "0.75rem", right: "1rem", fontSize: "clamp(3rem,5vw,4.5rem)", fontFamily: "serif", fontWeight: 900, color: "#fff", opacity: 0.06, lineHeight: 1, userSelect: "none" }}>{String(i + 1).padStart(2, "0")}</div>
+                  <div style={{ position: "absolute", top: "0.8rem", right: "1.1rem", fontSize: "clamp(2.8rem,4.5vw,4rem)", fontFamily: "serif", fontWeight: 900, color: "#fff", opacity: 0.05, lineHeight: 1, userSelect: "none" }}>{String(i + 1).padStart(2, "0")}</div>
                   <div style={{ position: "absolute", inset: 0, padding: "1.75rem", display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
-                    <p style={{ fontSize: "0.55rem", textTransform: "uppercase", letterSpacing: "0.18em", color, fontWeight: 900, marginBottom: "0.4rem" }}>{s.sub}</p>
-                    <h3 style={{ fontSize: "clamp(1.4rem,2.5vw,1.8rem)", fontFamily: "serif", fontWeight: 700, color: "#fff", lineHeight: 1.1, marginBottom: "0.6rem", textShadow: "0 2px 12px rgba(0,0,0,0.6)" }}>{s.t}</h3>
-                    <p style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.7)", lineHeight: 1.5 }}>{s.d}</p>
-                    <div style={{ marginTop: "1rem", display: "flex", alignItems: "center", gap: "0.35rem", opacity: 0.6 }}>
-                      <span style={{ fontSize: "0.55rem", textTransform: "uppercase", letterSpacing: "0.15em", color: "#fff" }}>hover para ver beneficios</span>
-                      <span style={{ color, fontSize: "0.8rem" }}>↻</span>
+                    <p style={{ fontSize: "0.52rem", textTransform: "uppercase", letterSpacing: "0.2em", color, fontWeight: 900, marginBottom: "0.45rem" }}>{s.sub}</p>
+                    <h3 style={{ fontSize: "clamp(1.4rem,2.5vw,1.85rem)", fontFamily: "serif", fontWeight: 700, color: "#fff", lineHeight: 1.1, marginBottom: "0.55rem", textShadow: "0 2px 16px rgba(0,0,0,0.7)" }}>{s.t}</h3>
+                    <p style={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.65)", lineHeight: 1.55, marginBottom: "1rem" }}>{s.d}</p>
+                    <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                      <div style={{ width: "22px", height: "1px", backgroundColor: color, opacity: 0.7 }}/>
+                      <span style={{ fontSize: "0.5rem", textTransform: "uppercase", letterSpacing: "0.18em", color: "rgba(255,255,255,0.45)" }}>hover</span>
                     </div>
                   </div>
                 </div>
-                {/* BACK */}
-                <div style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", transform: "rotateY(180deg)", borderRadius: "1.25rem", overflow: "hidden", backgroundColor: t.bg, border: `2px solid ${color}`, boxShadow: `0 12px 48px ${color}35` }}>
-                  <div style={{ position: "absolute", inset: 0, background: `linear-gradient(135deg, ${color}08 0%, transparent 60%)` }} />
-                  <div style={{ position: "absolute", top: "0.75rem", right: "1rem", fontSize: "clamp(3rem,5vw,4.5rem)", fontFamily: "serif", fontWeight: 900, color: t.accent, opacity: 0.06, lineHeight: 1, userSelect: "none" }}>{String(i + 1).padStart(2, "0")}</div>
-                  <div style={{ padding: "2rem 1.75rem", height: "100%", display: "flex", flexDirection: "column", position: "relative", zIndex: 1 }}>
-                    <p style={{ fontSize: "0.55rem", textTransform: "uppercase", letterSpacing: "0.2em", color, fontWeight: 900, marginBottom: "0.35rem" }}>{s.sub}</p>
-                    <h3 style={{ fontSize: "clamp(1.1rem,2vw,1.35rem)", fontFamily: "serif", fontWeight: 700, color: t.text, lineHeight: 1.15, marginBottom: "1.25rem" }}>{s.t}</h3>
-                    <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", flex: 1 }}>
+                {/* BACK — slides up from below with staggered benefit items */}
+                <div style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", transform: "rotateY(180deg)", borderRadius: "1.5rem", overflow: "hidden", backgroundColor: t.bg, boxShadow: `0 20px 60px ${color}30` }}>
+                  {/* Decorative top bar */}
+                  <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "4px", background: `linear-gradient(to right, transparent, ${color}, transparent)` }} />
+                  <div style={{ position: "absolute", inset: 0, background: `radial-gradient(ellipse at 80% 20%, ${color}10 0%, transparent 60%)` }} />
+                  <div style={{ position: "absolute", top: "0.9rem", right: "1.2rem", fontSize: "clamp(3rem,5vw,4rem)", fontFamily: "serif", fontWeight: 900, color: t.accent, opacity: 0.05, lineHeight: 1, userSelect: "none" }}>{String(i + 1).padStart(2, "0")}</div>
+                  <div style={{ padding: "2.25rem 2rem", height: "100%", display: "flex", flexDirection: "column", position: "relative", zIndex: 1 }}>
+                    <div style={{ marginBottom: "1.5rem" }}>
+                      <p style={{ fontSize: "0.5rem", textTransform: "uppercase", letterSpacing: "0.22em", color, fontWeight: 900, marginBottom: "0.4rem" }}>{s.sub}</p>
+                      <h3 style={{ fontSize: "clamp(1.2rem,2vw,1.45rem)", fontFamily: "serif", fontWeight: 700, color: t.text, lineHeight: 1.15 }}>{s.t}</h3>
+                    </div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "0.9rem", flex: 1 }}>
                       {s.benefits.map((b: string, bi: number) => (
-                        <div key={bi} style={{ display: "flex", alignItems: "flex-start", gap: "0.6rem" }}>
-                          <div style={{ width: "18px", height: "18px", borderRadius: "50%", backgroundColor: color, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: "1px" }}>
-                            <span style={{ color: "#fff", fontSize: "0.55rem", fontWeight: 900 }}>✓</span>
+                        <div key={bi} style={{ display: "flex", alignItems: "flex-start", gap: "0.75rem" }}>
+                          <div style={{ width: "20px", height: "20px", borderRadius: "6px", backgroundColor: `${color}18`, border: `1.5px solid ${color}55`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: "1px" }}>
+                            <span style={{ color, fontSize: "0.6rem", fontWeight: 900 }}>✓</span>
                           </div>
-                          <p style={{ fontSize: "0.82rem", color: t.text, lineHeight: 1.5, opacity: 0.85 }}>{b}</p>
+                          <p style={{ fontSize: "0.84rem", color: t.text, lineHeight: 1.55, opacity: 0.82 }}>{b}</p>
                         </div>
                       ))}
                     </div>
-                    <a href={`https://wa.me/525625018281?text=Hola%20Rodrigo,%20me%20interesa%20${encodeURIComponent(s.t)}`} target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", marginTop: "1.5rem", fontSize: "0.65rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.12em", color: t.bg, textDecoration: "none", backgroundColor: color, padding: "0.6rem 1.25rem", borderRadius: "99px" }}>{c.ver_mas} →</a>
+                    <a href={`https://wa.me/525625018281?text=Hola%20Rodrigo,%20me%20interesa%20${encodeURIComponent(s.t)}`} target="_blank" rel="noopener noreferrer"
+                      style={{ display: "inline-flex", alignItems: "center", justifyContent: "space-between", gap: "0.5rem", marginTop: "1.75rem", fontSize: "0.62rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.14em", color: t.bg, textDecoration: "none", backgroundColor: color, padding: "0.75rem 1.5rem", borderRadius: "12px" }}>
+                      <span>{c.ver_mas}</span>
+                      <span style={{ fontSize: "1rem" }}>→</span>
+                    </a>
                   </div>
                 </div>
               </motion.div>
