@@ -46,7 +46,7 @@ const copy = {
     camino_sub: "Cada servicio está diseñado para empresarios que quieren crecer con estrategia.",
     ver_mas: "Ver detalle",
     servicios: [
-      { num: 1, tag: "Identiti",  t: "Identiti Branding",     sub: "Marca · Presencia · Autoridad",        d: "La identidad de marca que un empresario serio merece.",              back: "Estrategia de marca, identidad visual, posicionamiento de CEO y presencia digital de alto impacto para empresarios que quieren ser referentes en su industria.", i: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80&fm=jpg" },
+      { num: 1, tag: "Identitti", t: "Identitti · Marca Propia", sub: "Identidad · Presencia · Autoridad",        d: "La identidad de marca que un empresario serio merece.",              back: "Estrategia de marca, identidad visual, posicionamiento de CEO y presencia digital de alto impacto para empresarios que quieren ser referentes en su industria.", i: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80&fm=jpg" },
       { num: 2, tag: "Imagen",    t: "Posicionamiento Online", sub: "Reputación · Visibilidad · Confianza", d: "Tu empresa en el lugar correcto, frente a las personas correctas.",  back: "Gestión de reputación digital, posicionamiento en Google, presencia en medios y estrategia de contenido para que tu empresa sea la primera opción en su mercado.", i: "https://images.unsplash.com/photo-1547658719-da2b51169166?w=800&q=80&fm=jpg" },
       { num: 3, tag: "IA",        t: "Marketing con IA",       sub: "Conversión · Automatización · Escala", d: "Sistemas de marketing impulsados por inteligencia artificial.",       back: "Embudos automáticos, agentes de IA para calificación y cierre, campañas optimizadas en tiempo real. Tu motor de crecimiento que nunca duerme.", i: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800&q=80&fm=jpg" },
     ],
@@ -63,7 +63,7 @@ const copy = {
     faq_label: "Preguntas frecuentes",
     faq_h: "Todo lo que necesitas saber.",
     faqs: [
-      { q: "¿Cuánto tiempo tarda ver resultados?",      a: "Depende del servicio. Identiti Branding: primeras semanas. Posicionamiento: 1–3 meses. Marketing con IA: desde el día de activación." },
+      { q: "¿Cuánto tiempo tarda ver resultados?",      a: "Depende del servicio. Identitti: primeras semanas. Posicionamiento: 1–3 meses. Marketing con IA: desde el día de activación." },
       { q: "¿Necesito saber de tecnología?",            a: "Para nada. Nos encargamos de toda la parte técnica. Tú solo nos dices cómo funciona tu negocio y nosotros hacemos el resto." },
       { q: "¿Firmo un contrato largo?",                 a: "No. Trabajamos mes a mes. Si no estás satisfecho, puedes cancelar cuando quieras." },
       { q: "¿Qué necesito para empezar?",               a: "Solo una llamada de 30 minutos. Ahí entendemos tu negocio, te proponemos la mejor ruta y te damos un precio claro. Sin sorpresas." },
@@ -103,7 +103,7 @@ const copy = {
     camino_sub: "Each service is designed for executives who want to grow with strategy.",
     ver_mas: "See details",
     servicios: [
-      { num: 1, tag: "Identiti",  t: "Identiti Branding",    sub: "Brand · Presence · Authority",         d: "The brand identity a serious executive deserves.",                  back: "Brand strategy, visual identity, CEO positioning and high-impact digital presence for entrepreneurs who want to become the reference in their industry.", i: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80&fm=jpg" },
+      { num: 1, tag: "Identitti", t: "Identitti · Brand Identity", sub: "Identity · Presence · Authority",         d: "The brand identity a serious executive deserves.",                  back: "Brand strategy, visual identity, CEO positioning and high-impact digital presence for entrepreneurs who want to become the reference in their industry.", i: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80&fm=jpg" },
       { num: 2, tag: "Image",     t: "Online Positioning",    sub: "Reputation · Visibility · Trust",      d: "Your company in the right place, in front of the right people.",    back: "Digital reputation management, Google positioning, media presence and content strategy so your company becomes the first choice in its market.", i: "https://images.unsplash.com/photo-1547658719-da2b51169166?w=800&q=80&fm=jpg" },
       { num: 3, tag: "AI",        t: "AI-Powered Marketing",  sub: "Conversion · Automation · Scale",      d: "Marketing systems powered by artificial intelligence.",              back: "Automated funnels, AI agents for lead qualification and closing, real-time optimized campaigns. Your growth engine that never sleeps.", i: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800&q=80&fm=jpg" },
     ],
@@ -120,7 +120,7 @@ const copy = {
     faq_label: "Frequently asked questions",
     faq_h: "Everything you need to know.",
     faqs: [
-      { q: "How long until I see results?",             a: "Depends on the service. Identiti Branding: first weeks. Positioning: 1–3 months. AI Marketing: from day one of activation." },
+      { q: "How long until I see results?",             a: "Depends on the service. Identitti: first weeks. Positioning: 1–3 months. AI Marketing: from day one of activation." },
       { q: "Do I need to be tech-savvy?",               a: "Not at all. We handle every technical detail. Just tell us how your business works and we take care of the rest." },
       { q: "Do I sign a long-term contract?",           a: "No. We work month to month. Cancel anytime." },
       { q: "What do I need to get started?",            a: "Just a 30-minute call. We learn your business, propose the best path, and give you a clear price. No surprises." },
