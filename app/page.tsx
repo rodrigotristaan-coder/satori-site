@@ -10,23 +10,17 @@ const WHATSAPP_LINK_EN = "https://wa.me/525625018281?text=Hi%20Rodrigo,%20I%20sa
 const CALENDLY_LINK    = "https://calendly.com/rodrigo-tristaan";
 const EMAIL            = "r.tristaan@outlook.com";
 
-// Tema único: oro refinado
 const theme = {
-  bg:          "#0D0A00",   // negro cálido casi puro
-  accent:      "#C9980A",   // oro rico, saturado pero no chillón
-  text:        "#F5EDD6",   // crema cálida
-  sub:         "#8A7040",   // dorado apagado para secundarios
-  card:        "#161000",   // negro dorado muy oscuro para cards
-  matrixColor: "#C9980A",
-  navBg:       "rgba(13,10,0,0.93)",
-  logoFilter:  "invert(1) sepia(1) saturate(2) hue-rotate(5deg)",
-  ensoFilter:  "invert(1) sepia(1) saturate(2) hue-rotate(5deg) opacity(0.07)",
+  bg:          "#FFFFF8",
+  accent:      "#A67C00",
+  text:        "#1a1000",
+  sub:         "#7A5C14",
+  card:        "#FDF8E1",
+  matrixColor: "#C9A800",
+  navBg:       "rgba(255,255,248,0.93)",
+  logoFilter:  "brightness(0) sepia(1)",
+  ensoFilter:  "brightness(0) sepia(1) opacity(0.06)",
 };
-
-// Alias para mantener compatibilidad con el código existente
-const themes = { gold: theme } as const;
-type ThemeKey = "gold";
-const themeOrder = ["gold"] as const;
 
 const copy = {
   es: {
@@ -231,7 +225,7 @@ function LangPopup({ onSelect, t }: { onSelect: (l: "es" | "en") => void; t: typ
   );
 }
 
-function ServicesBento({ t, c }: { t: typeof themes.white; c: typeof copy.es }) {
+function ServicesBento({ t, c }: { t: typeof theme; c: typeof copy.es }) {
   const [active, setActive] = useState<number | null>(null);
   const accents = ["#FF6B6B", "#4ECDC4", "#45B7D1", "#A29BFE", "#FD79A8"];
   const cells = c.servicios.map((s, i) => ({ s, i, color: accents[i], isActive: active === i }));
@@ -380,7 +374,7 @@ function MexicoMap({ accent, bg }: { accent: string; bg: string }) {
 
 function PricingFlipCard({ plan, i, t, accent, bg, text, waLink, lang }: {
   plan: { name: string; price: string; badge: string; features: string[]; popular: boolean; soldOut?: boolean };
-  i: number; t: typeof themes.white; accent: string; bg: string; text: string; waLink: string; lang: "es" | "en";
+  i: number; t: typeof theme; accent: string; bg: string; text: string; waLink: string; lang: "es" | "en";
 }) {
   const [flipped, setFlipped] = useState(false);
   const [form, setForm] = useState({ nombre: "", telefono: "", email: "", web: "", solicitud: "" });
@@ -452,7 +446,7 @@ function PricingFlipCard({ plan, i, t, accent, bg, text, waLink, lang }: {
   );
 }
 
-function FaqItem({ q, a, t, last }: { q: string; a: string; t: typeof themes.white; last: boolean }) {
+function FaqItem({ q, a, t, last }: { q: string; a: string; t: typeof theme; last: boolean }) {
   const [open, setOpen] = useState(false);
   return (
     <div style={{ borderTop: `1px solid ${t.accent}12`, borderBottom: last ? `1px solid ${t.accent}12` : "none" }}>
