@@ -310,7 +310,7 @@ function RoadmapFlipCard({ paso, index }: { paso: typeof C.pasos[0]; index: numb
 
         {/* REVERSO */}
         <div style={{
-          position: "absolute", inset: 0, backfaceVisibility: "hidden", rotateY: "180deg",
+          position: "absolute", inset: 0, backfaceVisibility: "hidden", transform: "rotateY(180deg)",
           background: `linear-gradient(135deg, #1A1500 0%, #0F0E00 100%)`,
           border: `1px solid ${T.accent}40`,
           padding: "1.5rem", display: "flex", flexDirection: "column", gap: "1rem",
