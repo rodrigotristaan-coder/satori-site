@@ -289,81 +289,129 @@ function ServicesBento({ t, c }: { t: typeof themes.white; c: typeof copy.es }) 
   );
 }
 
+// ─── MAPA CORREGIDO ────────────────────────────────────────────────────────────
 function MexicoMap({ accent, bg, card }: { accent: string; bg: string; card: string }) {
-  const clients = ["BC","JAL","CDMX"];
   const states: { id: string; d: string }[] = [
-    { id:"BC",   d:"M 60 54 L 74 40 L 80 46 L 88 44 L 90 56 L 84 66 L 72 72 L 62 66 Z" },
-    { id:"BCS",  d:"M 72 72 L 84 66 L 88 86 L 84 108 L 74 112 L 68 96 Z" },
-    { id:"SON",  d:"M 90 44 L 122 38 L 130 52 L 126 68 L 108 72 L 90 68 L 90 56 Z" },
-    { id:"CHIH", d:"M 122 38 L 164 32 L 170 52 L 162 66 L 148 70 L 130 68 L 130 52 Z" },
-    { id:"COAH", d:"M 164 32 L 200 30 L 208 50 L 198 66 L 178 66 L 170 52 Z" },
-    { id:"NL",   d:"M 200 30 L 222 34 L 222 56 L 208 58 L 208 50 Z" },
-    { id:"TAM",  d:"M 222 34 L 240 40 L 238 82 L 222 78 L 222 56 Z" },
-    { id:"SIN",  d:"M 108 72 L 126 68 L 134 82 L 130 98 L 116 96 L 108 86 Z" },
-    { id:"DGO",  d:"M 130 68 L 148 70 L 154 84 L 148 100 L 134 98 L 130 98 L 134 82 Z" },
-    { id:"ZAC",  d:"M 148 70 L 162 66 L 168 78 L 164 96 L 154 98 L 148 100 Z" },
-    { id:"NAY",  d:"M 116 96 L 130 98 L 132 112 L 122 118 L 112 110 Z" },
-    { id:"SLP",  d:"M 162 66 L 178 66 L 188 80 L 182 96 L 168 96 L 164 84 Z" },
-    { id:"AGS",  d:"M 152 100 L 164 98 L 166 110 L 158 112 Z" },
-    { id:"JAL",  d:"M 130 98 L 148 100 L 152 100 L 158 112 L 164 118 L 158 134 L 144 136 L 132 128 L 126 116 L 122 118 L 132 112 Z" },
-    { id:"GTO",  d:"M 164 98 L 180 96 L 188 108 L 182 116 L 170 114 L 164 118 L 158 112 L 166 110 Z" },
-    { id:"QRO",  d:"M 180 96 L 192 98 L 194 110 L 188 116 L 182 116 L 188 108 Z" },
-    { id:"HGO",  d:"M 192 98 L 208 96 L 210 108 L 204 114 L 194 112 L 194 110 Z" },
-    { id:"MICH", d:"M 144 136 L 158 134 L 168 128 L 180 128 L 180 144 L 168 152 L 152 152 Z" },
-    { id:"MEX",  d:"M 182 116 L 194 112 L 202 118 L 202 128 L 192 132 L 182 128 L 180 128 L 168 128 L 170 118 Z" },
-    { id:"CDMX", d:"M 194 116 L 202 114 L 206 120 L 200 124 L 194 120 Z" },
-    { id:"TLX",  d:"M 202 114 L 212 112 L 214 120 L 206 122 L 202 120 Z" },
-    { id:"MOR",  d:"M 194 124 L 202 124 L 202 132 L 196 134 L 192 132 Z" },
-    { id:"PUE",  d:"M 206 120 L 222 114 L 228 126 L 224 140 L 210 140 L 200 134 L 202 124 L 202 120 Z" },
-    { id:"GRO",  d:"M 168 152 L 192 140 L 200 158 L 188 170 L 170 164 Z" },
-    { id:"OAX",  d:"M 192 140 L 224 140 L 230 156 L 220 170 L 200 166 L 188 170 L 200 158 Z" },
-    { id:"VER",  d:"M 208 96 L 236 88 L 244 108 L 240 126 L 228 126 L 222 114 L 210 112 L 210 108 Z" },
-    { id:"CHIS", d:"M 220 170 L 244 160 L 248 178 L 234 186 L 218 182 Z" },
-    { id:"TAB",  d:"M 236 138 L 254 136 L 256 152 L 244 156 L 240 148 L 240 126 L 228 126 L 230 140 Z" },
-    { id:"CAM",  d:"M 254 136 L 276 128 L 280 154 L 266 164 L 254 158 L 256 152 Z" },
-    { id:"YUC",  d:"M 276 116 L 308 112 L 312 132 L 284 136 L 276 128 Z" },
-    { id:"QR",   d:"M 308 112 L 322 116 L 320 160 L 306 162 L 288 150 L 284 136 L 312 132 Z" },
+    { id: "BC",   d: "M 28 62 L 44 44 L 58 48 L 64 56 L 72 54 L 76 68 L 64 84 L 48 90 L 36 82 Z" },
+    { id: "BCS",  d: "M 48 90 L 64 84 L 72 102 L 70 124 L 62 144 L 52 150 L 44 136 L 44 112 Z" },
+    { id: "SON",  d: "M 72 54 L 76 68 L 64 84 L 74 98 L 90 96 L 108 88 L 120 72 L 126 56 L 116 46 L 96 40 Z" },
+    { id: "CHIH", d: "M 116 46 L 126 56 L 120 72 L 130 82 L 148 82 L 162 70 L 170 52 L 164 38 L 144 30 Z" },
+    { id: "COAH", d: "M 164 38 L 170 52 L 162 70 L 170 84 L 188 86 L 202 74 L 214 60 L 208 40 L 192 32 Z" },
+    { id: "NL",   d: "M 202 74 L 214 60 L 228 66 L 232 82 L 220 92 L 206 90 Z" },
+    { id: "TAM",  d: "M 214 60 L 228 66 L 240 64 L 252 80 L 252 108 L 238 118 L 222 110 L 218 94 L 220 92 L 232 82 Z" },
+    { id: "SIN",  d: "M 90 96 L 108 88 L 120 100 L 126 116 L 120 136 L 108 144 L 96 138 L 88 120 Z" },
+    { id: "DGO",  d: "M 120 72 L 130 82 L 148 82 L 154 96 L 148 112 L 134 122 L 120 118 L 120 100 L 108 88 Z" },
+    { id: "ZAC",  d: "M 148 82 L 162 70 L 170 84 L 176 96 L 170 110 L 158 116 L 148 112 L 154 96 Z" },
+    { id: "NAY",  d: "M 108 144 L 120 136 L 134 140 L 136 154 L 126 162 L 112 158 Z" },
+    { id: "AGS",  d: "M 158 116 L 166 112 L 170 122 L 162 126 L 156 122 Z" },
+    { id: "SLP",  d: "M 170 84 L 188 86 L 196 96 L 192 114 L 178 118 L 170 110 L 176 96 Z" },
+    { id: "JAL",  d: "M 120 118 L 134 122 L 148 112 L 158 116 L 162 126 L 172 130 L 170 146 L 158 156 L 142 156 L 130 148 L 124 136 L 120 136 L 126 116 Z" },
+    { id: "GTO",  d: "M 170 110 L 178 118 L 186 120 L 192 130 L 184 136 L 174 134 L 162 126 L 166 112 Z" },
+    { id: "MICH", d: "M 158 156 L 170 146 L 184 148 L 194 158 L 190 172 L 174 176 L 158 170 L 148 162 Z" },
+    { id: "QRO",  d: "M 186 120 L 196 118 L 202 126 L 198 134 L 192 130 Z" },
+    { id: "HGO",  d: "M 196 118 L 208 112 L 216 120 L 214 130 L 204 134 L 198 134 L 202 126 Z" },
+    { id: "MEX",  d: "M 198 134 L 204 134 L 214 130 L 220 136 L 218 144 L 210 150 L 200 148 L 194 142 Z" },
+    { id: "CDMX", d: "M 210 138 L 218 134 L 222 140 L 216 146 L 210 144 Z" },
+    { id: "MOR",  d: "M 200 148 L 210 144 L 216 150 L 210 158 L 202 156 Z" },
+    { id: "TLX",  d: "M 218 134 L 228 132 L 230 140 L 222 144 L 216 146 Z" },
+    { id: "PUE",  d: "M 214 130 L 228 122 L 242 130 L 244 148 L 234 158 L 216 156 L 210 150 L 218 144 L 222 144 L 230 140 L 228 132 Z" },
+    { id: "VER",  d: "M 208 112 L 222 110 L 238 118 L 252 130 L 248 156 L 238 164 L 224 158 L 244 148 L 242 130 L 228 122 L 216 120 Z" },
+    { id: "GRO",  d: "M 194 158 L 210 158 L 216 156 L 234 158 L 236 176 L 224 186 L 206 184 L 194 174 Z" },
+    { id: "OAX",  d: "M 234 158 L 248 156 L 260 162 L 262 178 L 248 190 L 228 190 L 218 180 L 224 186 L 236 176 Z" },
+    { id: "CHIS", d: "M 248 190 L 262 178 L 278 176 L 282 192 L 268 202 L 248 200 Z" },
+    { id: "TAB",  d: "M 248 156 L 252 130 L 264 136 L 274 148 L 266 160 L 256 162 Z" },
+    { id: "CAM",  d: "M 274 148 L 292 138 L 304 152 L 298 176 L 280 178 L 268 166 L 266 160 Z" },
+    { id: "YUC",  d: "M 292 118 L 320 112 L 328 130 L 312 138 L 292 138 L 294 126 Z" },
+    { id: "QR",   d: "M 320 112 L 336 116 L 338 162 L 324 170 L 308 162 L 298 176 L 304 152 L 312 138 L 328 130 Z" },
   ];
+
+  const clients = ["BC", "JAL", "CDMX"];
+
+  const clientDots = [
+    { cx: 52,  cy: 70,  label: "B.C."  },
+    { cx: 148, cy: 138, label: "GDL"   },
+    { cx: 214, cy: 140, label: "CDMX"  },
+  ];
+
   return (
-    <div style={{ maxWidth: 680, margin: "0 auto", padding: "0 1rem" }}>
-      <svg viewBox="56 26 270 164" xmlns="http://www.w3.org/2000/svg" style={{ width: "100%", height: "auto", display: "block", maxHeight: "420px" }}>
+    <div style={{ maxWidth: 740, margin: "0 auto", padding: "0 1rem" }}>
+      <svg
+        viewBox="20 26 330 186"
+        xmlns="http://www.w3.org/2000/svg"
+        style={{ width: "100%", height: "auto", display: "block", maxHeight: "460px" }}
+      >
         <defs>
           <filter id="mapglow" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="2.5" result="blur"/>
-            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            <feGaussianBlur stdDeviation="2.5" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+          <filter id="dotglow" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="3" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
           </filter>
         </defs>
-        {/* Background so states render on any theme */}
-        <rect x="56" y="26" width="270" height="164" fill="transparent" />
+
         {states.map((s) => {
           const isClient = clients.includes(s.id);
           return (
-            <motion.path key={s.id} d={s.d}
-              fill={isClient ? accent : `${accent}18`}
-              stroke={accent} strokeWidth={isClient ? 1 : 0.5} strokeLinejoin="round" strokeOpacity={isClient ? 1 : 0.65}
+            <path
+              key={s.id}
+              d={s.d}
+              fill={isClient ? accent + "55" : accent + "14"}
+              stroke={accent}
+              strokeWidth={isClient ? 1.2 : 0.6}
+              strokeLinejoin="round"
+              strokeOpacity={isClient ? 0.9 : 0.5}
               filter={isClient ? "url(#mapglow)" : undefined}
-              initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-              transition={{ delay: isClient ? 0.3 : Math.random() * 0.5, duration: 0.4 }} />
+            />
           );
         })}
-        {[{ cx: 72, cy: 55, label: "B.C." }, { cx: 142, cy: 116, label: "GDL" }, { cx: 200, cy: 118, label: "CDMX" }].map(({ cx, cy, label }, i) => (
-          <g key={label}>
-            <motion.circle cx={cx} cy={cy} r={2.5} fill={accent} animate={{ r: [2.5,7,2.5], opacity:[1,0,1] }} transition={{ duration: 2, repeat: Infinity, delay: i * 0.7 }} />
-            <circle cx={cx} cy={cy} r={2} fill={accent} />
-            <text x={cx} y={cy - 5} textAnchor="middle" fill={accent} fontSize="3.8" fontWeight="900" fontFamily="sans-serif">{label}</text>
+
+        {clientDots.map(({ cx, cy, label }, i) => (
+          <g key={label} filter="url(#dotglow)">
+            <circle cx={cx} cy={cy} r={8} fill="none" stroke={accent} strokeWidth={0.8} strokeOpacity={0.3}>
+              <animate attributeName="r" values="4;12;4" dur={`${2 + i * 0.5}s`} repeatCount="indefinite" />
+              <animate attributeName="stroke-opacity" values="0.6;0;0.6" dur={`${2 + i * 0.5}s`} repeatCount="indefinite" />
+            </circle>
+            <circle cx={cx} cy={cy} r={5} fill="none" stroke={accent} strokeWidth={0.8} strokeOpacity={0.4}>
+              <animate attributeName="r" values="2;8;2" dur={`${2 + i * 0.5}s`} repeatCount="indefinite" begin="0.3s" />
+              <animate attributeName="stroke-opacity" values="0.8;0;0.8" dur={`${2 + i * 0.5}s`} repeatCount="indefinite" begin="0.3s" />
+            </circle>
+            <circle cx={cx} cy={cy} r={3} fill={accent} />
+            <text
+              x={cx}
+              y={cy - 7}
+              textAnchor="middle"
+              fill={accent}
+              fontSize="4.5"
+              fontWeight="900"
+              fontFamily="sans-serif"
+              letterSpacing="0.05em"
+            >
+              {label}
+            </text>
           </g>
         ))}
       </svg>
-      <div style={{ display: "flex", justifyContent: "center", gap: "2rem", marginTop: "1.5rem", flexWrap: "wrap" }}>
-        {["Baja California","Guadalajara","CDMX"].map((city) => (
-          <div key={city} style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontSize: "0.68rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em", color: accent }}>
-            <div style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: accent }} />{city}
+
+      <div style={{ display: "flex", justifyContent: "center", gap: "2.5rem", marginTop: "1.75rem", flexWrap: "wrap" }}>
+        {["Baja California", "Guadalajara", "CDMX"].map((city) => (
+          <div key={city} style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.68rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.14em", color: accent }}>
+            <div style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: accent }} />
+            {city}
           </div>
         ))}
       </div>
     </div>
   );
 }
+// ──────────────────────────────────────────────────────────────────────────────
 
 function PricingFlipCard({ plan, i, t, accent, bg, text, waLink, lang }: {
   plan: { name: string; price: string; badge: string; features: string[]; popular: boolean; soldOut?: boolean };
@@ -777,3 +825,4 @@ export default function Home() {
     </main>
   );
 }
+  
