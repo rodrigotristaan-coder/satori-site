@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { HandCoins, Palette, Zap, Target, Globe } from "lucide-react";
+import { HandCoins, Zap, Target, Globe } from "lucide-react";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 
@@ -10,20 +10,23 @@ const WHATSAPP_LINK_EN = "https://wa.me/525625018281?text=Hi%20Rodrigo,%20I%20sa
 const CALENDLY_LINK    = "https://calendly.com/rodrigo-tristaan";
 const EMAIL            = "r.tristaan@outlook.com";
 
-const themeOrder = ["white", "blue", "silver", "rainbow", "gold", "nopal"] as const;
-type ThemeKey = typeof themeOrder[number];
-
-const themes: Record<ThemeKey, {
-  bg: string; accent: string; text: string; sub: string; card: string;
-  matrixColor: string; navBg: string; logoFilter: string; ensoFilter: string;
-}> = {
-  white:   { bg: "#FFFFFF", accent: "#111111", text: "#111111", sub: "#666666", card: "#F4F4F4", matrixColor: "#aaaaaa", navBg: "rgba(255,255,255,0.93)", logoFilter: "brightness(0)",         ensoFilter: "brightness(0) opacity(0.06)"           },
-  blue:    { bg: "#020B18", accent: "#00D4FF", text: "#E0F0FF", sub: "#4A7FA5", card: "#041428", matrixColor: "#00D4FF", navBg: "rgba(2,11,24,0.93)",     logoFilter: "invert(1)",              ensoFilter: "invert(1) brightness(2) opacity(0.06)" },
-  silver:  { bg: "#0A0A0A", accent: "#E5E5E5", text: "#FFFFFF", sub: "#A3A3A3", card: "#171717", matrixColor: "#888888", navBg: "rgba(10,10,10,0.93)",    logoFilter: "invert(1)",              ensoFilter: "invert(1) brightness(2) opacity(0.06)" },
-  rainbow: { bg: "#0F0218", accent: "#FF00CC", text: "#FFFFFF", sub: "#A855F7", card: "#1E0B36", matrixColor: "#FF00CC", navBg: "rgba(15,2,24,0.93)",     logoFilter: "invert(1)",              ensoFilter: "invert(1) brightness(2) opacity(0.06)" },
-  gold:    { bg: "#FFFFF8", accent: "#B8860B", text: "#1a1000", sub: "#8B6914", card: "#FDF8E1", matrixColor: "#D4AF37", navBg: "rgba(255,255,248,0.93)", logoFilter: "brightness(0) sepia(1)", ensoFilter: "brightness(0) sepia(1) opacity(0.06)"  },
-  nopal:   { bg: "#0A1A0D", accent: "#4CAF50", text: "#E8F5E9", sub: "#66BB6A", card: "#0F2412", matrixColor: "#4CAF50", navBg: "rgba(10,26,13,0.93)",   logoFilter: "invert(1)",              ensoFilter: "invert(1) brightness(2) opacity(0.06)" },
+// Tema único: oro refinado
+const theme = {
+  bg:          "#0D0A00",   // negro cálido casi puro
+  accent:      "#C9980A",   // oro rico, saturado pero no chillón
+  text:        "#F5EDD6",   // crema cálida
+  sub:         "#8A7040",   // dorado apagado para secundarios
+  card:        "#161000",   // negro dorado muy oscuro para cards
+  matrixColor: "#C9980A",
+  navBg:       "rgba(13,10,0,0.93)",
+  logoFilter:  "invert(1) sepia(1) saturate(2) hue-rotate(5deg)",
+  ensoFilter:  "invert(1) sepia(1) saturate(2) hue-rotate(5deg) opacity(0.07)",
 };
+
+// Alias para mantener compatibilidad con el código existente
+const themes = { gold: theme } as const;
+type ThemeKey = "gold";
+const themeOrder = ["gold"] as const;
 
 const copy = {
   es: {
@@ -214,7 +217,7 @@ function SpinningEnso({ filter, opacity = 0.88 }: { filter: string; opacity?: nu
   );
 }
 
-function LangPopup({ onSelect, t }: { onSelect: (l: "es" | "en") => void; t: typeof themes.white }) {
+function LangPopup({ onSelect, t }: { onSelect: (l: "es" | "en") => void; t: typeof theme }) {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[200] flex items-center justify-center" style={{ backgroundColor: "rgba(0,0,0,0.8)", backdropFilter: "blur(12px)" }}>
       <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }} style={{ padding: "2.5rem", maxWidth: "22rem", width: "90%", backgroundColor: t.card, border: `1px solid ${t.accent}20` }}>
@@ -484,30 +487,22 @@ function CountUp({ from, to, duration = 2, suffix = "" }: { from: number; to: nu
 }
 
 export default function Home() {
-  const [themeIdx, setThemeIdx] = useState(0);
   const [lang, setLang] = useState<"es" | "en">("es");
   const [showPopup, setShowPopup] = useState(true);
   const [shake, setShake] = useState(false);
-  const introRan = useRef(false);
-
-  const runThemeIntro = () => {
-    if (introRan.current) return; introRan.current = true;
-    ([[0,0],[1,600],[2,1200],[3,1800],[4,2400]] as const).forEach(([idx, delay]) => setTimeout(() => setThemeIdx(idx), delay));
-  };
 
   useEffect(() => {
     const interval = setInterval(() => { setShake(true); setTimeout(() => setShake(false), 2100); }, 15000);
     return () => clearInterval(interval);
   }, []);
 
-  const themeKey = themeOrder[themeIdx]; const nextThemeKey = themeOrder[(themeIdx + 1) % themeOrder.length];
-  const t = themes[themeKey]; const nextAccent = themes[nextThemeKey].accent;
+  const t = theme; const nextAccent = theme.accent;
   const c = copy[lang]; const waLink = lang === "es" ? WHATSAPP_LINK : WHATSAPP_LINK_EN;
   const Icons = [HandCoins, Zap, Target];
   const shakeStyle: React.CSSProperties = shake ? { animation: "btnShake 2s ease" } : {};
 
   return (
-    <main style={{ backgroundColor: t.bg, color: t.text, minHeight: "100vh", position: "relative", transition: "background-color 0.5s, color 0.5s" }}>
+    <main style={{ backgroundColor: t.bg, color: t.text, minHeight: "100vh", position: "relative" }}>
       <style>{`
         @keyframes btnShake{0%{transform:translateX(0) rotate(0deg)}8%{transform:translateX(-6px) rotate(-5deg)}16%{transform:translateX(6px) rotate(5deg)}24%{transform:translateX(-5px) rotate(-4deg)}32%{transform:translateX(5px) rotate(4deg)}40%{transform:translateX(-4px) rotate(-3deg)}48%{transform:translateX(4px) rotate(3deg)}56%{transform:translateX(-3px) rotate(-2deg)}64%{transform:translateX(3px) rotate(2deg)}80%{transform:translateX(-1px) rotate(-1deg)}100%{transform:translateX(0) rotate(0deg)}}
         html,body{overscroll-behavior:none;-webkit-overflow-scrolling:touch;}
@@ -516,7 +511,7 @@ export default function Home() {
       `}</style>
       <MatrixBackground color={t.matrixColor}/>
       <CursorGlow accent={t.accent}/>
-      <AnimatePresence>{showPopup && <LangPopup t={t} onSelect={l => { setLang(l); setShowPopup(false); runThemeIntro(); }}/>}</AnimatePresence>
+      <AnimatePresence>{showPopup && <LangPopup t={t} onSelect={l => { setLang(l); setShowPopup(false); }}/>}</AnimatePresence>
 
       <a href={waLink} target="_blank" rel="noopener noreferrer" style={{ position: "fixed", bottom: "6rem", right: "1.5rem", zIndex: 100, display: "flex", alignItems: "center", gap: "0.5rem", padding: "0.75rem 1rem", borderRadius: 999, backgroundColor: "#25D366", color: "#000", fontWeight: 900, fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.05em", boxShadow: "0 8px 30px rgba(37,211,102,0.4)", textDecoration: "none", ...shakeStyle }}>
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
@@ -527,10 +522,6 @@ export default function Home() {
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
         <span className="hidden md:inline">{c.btn_zoom}</span>
       </a>
-
-      <button onClick={() => setThemeIdx(i => (i + 1) % themeOrder.length)} style={{ position: "fixed", bottom: "10.5rem", right: "1.5rem", zIndex: 100, padding: "0.75rem", borderRadius: 999, backgroundColor: themes[nextThemeKey].accent, color: themes[nextThemeKey].bg, border: "none", cursor: "pointer", boxShadow: `0 4px 20px ${themes[nextThemeKey].accent}60`, transition: "background-color 0.5s, color 0.5s, box-shadow 0.5s" }}>
-        <Palette size={18}/>
-      </button>
 
       <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 50, backdropFilter: "blur(14px)", backgroundColor: t.navBg, borderBottom: `1px solid ${t.accent}12`, padding: "0.9rem 1.5rem", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <a href="#inicio"><Image src="/logo-satori.png" alt="SATORI" width={110} height={34} style={{ filter: t.logoFilter }}/></a>
@@ -733,4 +724,4 @@ export default function Home() {
       </footer>
     </main>
   );
-} 
+}
