@@ -225,6 +225,7 @@ function MatrixCanvas() {
     const chars = "アイウエオカキクケコサシスセソタチツテトナニヌネノ01SATORI";
     const fs = 13;
     function resize() {
+      if (!canvas) return;
       W = canvas.offsetWidth; H = canvas.offsetHeight;
       canvas.width = W; canvas.height = H;
       cols = Math.floor(W / fs);
