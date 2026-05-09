@@ -11,12 +11,12 @@ const CALENDLY_LINK    = "https://calendly.com/rodrigo-tristaan";
 const EMAIL            = "r.tristaan@outlook.com";
 
 const theme = {
-  bg:          "#FFFFF8",
-  accent:      "#A67C00",
-  text:        "#1a1000",
-  sub:         "#7A5C14",
+  bg:          "#F4F4F2",
+  accent:      "#6B6B69",
+  text:        "#0E0E0E",
+  sub:         "#7a7261",
   card:        "#FDF8E1",
-  matrixColor: "#C9A800",
+  matrixColor: "#D0D0CE",
   navBg:       "rgba(255,255,248,0.93)",
   logoFilter:  "brightness(0) sepia(1)",
   ensoFilter:  "brightness(0) sepia(1) opacity(0.06)",
