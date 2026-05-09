@@ -12,7 +12,7 @@ const EMAIL            = "r.tristaan@outlook.com";
 
 const theme = {
   bg:          "#F4F4F2",
-  accent:      "#6B6B69",
+  accent:      "#c5c5c2",
   text:        "#0E0E0E",
   sub:         "#dedddb",
   card:        "#c2c2c1",
@@ -275,7 +275,7 @@ function RutaTimeline({ t, c }: { t: typeof theme; c: typeof copy.es }) {
 function ServicesBento({ t, c }: { t: typeof theme; c: typeof copy.es }) {
   const [flipped, setFlipped] = useState<number | null>(null);
   const [mousePos, setMousePos] = useState<{x: number, y: number}[]>([{x: 0, y: 0},{x: 0, y: 0},{x: 0, y: 0}]);
-  const accents = ["#C9920A", "#8B6914", "#5C4A10"];
+  const accents = ["#bcbbb9", "#000000", "#656564"];
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>, i: number) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
@@ -655,7 +655,7 @@ export default function Home() {
             {c.reviews.slice(0,3).map((r, i) => (
               <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} style={{ padding: "1.75rem", backgroundColor: t.bg, border: `1px solid ${t.accent}12`, borderRadius: "1.5rem", display: "flex", flexDirection: "column", gap: "1rem", boxShadow: "0 4px 24px rgba(0,0,0,0.05)" }}>
                 <div style={{ display: "flex", gap: "0.15rem", alignItems: "center" }}>
-                  {[1,2,3,4,5].map((s) => (<span key={s} style={{ color: s <= Math.floor(r.stars) ? "#C9920A" : s - 0.5 === r.stars ? "#C9920A" : "#D1D5DB", fontSize: "0.85rem" }}>{s - 0.5 === r.stars ? "⯨" : "★"}</span>))}
+                  {[1,2,3,4,5].map((s) => (<span key={s} style={{ color: s <= Math.floor(r.stars) ? "#C9920A" : s - 0.5 === r.stars ? "#080808" : "#D1D5DB", fontSize: "0.85rem" }}>{s - 0.5 === r.stars ? "⯨" : "★"}</span>))}
                 </div>
                 <p style={{ fontSize: "0.9rem", lineHeight: 1.75, color: t.text, opacity: 0.8, fontStyle: "italic" }}>"{r.text}"</p>
                 <div style={{ marginTop: "auto" }}>
