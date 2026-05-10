@@ -1,721 +1,910 @@
-Código 8 de Mayo:   
-￼
-￼
-￼
-￼
-￼
-￼
-￼
-￼
-￼
- 
-￼
-  
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
-import { HandCoins, Zap, Target, Globe } from "lucide-react";
-import Image from "next/image";
+/* SATORI — Landing v2
+   Premium, restrained, mobile-first. Tinta + Papel + Oro como acento.
+   Adaptado para Next.js 16 + React 19.
+*/
+
 import { useState, useEffect, useRef } from "react";
 
-const WHATSAPP_LINK    = "https://wa.me/525625018281?text=Hola%20Rodrigo,%20vi%20tu%20página%20y%20me%20gustaría%20una%20auditoría.";
-const WHATSAPP_LINK_EN = "https://wa.me/525625018281?text=Hi%20Rodrigo,%20I%20saw%20your%20page%20and%20I'd%20like%20a%20free%20audit.";
-const CALENDLY_LINK    = "https://calendly.com/rodrigo-tristaan";
-const EMAIL            = "r.tristaan@outlook.com";
-
-const theme = {
-  bg:          "#FFFFF8",
-  accent:      "#A67C00",
-  text:        "#1a1000",
-  sub:         "#7A5C14",
-  card:        "#FDF8E1",
-  matrixColor: "#C9A800",
-  navBg:       "rgba(255,255,248,0.93)",
-  logoFilter:  "brightness(0) sepia(1)",
-  ensoFilter:  "brightness(0) sepia(1) opacity(0.06)",
-};
-
-const copy = {
+// ---------- CONTENT ----------
+const content = {
   es: {
-    nav: { problema: "El Problema", soluciones: "Servicios", cotizar: "Cotizar", cta: "Agendar Zoom" },
-    badge: "Estrategia · Marca · Crecimiento",
-    h1a: "Más clientes.", h1b: "Menos caos.",
-    hero_sub: "Sabemos lo que es atender el negocio, contestar mensajes, publicar en redes y encima intentar crecer. Satori automatiza lo repetitivo para que tú te enfoques en lo que importa: vender.",
-    cta1: "Quiero mi Auditoría Gratis", cta2: "Ver Cómo Funciona",
-    problema_h: "¿Te suena alguno de estos?",
-    problemas: [
-      { q: "Pago anuncios y no me llega el cliente correcto.",    desc: "Tu dinero en ads se va sin convertir porque no tienes un sistema que filtre prospectos." },
-      { q: "Se me van clientes por no contestar rápido.",         desc: "El 78% de las ventas las gana quien responde primero. Sin automatización, pierdes sin saberlo." },
-      { q: "Mis redes están muertas y la competencia me gana.",   desc: "La consistencia es lo que genera confianza — y ventas. Sin tiempo, no hay consistencia." },
-    ],
-    problema_cta: "Identifiqué mi problema — quiero la solución →",
+    nav: { problema: "Problema", servicios: "Servicios", nosotros: "Nosotros", cotizar: "Cotizar", cta: "Agendar" },
+    hero: {
+      eyebrow: "Estrategia · Marca · Crecimiento",
+      h1a: "Más clientes.",
+      h1b: "Menos ruido.",
+      sub: "Estrategia digital para empresarios que valoran su tiempo. Identidad, posicionamiento y marketing con IA — sin caos, sin promesas vacías.",
+      cta1: "Auditoría gratis",
+      cta2: "Cómo funciona",
+    },
+    problema: {
+      label: "El problema",
+      h: "¿Te suena alguno?",
+      items: [
+        { q: "Pago anuncios y no llega el cliente correcto.", d: "Tu inversión en ads se pierde sin un sistema que filtre y nutra prospectos antes de que se enfríen." },
+        { q: "Pierdo clientes por no contestar a tiempo.", d: "El 78% de las ventas las gana quien responde primero. Sin automatización, no compites." },
+        { q: "Mis redes están muertas y la competencia gana.", d: "La consistencia construye confianza. Sin tiempo, no hay consistencia." },
+      ],
+      cta: "Identifico mi problema",
+      hint: "Gratis · sin compromiso",
+    },
     stats: [
-      { label: "Tu negocio siempre abierto", n: "24/7" },
-      { label: "Prospectos perdidos",         n: "0"   },
-      { label: "Días para ver resultados",    n: "30"  },
+      { label: "Tu negocio abierto", n: "24/7", desc: "Siempre disponible" },
+      { label: "Prospectos perdidos", n: "0", desc: "Cero fugas" },
+      { label: "Días para resultados", n: "30", desc: "Garantizados" },
     ],
-    camino_label: "Tres soluciones. Un solo socio.",
-    camino_h: "Lo que hacemos",
-    camino_sub: "Cada servicio está diseñado para empresarios que quieren crecer con estrategia.",
-    ruta: [
-      { paso: "01", label: "Redes Activas", desc: "Presencia consistente que genera confianza y atrae seguidores reales." },
-      { paso: "02", label: "Marca Clara",   desc: "Identidad visual y mensaje que te diferencian de la competencia." },
-      { paso: "03", label: "Visibilidad",   desc: "Google, medios y comunidad online trabajando a tu favor." },
-      { paso: "04", label: "Conversión",    desc: "Sistemas automáticos que convierten interés en prospectos calificados." },
-      { paso: "05", label: "Ventas",        desc: "Clientes llegando solos. Tú solo cierras y entregas." },
-    ],
-    ver_mas: "Ver detalle",
-    servicios: [
-      { num: 1, tag: "Marca", t: "Marca Propia", sub: "Identidad · Presencia · Autoridad",        d: "La identidad de marca que un empresario serio merece.",              back: "Estrategia de marca, identidad visual, posicionamiento de CEO y presencia digital de alto impacto para empresarios que quieren ser referentes en su industria.", benefits: ["Imagen que genera confianza instantánea", "Diferenciación frente a tu competencia", "Posicionamiento de CEO en LinkedIn y medios", "Kit de marca completo listo para usar"], i: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=800&q=80&fm=jpg" },
-      { num: 2, tag: "Imagen",    t: "Posicionamiento Online", sub: "Reputación · Visibilidad · Confianza", d: "Tu empresa en el lugar correcto, frente a las personas correctas.",  back: "Gestión de reputación digital, posicionamiento en Google, presencia en medios y estrategia de contenido para que tu empresa sea la primera opción en su mercado.", benefits: ["Aparecer primero en Google en tu industria", "Reputación digital sólida y verificable", "Presencia activa en los medios correctos", "Contenido que atrae prospectos calificados"], i: "https://images.unsplash.com/photo-1547658719-da2b51169166?w=800&q=80&fm=jpg" },
-      { num: 3, tag: "IA",        t: "Marketing con IA",       sub: "Conversión · Automatización · Escala", d: "Sistemas de marketing impulsados por inteligencia artificial.",       back: "Embudos automáticos, agentes de IA para calificación y cierre, campañas optimizadas en tiempo real. Tu motor de crecimiento que nunca duerme.", benefits: ["Prospectos calificados en piloto automático", "Seguimiento sin perder ninguna oportunidad", "Campañas que se optimizan solas 24/7", "ROI visible desde el primer mes"], i: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800&q=80&fm=jpg" },
-    ],
-    cotizar_h: "¿Listo para crecer?",
-    cotizar_sub: "Cuéntanos dónde está tu negocio hoy y te armamos una propuesta a tu medida.",
-    cotizar_cta: "Quiero mi cotización →",
-    nosotros_label: "Tu Socio Digital", nosotros_nombre: "Rodrigo Tristán", nosotros_cargo: "Fundador de SATORI",
-    nosotros_quote: '"La IA no reemplaza tu negocio. Lo potencia."',
-    nosotros_p1: "Sé lo que cuesta construir un negocio desde adentro: las horas, las decisiones, la incertidumbre. Por eso fundé Satori — para que cada empresario mexicano tenga acceso a las mismas herramientas que usan las empresas más avanzadas del mundo.",
-    nosotros_p2: "La mayoría de las agencias te venden actividad. Yo te vendo claridad. Antes de tocar una sola herramienta, entendemos tu mercado, a tu cliente y qué es verdad en tu industria.",
-    garantia_title: "Garantía de 30 días:",
-    garantia_text: "Si en 30 días no sientes que el valor recibido supera lo que invertiste, seguimos trabajando contigo 20 días más sin costo adicional. Sin preguntas, sin drama.",
-    btn_zoom: "Agendar Zoom", btn_email: "Enviar Email",
-    faq_label: "Preguntas frecuentes",
-    faq_h: "Todo lo que necesitas saber.",
-    faqs: [
-      { q: "¿Cuánto tiempo tarda ver resultados?",      a: "Depende del servicio. Marca Propia: primeras semanas. Posicionamiento: 1–3 meses. Marketing con IA: desde el día de activación." },
-      { q: "¿Necesito saber de tecnología?",            a: "Para nada. Nos encargamos de toda la parte técnica. Tú solo nos dices cómo funciona tu negocio y nosotros hacemos el resto." },
-      { q: "¿Firmo un contrato largo?",                 a: "No. Trabajamos mes a mes. Si no estás satisfecho, puedes cancelar cuando quieras." },
-      { q: "¿Qué necesito para empezar?",               a: "Solo una llamada de 30 minutos. Ahí entendemos tu negocio, te proponemos la mejor ruta y te damos un precio claro. Sin sorpresas." },
-      { q: "¿Trabajan con cualquier tipo de negocio?",  a: "Trabajamos con empresarios y pymes en México — despachos, constructoras, clínicas, consultoras, servicios profesionales y más." },
-      { q: "¿Cómo funciona el marketing con IA?",       a: "Diseñamos embudos automáticos entrenados con tu negocio, integramos agentes de IA y conectamos campañas que se optimizan solas. Tú ves los resultados en un dashboard en tiempo real." },
-    ],
-    reviews_label: "Lo que dicen nuestros clientes",
-    reviews_h: "Resultados reales.",
-    reviews: [
-      { name: "Carlos M.",   role: "Dueño de restaurante",  text: "Antes perdía clientes porque no contestaba rápido. Ahora el bot de Satori responde solo y ya agendé 3 mesas más esta semana.", stars: 5 },
-      { name: "Fernanda R.", role: "Directora de clínica",  text: "Mi página web nueva me ha traído pacientes de Google que antes ni sabían que existíamos. El ROI fue visible en el primer mes.", stars: 5 },
-      { name: "Diego L.",    role: "Consultor independiente", text: "Contraté el servicio de redes y en 6 semanas duplicamos los mensajes de posibles clientes. El contenido es de muy buena calidad.", stars: 5 },
-      { name: "Ana P.",      role: "Directora de boutique", text: "El agente de IA es muy bueno. Rodrigo resolvió el único problema que tuve rápido y desde entonces funciona de maravilla.", stars: 4.5 },
-    ],
-    footer: "© 2026 SATORI · Estrategia Digital para Empresarios · México",
+    servicios: {
+      eyebrow: "Tres soluciones. Un socio.",
+      h: "Lo que hacemos.",
+      sub: "Cada servicio diseñado para empresarios que crecen con estrategia.",
+      items: [
+        { num: "01", tag: "Marca", t: "Marca propia", sub: "Identidad · Presencia · Autoridad", d: "La identidad que un empresario serio merece.", benefits: ["Imagen que genera confianza", "Diferenciación clara", "Posicionamiento de CEO", "Kit de marca completo"], img: "/assets/marca-propia.png" },
+        { num: "02", tag: "Imagen", t: "Posicionamiento online", sub: "Reputación · Visibilidad · Confianza", d: "Tu empresa frente a las personas correctas.", benefits: ["Primero en Google", "Reputación verificable", "Presencia en medios", "Contenido que atrae"], img: "/assets/posicionamiento.png" },
+        { num: "03", tag: "IA", t: "Marketing con IA", sub: "Conversión · Automatización · Escala", d: "Tu motor de crecimiento que nunca duerme.", benefits: ["Prospectos en piloto automático", "Sin oportunidades perdidas", "Campañas auto-optimizadas", "ROI desde el primer mes"], img: "/assets/marketing-ia.png" },
+      ],
+      cta: "Ver detalle",
+    },
+    ruta: {
+      label: "Tu ruta de crecimiento",
+      steps: [
+        { paso: "01", label: "Redes activas", desc: "Presencia consistente que genera confianza." },
+        { paso: "02", label: "Marca clara", desc: "Identidad que te diferencia." },
+        { paso: "03", label: "Visibilidad", desc: "Google y medios trabajando a tu favor." },
+        { paso: "04", label: "Conversión", desc: "Sistemas que convierten interés en prospectos." },
+        { paso: "05", label: "Ventas", desc: "Clientes llegando solos." },
+      ],
+    },
+    nosotros: {
+      label: "Tu socio digital",
+      nombre: "Rodrigo Tristán",
+      cargo: "Fundador de Satori",
+      quote: "La estrategia antes que el ruido.",
+      p1: "Sé lo que cuesta construir un negocio desde adentro. Por eso fundé Satori — para que cada empresario mexicano acceda a las herramientas que usan las empresas más avanzadas del mundo.",
+      p2: "La mayoría de las agencias venden actividad. Yo vendo claridad. Antes de tocar una herramienta, entendemos tu mercado, tu cliente y qué es verdad en tu industria.",
+      garantia_t: "Garantía de 30 días.",
+      garantia_d: "Si no sientes que el valor supera la inversión, seguimos 20 días más sin costo. Sin preguntas.",
+      cta1: "Agendar Zoom",
+      cta2: "Email",
+    },
+    reviews: {
+      label: "Lo que dicen",
+      h: "Resultados reales.",
+      items: [
+        { name: "Carlos M.", role: "Restaurantero", text: "Antes perdía clientes por no contestar rápido. Ahora el sistema responde solo y ya agendé tres mesas más esta semana.", stars: 5 },
+        { name: "Fernanda R.", role: "Directora de clínica", text: "Mi sitio web nuevo me trajo pacientes que antes ni sabían que existíamos. ROI visible en el primer mes.", stars: 5 },
+        { name: "Diego L.", role: "Consultor", text: "En seis semanas duplicamos los mensajes de prospectos. Contenido de muy buena calidad.", stars: 5 },
+      ],
+    },
+    mapa: {
+      label: "Presencia nacional",
+      h: "Clientes en todo México.",
+      sub: "Y creciendo.",
+    },
+    faq: {
+      label: "Preguntas frecuentes",
+      h: "Lo esencial.",
+      items: [
+        { q: "¿Cuánto tarda en ver resultados?", a: "Marca propia: primeras semanas. Posicionamiento: 1–3 meses. Marketing con IA: desde la activación." },
+        { q: "¿Necesito saber de tecnología?", a: "Para nada. Nos encargamos de toda la parte técnica. Tú nos cuentas tu negocio, nosotros hacemos el resto." },
+        { q: "¿Firmo contrato largo?", a: "No. Trabajamos mes a mes. Cancela cuando quieras." },
+        { q: "¿Qué necesito para empezar?", a: "Una llamada de 30 minutos. Entendemos tu negocio, proponemos la ruta, te damos un precio claro." },
+        { q: "¿Con qué tipo de negocios trabajan?", a: "Empresarios y pymes en México — despachos, constructoras, clínicas, consultoras y servicios profesionales." },
+      ],
+    },
+    cotizar: {
+      h: "¿Listo para crecer?",
+      sub: "Cuéntanos dónde estás hoy y armamos una propuesta a tu medida.",
+      cta: "Quiero mi cotización",
+    },
+    footer: "© 2026 Satori · Estrategia digital · México",
   },
   en: {
-    nav: { problema: "The Problem", soluciones: "Services", cotizar: "Quote", cta: "Book a Zoom" },
-    badge: "Strategy · Brand · Growth",
-    h1a: "More clients.", h1b: "Less chaos.",
-    hero_sub: "We know what it's like to run a business, answer messages, post on social media, and still try to grow. Satori automates the repetitive stuff so you can focus on what matters: selling.",
-    cta1: "Get My Free Audit", cta2: "See How It Works",
-    problema_h: "Do any of these sound familiar?",
-    problemas: [
-      { q: "I pay for ads but the wrong people show up.",            desc: "Your ad spend leaks because there's no system to filter and nurture leads before they go cold." },
-      { q: "I lose customers because I can't reply fast enough.",    desc: "78% of sales go to whoever responds first. Without automation, you're losing deals you don't even know about." },
-      { q: "My social media is dead and competitors are winning.",   desc: "Consistency is what builds trust — and trust drives sales. Without time, there's no consistency." },
-    ],
-    problema_cta: "I found my problem — show me the fix →",
+    nav: { problema: "Problem", servicios: "Services", nosotros: "About", cotizar: "Quote", cta: "Book" },
+    hero: {
+      eyebrow: "Strategy · Brand · Growth",
+      h1a: "More clients.",
+      h1b: "Less noise.",
+      sub: "Digital strategy for entrepreneurs who value their time. Identity, positioning and AI marketing — no chaos, no empty promises.",
+      cta1: "Free audit",
+      cta2: "How it works",
+    },
+    problema: {
+      label: "The problem",
+      h: "Sound familiar?",
+      items: [
+        { q: "I pay for ads but the wrong people arrive.", d: "Your ad spend leaks without a system to filter and nurture leads before they go cold." },
+        { q: "I lose clients because I can't reply fast enough.", d: "78% of sales go to whoever answers first. Without automation, you don't compete." },
+        { q: "My social is dead and competitors are winning.", d: "Consistency builds trust. Without time, there's no consistency." },
+      ],
+      cta: "I found my problem",
+      hint: "Free · no commitment",
+    },
     stats: [
-      { label: "Your business always open", n: "24/7" },
-      { label: "Leads lost",                n: "0"   },
-      { label: "Days to see results",       n: "30"  },
+      { label: "Your business open", n: "24/7", desc: "Always on" },
+      { label: "Leads lost", n: "0", desc: "Zero leaks" },
+      { label: "Days to results", n: "30", desc: "Guaranteed" },
     ],
-    camino_label: "Three solutions. One partner.",
-    camino_h: "What we do",
-    camino_sub: "Each service is designed for executives who want to grow with strategy.",
-    ruta: [
-      { paso: "01", label: "Active Social",  desc: "Consistent presence that builds trust and attracts real followers." },
-      { paso: "02", label: "Clear Brand",    desc: "Visual identity and message that set you apart from competitors." },
-      { paso: "03", label: "Visibility",     desc: "Google, media and online community working in your favor." },
-      { paso: "04", label: "Conversion",     desc: "Automatic systems turning interest into qualified prospects." },
-      { paso: "05", label: "Sales",          desc: "Clients coming to you. You just close and deliver." },
-    ],
-    ver_mas: "See details",
-    servicios: [
-      { num: 1, tag: "Brand", t: "Brand Identity", sub: "Identity · Presence · Authority",         d: "The brand identity a serious executive deserves.",                  back: "Brand strategy, visual identity, CEO positioning and high-impact digital presence for entrepreneurs who want to become the reference in their industry.", benefits: ["Instant trust through a powerful image", "Stand out clearly from competitors", "CEO positioning on LinkedIn and media", "Complete brand kit ready to deploy"], i: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=800&q=80&fm=jpg" },
-      { num: 2, tag: "Image",     t: "Online Positioning",    sub: "Reputation · Visibility · Trust",      d: "Your company in the right place, in front of the right people.",    back: "Digital reputation management, Google positioning, media presence and content strategy so your company becomes the first choice in its market.", benefits: ["Rank first on Google in your industry", "Solid and verifiable digital reputation", "Active presence in the right media", "Content that attracts qualified prospects"], i: "https://images.unsplash.com/photo-1547658719-da2b51169166?w=800&q=80&fm=jpg" },
-      { num: 3, tag: "AI",        t: "AI-Powered Marketing",  sub: "Conversion · Automation · Scale",      d: "Marketing systems powered by artificial intelligence.",              back: "Automated funnels, AI agents for lead qualification and closing, real-time optimized campaigns. Your growth engine that never sleeps.", benefits: ["Qualified leads on autopilot", "No opportunity slips through the cracks", "Self-optimizing campaigns 24/7", "Visible ROI from month one"], i: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800&q=80&fm=jpg" },
-    ],
-    cotizar_h: "Ready to grow?",
-    cotizar_sub: "Tell us where your business is today and we'll build a proposal tailored to you.",
-    cotizar_cta: "Get my quote →",
-    nosotros_label: "Your Digital Partner", nosotros_nombre: "Rodrigo Tristán", nosotros_cargo: "Founder of SATORI",
-    nosotros_quote: '"AI doesn\'t replace your business. It supercharges it."',
-    nosotros_p1: "I know what it costs to build a business from the inside: the hours, the decisions, the uncertainty. That's why I founded Satori — so every Mexican entrepreneur has access to the same tools used by the world's most advanced companies.",
-    nosotros_p2: "Most agencies sell you activity. I sell you clarity. Before touching a single tool, we understand your market, your customer, and what's actually true in your industry.",
-    garantia_title: "30-Day Guarantee:",
-    garantia_text: "If within 30 days you don't feel the value far exceeds what you invested, we keep working with you for 20 more days at no additional cost. No questions, no drama.",
-    btn_zoom: "Book a Zoom", btn_email: "Send Email",
-    faq_label: "Frequently asked questions",
-    faq_h: "Everything you need to know.",
-    faqs: [
-      { q: "How long until I see results?",             a: "Depends on the service. Brand Identity: first weeks. Positioning: 1–3 months. AI Marketing: from day one of activation." },
-      { q: "Do I need to be tech-savvy?",               a: "Not at all. We handle every technical detail. Just tell us how your business works and we take care of the rest." },
-      { q: "Do I sign a long-term contract?",           a: "No. We work month to month. Cancel anytime." },
-      { q: "What do I need to get started?",            a: "Just a 30-minute call. We learn your business, propose the best path, and give you a clear price. No surprises." },
-      { q: "What types of businesses do you work with?", a: "Entrepreneurs and SMEs in Mexico — law firms, construction, clinics, consultancies, professional services and more." },
-      { q: "How does AI marketing work?",               a: "We design automated funnels trained on your business, integrate AI agents and connect self-optimizing campaigns. You see results in a real-time dashboard." },
-    ],
-    reviews_label: "What our clients say",
-    reviews_h: "Real results.",
-    reviews: [
-      { name: "Carlos M.",   role: "Restaurant owner",       text: "I used to lose customers because I couldn't reply fast. Now Satori's bot handles it and I've booked 3 more tables this week.", stars: 5 },
-      { name: "Fernanda R.", role: "Clinic director",        text: "My new website brought in patients from Google who didn't even know we existed. ROI was visible in the first month.", stars: 5 },
-      { name: "Diego L.",    role: "Independent consultant", text: "I hired the social media service and in 6 weeks we doubled our inbound messages. The content quality is excellent.", stars: 5 },
-      { name: "Ana P.",      role: "Boutique director",      text: "The AI agent is great. Rodrigo fixed the only issue quickly and since then it works flawlessly.", stars: 4.5 },
-    ],
-    footer: "© 2026 SATORI · Digital Strategy for Executives · México",
+    servicios: {
+      eyebrow: "Three solutions. One partner.",
+      h: "What we do.",
+      sub: "Each service designed for entrepreneurs who grow with strategy.",
+      items: [
+        { num: "01", tag: "Brand", t: "Brand identity", sub: "Identity · Presence · Authority", d: "The identity a serious entrepreneur deserves.", benefits: ["Instant trust through image", "Clear differentiation", "CEO positioning", "Complete brand kit"], img: "/assets/marca-propia.png" },
+        { num: "02", tag: "Image", t: "Online positioning", sub: "Reputation · Visibility · Trust", d: "Your company in front of the right people.", benefits: ["Rank first on Google", "Verifiable reputation", "Presence in media", "Content that attracts"], img: "/assets/posicionamiento.png" },
+        { num: "03", tag: "AI", t: "AI marketing", sub: "Conversion · Automation · Scale", d: "Your growth engine that never sleeps.", benefits: ["Leads on autopilot", "No missed opportunities", "Self-optimizing campaigns", "ROI from month one"], img: "/assets/marketing-ia.png" },
+      ],
+      cta: "See details",
+    },
+    ruta: {
+      label: "Your growth roadmap",
+      steps: [
+        { paso: "01", label: "Active social", desc: "Consistent presence that builds trust." },
+        { paso: "02", label: "Clear brand", desc: "Identity that sets you apart." },
+        { paso: "03", label: "Visibility", desc: "Google and media working for you." },
+        { paso: "04", label: "Conversion", desc: "Systems that turn interest into leads." },
+        { paso: "05", label: "Sales", desc: "Clients coming to you." },
+      ],
+    },
+    nosotros: {
+      label: "Your digital partner",
+      nombre: "Rodrigo Tristán",
+      cargo: "Founder of Satori",
+      quote: "Strategy before noise.",
+      p1: "I know what it costs to build a business from the inside. That's why I founded Satori — so every Mexican entrepreneur has access to the same tools as the world's most advanced companies.",
+      p2: "Most agencies sell activity. I sell clarity. Before touching a tool, we understand your market, your client and what's actually true in your industry.",
+      garantia_t: "30-day guarantee.",
+      garantia_d: "If the value doesn't exceed your investment, we keep working 20 more days at no cost. No questions.",
+      cta1: "Book a Zoom",
+      cta2: "Email",
+    },
+    reviews: {
+      label: "What clients say",
+      h: "Real results.",
+      items: [
+        { name: "Carlos M.", role: "Restaurant owner", text: "I used to lose clients because I couldn't reply fast. Now the system handles it and I've booked three more tables this week.", stars: 5 },
+        { name: "Fernanda R.", role: "Clinic director", text: "My new website brought patients who didn't even know we existed. ROI visible in the first month.", stars: 5 },
+        { name: "Diego L.", role: "Consultant", text: "In six weeks we doubled inbound messages. Content quality is excellent.", stars: 5 },
+      ],
+    },
+    mapa: {
+      label: "National presence",
+      h: "Clients across Mexico.",
+      sub: "And growing.",
+    },
+    faq: {
+      label: "Frequently asked",
+      h: "The essentials.",
+      items: [
+        { q: "How long until results?", a: "Brand: first weeks. Positioning: 1–3 months. AI marketing: from activation." },
+        { q: "Do I need to be tech-savvy?", a: "Not at all. We handle every technical detail. You tell us about your business, we do the rest." },
+        { q: "Long-term contract?", a: "No. Month to month. Cancel anytime." },
+        { q: "What do I need to start?", a: "A 30-minute call. We learn your business, propose the path, give you a clear price." },
+        { q: "What businesses do you work with?", a: "Entrepreneurs and SMEs in Mexico — law firms, construction, clinics, consultancies and professional services." },
+      ],
+    },
+    cotizar: {
+      h: "Ready to grow?",
+      sub: "Tell us where you are today and we'll build a proposal for you.",
+      cta: "Get my quote",
+    },
+    footer: "© 2026 Satori · Digital strategy · Mexico",
   },
+} as const;
+
+type Lang = "es" | "en";
+type Content = typeof content.es;
+
+const WHATSAPP = "https://wa.me/525625018281?text=Hola%20Rodrigo,%20vi%20tu%20página%20y%20me%20gustaría%20una%20auditoría.";
+const CALENDLY = "https://calendly.com/rodrigo-tristaan";
+const EMAIL = "r.tristaan@outlook.com";
+
+// ---------- SHARED STYLES ----------
+const eyebrowStyle: React.CSSProperties = {
+  fontFamily: "'JetBrains Mono', monospace",
+  fontSize: "0.66rem", letterSpacing: "0.28em", textTransform: "uppercase",
+  color: "#0E0E0E", opacity: 0.55, fontWeight: 400, marginBottom: "1.5rem",
+};
+const h2Style: React.CSSProperties = {
+  fontFamily: "'Playfair Display', serif",
+  fontSize: "clamp(2.4rem,5.5vw,4.5rem)", fontWeight: 400, lineHeight: 1.0,
+  color: "#0E0E0E", letterSpacing: "-0.025em", margin: 0,
+};
+const btnPrimary: React.CSSProperties = {
+  padding: "1rem 1.8rem", background: "#0E0E0E", color: "#F4F4F2",
+  fontSize: "0.7rem", letterSpacing: "0.22em", textTransform: "uppercase", fontWeight: 500,
+  textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "0.5rem",
+  fontFamily: "inherit", whiteSpace: "nowrap", borderRadius: "999px",
+  transition: "transform 0.2s ease, box-shadow 0.2s ease",
+};
+const btnGhost: React.CSSProperties = {
+  padding: "1rem 1.8rem", background: "transparent", color: "#0E0E0E",
+  border: "1px solid #0E0E0E30", fontSize: "0.7rem", letterSpacing: "0.22em",
+  textTransform: "uppercase", fontWeight: 400, textDecoration: "none",
+  display: "inline-flex", alignItems: "center", gap: "0.5rem", fontFamily: "inherit", whiteSpace: "nowrap",
+  borderRadius: "999px", transition: "transform 0.2s ease, background 0.2s ease",
+};
+const btnGold: React.CSSProperties = {
+  padding: "1rem 1.8rem", background: "#A67C00", color: "#F4F4F2",
+  fontSize: "0.7rem", letterSpacing: "0.22em", textTransform: "uppercase", fontWeight: 500,
+  textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "0.5rem",
+  fontFamily: "inherit", whiteSpace: "nowrap", borderRadius: "999px",
+  transition: "transform 0.2s ease, box-shadow 0.2s ease",
 };
 
-function MatrixBackground({ color }: { color: string }) {
+// ---------- ENSŌ ----------
+function Enso({ size = 360, opacity = 0.92, spinning = true, color = "#0E0E0E" }: { size?: number; opacity?: number; spinning?: boolean; color?: string }) {
+  const isLight = color && color.toLowerCase() !== "#0e0e0e" && color.toLowerCase() !== "#000" && color.toLowerCase() !== "#000000";
+  return (
+    <div style={{
+      width: size, height: size, display: "flex", alignItems: "center", justifyContent: "center",
+      animation: spinning ? "ensoSpin 22s linear infinite" : "none",
+    }}>
+      <img
+        src="/assets/enso.png"
+        alt="Ensō"
+        width={size}
+        height={size}
+        style={{
+          width: size,
+          height: size,
+          opacity,
+          objectFit: "contain",
+          filter: isLight ? "invert(1)" : "none",
+          userSelect: "none",
+          pointerEvents: "none",
+        }}
+        draggable={false}
+      />
+    </div>
+  );
+}
+
+// ---------- MATRIX RAIN ----------
+function MatrixBackground({ opacity = 0.07, color = "#A67C00" }: { opacity?: number; color?: string }) {
   const ref = useRef<HTMLCanvasElement>(null);
-  const colorRef = useRef(color);
-  useEffect(() => { colorRef.current = color; }, [color]);
   useEffect(() => {
-    const canvas = ref.current!; const ctx = canvas.getContext("2d")!; let id: number;
+    const canvas = ref.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
     const resize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
-    resize(); window.addEventListener("resize", resize);
-    const cols = Math.floor(canvas.width / 20); const drops = Array(cols).fill(1);
+    resize();
+    window.addEventListener("resize", resize);
+    const cols = Math.floor(canvas.width / 22);
+    const drops = Array(cols).fill(1);
+    let id: number;
     const draw = () => {
-      ctx.fillStyle = "rgba(0,0,0,0.035)"; ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.font = "14px monospace";
+      ctx.fillStyle = "rgba(244,244,242,0.05)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.font = "13px 'JetBrains Mono', monospace";
       drops.forEach((y, i) => {
-        ctx.fillStyle = Math.random() > 0.93 ? colorRef.current : colorRef.current + "55";
-        ctx.fillText(Math.random() < 0.5 ? "1" : "0", i * 20, y * 20);
-        if (y * 20 > canvas.height && Math.random() > 0.975) drops[i] = 0;
+        ctx.fillStyle = Math.random() > 0.94 ? color : color + "44";
+        ctx.fillText(Math.random() < 0.5 ? "1" : "0", i * 22, y * 22);
+        if (y * 22 > canvas.height && Math.random() > 0.975) drops[i] = 0;
         drops[i]++;
       });
       id = requestAnimationFrame(draw);
     };
     draw();
     return () => { cancelAnimationFrame(id); window.removeEventListener("resize", resize); };
-  }, []);
-  return <canvas ref={ref} style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", opacity: 0.18, pointerEvents: "none", zIndex: 0, willChange: "transform" }} />;
+  }, [color]);
+  return <canvas ref={ref} style={{ position: "fixed", inset: 0, opacity, pointerEvents: "none", zIndex: 0 }} />;
 }
 
-function CursorGlow({ accent }: { accent: string }) {
-  const [pos, setPos] = useState({ x: -999, y: -999 }); const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    const move = (e: MouseEvent) => { setPos({ x: e.clientX, y: e.clientY }); setVisible(true); };
-    const leave = () => setVisible(false);
-    window.addEventListener("mousemove", move); window.addEventListener("mouseleave", leave);
-    return () => { window.removeEventListener("mousemove", move); window.removeEventListener("mouseleave", leave); };
-  }, []);
-  return <div style={{ position: "fixed", pointerEvents: "none", zIndex: 9999, left: pos.x - 180, top: pos.y - 180, width: 360, height: 360, borderRadius: "50%", background: `radial-gradient(circle, ${accent}22 0%, ${accent}08 45%, transparent 70%)`, opacity: visible ? 1 : 0, transition: "opacity 0.3s", mixBlendMode: "multiply" }} />;
-}
-
-function Typewriter({ text, style }: { text: string; style?: React.CSSProperties }) {
-  const [displayed, setDisplayed] = useState(""); const [idx, setIdx] = useState(0);
-  const [done, setDone] = useState(false); const [started, setStarted] = useState(false);
-  const ref = useRef<HTMLSpanElement>(null);
-  useEffect(() => { setDisplayed(""); setIdx(0); setDone(false); setStarted(false); }, [text]);
-  useEffect(() => {
-    const el = ref.current; if (!el) return;
-    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting && !started) setStarted(true); }, { threshold: 0.5 });
-    obs.observe(el); return () => obs.disconnect();
-  }, [started]);
-  useEffect(() => {
-    if (!started || done || idx >= text.length) { if (idx >= text.length) setDone(true); return; }
-    const timer = setTimeout(() => { setDisplayed(p => p + text[idx]); setIdx(i => i + 1); }, 80);
-    return () => clearTimeout(timer);
-  }, [idx, text, done, started]);
+// ---------- LANG POPUP ----------
+function LangPopup({ onSelect }: { onSelect: (l: Lang) => void }) {
   return (
-    <span ref={ref} style={{ textAlign: "center", display: "block", ...style }}>
-      {displayed}{started && !done && <span style={{ opacity: 0.5, animation: "blink 0.8s step-end infinite" }}>|</span>}
-      <style>{`@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}`}</style>
-    </span>
-  );
-}
-
-function SpinningEnso({ filter, opacity = 0.88 }: { filter: string; opacity?: number }) {
-  return (
-    <motion.div animate={{ rotate: [0, -360] }} transition={{ duration: 18, repeat: Infinity, ease: "linear", repeatType: "loop" }} style={{ width: 420, height: 420, display: "flex", alignItems: "center", justifyContent: "center", transformOrigin: "center center" }}>
-      <Image src="/enso-negro.png" alt="Enso" width={420} height={420} style={{ filter, opacity, display: "block" }} />
-    </motion.div>
-  );
-}
-
-function LangPopup({ onSelect, t }: { onSelect: (l: "es" | "en") => void; t: typeof theme }) {
-  return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[200] flex items-center justify-center" style={{ backgroundColor: "rgba(0,0,0,0.6)", backdropFilter: "blur(12px)" }}>
-      <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }} style={{ padding: "2.5rem", maxWidth: "22rem", width: "90%", backgroundColor: t.card, border: `1px solid ${t.accent}30` }}>
-        <Image src="/logo-satori.png" alt="SATORI" width={90} height={28} className="mx-auto mb-8" style={{ filter: t.logoFilter }} />
-        <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-          <button onClick={() => onSelect("es")} style={{ width: "100%", padding: "1rem", fontWeight: 900, fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.1em", backgroundColor: t.accent, color: t.bg, border: "none", cursor: "pointer" }}>🇲🇽 Español</button>
-          <button onClick={() => onSelect("en")} style={{ width: "100%", padding: "1rem", fontWeight: 900, fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.1em", backgroundColor: "transparent", color: t.text, border: `1px solid ${t.accent}35`, cursor: "pointer" }}>🇺🇸 English</button>
+    <div style={{
+      position: "fixed", inset: 0, zIndex: 200, display: "flex", alignItems: "center", justifyContent: "center",
+      background: "rgba(14,14,14,0.55)", backdropFilter: "blur(14px)",
+    }}>
+      <div style={{
+        padding: "3rem 2.5rem", maxWidth: "22rem", width: "90%", background: "#F4F4F2",
+        border: "1px solid #0E0E0E15", borderRadius: "32px",
+      }}>
+        <div style={{ textAlign: "center", marginBottom: "2.25rem" }}>
+          <p style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.65rem", letterSpacing: "-0.01em", color: "#0E0E0E", margin: 0 }}>Satori Agency</p>
+          <p style={{ fontSize: "0.6rem", letterSpacing: "0.32em", textTransform: "uppercase", color: "#0E0E0E", opacity: 0.45, marginTop: "0.5rem" }}>Estrategia digital</p>
         </div>
-      </motion.div>
-    </motion.div>
-  );
-}
-
-function RutaTimeline({ t, c }: { t: typeof theme; c: typeof copy.es }) {
-  const [hovered, setHovered] = useState<number | null>(null);
-  return (
-    <div style={{ padding: "4rem clamp(1.5rem,5vw,4rem) 2rem", maxWidth: "72rem", margin: "0 auto" }}>
-      <p style={{ fontSize: "0.62rem", textTransform: "uppercase", letterSpacing: "0.35em", color: t.accent, fontWeight: 900, marginBottom: "2.5rem", textAlign: "center" }}>
-        {c.ruta[0].label === "Active Social" ? "Your growth roadmap" : "Tu ruta de crecimiento"}
-      </p>
-      <div style={{ position: "relative", display: "flex", alignItems: "flex-start", gap: 0 }}>
-        {/* Line */}
-        <div style={{ position: "absolute", top: "2rem", left: "calc(10% + 1rem)", right: "calc(10% + 1rem)", height: "2px", background: `linear-gradient(to right, ${t.accent}22, ${t.accent}, ${t.accent}22)`, zIndex: 0 }} />
-        {c.ruta.map((step, i) => {
-          const isH = hovered === i;
-          return (
-            <motion.div key={i}
-              onHoverStart={() => setHovered(i)} onHoverEnd={() => setHovered(null)}
-              animate={{ y: isH ? -8 : 0 }}
-              transition={{ duration: 0.25, ease: "easeOut" }}
-              style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", padding: "0 0.5rem", position: "relative", zIndex: 1, cursor: "default" }}>
-              <motion.div
-                animate={{ scale: isH ? 1.15 : 1, backgroundColor: isH ? t.accent : t.bg, borderColor: t.accent }}
-                transition={{ duration: 0.25 }}
-                style={{ width: "4rem", height: "4rem", borderRadius: "50%", border: `2px solid ${t.accent}`, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "1rem", boxShadow: isH ? `0 8px 24px ${t.accent}40` : "none" }}>
-                <span style={{ fontSize: "0.65rem", fontWeight: 900, color: isH ? t.bg : t.accent, letterSpacing: "0.05em" }}>{step.paso}</span>
-              </motion.div>
-              <p style={{ fontSize: "0.72rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.1em", color: isH ? t.accent : t.text, marginBottom: "0.5rem", transition: "color 0.25s" }}>{step.label}</p>
-              <motion.p animate={{ opacity: isH ? 1 : 0, height: isH ? "auto" : 0 }} transition={{ duration: 0.25 }} style={{ fontSize: "0.7rem", lineHeight: 1.6, color: t.sub, overflow: "hidden" }}>{step.desc}</motion.p>
-              {i < c.ruta.length - 1 && (
-                <motion.div animate={{ opacity: isH ? 1 : 0 }} style={{ position: "absolute", right: "-4px", top: "1.4rem", fontSize: "0.8rem", color: t.accent }}>›</motion.div>
-              )}
-            </motion.div>
-          );
-        })}
+        <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+          <button onClick={() => onSelect("es")} style={{
+            width: "100%", padding: "1rem", fontWeight: 500, fontSize: "0.72rem",
+            textTransform: "uppercase", letterSpacing: "0.18em", background: "#0E0E0E", color: "#F4F4F2",
+            border: "none", cursor: "pointer", fontFamily: "inherit", borderRadius: "999px",
+          }}>Español</button>
+          <button onClick={() => onSelect("en")} style={{
+            width: "100%", padding: "1rem", fontWeight: 400, fontSize: "0.72rem",
+            textTransform: "uppercase", letterSpacing: "0.18em", background: "transparent", color: "#0E0E0E",
+            border: "1px solid #0E0E0E25", cursor: "pointer", fontFamily: "inherit", borderRadius: "999px",
+          }}>English</button>
+        </div>
       </div>
     </div>
   );
 }
 
-function ServicesBento({ t, c }: { t: typeof theme; c: typeof copy.es }) {
-  const [flipped, setFlipped] = useState<number | null>(null);
-  const [mousePos, setMousePos] = useState<{x: number, y: number}[]>([{x: 0, y: 0},{x: 0, y: 0},{x: 0, y: 0}]);
-  const accents = ["#C9920A", "#8B6914", "#5C4A10"];
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>, i: number) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
-    const y = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
-    setMousePos(prev => { const n = [...prev]; n[i] = {x, y}; return n; });
-  };
-  const sectionLabel = c.ruta[0].label === "Active Social" ? "Our main services" : "Nuestros servicios principales";
+// ---------- NAV ----------
+function Nav({ c, lang, onOpenLang }: { c: Content; lang: Lang; onOpenLang: () => void }) {
   return (
-    <div style={{ padding: "0 clamp(1rem,4vw,3rem) 3rem" }}>
-      <p style={{ textAlign: "center", fontSize: "0.62rem", textTransform: "uppercase", letterSpacing: "0.35em", color: t.accent, fontWeight: 900, marginBottom: "2.5rem" }}>{sectionLabel}</p>
-      <div style={{ display: "grid", gap: "1.5rem", gridTemplateColumns: "repeat(3,1fr)" }}>
-        {c.servicios.map((s, i) => {
-          const color = accents[i];
-          const isFlipped = flipped === i;
-          const mx = mousePos[i]?.x ?? 0;
-          const my = mousePos[i]?.y ?? 0;
-          return (
-            <div key={i}
-              onMouseEnter={() => setFlipped(i)}
-              onMouseLeave={() => { setFlipped(null); setMousePos(prev => { const n = [...prev]; n[i] = {x:0,y:0}; return n; }); }}
-              onMouseMove={(e) => handleMouseMove(e, i)}
-              onClick={() => setFlipped(isFlipped ? null : i)}
-              style={{ perspective: "900px", cursor: "pointer", minHeight: "clamp(360px,46vh,520px)" }}>
-              <motion.div
-                animate={{
-                  rotateY: isFlipped ? 180 : mx * 8,
-                  rotateX: isFlipped ? 0 : -my * 6,
-                }}
-                transition={{ duration: isFlipped ? 0.65 : 0.1, ease: isFlipped ? [0.23, 1, 0.32, 1] : "linear" }}
-                style={{ width: "100%", height: "100%", position: "relative", transformStyle: "preserve-3d", borderRadius: "1.5rem" }}>
-                {/* FRONT */}
-                <div style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", borderRadius: "1.5rem", overflow: "hidden", boxShadow: isFlipped ? "none" : `0 ${8 + Math.abs(my)*12}px ${32 + Math.abs(my)*16}px rgba(0,0,0,${0.15 + Math.abs(mx)*0.1})` }}>
-                  <img src={s.i} alt={s.t} loading="lazy" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block", transition: "transform 0.4s ease", transform: `scale(1.06) translate(${mx*-4}px, ${my*-3}px)` }} />
-                  {/* Gloss overlay that moves with mouse */}
-                  <div style={{ position: "absolute", inset: 0, background: `radial-gradient(ellipse at ${50 + mx*30}% ${50 + my*25}%, rgba(255,255,255,0.12) 0%, transparent 65%)`, pointerEvents: "none" }} />
-                  <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.2) 55%, rgba(0,0,0,0.0) 100%)" }} />
-                  {/* Accent glow on hover edge */}
-                  <div style={{ position: "absolute", inset: 0, borderRadius: "1.5rem", boxShadow: `inset 0 0 0 1.5px ${color}${isFlipped ? "00" : "55"}`, transition: "box-shadow 0.3s", pointerEvents: "none" }} />
-                  <div style={{ position: "absolute", top: "1.25rem", left: "1.5rem" }}>
-                    <span style={{ fontSize: "0.52rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.22em", color, background: "rgba(0,0,0,0.5)", padding: "0.22rem 0.65rem", borderRadius: "99px", backdropFilter: "blur(4px)" }}>{s.tag}</span>
-                  </div>
-                  <div style={{ position: "absolute", top: "0.8rem", right: "1.1rem", fontSize: "clamp(2.8rem,4.5vw,4rem)", fontFamily: "serif", fontWeight: 900, color: "#fff", opacity: 0.05, lineHeight: 1, userSelect: "none" }}>{String(i + 1).padStart(2, "0")}</div>
-                  <div style={{ position: "absolute", inset: 0, padding: "1.75rem", display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
-                    <p style={{ fontSize: "0.52rem", textTransform: "uppercase", letterSpacing: "0.2em", color, fontWeight: 900, marginBottom: "0.45rem" }}>{s.sub}</p>
-                    <h3 style={{ fontSize: "clamp(1.4rem,2.5vw,1.85rem)", fontFamily: "serif", fontWeight: 700, color: "#fff", lineHeight: 1.1, marginBottom: "0.55rem", textShadow: "0 2px 16px rgba(0,0,0,0.7)" }}>{s.t}</h3>
-                    <p style={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.65)", lineHeight: 1.55, marginBottom: "1rem" }}>{s.d}</p>
-                    <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                      <div style={{ width: "22px", height: "1px", backgroundColor: color, opacity: 0.7 }}/>
-                      <span style={{ fontSize: "0.5rem", textTransform: "uppercase", letterSpacing: "0.18em", color: "rgba(255,255,255,0.45)" }}>hover</span>
-                    </div>
-                  </div>
-                </div>
-                {/* BACK — slides up from below with staggered benefit items */}
-                <div style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", transform: "rotateY(180deg)", borderRadius: "1.5rem", overflow: "hidden", backgroundColor: t.bg, boxShadow: `0 20px 60px ${color}30` }}>
-                  {/* Decorative top bar */}
-                  <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "4px", background: `linear-gradient(to right, transparent, ${color}, transparent)` }} />
-                  <div style={{ position: "absolute", inset: 0, background: `radial-gradient(ellipse at 80% 20%, ${color}10 0%, transparent 60%)` }} />
-                  <div style={{ position: "absolute", top: "0.9rem", right: "1.2rem", fontSize: "clamp(3rem,5vw,4rem)", fontFamily: "serif", fontWeight: 900, color: t.accent, opacity: 0.05, lineHeight: 1, userSelect: "none" }}>{String(i + 1).padStart(2, "0")}</div>
-                  <div style={{ padding: "2.25rem 2rem", height: "100%", display: "flex", flexDirection: "column", position: "relative", zIndex: 1 }}>
-                    <div style={{ marginBottom: "1.5rem" }}>
-                      <p style={{ fontSize: "0.5rem", textTransform: "uppercase", letterSpacing: "0.22em", color, fontWeight: 900, marginBottom: "0.4rem" }}>{s.sub}</p>
-                      <h3 style={{ fontSize: "clamp(1.2rem,2vw,1.45rem)", fontFamily: "serif", fontWeight: 700, color: t.text, lineHeight: 1.15 }}>{s.t}</h3>
-                    </div>
-                    <div style={{ display: "flex", flexDirection: "column", gap: "0.9rem", flex: 1 }}>
-                      {s.benefits.map((b: string, bi: number) => (
-                        <div key={bi} style={{ display: "flex", alignItems: "flex-start", gap: "0.75rem" }}>
-                          <div style={{ width: "20px", height: "20px", borderRadius: "6px", backgroundColor: `${color}18`, border: `1.5px solid ${color}55`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: "1px" }}>
-                            <span style={{ color, fontSize: "0.6rem", fontWeight: 900 }}>✓</span>
-                          </div>
-                          <p style={{ fontSize: "0.84rem", color: t.text, lineHeight: 1.55, opacity: 0.82 }}>{b}</p>
-                        </div>
-                      ))}
-                    </div>
-                    <a href={`https://wa.me/525625018281?text=Hola%20Rodrigo,%20me%20interesa%20${encodeURIComponent(s.t)}`} target="_blank" rel="noopener noreferrer"
-                      style={{ display: "inline-flex", alignItems: "center", justifyContent: "space-between", gap: "0.5rem", marginTop: "1.75rem", fontSize: "0.62rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.14em", color: t.bg, textDecoration: "none", backgroundColor: color, padding: "0.75rem 1.5rem", borderRadius: "12px" }}>
-                      <span>{c.ver_mas}</span>
-                      <span style={{ fontSize: "1rem" }}>→</span>
-                    </a>
-                  </div>
-                </div>
-              </motion.div>
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
-function MexicoMap({ accent, bg }: { accent: string; bg: string }) {
-  const states: { id: string; d: string }[] = [
-    { id: "MXSON", d: `M147.3 35.9l0.1 0 1.1 0.4 11.7 4.3 11.8 4.3 11.7 4.3 11.8 4.3 11.7 4.3 11.8 4.2 11.7 4.3 11.8 4.3 1.4 0.5 1.5 0.6 1.5 0.5 1.5 0.6 1.4 0.6 1.5 0.5 1.5 0.6 1.5 0.5 0.8 0.3 1.7 0.2 1.7 0 1.2 0 1.2 0 1.2 0 1.3 0 1.2 0 1.2 0 1.2 0 1.3 0 1.2 0 1.2 0 1.2 0 1.3 0 1.2 0 1.2 0 1.3 0 1.2 0 1.2 0 1.2 0 1.3 0 1.2 0 1.2 0 1.2 0 1.3 0 1.2 0 1.2 0 1.2 0 1.3 0 1.2 0 1.2 0 1.2 0 1.3 0 1.2 0 1.2 0 1.3 0 1.2 0 1.2 0 1.2 0 1.3 0 1.2 0 1.2 0 1.2 0 1.3 0 1.2 0 1.2 0 0.6 0 0.6 0 1.3 0 0.4 0-0.3 2.7-0.4 2.9-0.3 2.8-0.4 2.9-0.1 1-0.2 1.1-0.1 1-0.1 1.1-0.2 0.7 0 0.6 0 0.4 0.4 0.5 1.7 1.4 1.6 1.3 1.6 1.4 1.7 1.4 0.4 0.3 0.6 0.3 0.5 0.2 0.6 0.1 0.9 0.3 0.7 0.4 0.7 0.5 0.7 0.7 0.6 0.5 0.3 0.4 0.2 0.6 0.1 0.8 0 1 0.1 1.1 0.1 1 0.1 1 0 0.4 0.1 0.3 0 0.3 0 0.3 0.2 2.1 0.2 2.1 0.1 2.1 0.2 2.1 0.1 0.5 0 0.5-0.1 0.4-0.2 0.4-0.2 0.5-0.2 0.5 0 0.6 0 0.7 0 0.1 0 0.1-0.1 0.7-0.1 0.7 0 0.7-0.1 0.6-0.2 2.7-0.2 2.7-0.2 2.6-0.2 2.7-0.1 0.8-0.1 0.8 0 0.7-0.1 0.8 0 0.6-0.1 0.4-0.2 0.2-0.5 0-0.5 0-0.5 0-0.5 0-0.5 0 0.2 1.7 0.2 1.6 0.1 1.6 0.2 1.7 0.2 1.8 0.3 1.8 0.2 1.8 0.2 1.9 0.1 1.3 0.2 1.4 0.2 1.3 0.1 1.3 0.1 0.4 0 0.4 0 0.4 0.1 0.3 0.1 0.3 0.2 0.3 0.1 0.4-0.1 0.3-0.2 0.9-0.4 1.2-0.3 1.1 0 0.9 0.3 0.9 0.3 1 0.3 1 0.3 1 0.3 0.6 0.2 0.7 0.3 0.7 0.2 0.7 0.2 0.6 0.4 0.9 0.2 0.8 0 0.5-0.6 0.6-0.6 0.6-0.6 0.6-0.7 0.6-0.4 0.2-0.5 0-0.5-0.2-0.4-0.1-1-0.3-1-0.2-1-0.3-1-0.2-1.5-0.3-1.3-0.1-1.4 0-1.5 0.1-0.7 0.2-0.5 0.2-0.5 0.4-0.5 0.5-0.6 0.5-0.5 0.5-0.3 0.6 0.2 0.7 0.9 2.2 0.9 2.2 0.9 2.2 0.9 2.2 0.2 0.4 0.4 0.3 0.3 0.3 0.4 0.2 0.5 0.3 0.5 0.3 0.5 0.2 0.5 0.3 0.3 0.6 0.2 0.7 0.1 0.7 0.4 0.6 0.8 0.6 0.8 0.7 0.7 0.7 0.8 0.6-0.3 0.4-0.1 0.4-0.1 0.5 0.1 0.5 0.6 0.7 0.6 0.6 0.6 0.6 0.8 0.5 0.5 0.3 0.3 0.4 0.1 0.5 0.1 0.6 0 0.7-0.1 0.6-0.2 0.7-0.1 0.6 0 0.6 0.2 0.5 0.3 0.6 0.2 0.5 0.1 0.9-0.3 0.7-0.5 0.6-0.5 0.7-0.2 0.8 0.1 0.8 0.3 0.6 0.4 0.7 0.6 1 0.6 1 0.7 1 0.6 0.9 0.4 0.4 0.3 0.2 0.4 0 0.5-0.1 0.3 0 0.2-0.1 0.2 0 0.2 0.2 0.1 0.4 0.2 0.3 0.1 0.4 0.2 0.3-0.2 0.8-0.3 0.8-0.2 0.8-0.2 0.8 0 0.6 0 0.8-0.1 0.7-0.2 0.4-1.4 1.2-1.4 1.2-1.5 1.2-1.4 1.2-2.8 2.4-2.8 2.3-2.9 2.3-2.9 2.2-0.2 0.2-0.2 0.1-0.1 0.1-0.2 0.2-0.3 0.5-0.5-1-0.8-0.5 0.1 0.1 0.1 0.2 0.1 0.1 0.1 0.3-0.6-0.2-0.3-0.1-0.3 0.1-0.8 0.9-0.3 0-0.1-0.4 0.4-2.3-0.1-1.3-0.3-1.2-0.7-0.8-1-1.5-1.3-0.9-0.8-1.3-0.9-0.8-0.8-0.3-0.8-0.1-0.3-0.2 0.4-0.1 0.5 0.2 0.7 0.2-0.2-0.6-0.2-0.1 0.2-0.3-0.2-0.4-0.5 0-0.4-0.1-0.2-0.3-0.1-0.5-0.3 0.2-0.3 0.3-0.2-0.6-0.5-0.1-0.3 0.4-0.3 0.3-0.1 0.4 0.3 0.1 0.3 0.1 0.3 0 0.1 0.2-0.1 0.2 0 0.3 0.5 0.3 0.3 0.1 0 0.2-1-0.5-2.2-0.4-1.2 0.1-0.4 0.3-0.1 0.3-0.8-0.1-0.9-0.4-1.3-0.5-0.4-0.4-1.4-1.5-0.7-1.1-0.2-1.2-0.2-1.1-0.4-0.7-0.4-1-0.1-0.4-0.3-0.5-0.9-1.5 0.1-0.3 0.2 0.4 0.8 1.3 0.6 0.5-0.7-1.8 0-0.7-0.2-1.4-1-1.2-0.4-0.4-0.5-0.2-0.5-0.1-0.5 0-0.2 0.1-0.2 0.1-0.2 0.2-0.2 0.2-0.2 0.3-0.3 0.3-0.8-0.7-1.7-0.5-1.2-0.3-0.7-0.2-0.7-0.1-0.7-0.2-0.7-0.1-0.9-0.6-0.5-0.2-1-1.2-0.9-1.2-1.3-0.9-0.4-0.3-1.1-0.2-0.6 0-0.1-0.3 0.9 0 0.8 0.1 0.8 0.1 0.4-0.3-0.6-0.5-0.7-0.9-0.3-0.4 0.1-0.2 0.1-0.2 0-0.2-0.4-0.2-0.1-0.1-0.2-0.2-0.6 0.4-0.3 0.2-0.3 0-0.3-0.1-0.1-0.3 0-0.8-0.1-0.8-0.9-0.5 0-2-0.3-1-0.8-2.1 0-1.1 0.3-0.5 0.5-0.2 0.6-0.1 0.3-0.5-0.1-0.5-0.3-0.1-0.4 0.2-0.2 0.4 0.2-1 0.2-0.3 0.4-0.2 0.3 0 0.3-0.1 0.2-0.4-1 0-0.5-0.3-0.1-0.4 0.4-0.8-0.4-0.1-0.3-0.2-0.1-0.4 0.2-0.4 0.2 0.3 0.2 0.1 0.1-0.2 0.2-0.6 0.1-0.1 0.3 0.1 1.4-0.3 0.4-0.3-0.1-0.6-0.6 0.2-1.7-0.7-0.7 0.1 0.4 0.3-0.2 0.2-0.4-0.1-0.9-0.6-0.5-0.2-2-0.5-1-0.1-1 0.1-1.1 0.2 0-0.2 0.3-0.1 0.9-0.4-0.2-0.4-0.1-0.3-0.1-0.3 0-0.4-0.1-0.4-0.4-0.2-0.3 0-0.2 0.4 0 0.9-0.1 0.5-0.3 0.5-0.6 0.6 0.5 0 0.2 0.1 0.1 0.3 0 0.4-0.1 0.4-0.3 0.6-0.2 0.2-0.2-0.3-0.1-0.1-0.7-0.9-0.1-0.1-0.5 0-0.2-0.1-0.1-0.2-0.1-0.2-0.1-0.1-0.2-0.2 0.3-0.3 0.2-0.1 0.3 0-0.5-0.5-0.6-0.6-0.7-0.3-0.6 0-0.6 0.2-0.5 0.6-0.8 0.1-0.5 0 0.1-0.3 0.2-0.2-0.3-0.4-0.4-0.2-0.3 0-0.4-0.5-0.8-0.2-0.4-0.5-0.4-0.5-0.6-0.8-0.9-0.2-0.4-0.7-0.5-0.6-0.5-1.2-1-1-0.2-1.5-0.2-0.3-0.1-0.1-0.4 0.1-0.2-0.1-0.1-0.1 0-0.2-0.3-0.5-0.1-0.7-0.1-0.3-1.3-1.2-0.4-0.5-0.2-0.7 0.2-0.4 0.3-0.3 0.1-0.6-1 0.2-1.2-0.4-2-0.7-1.9-1-0.7-0.2-0.6-0.2-0.3-0.1-0.5-1.3-0.5-1.3-0.5-1.4-4.6-4.5-0.6-0.9-0.3-0.3 0.2-0.2 0.3 0 0.3-0.2 0.6-0.4 0.2 0 0.2 0.3 0.2 0.4 0.1 0.2 0.3 0.1 0.2-0.1 0.1-0.3 0-0.4 0-0.3-0.3-0.6-0.5 0-0.5 0.1-0.7-0.1-0.8-0.7-0.4-0.6-1-0.4-0.8-0.2-0.1-0.7-0.4-0.1 0-0.4-0.4-0.4-0.6-0.5-0.2-0.5-0.3-0.4-0.1-0.2-0.3-0.1-0.4-0.1-0.6 0-0.5-0.1-0.1-0.2 0.3-0.2 0.2-0.3-0.1-0.3 0-0.3-0.4-1.3-0.1-0.8-0.4-0.1 0.1-0.3 0.3-0.5 0.2-0.4 0-0.3-0.3-0.7-0.5-0.6 0.1-0.3-0.5-0.4-0.5-0.3 0.4-1.3 0-0.8-0.4-0.9-0.4-1.1-0.7-0.5-1.4 0-0.3 0.1-0.2 0.2-0.1 0.1 0.1 0.3-0.1 0.4-0.2-0.2-0.5-0.6-1-0.4-0.5-0.4-0.3-1 0.4-1 0.6-1.3 0.2-0.6 0-0.8-0.2-0.4-0.6-0.1-0.4-0.3-0.3-0.3 0.1-0.7-0.1-0.6-1-0.9-1.1-1-0.8-1.9-0.1-0.4-0.2-0.4-0.5 0.1-0.6-0.7-0.2-0.5-0.2-1.3-0.4-0.7-0.5-0.6-0.3-0.5-0.6-1.9-0.3-0.5-0.5-0.3-0.2 0.1-0.5-0.2-0.6 0.3-0.4-0.3-0.2-0.5 0.4-0.5-0.2-0.6 0.3-1 0.1-0.8-0.2-0.5-0.3-0.4-0.3-0.6 0-0.6 0.2-1.8 0-1.8-0.4-0.9-0.4-0.6-0.5-0.5-0.3-0.4-0.6-0.4-0.2 0-0.3-0.1-0.3 0.3-0.1-0.2 0.3-0.6 0.1-1.1-0.1-1.4-0.2-1.3-0.4-0.9-1.3-1.5-2-2-1.6-2.5-1.1-2.1-1-3.7-0.4-1 0.5-1 0.3-2.2 0.1-1.3-0.1-1.1-0.9-2.4 0-0.5 0.2 0 0.2 0.3 0.1 0.4 0.3 0.7 0.4 1.1 0.2 0.1 0.2-0.3 0.6-1.1 0-1.6 0-1.5 0.2-1.1-0.6-0.6-0.7-1-0.7-0.5-0.8 0 0 0.3 0.5 0.2 0.3 0.2-0.1 0.3-0.5-0.2-0.5-0.3-1.2-0.7-0.3-0.8-0.4-0.4-0.3-0.9-0.4 0-0.4 0.2-0.4 0.1 0.3 0.5 0.3 0.2 0.4 0.2 0.3 0.2-0.4 0.1-1-0.3-4.5-0.8-1.4-0.4-1.9-0.3-0.3-0.7-0.7-0.2-1.1-0.1-0.6-0.5 0.2-0.2 0.5 0 0.3-0.2-0.3-1-0.5-1.8 0.1-1-0.8-1.1-1.5-1.1-1.3-0.6-0.5-0.5-0.8 0-1.3-0.7-0.8-0.4-0.2-0.6-0.8 0.3-0.4 0.1-0.4 0-0.5-0.5-0.2-1.3-0.4-0.3-0.1 0.5 0 1.8 0 0.3 0.2 0.3 0.2 0 0.2 0 0-0.1 0.3 0.4-0.1 0.1-0.3 0.1-0.4 0.6-0.1 0.4-0.3 0.2-0.4 0.1-0.1 0.3-0.2 0.2-0.1 0.2-0.3 0.4-1.2 0-1.3 0-1.2-0.1-1.4-0.6-0.7-0.6-0.8-0.3-0.8-0.4-0.3-0.3-0.4-0.5-0.4-0.2 0-0.5-1-0.4-1.5-0.9-0.5-0.4-0.5-0.1-0.4-0.6-0.9-0.3-1.4-1.4-1.2-1.5-0.6-0.1-2.1 0-0.2 0-0.3-0.2-0.5-0.6-0.1-0.1-0.3-0.1-0.6-0.5-0.3-0.1-1-0.1-0.3-0.1-0.4-0.4-0.7-1.1-0.4-0.2-0.6-0.1-1.6-1.3-0.1-0.7 0-0.8 0-0.8 0.1-0.9 0-0.5-0.1-0.4-0.2-0.4-0.2-0.4-0.2-0.2-0.3-0.2-0.2-0.1-0.1-0.2-0.1-0.5 0.3-0.5 0.3-0.5 0.1-0.7-0.3-1.4-0.5-1-0.6-1-0.8-1-0.2-0.2 0.1-0.5 0.5-0.7 0.6-0.4 0.5-0.6 0.3-0.8 0-0.6 0-0.6 0.1-0.6 0.2-0.7 0.4-0.9 0.6-0.6 0.6-0.3 1.5 0.1 0.6-0.1 0.3-0.3z m137.1 179.1l0.2 0 0.6 0.2 0.9 0.4 0.8 0.6 0.6 1-0.2 0-0.7-0.9-0.7-0.5-0.7-0.4-0.5-0.1-0.3-0.3z m-16-7.4l-0.1-1.3 0-0.8 0.2-0.7 0.2-0.4-0.2 1.3 0.1 1.4 0.6 0.6 1.3 0.5-0.1 0.5-1.6-0.6-0.4-0.5z m-48-47.2l-0.4 0.2-0.6 0.5-0.5-0.5-0.5-0.1-0.4 0.2-0.3-0.4-0.4-0.1-0.5-0.6-0.4-0.2-0.3 0.1-0.3-0.2-0.6 0.1-0.3-0.2 0-0.5-0.8-0.1-0.1-0.3-0.7-0.4-0.8-0.4-0.4-0.4-0.3 0-0.3-0.2 0.8-0.5 0.9-0.6 0.4-0.6 0.2-0.1 0.1-0.3 0.2-0.4 0.1-0.2 0.1-0.4-0.1-0.4-0.3-0.3-0.1-1.3 0.1-1.5 0.3-1.3 0.3-1.3 0.2-0.4 0.2-0.5 0.4-0.3 0.4-0.3 0.5 0.4 0.6 0 0.6-0.5 0.5-0.4 0.5-0.1 0.8 0 0.5-0.1 0.3-0.3 0.3-0.3 0.4-0.2-0.1 0.3-0.4 0.4 0.1 0.6 0.4 0.3 0 0.2-0.1 0.3 0 0.3-0.2 0.3 0.2 0.4-0.1 0.5 1 1.4 1.2 2.4-0.5 1.2-0.1 1-0.4 1.7-0.4 0.4 0.2 0.5-0.5 0.6-0.2 0.7-0.3 0.4-0.1 0.6 0.1 0.7 0.3 0.1 0.2 0.4-0.3 0.2-0.3-0.2z m-72.1-100.9l0.9 0.2 1.3 1.1 1.1 1.5 0.5 1-0.4 0-0.3-0.1-0.3-0.3-0.1-0.3-0.7 0.6-1.3-0.7-1-1.4 0.3-1.6z m159.5 182l0.1-0.6 0-1.7 0.3-0.3 0.6 0 0.5 0.2 0.4 0.2 0.2 0.6 0 0.2-0.3 0.2-0.5 0.4-0.6 0.4-0.6 0.3-0.1 0.1z m-1.8 0.9l0.1-0.3 0.6-1 0.1-0.6 0.1-0.3 0.2 0.1 0.1 0.4-0.3 0.7-0.2 0.1-0.2 0.3-0.1 0.2-0.1 0.2-0.1 0.1-0.1 0-0.1 0 0 0.1z m-60.2-55.9l-0.2-0.3 0.3-0.3 0.4 0.6 0.2 0.5-0.5-0.1-0.2-0.4z` },
-    { id: "MXBCN", d: `M147.3 35.9l-0.3 0.3-0.6 0.1-1.5-0.1-0.6 0.3-0.6 0.6-0.4 0.9-0.2 0.7-0.1 0.6 0 0.6 0 0.6-0.3 0.8-0.5 0.6-0.6 0.4-0.5 0.7-0.1 0.5 0.2 0.2 0.8 1 0.6 1 0.5 1 0.3 1.4-0.1 0.7-0.3 0.5-0.3 0.5 0.1 0.5 0.1 0.2 0.2 0.1 0.3 0.2 0.2 0.2 0.2 0.4 0.2 0.4 0.1 0.4 0 0.5-0.1 0.9 0 0.8 0 0.8 0.1 0.7-0.7-0.3-0.3-0.1-0.4 0-0.3-0.1-0.4-0.3-0.2-0.1-0.1-0.2 0-0.4-0.1-0.4-0.3-0.2-0.1 0.2 0 0.4 0.1 0.4 0.4 0.8 0.1 0.1 0.3 0.2 0.2 0.1 0.8 0.2 0.5 0.2 0.4 0.4 0.4 0.3 0.2 0.5 0.7 0.1 0.6 0.6 0.4 0.6 0.2 0.5 0.4 0.2 0.2 0.4 0.3 2.3 0.3 0.7 0.4 0.7 0.4 0.8-0.3 0.6-1 1.2-0.5 1.2-0.3 1.3 0 4.7-0.7 2 0.1 1.9-0.3 3-0.1 0.7 0.1 1.4 0.6 1 0.7 0.8 0.7 0.5 0 0.3-0.5 0.5 0 0.7 0.3 0.6 0.5 0.4 1.9 0.9 0.5 0.3 0.1 0.2 0 0.2 0.2 0.4 0 1.1 0 0.3 0.1 0.6-0.1 0.4 0.2 0.3 0.2 0.5-0.1 1.6 0.1 0.4 0.2 0.6-0.1 0.2-0.4 0.9 0.3 0.8 0.1 0.5-0.2 1.1 0.4 1.1 0.7 1 0.3 0.7 0.1 0.4 0 0.3 0 0.3 0.2 0.4 0.3 0.6 0 0.5-0.2 0.5 0 0.8 0.2 0.5-0.1 1-0.2 0.7 0.1 0.3-0.2 1.7-0.2 0.6-0.1 0.3 0.1 0.3 0.3 0.5-0.1 0.4-0.2 0.8-0.1 0.5-0.3 0.4 0.1 0.6 0.2 0.2 0.3 0.7 0.4 0.3 0 0.4 0.1 0.5 0.6 0.3 0.2 0.7 0.5 0.5 0 0.7 0.6 1.2 0.4 0.8 0.4 0.8 1.5 0.7 0.2 0.9 0.4 0.3 0.9 0.1 0.3 0.5 0.2 0.4-0.1 0.8 0.3 0.8 0.2 0.2-0.2 0-0.2 0.2 0 0.2 0.3 0.1 0.1 0.2 0 0.3 0.1 0.4 0.3 0.3 0.3 0.1 0.2 0 0.3 0.1 0.2 0.3 0 0.3 0.2 0.2 0.5 0.1 0.5 0 0.2 0 0.3-0.2 0-0.2 0.1-0.1-0.2 0-0.1-0.2 0.1-0.1 0.2 0 0-0.1 0.1-0.1 0.1 0 0.1 0 0.1 0 0.1 0.1 0.1 0.1 0.1 0 0.1 0.2 0.1-0.1 0.3 0 0.2 0.1 0.2 0.3 0.2 0 0 0.1 0.4 0.1 0.1 0.2 0.1 0.4 0.1 0.1 0.2 0.1 0.1 0.2 0.1 0 0.1 0.2 0.1 0.1 0.2 0.1 0.1 0.1 0.2 0.2 0 0.1 0.2-0.1 0.1 0 0.2 0.1 0 0.2 0.3 0.2 0 0.2 0.1 0 0.3 0.3 0.1 0.2 0.1 0.1 0.4 0.2 0.2 0.2 0.2 0 0.6 0.4 0.1 0.4 0 0.2 0.2 0.2 0.1 0.3 0.4 0.1 0.1 0 0.1 0.2 0.1 0.1 0 0.1 0.2 0.1 0.3 0 0.3 0 0.4 0.3 0.2 0.4 0.3 0.3 0.2 0.2 0.1 0.1 0.3 0.5 0.4 0.1 0.2 0.3 0.3 0.4 0.4 0.4 0.5 0.3 0.4 0.5 0.5 0.1 0.3 0.1 0.2 0.2 0 0.5 0.2 0.2 0.3 0 0.3 0.2 0.2 0.2 0.3 0.1 0.4 0.2 2.6 3 1 0.8 0.3 0.3 0.1 0.6 0.2 0.2 0.1 0.2-0.5 0.4-0.2 0.4-0.3 0.3 0.1 0.4 0.2 0.2 0.3 0.1-0.1 0.5 0.2 0.3 0.1 0 0.1 0.1 0.1 0.3 0.3 0 0.1 0 0 0.3 0.2 0.4 0.3 0.4 0.3 0.1 0.3 0.3 0.2 0.8 0.5 0.9 0.3 0.4-0.1 0.4-0.3 0.1-0.2 0.3-0.1 0.1-0.1 0.4 0 0.4 0.4 0.2 0.1 0.6 0 0.6-0.3 0.1 0 0.2 0.3 0.5 0.2 0.4 0.1 0.5 0.3 0.2 0 0.3 0.6 0.1 0.7-0.2 0.1-0.1-0.1-0.2 0.2-0.4-0.3-0.2-0.1-0.3 0.2-0.1-0.1-0.2 0.1-0.2 0.2-0.1 0.3 0.1 0.4 0.1 0.2-0.3 0.2-0.3 0.2 0.4 0 0.5 0.4 0.4 0.2-0.2 0-0.2 0.5-0.2 0.2 0.1-0.1 0.2-0.1 0.1-0.1 0.5 0.7 0.2 0 0.1-0.3 0.1 0 0.2 0.2 0.3 0.1 0.2 0.3 0.2-0.2 0.1-0.1 0.4 0 0.4-0.1 0.3 0.2 0.4 0.4 0.2-0.1 0.6 0.6 0 0.7-0.1 0.2-0.2 0.3-0.3 0.2-0.3 0.5-0.2 0.2-0.2 0.8 0.1 0.4 0.4 0.1 0.2 0.1 0.5 0.3 0.1 0.1 0.2-0.1 0.4 0.3 0.3 0 0.4-0.1 0.5 0.4 0.9 0.1 0.1 0.2 0.7 0.4 1.1 0.7 0.6 0.1 0.4-0.1 0.8 0.3 0.8 0.1 0.5 0.2 0.6-0.1 0.6 0.3 0.7 0.6 0.4 0.1 0.2 0.5 0.3 0.6 0.1 0.1 0.3 1 0.3 0.9 0 1.2-0.3 0.8-0.3 0.5 0.4-0.1 0.2 0.3 0.2 0 0.2-0.1 0.2 0 0.1 0.4 0.1 0.1-0.1 0.2-0.2 0.3 0 0 0.4 0 0.2-0.2 0.2-0.2 0.4 0.2 0.2 0.1 0.5-0.1 0.5-0.5 1.2-0.1 0.8 0.1 0.2-0.1 0.6 0.3 0.3 0.3 0.4 0.4 0.3 0 0.3 1 1 0.1 0.3 0.3 0 0.1 0.2-0.2 0.2-0.1 0.2-0.1 0.5-0.1 0.2-0.1 0.4-0.1 1 0.3 1.1 0.1 0.1 0.2 0.1 0 0.4-0.2 0.3-0.2 0.4 0 0.4 0.1 0.5 0.4 0.5 0.5 0 0.2 0.1-5 0-5.1 0-5.2 0-5.2 0-5.1-0.1-5.2 0-5.2 0.1-1.3 0 0.2-0.3 0.4-0.6 0.1-0.3-0.3-0.1-0.3-0.1-0.3-0.4-0.5-0.1-0.4 0.1 0-0.5 0-0.9-0.2-0.4-0.2-0.3 0.1-0.2 0.1-0.3 0.5-0.7 0.3-0.6 0.3-0.6 0.3-0.4-0.1-0.2-0.1-0.4-0.1-0.5-0.3-0.2-0.3 0-0.3 0.2-0.3-0.1-0.2-0.3-0.2-0.1 0.2-0.5 0.2-0.5 0.3-0.7 0.5-1.2 0.6-2 0.4-0.9 0.1-0.8-0.2-0.6-0.4-0.1-0.2-0.3 0.1-0.5 0-0.5-0.3-0.2-0.1-0.3-0.1-0.3-0.3-0.3-0.4-0.3-0.5-0.1-0.6 0.1-0.3-0.2 0-0.5 0.1-0.6 0-0.8-0.3-0.7-0.3-0.4-0.2-0.1-0.7 0-0.8 0.1-0.3 0.2-0.7-0.2-0.1-0.5 0.1 0 0-0.3-0.1-0.4-0.7-0.3-0.4-0.7-1-0.2 0-0.5 0-0.5-0.4-0.5 0-0.6-0.3-0.6-0.6 0.3-0.4-1.1 0.1-0.7-0.5-0.6-0.5 0-0.1-0.5-0.5-0.5-0.5-0.7-0.7-0.1-0.4 0.1-0.2 0.2-0.2 0-0.4-0.3-0.2-0.6-0.2-0.6-0.1-0.3-0.4 0-0.5 0.5-0.4-1.1 0.1-1.1-0.2-0.5-0.3-0.5-0.1-0.6-0.3-0.5-0.8-0.3-0.8-0.3-0.5 0.6-0.5-0.7-0.1-0.8-0.2-0.4-0.2-0.7-0.1-0.4-0.2-0.2-1-0.1-1.2-1.2-0.7-0.9-0.8-0.9-1.3-1.5-1.3-1.5-3.8-1.4-2.4-0.3-1.3-2-1.5-1.3-2.5-0.9-1.5-1.3-0.8-0.8-0.7-0.2-0.7 0.5-0.5-0.5-0.5-0.3-0.4-0.6-0.7-0.5-0.6-0.8-0.8-0.1-2.2-2 0.1-0.7 0.2-0.8 0.1-1-0.2-0.7-0.1-0.5-0.1-1-0.6-0.7-0.3-0.5-0.4-0.4-0.5-0.2-1.3-0.1-0.1-0.4 0.6-2.3 0.2-1.8-0.2-1.1-0.1-0.2-0.3-0.4 0-0.3 0-0.4 0.2-1.1-0.1-1.4-0.2-1.5-0.5-1.1-0.4-1-0.8-0.7-0.9-0.6-1-0.5-1.2 0 0.8-0.7 0.3-0.4 0.1-0.5-0.2-0.5-0.4-0.5-0.6-0.4-0.4-0.2 0.2 0.5 0.3 0.4 0.2 0.4 0.1 0.5-0.3 0.3-0.4 0.1-0.1-0.3-0.4-0.3-0.2 0.2-0.2 0.3 0 0.3 0.3 0.1 0.3 0.4 0.1 0.7 0.3 1-0.7 0-0.2-1.1-0.5-1.6-0.6-1.3 0.6-4.9-0.2-3.5-0.5-1.7-0.1-0.7-0.3-0.3-1.1-0.2-1.3-1.3-0.7-0.1-0.7-1-0.5-0.8-0.2-0.4-0.7-1-0.5-0.3-1.2 0.4-0.8-0.1-0.1-1.1 0.4-1.3 0.2-2.1 0.3-2-0.9-2.3-3.3-4-1.2-2.3-0.3-0.5-0.2-0.1-0.5-0.6-0.2-0.2-0.4-0.2-0.6-0.5-0.4-0.1-0.3-0.2-0.1-0.2 0-0.3-0.2-0.3-1.1-0.9-0.2-0.3-0.6-0.5-0.2-0.5 0.1-0.4-0.1 0 0.4-0.1 0.7 0.1-0.6-0.8 0.1-0.5 0.1-0.5 0.3-0.9-0.3-0.7-0.3-0.6-0.2-0.2-0.5-0.2-0.7-0.1-0.7-0.9-0.3-0.5 1.2 0.3 0.9 0.6 0.5 0.1 0.5-0.4 0.4-0.6 0.3-0.6 0.2-1 0-0.7 0-0.7-0.2-0.5-1.1-0.2-0.6-0.2-0.5-0.7-0.7-0.4-0.5-0.1-0.5-0.2 0-0.8-0.1-1.1-0.3-0.4-1 0-1.1-0.3-0.7-0.9-0.3-0.7-0.1-1.2-0.2-2.1-0.5-1.6-0.5-1.4-0.3-0.5-0.5-0.4-0.5-0.3-1.2-0.3-0.5-0.4-1.4-3.2-0.4-1.2-0.5-1.1-0.4-0.6 0-0.6-0.1-0.6 0-0.8 0-0.3 0-0.3 2.3-0.2 2.1-0.2 2.1-0.2 2.1-0.2 2.1-0.2 2.1-0.1 2.1-0.2 2.2-0.2 2.1-0.2 2.1-0.2 2.1-0.2 2.1-0.2 2.1-0.2 2.1-0.2 2.1-0.1 2.1-0.2 2.2-0.2 2.1-0.2 2.1-0.2 2.1-0.2 2.1-0.2 2.1-0.2 2.1-0.2 2.1-0.2 2.1-0.1 2.2-0.2 2.1-0.2 2.1-0.2 2.1-0.2 2.1-0.2 2.1-0.2 2.1-0.2 1.2-0.1 0 0.1-0.2 0.8-0.3 0.6-0.3 0.6-0.2 0.2-0.7 0.6-0.1 0.3-0.5 0.9 0.3 0.7-0.1 0.7-0.4 1.4-0.3 0.4z m-10.7 138.5l0.3 0.8 0.3 0.2-0.1 0.4 0.2 0.4 0.2 0.8-0.3 0.9 0 0.7 0.4 0.6 0.1 0.7-0.1 0.7 0.1 0.3-0.2 0.4-0.4 0.1 0 0.3-0.3 0.3 0.1 0.4-0.1 0.3 0.1 0.5-0.1 0.5 0.2 0.5-0.1 0.2 0 0.2-0.2-0.1-0.1-0.1-0.4-0.1-0.3 0.2-0.3 0.1-0.2-0.3-0.3 0.1-0.2-0.2-0.3-1-0.5-0.6-0.7-0.2-0.5 0.3-0.4 0-0.3 0.5-0.3-0.4 0.2-1.1 0.5-0.3 1.7-2.1 1-1.4-0.5-1-0.2-1.1 0.2-1 0.2-1 0.4-0.4 0.6-0.2 0.7 0.5-0.1 0.7z m66-11l1 0.2 1.6 1.1 0.4 0.5 0.2 0.2 0.1 0.2 0.5 0.2 0.1 0.3 0.2 0.1-0.3 0.3-0.3 0.2-0.2-0.2-0.1-0.1-0.2 0-0.2-0.8-0.4-0.3-0.5-0.2-0.4-0.5-0.7-0.1 0-0.2-0.1-0.2-0.2-0.2-0.2-0.3-0.3-0.2z m8.1-1.6l0.3-0.1 0.2-0.1 0.7 0.1 0.4-0.2 0.3 0.2 0 0.4 0.1 0.2-0.1 0.3 0 0.5-0.2 0.5-0.5 0.1-0.7-0.2-0.3 0.2 0.1-0.3-0.3-0.9 0-0.7z m-15.1-11.1l0.4 0.1 0.2 0.2 0.4 0.1-0.4 0.9 0.1 0.4 0 0.9-0.3 0-0.3-0.5-0.3-0.1-0.4-0.5-0.9-0.3-0.2-0.6-0.5-0.3-0.4-0.1-0.4-0.4-0.2-0.4-0.2-0.2-0.2-0.5-0.3-0.4-0.5-0.6-0.3-0.3-0.3-0.1-0.2-0.3-0.4-0.2-0.6-0.3-0.2-0.5-0.7-0.4-0.6-0.4-0.7-1.1 0.1-0.3-0.2-0.4-0.4-0.5-0.5 0.1-0.5 0-0.4-0.3-0.2-0.4 0-0.6-0.2-0.3-0.4-0.3-0.2-0.5-0.2-0.1-0.1-0.4-0.5-0.4 0-0.3-0.3-0.4-0.5-0.3-0.2-0.8 0.2-0.8 0.4-0.7 0.3-1-0.2-0.5 0-0.5 0.3-0.2 0 0.2 0.3 0.2 0.4-0.2 0.3-0.2 0-0.2 0.4 0 0 0.4 0.3 0.1 0.7 0.1 0.4 0.4 0.9 0.9 0.3 0.9 0.7 0.2 0.1 0.3 0.2 0.3 0 0.2 0.4 0.5 0.3 0.6-0.1 0.3 0.4 0.3-0.3 0.3-0.3 0.4-0.1 0.6 0.1 0.3 0 0.8 0.8 0.5 1.1 0.2 0.2 0.3 0.4 0 0.2-0.3 0.4 0 0.2 0.1 0.5-0.1 0.5 0 0.5 0.1 0.6-0.1 0.4 0.4-0.3 0.6 0.1 0.7 0.2 0.4-0.1 0.6 0 0.4 0.2 0.2-0.1 0.4-0.1 0.7 0 0.9 0.1 0.3 0.3 0.6 0.1 0.3 0 0.3 0.2 0.5 0.3 0.1z m-27.6 34.8l-0.2-0.5-0.3 0.1-0.2-0.1 0.1-0.3 0.4-0.2 0.4 0.2 0.4 0.5 0.2 0.3-0.8 0z m-3.1 0l0.6-0.7 0.9-1.3 0.6-0.7 0.4-0.1 0.2 0.8-0.1 0.6-0.5 0.4-0.3 0.3-0.1 0.3-0.1 0.2 0.1 0.2-1.7 0z m-116.1-35.6l0.7 0.9 0.2 1.5-0.2 0.7 0.2 1.2-0.1 1.4-0.8 1-0.5 0-0.4 0.2-0.2 0 0.1 0.3-0.3-0.2 0.1-0.4 0.3-0.2-0.3-0.7-0.1-0.5 0.1-0.6-0.2-0.6-0.4-0.5 0.3-0.5-0.3-0.9-0.2-0.5-0.4-0.4-0.6-0.5 0-0.5-0.2-0.5-0.1-0.5 0.1-0.6 0.2-0.6 0.6-0.4 0.8-0.3 0.3-0.5 0.7-0.1 0.5 0.3-0.5 0.5-0.3 0.4-0.1 0.5 0.2 0.7 0.4 0.6 0.4 0.3z m76.3 25.3l0.2 0.2 0.2-0.1 0.4 0 0.1 0.2-0.4 0-0.1 0.2-0.3 0.1-0.3-0.2-0.1-0.2 0.1-0.2 0.2 0z m59.6-25.5l0.2 0 0.2 0.1 0 0.1-0.1 0.2 0 0.1 0.1 0.1 0 0.2 0 0.3 0.1 0.2 0 0.2 0.1 0 0 0.2 0.2 0.1 0 0.1-0.3 0-0.2-0.1 0.1-0.1-0.1-0.2-0.2-0.1 0.1-0.2 0.1-0.1-0.2-0.1 0-0.2 0-0.2-0.2-0.1 0-0.2-0.2-0.2 0.3-0.1z m-25.8-29.4l0.4 0 0.1 0.6 0.1 0.3-0.3 0-0.4-0.2 0.1-0.4 0-0.3z m-48.7-17l0.1 0.1 0.2 0.2 0 0.2-0.3 0-0.3-0.1 0-0.2 0.3-0.2z m-32.7-64.7l0.1 0 0.1 0.2 0.1 0.3 0.1 0.3 0 0.3-0.1 0-0.1-0.4-0.1-0.3-0.1-0.1 0-0.3z` },
-    { id: "MXCHH", d: `M329.7 218.5l-0.2-0.3-0.1-0.4-0.2-0.3-0.1-0.4-0.2-0.2-0.2 0-0.2 0.1-0.3 0-0.5 0.1-0.4 0-0.3-0.2-0.4-0.4-0.6-0.9-0.7-1-0.6-1-0.6-1-0.4-0.7-0.3-0.6-0.1-0.8 0.2-0.8 0.5-0.7 0.5-0.6 0.3-0.7-0.1-0.9-0.2-0.5-0.3-0.6-0.2-0.5 0-0.6 0.1-0.6 0.2-0.7 0.1-0.6 0-0.7-0.1-0.6-0.1-0.5-0.3-0.4-0.5-0.3-0.8-0.5-0.6-0.6-0.6-0.6-0.6-0.7-0.1-0.5 0.1-0.5 0.1-0.4 0.3-0.4-0.8-0.6-0.7-0.7-0.8-0.7-0.8-0.6-0.4-0.6-0.1-0.7-0.2-0.7-0.3-0.6-0.5-0.3-0.5-0.2-0.5-0.3-0.5-0.3-0.4-0.2-0.3-0.3-0.4-0.3-0.2-0.4-0.9-2.2-0.9-2.2-0.9-2.2-0.9-2.2-0.2-0.7 0.3-0.6 0.5-0.5 0.6-0.5 0.5-0.5 0.5-0.4 0.5-0.2 0.7-0.2 1.5-0.1 1.4 0 1.3 0.1 1.5 0.3 1 0.2 1 0.3 1 0.2 1 0.3 0.4 0.1 0.5 0.2 0.5 0 0.4-0.2 0.7-0.6 0.6-0.6 0.6-0.6 0.6-0.6 0-0.5-0.2-0.8-0.4-0.9-0.2-0.6-0.2-0.7-0.3-0.7-0.2-0.7-0.3-0.6-0.3-1-0.3-1-0.3-1-0.3-0.9 0-0.9 0.3-1.1 0.4-1.2 0.2-0.9 0.1-0.3-0.1-0.4-0.2-0.3-0.1-0.3-0.1-0.3 0-0.4 0-0.4-0.1-0.4-0.1-1.3-0.2-1.3-0.2-1.4-0.1-1.3-0.2-1.9-0.2-1.8-0.3-1.8-0.2-1.8-0.2-1.7-0.1-1.6-0.2-1.6-0.2-1.7 0.5 0 0.5 0 0.5 0 0.5 0 0.5 0 0.2-0.2 0.1-0.4 0-0.6 0.1-0.8 0-0.7 0.1-0.8 0.1-0.8 0.2-2.7 0.2-2.6 0.2-2.7 0.2-2.7 0.1-0.6 0-0.7 0.1-0.7 0.1-0.7 0-0.1 0-0.1 0-0.7 0-0.6 0.2-0.5 0.2-0.5 0.2-0.4 0.1-0.4 0-0.5-0.1-0.5-0.2-2.1-0.1-2.1-0.2-2.1-0.2-2.1 0-0.3 0-0.3-0.1-0.3 0-0.4-0.1-1-0.1-1-0.1-1.1 0-1-0.1-0.8-0.2-0.6-0.3-0.4-0.6-0.5-0.7-0.7-0.7-0.5-0.7-0.4-0.9-0.3-0.6-0.1-0.5-0.2-0.6-0.3-0.4-0.3-1.7-1.4-1.6-1.4-1.6-1.3-1.7-1.4-0.4-0.5 0-0.4 0-0.6 0.2-0.7 0.1-1.1 0.1-1 0.2-1.1 0.1-1 0.4-2.9 0.3-2.8 0.4-2.9 0.3-2.7 0.8 0 1.2 0 1.2 0 1.3 0 1.2 0 1.2 0 1.3 0 1.2 0 1.2 0 1.2 0 1.3 0 1.2 0 1.2 0 1.2 0 1.3 0 1.2 0 1.2 0 1.2 0 0-0.2 0-0.2 0-0.3 0-0.2 0-0.2 0-0.3 0-0.2 0-0.3 0-0.2 0-0.2 0-0.3 0-0.2 0-0.2 0-0.3 0-0.2 0-0.3 0-0.2 0-0.2 0-0.3 0-0.2 0-0.2 0-0.3 0-0.2 0-0.2 0-0.3 0-0.2 0-0.3 0-0.2 0-0.2 0-0.3 0-0.2 0-0.2 0-0.3 0-0.2 0-0.3 0-0.2 0-0.2 0-0.3 0-0.2 0-0.2 0-0.3 0-0.2 0-0.2 0-0.3 0-0.2 0-0.3 0-0.2 0-0.2 0-0.3 0-0.2 0-0.2 0-0.3 0-0.2 0-0.3 0-0.2 0-0.2 0-0.3 0-0.2 0-0.2 0-0.3 0-0.2 0-0.3 0-0.2 0-0.2 0.8 0 0.7 0 0.8 0 0.7 0 0.7 0 0.8 0 0.7 0 0.8 0 0.7 0 0.8 0 0.7 0 0.7 0 0.8 0 0.7 0 0.8 0 0.7 0 0.8 0 0.7 0 0.7 0 0.8 0 0.7 0 0.8 0 0.7 0 0.8 0 0.7 0 0.7 0 0.8 0 0.7 0 0.8 0 0.7 0 0.8 0 0.7 0 0.7 0 0.8 0 0.7 0 0.8 0 0.7 0 0.8 0 0.7 0 0.7 0 0.8 0.1 0.7 0 0.8 0 0.7 0 0.8 0 0.7 0 0.7 0 0.8 0 0.7 0 0.8 0 0.7 0 0.8 0 0.7 0 0.7 0 0.8 0 0.7 0 0.8 0 0.7 0 0.8 0 0.7 0 0.7 0 0.8 0 0.7 0 0.8 0 1.2 0 0.3 0.1 0.1 0.2 0.3 0.2 0.5 0.1 1.3-0.1 1.1 0.4 0.9 1 0.8 1.2 0.6 1.1 0.7 2.3 0.3 0.6 1.2 1.5 0.3 0.5 0.1 0.3 0.1 0.2 0 0.2 0.2 0.2 1 0.6 0.3 0.4 0.7 0.3 1.2 0.3 0.9 0.6 0.6 0.2 0.7 0.1 0.5 0.2 1.2 0.9 0.4 0.3 0.2 0.3 0.2 0.6 0.2 0.3 0.5 0.3 0.4 0.2 0 0.2 0.5 0.1 0.5 0.4 2.2 2.6 0.2 0.7 0.3 0.4 2.2 1.4 0.4 0.2 0.3 0.1 0.6 0.8 0.6 0.5 0.5 0.3 0.5 0.3 0.3 0.7 0.4 1.2 0.3 0.4 0.7 0.4 1 1.2 2.3 1.8 1.1 1.4 0.4 0.3 0.8 0.2 1.7 0.9 0.2 0.1 0.1 0.2 0.2 0.2 0.3 0.2 0.1-0.1 0.1 0 0.2-0.3 0.1 0 0.4 0.1 0.1 0 0.2 0.1 0.3 0.5 0.3 0.1 0.3 0 0.2 0.1 0.2 0.3 0 0.3 0.1 0 0.1 0 0.4 0.5 0.2-0.3 1.3 1.6 0.6 0.3 0.5 0.1 0.6 0.3 0.6 0.4 0.4 0.5 0 0.4 0.1 0.3 0 0.4 0.2 0.3 0.3 0.1 0.9 0.1 0.2 0.1 0.2 0.4 0.9 1 0.3 0.6 0.1 0.3 0 0.7 0.1 0.4 0.5 0.2 0.1 0.2 0 0.2-0.2 0.4 0 0.2 0 0.4 0.3 0.4 0.1 0.4-0.1 0.5 0 0.2 0 0.1 0.3 0.4 0.2 0.3 0.4 0.2 0.1 0.2 0.1 0.3 0 0.4 0.1 0.3 0.1 0.1 0.6 0.4 0.4 0.8 0.4 0.9 0.3 0.7 0.2 0.1 0.5 0.3 0.3 0.2 0.6 1.2 0.4 0.5 0.1 0.8-0.1 1.2-0.1 0.8-0.4 1.1-0.1 0.7 0.1 0.8 0.5 1.8 0 0.3-0.1 0.5 0.1 0.4 0.1 0.1 0.4 0.5 0.1 0.1 0.1 0.4 0.5 0.6 0.4 1.6 0.1 0.3 0.6 0.6 0.5 0.4 0.4 0.5 0.2 1.4 0.5 0.9 0.2 0.5 0.1 0.5 0 0.3 0.1 0.3 0.4 0.5 1.4 0.9 0.4 0.4 0.1 0.2 0.1 0.3 0.1 0.3 0.2 0.2 0.2 0 2.3 1.5 0.3 0.5 0.5-0.3 0.8 0 0.8 0.2 0.4 0.6 0.7 0.5 0.3 0.1 0.1 0.2 0.6 1.2 0.9 1 0.6 0.5 1 0.5 1.4 1.6 1.1 0.6 2.6 0.9 1.8 0.4 2 0.1 0.3 0.1 0.3 0.2 0.2 0.4-0.3 0.7 0.2 0.2 0.4 0.1 0.2 0.1 1.4 1.2 0.8 0.4 2.5 0.6 0.8 0 0.2 0 0.3 0.2 0.1 0.2 0.1 0.3 0.1 0.3 1.5 1.4 1.2 0.7 0.4 0.1 0.2 0.2 0.8 0.8 0.5 0.1 0.3-0.2 0.2-0.3 0.3 0 0.4 0.5 0.1-0.1 0.4-0.1 0 0.2-2.3 4.6-2.4 4.6-2.4 4.6-2.3 4.5-0.9 1.8-0.9 1.7-0.8 1.7-0.9 1.7-1.2 2.4-1.2 2.3-1.2 2.3-1.3 2.3-0.9 1.6 0.2 1.1 0.2 0.7 0.1 0.7 0.2 0.7 0.3 1.5 0.4 1.4 0.3 1.5 0.3 1.5 1.5 6.2 1.5 6.2 1.5 6.3 1.5 6.2 0.4 1.8 0.4 1.8 0.4 1.8 0.4 1.8-2.2-0.9-2.3-1-2.2-0.9-2.3-0.9-0.7-0.3-0.6-0.2-0.7-0.1-0.7 0.1-1.1 0-1.2 0.1-1.1 0.1-1.1 0.4-1.2 1.1-1.1 1.3-0.9 1.5-1 1.4-1.3 1.8-1.3 1.7-1.3 1.8-1.3 1.7-1.1 1-1.1-0.3-1.2-1-1-0.9-1.4-1.1-1.6-0.8-1.6-0.5-1.7-0.4-0.7-0.1-0.7-0.1-0.7-0.1-0.6 0.1-0.4 0.4-0.4 0.6-0.3 0.4-0.5-0.3-0.4-0.5-0.7-1-0.6-0.8-0.4-0.4-0.8 0.5-0.8 0.4-0.8 0.4-0.9 0.4-0.5 0.3-0.9 0.5-0.8 0.4-0.6 0.1-0.8-0.4-0.8-0.5-0.9-0.4-0.8-0.5-0.8-0.5-0.8-0.4-0.8-0.5-0.8-0.4-0.7-0.5-0.5-0.5-0.5-0.6-0.6-0.6-0.4-0.7-0.4-0.7-0.5-0.5-0.7 0.1-0.7 0.2-0.8 0-0.7-0.1-0.8 0-1.2-0.7-1.1-0.8-1.1-1-1.1-0.8-0.5-0.4-0.4-0.3-0.4-0.3-0.5-0.4-0.1 0.3-0.2 0.2-0.2 0.2-0.1 0.3-0.3 0.6-0.3 0.6-0.3 0.6-0.3 0.6-0.3-0.4-0.4-0.5-0.4-0.2-0.4 0.2-0.4 0.7-0.1 0.9 0 0.9 0 0.8 0 0.4-0.1 0.4 0 0.5-0.2 0.2-0.4 0.3-0.6 0.5-0.4 0.4-0.1 0.5 0.2 0.7 0.2 0.6 0.2 0.7 0.2 0.6 0.1 0.7-0.1 0.4-0.3 0.3-0.6 0.2-1.3 0.4-1.2 0.4-1.3 0.4-1.2 0.3-0.9 0.7-0.1 0.9 0.3 1 0.4 1 0.4 1 0.5 1.1 0.2 1.2-0.1 1.1-0.2 0.7-0.2 0.7-0.2 0.6-0.4 0.6-0.4 0.4-0.5 0.1-0.5-0.1-0.6 0-0.9 0.5-0.3 1-0.1 1.1 0 1.2 0 0.9-0.1 0.9 0 0.8-0.1 0.9-0.1 0.6-0.2 0.4-0.4 0.3-0.4 0.4-0.1 0.1-0.2 0.1-0.1 0.1-0.1 0.1-0.6 0.5-0.5 0.5-0.5 0.5-0.6 0.4-0.5 0.5-0.5 0.6-0.6 0.5-0.5 0.4-0.6 0-0.6 0-0.7-0.2-0.5-0.1-0.8-0.1-0.8-0.1-0.9 0-0.8-0.1-0.8-0.7-0.8-0.6-0.9-0.5-0.9-0.5-0.6-0.5-0.5-0.7-0.4-0.7-0.5-0.7-0.7-0.6-0.7-0.5-0.8-0.5-0.8-0.4-0.4-0.1-0.3-0.1-0.1-0.2-0.1-0.5 0-0.4-0.1-0.4-0.1-0.5-0.1-0.4-0.2-0.4-0.3-0.1-0.4-0.1-0.3-0.3 0-0.1-0.1-0.2 0-0.3-0.1-0.2-0.1-0.5-0.1-0.5-0.1-0.5-0.1-0.5-0.3-0.9-0.5-0.8-0.6-0.5-0.9-0.2-1.9-0.4-2-0.4-1.9-0.5-2-0.4-0.3 0-0.3-0.1-0.3-0.1-0.3 0-0.9-0.2-0.5-0.2-0.2-0.5-0.2-0.9-0.2-1.4-0.2-1.5-0.1-1.4-0.2-1.5-0.2-1.7-0.1-2-0.3-1.9-0.5-1.5-0.5-0.6-0.6-0.6-0.6-0.7-0.6-0.7-0.6-0.9-0.6-0.9-0.7-1-0.4-1 0-0.8 0-0.9-0.2-0.7-0.7-0.3-1.4-0.3-1.6-0.3-1.4-0.7-0.9-1.2-0.3-0.6-0.4-0.5-0.4-0.3-0.6-0.1-0.7 0.1-0.7 0-0.7-0.2-0.3-0.6-0.6 0.8-0.7 0.8-0.6 0.8-0.8 0.7z` },
-    { id: "MXCOA", d: `M468.6 229.3l-0.4-1.8-0.4-1.8-0.4-1.8-0.4-1.8-1.5-6.2-1.5-6.3-1.5-6.2-1.5-6.2-0.3-1.5-0.3-1.5-0.4-1.4-0.3-1.5-0.2-0.7-0.1-0.7-0.2-0.7-0.2-1.1 0.9-1.6 1.3-2.3 1.2-2.3 1.2-2.3 1.2-2.4 0.9-1.7 0.8-1.7 0.9-1.7 0.9-1.8 2.3-4.5 2.4-4.6 2.4-4.6 2.3-4.6-0.1 0.5 0.4 0.2 1.7 0 1.6 0.4 1.1 0.2 0.7-0.4 0.4-0.8 0.1-1.2 0.3-0.1 0.1 0.1 0.2-0.6 0.1-0.3 0.3-0.2 1.1-0.6 0.2-0.2 0.3-0.3 0.8-1.7 0.5-0.5 0.6 0.3 0.2-0.2 1.3-1 0.8-0.2 0.3-0.1-0.3-0.4-0.7-0.4-0.2-0.4 0-0.4 0.4-1.2 0-0.6 0.1-0.4 0.2-0.2 0.3-0.3 0.2-0.1 0.1 0.1 0.2-0.1 0.3-0.1 0-0.2-0.2-0.4 0-0.2 0.3-0.5 0-0.3-0.1-0.4-0.1-0.4 0.1-0.4 0.1-0.4 0.2-0.3 0.9-2.4 0.3-0.2 0.1-0.3-0.1-0.4 0.3-0.1 0-0.2-0.1-0.4 0.3-0.1 0.2-0.2 0.3-0.6 0-0.1 0.4-0.9 0.2 0 0.1-0.5 0.8-1.4 0.1-0.4 0-0.3 0.1-0.2 0.2-0.3 0.2 0 1.1 0 0.5-0.1 1-0.6 0.6-0.2 0.1 0.1 0.1 0.3 0.2 0.1 0.2 0 0.1-0.1 0-0.1 0.3-0.2 0.2-0.5 0.3 0 3.1 0.2 0-0.1 0.7-1 0.1-0.3 0.1-0.9 0.1-0.3 0.2-0.3 0.4 0 0.3-0.2 0.3-0.6 0.2-0.1 0.6 0.1 0.4 0.4 0.3 0.3 0.5-0.2 0.2 0.6 0.4 0.2 1 0.1 1.3 0.8 0.4 0.2 1 0.5 2.7-0.3 0.8 0.2 0.4-0.4 0.5 0.1 0.4 0.3 0.4 0.2 0.2 0 0.3 0 0.3-0.1 0.2-0.2 0.2-0.1 0.3 0 0.5 0.2 1 0 0.3-0.2 0.2 0 0.1 0.3 0.2 0.2 4.7 0.7 1.5-0.2 0.4-0.2 0.4-0.3 0.1-0.7 0.1-0.1 0.2 0.1 0.2 0.2 0.1 0.3-0.1 0.2-0.2 0.6-0.1 0.2 0.6 0.2 0.4-0.3 0.5-0.4 0.5-0.2 0.3 0.1 0.2 0.5 0.3 0.1 0.3 0.1 0.3-0.1 0.3-0.1 0.2-0.1-0.1 0.4 0.1 0.4 0.2 0.4 0.5 0.8 0.1 0.5 0.4 0.8 0.2 0.3 0.2 0.3 0.4 0.2 0.8 0 0.2 0.1 0 0.6-0.3 0.7 0 0.4 0.3 0.2 0.5-0.5 0.7-0.4 0.7-0.1 0.5 0.4 0 0.9-0.2 1 0.1 0.4 0.2 0.3 0.4 0.1 0.3 0 0.2 0.2 0.6 0.7 0.8 0.5 1.9 0.6 0.9 0.3 0.2 0.6 0.1 0.9 0.1 0.5 0.2 0.3 0.2 0.3 0.3 0.3 0.3 0.2 2.1 0.9 0.7 0.7 0.5 0.7 0.3 0.2 1.3 0.6 0.6 0.5 0.4 0.4 0.6 1.2-0.2 0.7 0.2 0.4 1.5 1.3 0.1 0.1 0.1 0.3 0.3 0 0.4 0.1 0.3 0.1 0.2 0.5 0.2 1.9 0.6 1.3 0.1 0.6-0.2 0.7 0.2 0.2 0.1 0.3 0 0.4 0 0.4 0.2 0.2 0.3 0.3 0.4 0.3 0.1 0.5 0.1 0.2 0.4 0.2 0.2 0.1 0.1 0.2-0.2 0.5 0.1 0.2 0.2 0.1 0.4 0 0.2 0.1 0.1 0.2 0.2 0.3 0.1 0.2 0.2 0.3 0.7 3.2 0.3 0.7 1.1 1.4 0 0.6 0.3 0.2 0.7 0.3 0.2 0.3 0.2 0.3-0.1 0.8 0 0.3 0.4 0.7 0.6 0.4 1.2 0.5-0.8 0.4-0.2 0.2 0.1 0.4 0.2 0.3 0.2 0.2 0.1 0.1 0.1 1.2 0.3 1.2 0.8 1.1 0.5 0.7 0 0.5-0.2 0.6 0.3 0.7 0.5 0.5 0.5 0.4 0.8 0.1 0.2 0.1 0 0.3 0.1 0.4 0.1 0.4 0.2 0.2 0.5 0.1 2.8 1.5 0.5 0.5 0.3 0.7 0 0.5 0.1 0.2 0.4 0.4 0.4 0.4 0.2 0 0 0.2-0.1 0.2 0 0.2 0.1 0.6 0.2 0.4 0.3 0.4 0.4 0.5 0.5 0.2 0.6 0.1 0.3 0.3-0.3 0.5 0.3 0.4 0.4 0.6 0.5 0.5 0.5 0.2 0 0.2-0.1 0.3-0.2 0.5 0.1 0.4 0.2 0.2 0.3 0.1 0.2 0.3 0 0.3-0.1 0.7 0.1 0.3 0.1 0.1 0.4 0.3 0.4 0.4 0 0.1 0.7 0.2-0.8 0.7-0.7 0.7-0.7 0.7-0.8 0.7-0.4 0.3-0.4 0.4-0.4 0.4-0.4 0.4-0.2 0.1-0.3-0.2-0.2-0.2-0.2-0.3-1-0.7-0.9-0.8-0.9-0.8-0.9-0.8-0.4-0.3-0.4-0.4-0.4-0.3-0.4-0.3-0.2 0.1-0.3 0.3-0.4 0.3-0.2 0.2-1 0.6-1.1 0.7-1 0.8-0.8 0.9-0.5 1-0.3 1.3-0.2 1.3-0.3 1.2-0.2 1.3-0.3 1.8-0.4 1.6-0.6 0.8-0.3 0.1-0.3 0.1-0.3 0.1-0.2 0-0.2-0.1 0-0.3-0.1-0.2-0.2-0.1-0.9 0.4-0.8 0.3-0.8 0.3-0.9 0.3-0.4 0.2-0.3 0.5-0.3 0.4-0.4 0.4-0.6 0.4-0.7 0.4-0.6 0.4-0.6 0.4-0.6 0.3-0.5 0.3-0.3 0.4 0 0.6 0.1 1 0.1 1 0.1 1 0.1 0.9 0.5 0.2 0.5 0.2 0.4 0.3-0.1 0.8 0.7-0.1 0.4-0.1 0.3-0.2 0.2-0.5-0.1-0.2-0.1-0.1-0.2-0.2 0-0.2 0.2-0.2 0.2 0 0.3 0 0.2-0.1 0.2-0.4 0.1-0.4 0.2-0.1 0.3 0.6 0.6 0.4 0.7 0.1 0.8 0.1 0.6 0.3 0.2 0.7 0 1 0 1 0 0.8 0 0.6 0 0.6 0 0.7-0.1 0.6-0.4 1.7-0.5 1.6-0.6 1.6-1 1.3-0.5 0.5-0.4 0.5-0.5 0.4-0.6 0.5-0.3-1-0.3-0.9-0.2-0.9-0.3-0.9-0.3 0.2-0.3 0.2-0.2 0.3-0.3 0.2-2 1.7-2 1.7-1.9 1.7-2 1.7-1.1 1-1.1 0.9-1.1 1-1 0.9 0.9 0.8 1.1 1 1 1.1 0.7 1.1 0.1 0.6 0.1 0.5 0.2 0.5 0.2 0.5 0.4 0.5 0.3 0.3 0.4 0.1 0.5 0 0.5 0.1 0.5 0.4 0.5 0.5 0.3 0.5 0.3 0.8 0.1 0.9 0 0.9 0.3 0.8 0.6 0.6 0.8 0.3 0.7 0.5 0.2 0.8-0.2 1.2-0.1 1.2 0 1.2 0.2 1.1 0.5 1.2 0.6 1.1 0.7 1.1 0.8 1 0.5 0.6 0.5 0.3 0.5 0.1 0.8 0 0.3 0.1 0.2 0.1 0.2 0.1 0.3 0.3 0.1 0.3 0 0.3-0.1 0.4 0.1 0.3 0.3 0.1 0.4 0 0.5 0 0.4 0.2 0.2 0.3 0.1 0.4 0 0.4 0 0.4-0.8-0.2-1-0.5-0.9-0.3-0.8 0.2-0.1 0.6 0.8 0.5 1.1 0.4 0.7 0.6 0 0.2 0.1 0.1 0 0.2 0.1 0.1 0.7 0.8 1.1 0.3 1 0.2 0.8 0.7 0 0.3-0.1 0.2-0.1 0.3 0.3 0.3 0.5 0 0.6-0.2 0.5-0.1 0.6-0.1 0.5 0.1 0.5 0.1 0.5 0 0.5 0 0.6 0.1 0.3 0.1 0.2 0.2 0.4 0.4 0.8 0.4 0.9 0.6 0.3 0.5-0.9 0.2-0.2 0.1-0.3 0.1-0.3 0.2-0.1 0.2 0 0.3 0.1 0.4 0 0.4 0 0.2-0.4 0.2-0.6 0-0.6-0.1-0.5 0-0.7 0.3-0.7 0.1-0.6 0-0.7-0.2-0.7-0.2-0.7-0.3-0.8-0.3-0.7-0.1-1.9 0-1.8 0.5-1.7 1-1.6 1.1-0.6 0.8-0.9 1.3-0.3 1.2 0.6 0.5 0.6 0.1 0.5 0.4 0.4 0.5 0.5 0.4 0.4 0.6-0.1 0.5-0.5 0.4-0.6 0.3-0.6 0.5-0.1 0.5 0.2 0.6 0.2 0.9 0.3 0.8 0.1 0.7 0 0.7-0.1 0.8-0.4 1.5-0.5 1.5-0.4 1.4-0.3 1.5-0.6-0.4-0.5-0.3-0.6-0.3-0.5-0.3-0.6-0.2-0.5 0.1-0.5 0.1-0.6 0.2-1-0.1-1.2-0.5-1.1-0.7-0.7-0.9-0.3-0.5-0.1-0.5-0.2-0.6-0.2-0.5-0.3-0.5-0.3-0.5-0.4-0.5-0.4-0.4-1-0.7-0.9-0.2-1.1 0.2-1.1 0.2-0.1-0.2 0-0.2 0-0.2 0-0.2-0.6 0.5-0.6 0.6-0.6 0.7-0.5 0.6-0.5 0.3-0.6 0.1-0.6-0.1-0.6 0-0.9 0-0.8-0.1-0.8 0-0.8-0.1-0.3-0.3-0.3-0.6-0.3-0.7-0.1-0.6 0.5 0.2 0.6 0.2 0.6 0.1 0.6 0.1-0.1-0.5 0-0.7-0.2-0.7-0.2-0.4-0.4-0.3-0.5-0.4-0.5-0.2-0.4 0-1.1 0-1.2-0.3-1-0.6-0.7-0.9-0.4-0.8-0.5-1.1-0.5-1-0.6-0.6-1-0.3-1-0.3-1.1-0.3-1-0.4-1.2-0.3-1.2-0.4-1.2-0.4-1.2-0.3-0.8-0.1-0.8 0.1-0.9 0.2-0.8 0.1-2.1 0.2-2.1 0.2-2.1 0.3-2.2 0.2-0.9 0.1-0.6 0.1-0.4 0.4-0.5 0.8-0.7 0.9-0.6 0.8-0.7 0.8-0.6 0.9-0.4 0.6-0.6 0.9-0.7 0.7-0.6 0.1-0.1 1.4 0 1.3 0 1.4-0.1 1.3-0.6-0.5-0.6-0.5-0.7-0.5-0.6-0.4-1.1-0.5-1.2-0.5-1.3-0.3-1.2-0.2-1.2-0.3-1.3-0.5-1.2-0.8-0.7-1.1-0.1-1.3 0-1.2-0.1-1.3-0.5-1-0.9-0.7-1.2-0.7-1.1-0.7-0.7-1-0.3-0.8-0.4-0.6-0.4-0.5-0.6-0.5-0.4-0.4-0.4-0.3-0.2-0.4-0.1-0.5 0.2-0.9 0.2-0.8 0.5-0.8 0.5-0.8 0.2-0.1 0.4-0.1 0.3-0.1 0.2-0.2-0.1-0.3-0.2-0.4-0.3-0.3-0.3-0.3-0.5-0.4-0.3-0.5-0.3-0.5 0-0.7 0.1-0.5 0.3-0.4 0.4-0.3 0.4-0.3 0.3-0.2 0.3-0.2 0.3-0.1 0.3-0.2 0.2-0.4 0.3-0.3 0.2-0.3 0.3-0.3 0.3-0.5 0.1-0.4 0.3-0.4 0.5-0.3 0.4-0.5 0-0.9 0-1-0.1-0.7 0-0.2 0-0.2 0-0.1 0-0.2-0.1-0.9-0.1-1-0.1-0.9-0.1-0.9-0.2-1.6-0.1-1.7-0.1-1.6 0.1-1.6 0.5-1.6 0.7-1.4 0.7-1.5 0.3-1.6-0.4-1.6-1.2-1.4-1.4-1.3-1.3-1-1.1-1-1.2-1-1.1-1-1.2-1-0.3-0.4-0.4-0.3-0.3-0.3-0.4-0.3z` },
-    { id: "MXTAM", d: `M581.1 196.2l0.1 0.2 0.2 0.2 1-0.1 0.2 0.2 0.2 0.6 0.2 0.1 0.3 0 0.6-0.3 0.3-0.1 0.3 0.1 0.4 0.6 0.1 0.2 0.5 0.1 0.6 0.3 0.6 0.5 0.2 0.5 0 1.3-0.1 0.8 0 0.3 0.2 0.2 0.5 0 0.2 0.1 0.1 0.3 0.1 0.4 0 0.2 0 1.2-0.1 0.4-0.2 0.7-0.1 0.7-0.2 0.4 0 0.3-0.1 0.3-0.5 0.6-0.2 0.3 0.8 0.3 0.2 0.2 0.1 0 0 0.3 0.1 0.1 0.3 0.2 0.1 0 0.4 0.5 0.3 0.6 0.2 0.5 0.1 0.7-0.1 0.6-0.5 1.4 0 0.6 0 0.2 0.2 0.2 0.1 0.2 0.1 0.3-0.1 0.3-0.6 1 0.5 0.7 0.1 0.2 0.5 0.4 0.2 0.1 0.3 0 0.2 0 0.2 0.3 0.1 0.4 0 0.6 0.1 0.4 0.3 0.2 1.1 1 0.3 0.4 0.9 1.1 0.4 0.6 0.5 0.5 0.4 0.5 0.4 1.4 0.4 1.6 1.2 3.4 0 0.5 0.3 1.6 0.1 0.7 0.7 0.3 0.8 0.2 0.3 0.4 0.3 0.9 0.1 0.5-0.1 0.3-0.3 0.4-0.2 0.4 0.1 0.4 0.6 0.5 0.6 0.1 0.5-0.1 0.6 0 0.1 0.1 0.2 0.3 0.2 0.1 0.2-0.1 0.4-0.2 0.7 0 0.3 0.2 0.2 0.5 0.5-0.4 1 0.8 0.7-0.2 0.3 0.2 0.3 0.1 0.2-0.1 0.2-0.2 0.3 0.2 0.2-0.1 0.2-0.1 0.3 0 0.1 0.1 0.5 0.6 0.9 0.6 0.4 0.4-0.2 0.5 0.4 0 0.4 0 0.3 0.2 0.3 0.2-0.3 0.5 0 0.1 0.3 0.1 0.2 0 0.6 0.6 0.3 0.2 0.4 0.1 1.7-0.7 0.8 0.5 0.9 0.2 0.8 0.4 0.6 0.7 0.5-0.6 0.8 0.3 0.9 0.5 0.8 0.2-0.3 0.7 0 0.3 0.4 0.1 0.7 0 0.2 0.2 0.7 1.1 0.3 0.3 2.2 1.1 1.1 0.3 1 0.1 1.3-0.4 0.6 0.2 0.2 0.7 0.3 0.2 0.6-0.2 0.9-0.5 0.4 0 1.7 0.2 1.8-0.2 2.2 0 0.5 0.2 0.1 0.4 0.4 0.2 2.5 0.1 0.5 0.2 0.6 0.2 0.5 0.4 0.3 0.5 0.2 0.5 0.3 0.4 0.9 0.4 1.2 1.3 0.6 0.4 0.4 0.2 0.5 0 0.6 0.1 0.2 0.2 0.2 0.5 0.3 0.5 0.6 0.1 0.1-0.1 0-0.2 0.1-0.2 0.2 0 0.2 0.2 0.1 0.2 0.1 0.2 0.3 0.1 0.6-0.3 0-0.6-0.2-0.7-0.1-0.6 0.1-0.2 0.7-0.4 0.5 0.3 0.6-0.2 0.6-0.5 0-0.5 0.4-0.1 1.4 0.1 1.9-0.2-0.8 4.4 0.3 1.2-0.2 0.7-0.1 1.5-0.2 0.6-0.4 0.5-0.3 1.3-0.8 2-1 2.7-1.7 3.5-4 6.6-2.8 10.6-2.7 10.4-1.6 13.6-0.1 1.1-0.2 1.3-0.2 6.4-0.3 0.5-0.5 0.2-2-0.2 0 0.2 0.8 0 0.6 0.1 0.4 0.3 0.1 0.8-0.2 2.9 0.2 0 0.2-0.8 0.2-2.1 0.2-0.9 0.3 1.1-0.5 6.3-0.5 3-0.3 5.7 0.8 9-0.4 3.8 0.1-1.8-0.1-0.5-0.3 0.3-0.8 3.3-0.3 0.4-0.9 1-0.1 0.3 0 0.4-0.1 0.2-0.2 0-0.8-0.2 0.6 0.7 0 0.6-0.9 2.3-0.2 0.4 0.1 0.5 0.3 0.2 0.3 0 0.3-0.2 0.3-0.2 0-0.4-0.1-0.9 0.1-0.4 0.3-0.4 0.1 0 0.1 0.3 0.1 0.5 0 0.8-0.6 2.6 0.8 3.1 0 0.9 0.1 0.4 0.3 1.6 0.1 0.4 0.1 0.3 0.5 1.4-0.2 0.2-0.8 0.5-0.2 0.1-0.3 0.2-0.2 0.3-0.3 0.3-0.3 0-0.3-0.3-0.3-0.3-0.2-0.3-0.3-0.2-0.3-0.3 0-0.5 0.3-0.4 0.2-0.4-0.4-0.3-0.5-0.3-0.5-0.4-0.6-0.3-0.4-0.1-0.7 0-0.8-0.3-0.7-0.2-0.6 0-0.5-0.1-0.5-0.4-0.5-0.4-0.4-0.4-0.6-0.5-0.2-0.8-0.2-0.6-0.6-0.2-0.4 0.1-0.3 0.1-0.2 0.2-0.3 0.1-0.3 0.1-0.2 0-0.1 0-0.4-0.2-0.4 0-0.2 0.6 0 0.7-0.1 0.6-0.3 0.2-0.4 0-0.4-0.1-0.3-0.2-0.5 0.2-0.2-0.3-0.2-0.5-0.3 0.1-0.4 0.4-0.3-0.1-0.3-0.3-0.4-0.3-0.2 0.1-0.1 0.1-0.1 0.1-0.2-0.2-0.2-0.1-0.2 0-0.1 0-0.2 0-0.9 0-0.9 0.1-1 0.3-1 0.1-0.3-0.2-0.3-0.1-0.3-0.2-0.3-0.3-0.5 0.7-0.8 0.3-0.9 0.1-0.9 0.1-0.4 0.2-0.3 0.4-0.3 0.4-0.3 0.3-0.6 0.1-0.8 0-0.7-0.1-0.6-0.1-1-0.2-0.9-0.2-0.9-0.3-0.9-0.4-0.1 0-0.1-0.1-0.1 0-0.8-0.3-0.8-0.2-0.9-0.2-0.8-0.1-0.7-0.1-0.7-0.1-0.6-0.2-0.6-0.5-0.4-0.6-0.4-0.7-0.3-0.8-0.3-0.7-0.5-0.9-0.5-0.9-0.5-0.8-0.4-0.9-0.1-0.2-0.1-0.1-0.1-0.2-0.1-0.2-0.3 0.5-0.4 0.5-0.4 0.4-0.4 0.1-0.5-0.3-0.5-0.6-0.5-0.7-0.4-0.5-0.3-0.2-0.3-0.3-0.3-0.2-0.3-0.1-0.3 0.1 0 0.1 0.1 0.1 0.1 0.3 0.1 0.5 0.1 0.4 0.1 0.5 0.1 0.4 0 0.9-0.2 0.2-0.5-0.1-0.8-0.3-0.5-0.2-0.6-0.1-0.5-0.2-0.6-0.2-1.5-0.6-1.5-0.7-1.5-0.6-1.5-0.6-0.7-0.2-0.6-0.3-0.7-0.3-0.6-0.3-0.4-0.1-0.5-0.2-0.3-0.2-0.2-0.2-0.1-0.5-0.1-0.4-0.1-0.3-0.2-0.4-0.3-0.5-0.2-0.3 0.1-0.4 0.4-0.4 0.6-0.4 0.7-0.2 0.7-0.2 0.6-0.5 0.3-0.3 0.2-0.4 0.1-0.4 0.1-0.4-0.2-1.1-0.6-0.8-0.8-0.7-0.7-0.8-0.3-0.6-0.1-0.5 0-0.6-0.1-0.6-0.5-0.1-0.7 0.4-0.7 0.7-0.5 0.4 0.2-0.9 0.3-1 0.2-0.9 0.2-0.9 0.1-0.5 0.1-0.4 0.1-0.5 0-0.4-0.2-0.5-0.7-0.5-0.8-0.5-0.5-0.3 0.7-0.8 0.8-0.7 0.8-0.4 1 0.2 0.7 0.3 0.7 0.3 0.8 0.3 0.8 0.2-0.4-1.2-0.3-1.2-0.3-1.2-0.4-1.2 0.1-0.3 0.1-0.4 0.2-0.3 0.2-0.3 0.3-0.8 0.3-0.8 0.4-0.8 0.4-0.8 0.2-0.5 0.3-0.6 0.4-0.6 0.4-0.5 0.2-0.1 0.3-0.1 0.3-0.1 0.3 0 0.9 0 0.8 0 0.8-0.1 0.8-0.1 0.8-0.1 0.9 0 0.8-0.2 0.5-0.5 0.5-0.8 0.6-0.9 0.6-0.8 0.6-0.9 0.3-0.1 0.4 0.1 0.4 0.1 0.3-0.1 0.1-0.3-0.1-0.4-0.1-0.4-0.1-0.3-0.1-0.7-0.4-0.5-0.5-0.3-0.5-0.4-0.5-0.4-0.5-0.5-0.5-0.4-0.4-0.5-0.1-0.1-0.1-0.1-0.1-0.1-0.1-0.1-0.5-0.8-0.2-1.4 0-1.6 0.1-1.1 0.2-0.8 0.2-0.8 0.2-0.8 0.3-0.8 0.2-0.7 0-0.5-0.1-0.6-0.1-0.7-0.1-0.4-0.1-0.4-0.1-0.4-0.1-0.4 0-0.1 0-0.1 0-0.1-0.1-0.4-0.1-0.4-0.1-0.4 0-0.4-0.8 0.4-0.7 0.3-0.8 0.3-0.7 0.3-0.3-0.7-0.3-0.9-0.2-0.8 0-0.7 0.5-0.4 0.5-0.5 0.5-0.4 0.5-0.5 0.5-0.3 0.6-0.3 0.7-0.2 0.5-0.2 0.2 0.1 0.3 0.1 0.2 0.2 0.2 0.1 0.3-0.1 0.2-0.1 0.2-0.2 0.2-0.2 0.3-0.2 0.2 0 0.2-0.2 0.1-0.3 0-0.6 0-0.4 0.2-0.4 0.3-0.3 0.2-0.1 0.2-0.1 0.2 0 0.2 0 0.3-0.2 0.1-0.1 0.1-0.2 0.1-0.2 0.5-0.4 0.4-0.1 0.5 0.1 0.7-0.1 0.3-0.1 0.3-0.1 0.3-0.2 0.3-0.3 0.4-0.5 0.2-0.2 0.4 0.2 0.5 0.4 0.6 0.3 0.8 0.3 0.8 0.2 0.7 0.2-0.1-0.3 0-0.2-0.1-0.3-0.1-0.3-0.3-0.7-0.2-0.7-0.1-0.7 0.4-0.7 0.3-0.3 0.3-0.4 0.3-0.4 0.2-0.4-0.2-0.3-0.3-0.5-0.4-0.4-0.3-0.3-0.1-0.4 0.3-0.2 0.6 0 0.4 0-0.2-0.5-0.1-0.5 0.2-0.2 0.6 0.1 0.5 0 0.3-0.4 0.2-0.4 0.5-0.2 0.4-0.6 0.3-0.6 0.4-0.1 0.4 0.7 0.5 0.6 0.6 0.3 0.7 0 0.7-0.1 0.7-0.1 0.6-0.3 0.5-0.4 0.6-0.5 1.6-1.3 1.6-1.3 1.5-1.3 1.6-1.4 1-0.8 1-0.8 1-0.9 1-0.8 0.4-0.4 0.5-0.4 0.4-0.4 0-0.6 0-0.6-0.1-0.2-0.3-0.2-0.4 0-0.5 0-0.7 0.1-0.7-0.1-0.4-0.1-0.2-0.8 0-1.4 0.1-1.4 0.1-1-0.1-1.6 0-1.7 0-1.6 0-1.6 0-1.2 0.1-1.8-0.1-1.7-0.4-0.8-0.7-0.2-0.7-0.2-0.7-0.2-0.8-0.2-0.4-0.2-0.5-0.1-0.4-0.1-0.5-0.1-0.6-0.2-0.8-0.3-0.8-0.2-0.6 0-0.4 0.5-0.5 0.8-0.4 0.9-0.3 0.7-0.8-0.8-0.7-0.7-0.7-0.7-0.7-0.8-0.5-0.5-0.4-0.4-0.5-0.3-0.6 0.1-0.2 0.1-0.2 0.2-0.1 0.2-0.1 0.2-0.2 0-0.3-0.1-0.2-0.1-0.2 0.1-0.2 0.1-0.1 0.2-0.2 0.2-0.2 0.2-0.5-0.9-0.2-1.8-0.1-2-0.1-1.5-0.1-0.5-0.1-0.4-0.2-0.3-0.4-0.1-0.4 0.1-0.5 0-0.4 0-0.4-0.2-0.3-0.4-0.4-0.4-0.3-0.4-0.3-0.4-0.3-0.4-0.2-0.4-0.3-0.4-0.2-0.4-0.4 0-0.6 0.6-0.7 0.3-0.5-0.5-0.3-0.5-0.1-0.5 0-0.5 0-0.7 0-0.4 0.1-0.3 0.2-0.2 0.2-0.3 0.4-0.8 0.2-0.9 0.1-0.9-0.3-0.9-0.6-0.9-0.9-0.5-1.1-0.4-0.9-0.4-0.4-0.2-0.4-0.2-0.5-0.2-0.3-0.1-0.6 0.1-0.6 0-0.6 0-0.6 0 0.6-0.6 0.4-0.4 0.3-0.5 0-0.9 0.1-0.7 0.4-0.6 0.4-0.6 0.4-0.5-0.3-0.1-0.1-0.2-0.1-0.3-0.1-0.2-0.3-0.2-0.4-0.1-0.3-0.2-0.3-0.3-0.2 0-0.4-0.1-0.4-0.1-0.1 0-0.2-0.1-0.2-0.1-0.2 0-0.3 0-0.9-1.2 0.1-1.9 0.6-2.1 0.5-1.6 0.2-0.9 0.2-0.6-0.2-0.5-0.6-0.5-0.3-0.5-0.1-0.7-0.1-0.8-0.1-0.5-0.2-1.6-0.3-2.3-0.4-2.2-0.7-1-0.9-0.2-0.9-0.1-0.9-0.1-0.9-0.2-0.2-0.3-0.1-0.8 0-0.8 0.1-0.4 1.4-0.9 1.4-0.9 1.4-0.7 1.5-0.7 0.1 0z m54.4 157.1l0.5-1.3 0.2-0.4 0.2 0.6-0.4 1-0.6 0.9-0.7 0.3 0.2-0.3 0.4-0.5 0.2-0.3z` },
-    { id: "MXNLE", d: `M578.3 192.9l0.3 0.3 0.3 0.5 0.3 0.4 0.3 0.1 0.5 0.2 0.2 0.1 0.1 0.3 0.1 0.4 0.1 0.3 0.2 0.1 0.4 0.6-0.1 0-1.5 0.7-1.4 0.7-1.4 0.9-1.4 0.9-0.1 0.4 0 0.8 0.1 0.8 0.2 0.3 0.9 0.2 0.9 0.1 0.9 0.1 0.9 0.2 0.7 1 0.4 2.2 0.3 2.3 0.2 1.6 0.1 0.5 0.1 0.8 0.1 0.7 0.3 0.5 0.6 0.5 0.2 0.5-0.2 0.6-0.2 0.9-0.5 1.6-0.6 2.1-0.1 1.9 0.9 1.2 0.3 0 0.2 0 0.2 0.1 0.2 0.1 0.1 0 0.4 0.1 0.4 0.1 0.2 0 0.3 0.3 0.3 0.2 0.4 0.1 0.3 0.2 0.1 0.2 0.1 0.3 0.1 0.2 0.3 0.1-0.4 0.5-0.4 0.6-0.4 0.6-0.1 0.7 0 0.9-0.3 0.5-0.4 0.4-0.6 0.6 0.6 0 0.6 0 0.6 0 0.6-0.1 0.3 0.1 0.5 0.2 0.4 0.2 0.4 0.2 0.9 0.4 1.1 0.4 0.9 0.5 0.6 0.9 0.3 0.9-0.1 0.9-0.2 0.9-0.4 0.8-0.2 0.3-0.2 0.2-0.1 0.3 0 0.4 0 0.7 0 0.5 0.1 0.5 0.3 0.5 0.5 0.5 0.7-0.3 0.6-0.6 0.4 0 0.2 0.4 0.3 0.4 0.2 0.4 0.3 0.4 0.3 0.4 0.3 0.4 0.4 0.4 0.3 0.4 0.4 0.2 0.4 0 0.5 0 0.4-0.1 0.4 0.1 0.2 0.3 0.1 0.4 0.1 0.5 0.1 1.5 0.1 2 0.2 1.8 0.5 0.9 0.2-0.2 0.2-0.2 0.1-0.2 0.2-0.1 0.2-0.1 0.2 0.1 0.3 0.1 0.2 0 0.1-0.2 0.1-0.2 0.2-0.2 0.2-0.1 0.6-0.1 0.5 0.3 0.4 0.4 0.5 0.5 0.7 0.8 0.7 0.7 0.7 0.7 0.8 0.8 0.3-0.7 0.4-0.9 0.5-0.8 0.4-0.5 0.6 0 0.8 0.2 0.8 0.3 0.6 0.2 0.5 0.1 0.4 0.1 0.5 0.1 0.4 0.2 0.8 0.2 0.7 0.2 0.7 0.2 0.7 0.2 0.4 0.8 0.1 1.7-0.1 1.8 0 1.2 0 1.6 0 1.6 0 1.7 0.1 1.6-0.1 1-0.1 1.4 0 1.4 0.2 0.8 0.4 0.1 0.7 0.1 0.7-0.1 0.5 0 0.4 0 0.3 0.2 0.1 0.2 0 0.6 0 0.6-0.4 0.4-0.5 0.4-0.4 0.4-1 0.8-1 0.9-1 0.8-1 0.8-1.6 1.4-1.5 1.3-1.6 1.3-1.6 1.3-0.6 0.5-0.5 0.4-0.6 0.3-0.7 0.1-0.7 0.1-0.7 0-0.6-0.3-0.5-0.6-0.4-0.7-0.4 0.1-0.3 0.6-0.4 0.6-0.5 0.2-0.2 0.4-0.3 0.4-0.5 0-0.6-0.1-0.2 0.2 0.1 0.5 0.2 0.5-0.4 0-0.6 0-0.3 0.2 0.1 0.4 0.3 0.3 0.4 0.4 0.3 0.5 0.2 0.3-0.2 0.4-0.3 0.4-0.3 0.4-0.3 0.3-0.4 0.7 0.1 0.7 0.2 0.7 0.3 0.7 0.1 0.3 0.1 0.3 0 0.2 0.1 0.3-0.7-0.2-0.8-0.2-0.8-0.3-0.6-0.3-0.5-0.4-0.4-0.2-0.2 0.2-0.4 0.5-0.3 0.3-0.3 0.2-0.3 0.1-0.3 0.1-0.7 0.1-0.5-0.1-0.4 0.1-0.5 0.4-0.1 0.2-0.1 0.2-0.1 0.1-0.3 0.2-0.2 0-0.2 0-0.2 0.1-0.2 0.1-0.3 0.3-0.2 0.4 0 0.4 0 0.6-0.1 0.3-0.2 0.2-0.2 0-0.3 0.2-0.2 0.2-0.2 0.2-0.2 0.1-0.3 0.1-0.2-0.1-0.2-0.2-0.3-0.1-0.2-0.1-0.5 0.2-0.7 0.2-0.6 0.3-0.5 0.3-0.5 0.5-0.5 0.4-0.5 0.5-0.5 0.4 0 0.7 0.2 0.8 0.3 0.9 0.3 0.7 0.7-0.3 0.8-0.3 0.7-0.3 0.8-0.4 0 0.4 0.1 0.4 0.1 0.4 0.1 0.4 0 0.1 0 0.1 0 0.1 0.1 0.4 0.1 0.4 0.1 0.4 0.1 0.4 0.1 0.7 0.1 0.6 0 0.5-0.2 0.7-0.3 0.8-0.2 0.8-0.2 0.8-0.2 0.8-0.1 1.1 0 1.6 0.2 1.4 0.5 0.8 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.4 0.5 0.5 0.4 0.5 0.5 0.5 0.4 0.5 0.4 0.5 0.3 0.4 0.5 0.1 0.7 0.1 0.3 0.1 0.4 0.1 0.4-0.1 0.3-0.3 0.1-0.4-0.1-0.4-0.1-0.3 0.1-0.6 0.9-0.6 0.8-0.6 0.9-0.5 0.8-0.5 0.5-0.8 0.2-0.9 0-0.8 0.1-0.8 0.1-0.8 0.1-0.8 0-0.9 0-0.3 0-0.3 0.1-0.3 0.1-0.2 0.1-0.4 0.5-0.4 0.6-0.3 0.6-0.2 0.5-0.4 0.8-0.4 0.8-0.3 0.8-0.3 0.8-0.2 0.3-0.2 0.3-0.1 0.4-0.1 0.3 0.4 1.2 0.3 1.2 0.3 1.2 0.4 1.2-0.8-0.2-0.8-0.3-0.7-0.3-0.7-0.3-1-0.2-0.8 0.4-0.8 0.7-0.7 0.8 0.5 0.3 0.8 0.5 0.7 0.5 0.2 0.5 0 0.4-0.1 0.5-0.1 0.4-0.1 0.5-1.9-0.3-1.9-0.1-2 0-1.9 0 0 0.4 0 0.4 0 0.4 0 0.4-0.1 0.3-0.3 0.1-0.4-0.1-0.4-0.1-0.9-0.2-0.7-0.3-0.4-0.6-0.4-0.9 0-0.1 0-0.2-0.1-0.2 0-0.2 0-0.2 0-0.1 0-0.2 0-0.2 0-0.6 0-0.5 0-0.5 0-0.6-0.1-0.5-0.2-0.4-0.2-0.5 0-0.4 0.1-0.6 0.2-0.5 0.2-0.5 0.1-0.5-0.1-0.5-0.1-0.4-0.1-0.4-0.2-0.4-0.3-1.1-0.3-1.2-0.1-1.1 0.1-1.1 0.3-1 0-0.9 0-1-0.2-1-0.9-1.1-1-1.1-0.8-1.2-0.5-1.4-0.2-1.6 0-1.7 0-1.7 0-1.7-0.1-0.9 0-1.1-0.1-1-0.2-0.9-0.4-0.6-0.5-0.6-0.5-0.6-0.5-0.6-1-1.4-1-1.4-1-1.5-1.1-1.3 0.3-1.5 0.4-1.4 0.5-1.5 0.4-1.5 0.1-0.8 0-0.7-0.1-0.7-0.3-0.8-0.2-0.9-0.2-0.6 0.1-0.5 0.6-0.5 0.6-0.3 0.5-0.4 0.1-0.5-0.4-0.6-0.5-0.4-0.4-0.5-0.5-0.4-0.6-0.1-0.6-0.5 0.3-1.2 0.9-1.3 0.6-0.8 1.6-1.1 1.7-1 1.8-0.5 1.9 0 0.7 0.1 0.8 0.3 0.7 0.3 0.7 0.2 0.7 0.2 0.6 0 0.7-0.1 0.7-0.3 0.5 0 0.6 0.1 0.6 0 0.4-0.2 0-0.2 0-0.4-0.1-0.4 0-0.3 0.1-0.2 0.3-0.2 0.3-0.1 0.2-0.1 0.9-0.2-0.3-0.5-0.9-0.6-0.8-0.4-0.4-0.4-0.2-0.2-0.3-0.1-0.6-0.1-0.5 0-0.5 0-0.5-0.1-0.5-0.1-0.6 0.1-0.5 0.1-0.6 0.2-0.5 0-0.3-0.3 0.1-0.3 0.1-0.2 0-0.3-0.8-0.7-1-0.2-1.1-0.3-0.7-0.8-0.1-0.1 0-0.2-0.1-0.1 0-0.2-0.7-0.6-1.1-0.4-0.8-0.5 0.1-0.6 0.8-0.2 0.9 0.3 1 0.5 0.8 0.2 0-0.4 0-0.4-0.1-0.4-0.2-0.3-0.4-0.2-0.5 0-0.4 0-0.3-0.1-0.1-0.3 0.1-0.4 0-0.3-0.1-0.3-0.3-0.3-0.2-0.1-0.2-0.1-0.3-0.1-0.8 0-0.5-0.1-0.5-0.3-0.5-0.6-0.8-1-0.7-1.1-0.6-1.1-0.5-1.2-0.2-1.1 0-1.2 0.1-1.2 0.2-1.2-0.2-0.8-0.7-0.5-0.8-0.3-0.6-0.6-0.3-0.8 0-0.9-0.1-0.9-0.3-0.8-0.3-0.5-0.5-0.5-0.5-0.4-0.5-0.1-0.5 0-0.4-0.1-0.3-0.3-0.4-0.5-0.2-0.5-0.2-0.5-0.1-0.5-0.1-0.6-0.7-1.1-1-1.1-1.1-1-0.9-0.8 1-0.9 1.1-1 1.1-0.9 1.1-1 2-1.7 1.9-1.7 2-1.7 2-1.7 0.3-0.2 0.2-0.3 0.3-0.2 0.3-0.2 0.3 0.9 0.2 0.9 0.3 0.9 0.3 1 0.6-0.5 0.5-0.4 0.4-0.5 0.5-0.5 1-1.3 0.6-1.6 0.5-1.6 0.4-1.7 0.1-0.6 0-0.7 0-0.6 0-0.6 0-0.8 0-1 0-1-0.2-0.7-0.6-0.3-0.8-0.1-0.7-0.1-0.6-0.4-0.3-0.6-0.2 0.1-0.1 0.4-0.2 0.4-0.2 0.1-0.3 0-0.2 0-0.2 0.2 0 0.2 0.2 0.2 0.1 0.1 0.1 0.2-0.2 0.5-0.3 0.2-0.4 0.1-0.7 0.1 0.1-0.8-0.4-0.3-0.5-0.2-0.5-0.2-0.1-0.9-0.1-1-0.1-1-0.1-1 0-0.6 0.3-0.4 0.5-0.3 0.6-0.3 0.6-0.4 0.6-0.4 0.7-0.4 0.6-0.4 0.4-0.4 0.3-0.4 0.3-0.5 0.4-0.2 0.9-0.3 0.8-0.3 0.8-0.3 0.9-0.4 0.2 0.1 0.1 0.2 0 0.3 0.2 0.1 0.2 0 0.3-0.1 0.3-0.1 0.3-0.1 0.6-0.8 0.4-1.6 0.3-1.8 0.2-1.3 0.3-1.2 0.2-1.3 0.3-1.3 0.5-1 0.8-0.9 1-0.8 1.1-0.7 1-0.6 0.2-0.2 0.4-0.3 0.3-0.3 0.2-0.1 0.4 0.3 0.4 0.3 0.4 0.4 0.4 0.3 0.9 0.8 0.9 0.8 0.9 0.8 1 0.7 0.2 0.3 0.2 0.2 0.3 0.2 0.2-0.1 0.4-0.4 0.4-0.4 0.4-0.4 0.4-0.3 0.8-0.7 0.7-0.7 0.7-0.7 0.8-0.7z` },
-    { id: "MXROO", d: `M884.3 499.4l-0.2-2.5 0.3-0.4 2.5-3 0.6-1.7 0-1.9-0.2-2.2-0.5-2.7 0.1-0.6 0.3-0.7 0.1-0.7-0.5-0.2-0.4-0.2 0.1-0.5 0.3-0.5-0.2-1.5-1-1.3-0.2-1.8 0.9-6-0.1-2.2 1.3-1.4 0.4-0.8 0-1 0.1-0.5-0.1-2.2 0.2-1.9-0.6-2.2-2.8-3.5-3.5-3.1-1.8-1.3-1.6-1.3-1.2-1.8 0.6-1.1 0.4-1.1 0.3-1 0.1-0.9-0.1-1 0.8-0.4 0.9 0.1 3.1-0.4 0.8-0.8 0.7-0.8 1.8-0.6 0.9-0.6 3.2-0.1 0.5-0.1 0.5-0.3 0.3-0.3 1.7-1.7 0.8 0.4 0.6 0.6 0.3-0.5-0.2-0.6 0.6-0.8 1.7-1.1 0.9-0.4 0.9-0.6 0.9-0.4 1.6-0.3 1.6-1 1.7-0.5 1.3-1.5 0.7-2 0.8-0.6 0.9 0.1 0.6 0.7 0.3 0.9 0.7 0 0-1.1-0.4-1.3 0.5-1 0.6-0.9 0.5-0.9 0.7-0.6 0.9-0.2 0.8 0.6 0.8 0.4 0.9-0.3 1.7 0.1 0.8-0.3 2.4-1.3 2.4-2.1 0.9-0.6 1.5-1.2 1.8-1.1 0.9-1.8 0.4-1.1 0.6-1 0.2-1 0.1-1 1.8-3.5-0.1-1.9-1.3-2.9 0-1.2 0.4-1.9 1.2-1.7 0.1-1-0.4-5.8 0-0.4 0.8 0 0.2 0 0.1 0.2 0.2 0.2 0.2 0.2 0.3 0-0.2 0.2-0.1 0-0.2 0-0.1-0.2-0.2 0 0.3 0.4 0.5 0 1.3-0.1 0.6 0 1.7 0.6 1.7-0.1 0.5 0.2 0.5 0.2 0.5 0 2.1-0.9 0.3-0.3 0.4-0.6 0.2-0.3 0.1-0.3 0-0.3-0.2-0.2 0-0.3 0-0.2 0.1-0.2-0.1-0.1-0.4-0.2-0.7 0-0.7 0.2-0.6 0.3-0.5 0.5-0.5 0.2-0.7 0.1-0.7-0.2-0.6-0.2-0.2 0.2-0.1-0.5 0-0.2-0.5 0.3-0.7 0.6-0.6 0.2 0 0.1 0.1 0 0.1 0.1-0.3 0.1-0.2-0.1-0.1-0.2 0-0.4 0.9-0.8 0.3-0.3 0.2-0.2 0.2 0 0.7 0 0.9 0.2 0.2 0.1 0.6 0.1 0.8-0.2 3.2-1.6 0.7-0.1 1.9 0.7 0.5 0.3 0.8 0.8 1.5 2.2 0.2 0.3 0.2 0.3 0.1 0.3 0.1 0.6 0.2 0.2 0.3 0.1 0.3 0.1 0.1-0.4 0.2 0 0.6 0.2 0.8 0 0.3 0.2 0.4 1.5 0.1 0.4-0.1 0.5-0.2 0.8-0.1 0.3 0 1.5 0.3 2 0.7 1.4 1.4-0.1-0.1 0.3-0.1 0.1-0.1 0.2-0.6 1.4-0.2 0.2-0.3 0.8 0 0.2 0.2 0.3 0 0.2 0 0.2-0.1 0-0.2 0-0.1 0.1-0.2 0.1-0.4 0.2-0.2 0.1-0.1 0.2-0.1 0.3 0 0.6-0.1 0.4-0.5 1.6-0.7 1.7 0 0.3-1.9 2.8-2.7 3.1-0.6 1-0.3 0.3-1.6 1-0.4 0.5-1.2 0.7-1.6 1.7-3.4 5.1-0.3 1-0.4 0.1-0.2 0.2 0 0.2 0.2 0.3-0.9 0.6-0.6 0.8-0.4 0.9-0.6 2.4-0.2 1.4 0.1 2.5 0.2 0.7 0.7 1.3 0.1 0.6 0 0.3-0.3 1.1-0.1 0.2-0.2 0-0.2 0.2-0.4 1.4-0.1 0.3-0.1-1.2 0-0.4 0.1-0.1 0.3 0 0.2-0.2 0.3-0.1 0.1-0.3 0.1-0.4 0-1.2-0.5-0.5-0.1-0.3-0.1-0.4-0.1-0.3-0.2-0.1-0.2 0.1-0.1 0.3 0.1 0.2 0.2 0.2 0.1 0.3 0.1 0.9 0 0.5-0.1 0.3 0.2-0.2 0.1-0.1 0.3-0.2-1.2 1.9-0.3 0.2-0.1 0.1-0.2 0.3-0.2 0.2-0.2-0.1-0.3-0.2-0.2-0.2-0.2 0.1-0.3 0.5-0.4 0-0.6 0.8-0.5 1.1-0.3 0.9-0.5 0.9-0.3 1-0.3 0.3-0.4 0 0.3-0.2 0.3-0.4 0.2-0.5-0.2-0.4-0.3 0.1-1.5 0-0.3-0.1-0.2 0.4-0.1 0.6 0 0.6 0 0.5 0.4 0.4 0.8 0.6 0 0.3 0.3 0.1 0.2 0.1 0.4 0 0.3-0.1-0.2 0.5-0.1 0.9-0.1 0.5 0.6 0 0.3-0.3 0.3-0.5 0.4-0.4 0.3-0.2 0.8-0.3 0.4-0.2 0.8 0.3 0.7 0.4 0.1 0 0.2-0.1 0.1-0.2 0-0.2 0.1-0.2 0.3 0 0.2 0.2 0.1 0.1 0.2-0.3 0.1 0.1 0.1 0.1 0.1 0 0.1 0.1-0.4 0.2 0 0.2 0.8-0.2 0.4-0.6 0-0.6-0.4-0.1 0.2 0.3 0 0.3-0.3 0.1-0.9 0-0.8-0.2-0.3-0.1-0.4-0.2 0.5 0 1.8 0.3 0-0.3 0-0.1 0.2-0.8 0-0.5 0.6 1.1 0.2 0.6-0.1 0.3-0.2 0.3-0.3 2.1-0.3 0.5-0.4 0.6-0.5 0.4-0.5 0.1-0.2 0.1-0.8 0.9-0.2 0.1-1 0.2 0.5-0.2 0.2-0.3 0.1-0.4 0.1-0.4-1 0.3-1.3 0.7-1.1 1-0.3 1.2 0.2 0 0.2-0.7 0.2 0-0.3 0.5-0.4 0.5-0.2 0.4 0.5 0.1-0.6 1.3-0.2 0.7 0.3 0.3 0.5 0.1 0.3 0.2 0.3 0 0.6-0.5 0.7-0.9 0.3-0.6 0.2-0.5 0.3-0.4 0.7-0.2 1.3-0.1-0.6 1.2 0.4-0.3 0.3-0.4 0.3-0.3 0.6 0 0 0.2-0.6 0.3-0.4 0.4-0.8 1.1-0.3 0.8-0.3 1.6-0.3 0.6 0.2 0.7-0.4 0.9-0.6 1.5-0.7 1-0.5 4-1.1 3.7-0.5 0.8-0.6 0.9-0.6 0.9-0.4 1.1-0.2 1.3 0.2 1.3-0.1 0.7-0.3 0.6-0.2 0.5-0.1 2.1-0.3 0.7-1.4 2.1-0.1 0.4-0.1 0.5-0.4 0.9-0.1 0.5 0 1.9-0.2 0-0.1-0.8-0.1-0.6-0.5 0.6-0.3-0.2-0.1-0.4 0.2-0.2 0.3-0.3 0.1-0.8 0.1-0.8 0-0.4-0.1 0.3-0.1 0.3-0.2 0.3-0.2 0.2-0.1-0.4 0.1-0.3 0.1-0.3 0.1-0.5-0.1 0-0.4-0.5 0-0.2 0-0.2 0-0.3-0.1-0.3-0.8-0.1-0.1-0.1-0.1-0.1 0-0.3 0.2-0.2 0.1 0-0.2-0.5-0.1-0.3-0.3-0.2-0.5 0-0.8-0.2-1.5-0.9-0.7-0.2-0.3-0.2-0.1-0.5 0.1-0.4 0-0.2 1-1.2-0.2-0.6 0.3-0.7 0.4-0.6 0.3-0.5 0-0.2 0.3-0.5 0.1-0.4-0.1 0-0.1-0.2-0.2-0.1 0-0.2 0-0.2 0.1-0.2 0.1-0.1 0.1-1.3 0-0.6-0.2-0.5-0.3-0.5-0.2-0.5-0.2-1.2-0.7 0.6-0.7 0.7-0.5 0.9-0.3 0.8 0 0.5-0.2 0.5-0.2 0.4-0.3 0.2-0.2-0.2 0.1-0.6 0.2-0.6-0.1 0.2-0.3 0.4-0.5 0.1-0.7 0.1-0.3 0.1-1.2 1.1-0.2 0.2-0.1 0.3-0.1 0.3 0.6-0.2 0.5-0.5 0.5-0.6 0.4-0.6 0.2 0.6-0.2 0.4-0.2 0.4 0 0.5 0.1-0.2 0.3-0.3 0.2-0.2 0.3-0.1 0.3 0.2-0.2 0.2-0.3 0.2-0.1 0-0.7 1.5-0.7 0.9-0.8 1.5-0.1 0.4-0.6 1-0.3 0.5-0.3 0.1-0.2 0.1-0.1 0.1-0.1 0-1.8 0-0.2 0.1-0.2 0.1-0.2 0-0.2-0.1-0.3-0.3-0.1 0-0.2 0-0.3 0.2-0.6 0.2-0.3 0-0.2-0.1-0.3-0.1-0.3-0.1-0.9 0.7-0.2 0.3-0.2 0.3-0.1 0.9-0.3 0.7-0.1 0.8-0.1 0.3-0.3 0.6-0.9 1-0.3 0.5-0.1 0.5-0.1 0.5 0 0.1-0.1 0.4-0.3 0.4-0.3 0.3-0.8 0.4-0.9 0.6 0.2 0.1 0 0.4 0 0.4-0.8 1.2 0 0.3-0.1 0.6-0.1 0.4-0.3 0.4-0.3 0.3-0.4 0.2-0.5 0.4-0.1 0.2-0.4 1.2-0.3 0.3-1.4 1.2-0.2 0.2-0.1 0.6-0.2 0.3-0.2 0.1-1.2-0.7-0.3-0.3-0.4-0.9-0.3 0-0.3 0-0.4 0-0.5-0.4-0.4-0.4-0.5-0.5-0.6-0.2-2.4 0.9-0.4 0.6z m52.1-17.6l0.1-0.3 0.1-0.2 0.2-0.3 0.2-0.3-0.5 1.1 0.2 1.3-0.4 1.1-1.1 1.5-0.1 0 0.1-0.2 0.5-0.6 0.2-0.4 0.2-0.3 0.2-0.8 0.1-1.6z m1.8-6.3l0.4 0.5 0.2 1.4 0 0.8-0.4 0.7 0.1-0.9-0.3-2.5z m15-56.5l0-0.1 0.2 0 0.1 0.1 0 0.2 0 0.1-0.3 0.5-1.1 1.8-0.3 1-0.5 0.5-0.9 0.7-0.3 0.5-0.7 1.4-0.2 0.5-0.1 0.1-0.3 0.2-0.2 0.2-0.1 0.3-0.2 0.2-0.2 0.4-1.6 1.4-0.4 0.2-0.2-0.3-0.1-0.6-0.4-1.3-0.1-0.7 0.1-1.3 0.3-1.2 1.2-2.1 0.9-1.3 0.2-0.1 0.4-0.4 0.3-0.1 0.2 0 0.2 0.1 0.1 0.1 0.1 0 0.3 0.1 0.8 0.3 0.2 0 0.4-0.1 0.6-0.4 0.4 0.1 0.5-0.2 0.5-0.3 0.2-0.5z m1.3-18.6l-0.5-0.4-0.6-1-0.3-0.9 0.3-0.4 0.1 0.6 0.3 0.7 0.7 1.4z` },
-    { id: "MXCAM", d: `M831.4 503.9l0-1.5 0-1.5 0-1.5 0-0.6-1.8 0-0.8-0.1-0.8 0-0.4-0.1-0.3-0.2-0.2-0.2-0.3-0.3-0.5-0.2-0.6-0.1-0.5 0.1-0.6 0-0.5-0.1-0.6-0.4-0.5-0.4-0.4-0.3-0.5-0.4-0.5-0.2-0.5-0.2-0.6 0-0.6-0.1-0.5-0.1-0.4-0.2-0.6-0.2-0.3-0.1-0.3-0.1-0.4-0.1-0.3 0-0.7 0-0.8-0.1-0.8 0.1-0.6 0.1-0.1 0.2-0.1 0.3-0.1 0.3-0.1 0.2 0 0.3 0 0.3 0.1 0.3 0 0.3-0.1 0.5-0.3 0.8-0.3 0.6-0.3 0.4-1.3 0-1.4 0-1.4 0-1.4-0.1-0.9 0-1-0.4-0.8-0.5-0.8-0.6-0.5-0.2-0.1-0.5-0.2-0.5-0.5-0.3-0.4-0.1-0.4-0.2-0.4-0.2-0.4-0.3-0.6-0.5-0.7-0.5-0.6-0.6-0.7-0.4-0.5-0.7 0-1.2 0.1-1.2 0.1-0.9 0-1.4 0-1.4 0-1.4 0-1.4-1.3 0.1-1.3 0.1-1.4 0-1.3-0.2-0.2 0-0.2 0.1-0.2 0.1-0.3-0.1-0.3-0.2-0.2-0.2-0.2-0.2-0.3-0.2-0.4-0.5-0.3-0.7-0.1-0.8-0.2-0.7-0.4-0.6-0.4-0.5-0.3-0.6-0.3-0.5 2.3-0.7 3.2-0.2 3.1-0.3 3.6-0.4 2.3 0.1 0.9 0.2 0.8 0.9 1.5 1 0.2 0.2 0 0.3-0.2 0.4-0.2 0.2-0.4 0.1 0.2-0.2 0-0.2-0.3 0.1-0.4 0.1-0.7 0-0.3-0.1 0-0.3 0.1-0.4-0.1-0.2-0.3 0-0.1 0-0.6 0.5-0.1 0-0.2-0.1-0.2 0-0.4 0.1-0.1 0.1 0.2 0.2 0.4 0 0 0.2-0.4 0.1-0.4 0.1-0.3-0.1-0.3-0.3 0 0.2 0.1 0.1 0 0.1 0.1 0.2-0.2 0.2-0.2 0.3-0.1 0.2-0.1 0.4 0.1-0.2 0.5-0.3 0.5 0.5 0.3 0.1 0.4 0.1 0.6-0.2 0.4-0.1 0.2 0.2 0.2 0.4 0.4 0.3 0.6 0.3 0.5 0.1-0.7-0.6-0.8-0.5-0.7-0.6-0.1-1 0.6 0.3 0.3 0.3 0.3 0.1 0.7-0.3-0.3 0.6 0.3 0.2 0.4 0.2 0.3 0.3 0.1 0.4-0.4-0.2 0 0.1 0 0.1-0.2 0 0.5 0.3 1.2 0.4 0.3 0.3-0.1 0.5-0.7 0.8-0.2 0.5 0.3 0.4 0.5 0.5 0.5 0.4 0.4 0.1 0.3-0.4-0.1-0.5-0.3-0.4-0.2-0.6 0.2 0.2 0.3 0.2 0.3 0 0.4 0-0.3-0.4-0.4-0.4-0.3-0.4 0.2-0.5 0.7 0.4 1.8 0.5 0.8 0.4 0.6-0.2 1.3 0.3 0.7 0.1 1.4-0.2 0.7-0.2 0.5-0.2 0 0.4 0.2 0.3 0.3 0.1 0.2-0.2 0.1-0.4-0.2-0.9-0.1-0.4-0.2 0 0 0.2-0.1 0.2-0.1 0.2-0.3 0.1-0.7 0.3-0.1-0.1 0.1-0.3 0.6-0.8 0.3-0.2 0.6-0.4 1.7-0.6 0.8-0.5 0.4 0.2 0.5-0.1 0.5-0.2 0.4-0.3 0.2-0.3 0.5-0.9 0.2-0.2 0.9 0.1 0.5-0.1 0.2-0.1 0.2-0.3 1.2-0.4 0.4-0.3-0.5-0.2-0.4 0.1-0.7 0.4-1.4 0.3-0.3 0.3 0.9-2.3 0-1-0.6-0.9-0.5-0.4-0.2-0.1-0.3-0.1-0.3 0.1-0.1 0.2-0.1 0.2-0.2 0.1-0.6-0.1-0.8-1.1-0.6-0.2 0.4-0.7 0.6-0.7 0.7-0.5 1.3-0.5 0.9-0.6 0.8-0.8 0.4-0.6-0.7 0.2-1.8 1.5-1.9 0.9-0.7 0.7 0 0.7-0.3 0.1-0.1-0.1-0.7 0.4-0.3 0.1-0.6 0.1-0.5-0.1-0.1-0.2 0.7-0.8 1.4-1.1 1.9-1.1 2.4-1.5 3.5-1.6 2.3-2.1 0.6-0.3 1.3-0.5 2.3-1.5 2.2-2.9 0.6-0.5 1-0.3 0.9-0.8 0.8-1 0.4-1 0.4-5.9 0.3-1.3 0.1-0.6-0.1-0.7-0.1-0.5 0-0.5 0.2-0.7 0.5-1.3 0.6-0.9 1.6-1.2 2.6-1.8 1.1-1.3 0.3-1.2 0.1-0.5 0.1-0.5-0.2-0.5-0.8-1.7-0.1-0.4 0-0.2 0.1-0.6 0-2.4 0.2-1.5 0-1.7 0-0.7 0.4-1.7 0-1.2-0.4-2.5 0-1.4 0.6-2.6 0.2-2.9 0.3-0.9 1.6-1.9 0.4-0.6 0 0.9-0.3 7.6 0.5 0.9 1.4 0.1 1.4 0 1.1 0.2 0.8 0.8 0.4 1.1 0.8 0.7 0.5-0.3 0.6-0.2 0.5 0.5 0.5 0.5 0.9-0.2 0.5-1.1 0.8-0.5 1.1 1.6 0.5 0.8 0 0.8 0.5 1.2 0.5 0.4 1.7 1.2 1 1.9 0.7 2.2 1.5 1.5 1.9 0.8 1.8 1.3 2 3.9 1.6 1.6 1.4 1.9 0.3 2.1 0.8 1.7 1.2 1.8 1.6 1.3 1.8 1.3 3.5 3.1 2.8 3.5 0.6 2.2-0.2 1.9 0.1 2.2-0.1 0.5 0 1-0.4 0.8-1.3 1.4 0.1 2.2-0.9 6 0.2 1.8 1 1.3 0.2 1.5-0.3 0.5-0.1 0.5 0.4 0.2 0.5 0.2-0.1 0.7-0.3 0.7-0.1 0.6 0.5 2.7 0.2 2.2 0 1.9-0.6 1.7-2.5 3-0.3 0.4 0.2 2.5-0.2 0.3-0.2 1.2 0 2.6-6.3 0-6.3 0-6.3 0-6.3 0-6.3 0-6.3-0.1-6.3 0-6.4 0-1.2 0-0.6 0.2-0.2 0.3z m-17.5-29.4l1.3-0.6 0.5 0 0.1 0.2 0.2 0.3 0.1 0.3 0 0.4-0.2-0.1-0.1-0.1-0.6 0.5-0.3 0.1-0.4 0 0.1-0.2 0.2-0.2 0.2-0.1 0.3-0.1-0.6 0.1-1 0.4-0.4 0-1.1 1.5-0.9 0.7-0.9 0.2 0.5-1-1.5 0.9-0.8 0.4-0.9 0.2-0.6 0-0.2-0.1 0.2-0.2 0.4-0.5 0.3-0.2 1.3-0.5 0.8-0.2 1.5-0.8 1.2-0.8 1.3-0.5z` },
-    { id: "MXTAB", d: `M831.4 503.9l0 8.2 0 8.3-12.6-0.1-0.1 0-0.1-0.1-0.1-0.4 0-0.5 0.1-0.4 0.2-0.3 0.4-0.1 0.4 0 0.3-0.1 0.1-0.4-0.1-0.1-0.7-1.2-0.2-0.3-0.3-0.1-0.6 0-0.3 0-0.5-0.2-0.3-0.2-0.2-0.3 0.2-0.9 0-0.5-0.2-0.1-0.3-0.2-0.2-0.2-0.6-0.2-0.6-0.2-0.5-0.2-0.1 0-0.1-0.1-0.1 0-0.1 0-0.5-0.2-0.6-0.3-0.5-0.3-0.2-0.5 0-0.3 0.1-0.3 0-0.3-0.1-0.3-0.2-1-0.2-1.1-0.4-1-0.5-0.9-0.6-0.2-0.6 0-0.6 0-0.6 0-0.4-0.2 0.1-0.6 0.3-0.5 0.2-0.3-0.1-0.9-0.1-0.2-0.1-0.1 0-0.2 0-0.6 0-0.2-0.4-0.7-0.6-0.5-0.6-0.1-0.6 0.5-0.7-0.4-0.4-0.1-0.4 0.1-0.4 0.1-0.1 0.3-0.1 0.3-0.2 0.3-0.4-0.4 0.1-1.1-0.4-0.2-0.2 0-0.7 0.2-0.8 0.5-0.8 0.8-0.7 0.8 0.5 0.9-0.6 0.5-1 0.1-0.9-0.1-0.6 0.4-0.7 0.4-0.7 0.4-0.7 0.3-0.9 0.2-1.1 0.2-0.9 0.3-0.7 0.5-0.3 1 0 0.7-0.2 0.5-1 0.4-0.6 0.1-0.6 0.5-0.5 0.5-0.4 0.5-0.7 0.5-0.6 0.6-0.6 0.5-0.6 0.6-0.3 0.2-0.3 0.3-0.3 0.3-0.2 0.3-0.5 0.4-0.4 0.4-0.5 0.4-0.4 0.4-0.1 0.1-0.1 0.1-0.1 0.1-0.1 0.1-0.8 0.5-1 0-0.9-0.3-0.8-0.4-0.4-0.4-0.4-0.4-0.3-0.5-0.3-0.5-0.5-0.9-0.3-0.8-0.5-0.6-1-0.2-0.7 0-0.4-0.3-0.2-0.6-0.1-0.7 0-1.3-0.2-1.2-0.3-1.2 0-1.2 0.1-0.5 0.2-0.5 0.2-0.4 0.1-0.5 0-0.5 0-0.6-0.1-0.5 0-0.5 0-0.1 0-0.1 0-0.1 0-0.6-0.1-0.2 0-0.5-0.4 0.6-0.6-0.1-0.7 0.7-0.9-0.2-0.9-0.7-0.7-0.8-0.7-0.3-0.5-0.4-0.3-0.2-1-0.1-0.8-0.3-0.4 0-0.3 0.1-0.4 0.5-0.1 0.2-0.4 0.1-0.1 0.6-0.6 1.8-0.6 1.8-0.5 1.8-0.5 1.7-0.1 0.5-0.1 0.6-0.2 0.6-0.2 0.4-0.4 0.3-0.4 0.3-0.4 0.3-0.3 0.4-0.1 0.1-0.1 0.6-0.1 0-0.2 0.1-0.1 0.1-0.5 0.4-0.2 0.2-0.1 0.3-0.2 0.2-0.1 0.4-0.3 0.8-0.3 0.8-0.4 0.9-0.4 0.8-0.4 0.9-0.5-0.2-0.5-0.2-0.4-0.4-0.2-0.6 0.1-0.2 0.1-0.3 0.1-0.4 0.1-0.3 0-0.3 0-0.3 0.1-0.3 0.1-0.3 0.1-0.7 0.2-0.6-0.3-0.5-0.8-0.4-0.4-0.3-0.6-0.7-0.6-0.7-0.3-0.5-0.5-0.7-0.7-0.5-0.8-0.4-0.8-0.2-0.3 0-0.3 0-0.3-0.1-0.1-0.2-0.1-0.6-0.2-0.2-0.5-0.1-0.6 0-1.1-0.3-0.3-0.8-0.1-0.8-0.5-0.7-0.4-0.1-0.4-0.1-0.4 0-0.4-0.2 0-0.1-0.1-0.2 0-0.1-0.1-0.2-0.2 0-0.2 0-0.3 0-0.2-0.1-0.4-0.4-0.1-0.7 0.1-0.7 0.1-0.6 0.1-0.5 0.3-0.4 0.2-0.4-0.2-0.4-0.2-0.3-0.1-0.3 0-0.3-0.1-0.3-0.1-0.3-0.2-0.2-0.1-0.1-0.1-0.2 0.1-0.2 0.2-0.1 0.1-0.2-0.3-0.2-0.2-0.3 0-0.4 0-0.4 0-0.4-0.1-0.4-0.2-0.1-0.3 0-0.3-0.2-0.1-0.2-0.1-0.4 0-0.3-0.1-0.3 0.7-0.4 0.8-0.3 2.2-0.5 0.4-0.4 0.6-0.3 3.2-1.1-0.2 0.4-0.3 0.2-0.2 0.3-0.1 0.5 0.3 0.1 2.3-0.3 0.5-0.2 0.4-0.2 0.2-0.3 0-0.3-0.1-0.2-0.1-0.2 0.1-0.3 0.2-0.2 0.4-0.2 0.1-0.1 0.4 0.1 0.4-0.1 0.4-0.2 0.4-0.2 0.2 0.5 0.5 0.1 1.9-0.3 0.3-0.4 0.4-1-0.2-0.7-0.1-0.1-0.3 0-0.4 0.2-0.4 0.1-0.1 0.2-0.4 0.3-2 0.6-0.2 0.2-0.2 0.4-0.2 0.1-1.3 0.2-1 0.7-0.3 0.2-0.3 0-0.3 0-0.3 0.3 0.2-0.5 0.5-0.3 0.6-0.2 0.2-0.3 0.4-0.3 5.3-2 1.3-0.3 3-0.4 4 0.2 4.3-0.2 0 0.2-0.2 0.4-0.3 0.3-0.2 0.1 0.1 0.3 0 0.7 0.2 0.2 0.3 0 0.4-0.1 0.5-0.3 0.2-0.2 0 0.5-0.3 0.6-0.1 0.4 0.2 0 0.4-0.6 0.2-0.3-0.2-0.1 0.6-0.1 0.2-0.5-0.2-0.5-0.7-0.2-0.6-0.1 0.1-0.3 0.4-0.2 0.6-0.2 4.6-0.1 2.5-0.6 1.4-0.8 1.3-1.3 0.6-0.9 0.2-0.4 0.2-0.3 0.2-0.1 0.3 0 0.1 0.2 0.4 1 0.2 2.9 0.4 0.8 0.2-0.8-0.2-0.5 0-0.7 0.2-1.2-0.2-0.6-0.7-1.4-0.1-0.4 0.5-0.2 0.7-0.1 1.3 0.1 0.6-0.1 3-0.7 0.3 0.5 0.3 0.6 0.4 0.5 0.4 0.6 0.2 0.7 0.1 0.8 0.3 0.7 0.4 0.5 0.3 0.2 0.2 0.2 0.2 0.2 0.3 0.2 0.3 0.1 0.2-0.1 0.2-0.1 0.2 0 1.3 0.2 1.4 0 1.3-0.1 1.3-0.1 0 1.4 0 1.4 0 1.4 0 1.4-0.1 0.9-0.1 1.2 0 1.2 0.5 0.7 0.7 0.4 0.6 0.6 0.7 0.5 0.6 0.5 0.4 0.3 0.4 0.2 0.4 0.2 0.4 0.1 0.5 0.3 0.2 0.5 0.1 0.5 0.5 0.2 0.8 0.6 0.8 0.5 1 0.4 0.9 0 1.4 0.1 1.4 0 1.4 0 1.3 0 0.3-0.4 0.3-0.6 0.3-0.8 0.1-0.5 0-0.3-0.1-0.3 0-0.3 0-0.3 0.1-0.2 0.1-0.3 0.1-0.3 0.1-0.2 0.6-0.1 0.8-0.1 0.8 0.1 0.7 0 0.3 0 0.4 0.1 0.3 0.1 0.3 0.1 0.6 0.2 0.4 0.2 0.5 0.1 0.6 0.1 0.6 0 0.5 0.2 0.5 0.2 0.5 0.4 0.4 0.3 0.5 0.4 0.6 0.4 0.5 0.1 0.6 0 0.5-0.1 0.6 0.1 0.5 0.2 0.3 0.3 0.2 0.2 0.3 0.2 0.4 0.1 0.8 0 0.8 0.1 1.8 0 0 0.6 0 1.5 0 1.5 0 1.5z` },
-    { id: "MXCHP", d: `M818.7 520.3l-0.2 0.1-0.1 0.4 0.7 0.3 0.9 0.2 0.4 0.3 0.2 0.7 0.6 0.1 0.8-0.1 0.8 0 0.3 0.3 0.2 0.5 0.2 0.5 0.1 0.5 0.1 0.2 0.6 0.1 0.2 0.2 0.2 0.2 0.1 0.5 0.1 0.3 0.3 0.4 1 1.1 0.3 0.2 0.7-0.1 0.3 0 0.1 0.2 0.2 0.6 0.1 0.3 1 1.2 0.2 0.3 0.1 0.6 0.3 0.3 1.1 0.4 0.2 0.2 0.4 0.4 0.1 0.1 0.3-0.2 0-0.2-0.1-0.3 0-0.1 0.5 0 0.4 0 0.1 0.3-0.5 0.5 0.6 0.2 0.8 0.9 0.6 0.3 2 0.6 0.3 0 0.3-0.2 0.4 0.2 0 0.2-0.1 0.4 0.4 0.3 1 0.6 0.4 0.3 2 2.8 0.4 1.1-0.4 0.7 0 0.2 0.2-0.1 0.2 0 0.1-0.1 0-0.2 0.4 0.2-0.1 0.4-0.1 0.5 0.1 0.5-0.3 0.5 0.3 0.1 0.4 0 0.3 0.2 0.1 0.3-0.2 0.3-0.3 0.2-0.1 0.3 0.3-0.1 0.5 0 0.4 0.1 0.1 0.1 0.2-0.1 0.7-0.2 0.3 0 0.2 0.6 0.1 0.3 0.7-0.4 0.3 0.1 0.3 0.2 0.2 0.2 0.1 0.3 0 0.3 0.1 0.2 0.9 0.1 0.3 0.1 0.2 0.1 0.2 0.1 0.3 0 0.2-0.1 0.2 0 0.1 0.4 0 0.4 0 0.2 0.3 0.5-0.4-0.1-0.4 0-0.3 0.2 0 0.4 0.1 0 0-0.2 0.2 0 0.3 0.3-0.2 0.5-0.4 0.4-0.5 0.2-0.2 0.1 0.3 0.2 0.4 0.2 0.1-0.1 0 0.3-0.1 0.1-0.3-0.1-0.1-0.1-0.1 0.1 0 0.1-0.1 0 0.1 0.2 0.1 0.3 0.2 0.1-0.4 0-0.1 0-0.1-0.2-0.4 0.4 0.1 0.3 0.3 0.2 0.4 0.2-0.4 0.1-0.3 0.3-0.2 0.4 0.1 0.6 0.8 0.5 0.2 0.3-0.6 0.2 0 0.2 0.3 0.4-0.7 0.5 0.2 0.5 0.2 0 0.1-0.1 0.1 0 0.2-0.1-0.1 0.3-0.2 0.4-0.1 0.1 0 0.1-0.6 0.1-0.5 0.1-2.6 0-3.9 0-4 0-4 0-0.1 0-3.8 0-4 0.1-3.9 0-4 0-4 0-1.3 0-0.4 0.2-0.4 0.4-0.6 1.2-0.5 0.9-1.4 2.4-2 3.5-2.3 3.9-2.3 3.9-1 1.9-0.9 1.6-1.4 2.4-0.6 0.9-0.1 0.5 0 0.6 0.2 0.5 3.7 4.8-0.6 1.3-0.3 0.4-0.3 0.1-0.4 0.1-0.4 0.1-0.3 0.3-0.1 1 0.1 1.9-0.3 0.9-0.6 0.7-0.2 0.3 0 0.6 0.1 0.3 0.3 0.7 0 0.2-0.1 0.5 0.1 0.2 0.5 1.5 0 0.5-0.1 0.5-0.6 1.1-0.7 1.8-0.5 0.6-0.6 0.1-0.1-0.1-1.6-2-2.2-2-3.6-3.7-5.5-5.7-3.6-4-0.4-0.8 0-0.6 0.5 0.3 1.2 0.4 0.3 0.2 0 0.6 0.2 0.6 0.3 0.4 0.4 0.2-0.3-0.6-0.2-1.3-0.3-0.5-0.4-0.2-0.6-0.3-0.6-0.1-0.5 0.1-0.1-0.5-0.3-0.1-0.2 0.2 0.4 0.4-0.5-0.1-1.7-1.3-1.2-0.5-0.5-0.4-0.4-0.8-2.3-1.7-2.7-2.9-0.5-0.9-0.3-0.4-0.9-0.3-6.9-5.9-0.5-0.3-4.8-3.9-3-2-5.3-3.1 0.4-0.2 0.7 0.1 0.3-0.1 0.2 0.3 0.3 0.1 0.4-0.2 0.3-0.4-0.6-0.7-0.3-0.7-0.4-0.5-0.7-0.4-3.4-0.7-0.9-0.5-0.3-0.2 0.2-0.3 0.2-0.4 0.3-0.4 0.2-0.4 0.2-0.5 0.1-0.6 0.1-0.6 0-0.5 0-0.9-0.4-1-0.4-1-0.4-0.8-0.2-0.6-0.3-0.5-0.2-0.6-0.3-0.5-0.3-1.2 0.6-1.2 0.9-1.2 0.7-1 0.3-0.6 0.1-0.6 0-0.6 0-0.6-0.1-0.7-0.1-0.8-0.1-0.8 0.1-0.6 0.4-0.4 0.6-0.4 0.6-0.3 0.5-0.3 0.4-0.2 0.4-0.3 0.4-0.3 0.4-0.2 0.2-0.4 0-0.6 0-0.6 0-0.4 0-0.8 0-0.8 0.3-0.5 0.8 0.1 0-0.2 0-0.2 0-0.2 0-0.2 0-0.8 0.1-0.9 0-0.9-0.3-0.7 0.4-0.2 0.4-0.2 0.3-0.2 0.3-0.3 1.1-0.7 1.1-0.7 1-0.7 1.1-0.7 0.5-0.4 0.6-0.4 0.6-0.5 0.3-0.6 0.1-0.3 0.1-0.3 0.2-0.3 0.1-0.3 0.4-0.9 0.4-0.8 0.4-0.9 0.3-0.8 0.3-0.8 0.1-0.4 0.2-0.2 0.1-0.3 0.2-0.2 0.5-0.4 0.1-0.1 0.2-0.1 0.1 0 0.1-0.6 0.1-0.1 0.3-0.4 0.4-0.3 0.4-0.3 0.4-0.3 0.2-0.4 0.2-0.6 0.1-0.6 0.1-0.5 0.5-1.7 0.5-1.8 0.6-1.8 0.6-1.8 0.1-0.6 0.4-0.1 0.1-0.2 0.4-0.5 0.3-0.1 0.4 0 0.8 0.3 1 0.1 0.3 0.2 0.5 0.4 0.7 0.3 0.7 0.8 0.9 0.7 0.9 0.2 0.7-0.7 0.6 0.1 0.4-0.6 0 0.5 0.1 0.2 0 0.6 0 0.1 0 0.1 0 0.1 0 0.5 0.1 0.5 0 0.6 0 0.5-0.1 0.5-0.2 0.4-0.2 0.5-0.1 0.5 0 1.2 0.3 1.2 0.2 1.2 0 1.3 0.1 0.7 0.2 0.6 0.4 0.3 0.7 0 1 0.2 0.5 0.6 0.3 0.8 0.5 0.9 0.3 0.5 0.3 0.5 0.4 0.4 0.4 0.4 0.8 0.4 0.9 0.3 1 0 0.8-0.5 0.1-0.1 0.1-0.1 0.1-0.1 0.1-0.1 0.4-0.4 0.5-0.4 0.4-0.4 0.5-0.4 0.2-0.3 0.3-0.3 0.3-0.3 0.3-0.2 0.6-0.6 0.6-0.5 0.6-0.6 0.7-0.5 0.4-0.5 0.5-0.5 0.6-0.5 0.6-0.1 1-0.4 0.2-0.5 0-0.7 0.3-1 0.7-0.5 0.9-0.3 1.1-0.2 0.9-0.2 0.7-0.3 0.7-0.4 0.7-0.4 0.6-0.4 0.9 0.1 1-0.1 0.6-0.5-0.5-0.9 0.7-0.8 0.8-0.8 0.8-0.5 0.7-0.2 0.2 0 0.4 0.2-0.1 1.1 0.4 0.4 0.2-0.3 0.1-0.3 0.1-0.3 0.4-0.1 0.4-0.1 0.4 0.1 0.7 0.4 0.6-0.5 0.6 0.1 0.6 0.5 0.4 0.7 0 0.2 0 0.6 0 0.2 0.1 0.1 0.1 0.2 0.1 0.9-0.2 0.3-0.3 0.5-0.1 0.6 0.4 0.2 0.6 0 0.6 0 0.6 0 0.6 0.2 0.5 0.9 0.4 1 0.2 1.1 0.2 1 0.1 0.3 0 0.3-0.1 0.3 0 0.3 0.2 0.5 0.5 0.3 0.6 0.3 0.5 0.2 0.1 0 0.1 0 0.1 0.1 0.1 0 0.5 0.2 0.6 0.2 0.6 0.2 0.2 0.2 0.3 0.2 0.2 0.1 0 0.5-0.2 0.9 0.2 0.3 0.3 0.2 0.5 0.2 0.3 0 0.6 0 0.3 0.1 0.2 0.3 0.7 1.2 0.1 0.1-0.1 0.4-0.3 0.1-0.4 0-0.4 0.1-0.2 0.3-0.1 0.4 0 0.5 0.1 0.4 0.1 0.1z m-76.4 34.7l0.3 0.1 0.8 0.6 0.7 1 0.4 0.3 0.9 0.4 0.4 0.2 0.2 0.4-4.3-1.8 0.6-1.2z` },
-    { id: "MXCOL", d: `M148.6 487.2l1.5 0 0.1 0 0 0.2-0.1 0.3-0.1 0.1-0.2 0.1-0.2 0.1-0.2 0-1 0.1-0.5-0.2 0-0.4 0.7-0.3z m109.9-13.5l0.4 0.1 0.4 0.5 0.2 0.5 0 0.6-0.3 0.5-0.5 0-0.6 0-0.5 0.3-0.5-0.4-0.4-0.4-0.4-0.2-1.2-0.6 0-0.2 0.1-0.5 0.3-0.7 0.4-0.6 1.1-1 0.6 0.2 0.6 0.6 0.5 0.6-0.2 0.7z m3.8-16.7l0.3 0.2 0.2 0.3 0.3 0.6-0.7 0.5-0.4 0.3-0.1 0.3 0 0.1-0.1-0.1-0.1-0.2 0-0.3 0.1-0.3 0.4-0.6 0.1-0.3 0-0.5z m203 20l-1.5-1.5-4.5-3.3-0.8-0.8-3.2-1.6-2.5-1.3-1.8-0.6-0.9-0.3-0.6-0.3-0.6-0.2-0.5-0.2 0.1-0.9 0.6-0.1 0.2-0.3-0.1-0.5-0.7-0.5-0.3-0.1-0.3 0.4-0.2-0.2 0.1-0.5-0.4-0.2-0.5 0.1-0.3 0.2 0.1 0.5-0.2 0-0.2-0.2-0.3-0.2-0.3 0.4-0.4 0.3-0.3-0.7-1-0.4-0.5-0.3-2.6-0.6 0-0.7 0.4-0.4 0.4-0.4 0.4-0.4 0.3-0.7 0.1-0.4 0.3-0.2 0.8 0.1 0.2 0.2 0.3 0.3 0.2 0.1 0.3-0.1 0-0.2 0-0.2 0-0.2 0.1-0.2 0.1-0.2 0.2-0.2 0.3-0.1 0.2-0.1 0.4-0.2 0.2 0 0.2 0.2 0.3 0.3 0.3 0 0.4-0.1 0.4-0.2 0.3 0 0.3-0.1 0.3 0 0.3-0.1 0.2-0.1 0.5-0.4 0.5-0.4 0.5-0.1 0.7 0 0.5 0 0.3-0.4 0.2-0.5 0.2-0.6 0.3-0.4 0.4-0.2 0.4-0.3 0.1-0.6 0.1-0.7 0.2-0.5 0.4-0.5 0.6-0.5 0.3-0.3 0.3-0.4 0.4-0.4 0.3-0.3 0.1 0.1 0 0.1 0.1 0.1 0 0.2 0 0.2 0.1 0.1 0 0.1-0.1 0.1 0.7 0.5 0.8 0.4 0.7 0.4 0.8 0.5 0.4 0.3 0.6 0.2 0.6 0.3 0.5 0.2 0.6 0.2 0.5 0.2 0.5-0.1 0.4-0.6 0.4-0.1 0.4 0 0.5 0 0.4-0.1 0.8-0.4 0.6-0.7 0.6-0.7 0.7-0.4 0.4 0.4 0.3 0.6 0.2 0.7 0.2 0.6 0.3 0.5 0.5 0.3 0.5 0.3 0.4 0.5 0.1 0.4 0.1 0.3 0.2 0.3 0.3 0.2 0.2 0.2 0.4 0.1 0.3 0.2 0.1 0.2 0 0.3-0.1 0.3-0.2 0.3-0.1 0.4 0 0.5 0.1 0.6 0.1 0.6 0.1 0.5-0.2 0.9-0.4 1.1-0.2 1.1 0.1 0.8 0.5 0.7 0.3 0.7 0.3 0.8 0.1 0.8-0.3 0-0.2 0.2-0.1 0.4-0.1 0.3-0.1 0.1-0.2 0-0.2 0-0.1 0.1-0.1 0.1 0 0.1 0.1 0.2 0 0.1-0.2 0.1-0.4 0.2-0.4 0.2-0.2 0.2-0.3 0.2-0.3 0.1-0.2-0.1-0.4-0.2-0.1 0.1-0.1 0.1-0.1 0.2 0.1 0.2 0 0.1 0 0.2 0 0.1 0 0.1-0.2 0.4 0 0.4 0 0.4-0.2 0.4-0.3 0.4-0.3 0.1-0.4 0-0.5 0.2-0.2 0.3-0.2 0.4-0.1 0.3-0.1 0.4-0.2 0.5-0.3 0.3-0.4 0.3-0.3 0.2z` },
-    { id: "MXNAY", d: `M394.1 396.4l-0.1 0.6 0 0.6-0.3-0.2-0.3 0.2-0.6-0.4-0.3-0.4 0.6-0.6 0.5 0.1 0.3-0.1 0.1 0.1 0.1 0.1z m-5.2-4.8l0.5 0 0.4 0.1 0 0.3 0.3 0.2 0 0.3-0.5 0.2-0.1 0.5-0.1 0.4-0.4-0.1-0.8-0.4-0.4 0-0.5-0.4-0.5-0.1-0.4-0.5 0.6-0.5 0.3-0.3 0.3 0 0.4-0.1 0.3 0.3 0.6 0.1z m-3.1-3.5l-0.1 0.3 0.1 0.3 0 0.2-0.2 0.1 0 0.2-0.2 0.2-0.2 0.2 0 0.2-0.1-0.1-0.1 0.1 0-0.2 0.1-0.2-0.2-0.2-0.2-0.1-1.2-0.4-1.1-0.7 0-0.1 0.1-0.2 0-0.2-0.2-0.3-0.2-0.4-0.3-0.4-0.1-0.2 0.2-0.1 0-0.3-0.1-0.4-0.2-0.2 0.5-0.2 0.6 0.2 0.6 0 0.4 0.2 1.1 0.5 0.4 0.3-0.1 0.3-0.1 0.4 0.4 0.4 0.2 0.2 0.2 0.3 0.1 0.1 0.1 0-0.2 0.2z m-4.3-5.5l0 0.2 0.1 0.1 0.1 0.4-0.2 0.2 0.1 0.2-0.6 0.4-0.3-0.6 0.2-0.4 0.2-0.5 0.1 0.1 0.3-0.1z m39.4 33.6l-0.6-1.3-0.9-0.8-0.6-0.3-0.2 0.2-0.5 0.5-0.7 0.2-0.9-0.5-1-0.1-1-0.5-0.6 0.4-0.3-0.4 0.3-0.3 0.3-0.3 0.3 0 0.2 0.1 0.6-0.3 0.3-0.8 0.2-0.4 0.2-0.7 0.2-0.3 0.1-0.2 0.3 0.1 0.4-0.6 0.6-1.2 1-0.8 0.3-0.1 0.2-0.4 0.5-0.4 0.3-0.6 0.2-0.4 0.2-0.4 0.4-0.1 0.2 0.2 0.3 0 0.3 0 0.6-0.5 0.4-0.6 0.1-0.9 0-0.8-0.2-0.4 0.2-0.8-0.1-0.8 0.5-0.7-0.2-2.4-0.6-1.8 0.4-1.5 0.3-0.5 0.5-0.9 0.5-0.2 0-0.3-0.3-0.6-0.1-0.7-0.2-0.4-0.3-0.3-0.4-0.3-0.4 0-0.1 0.4-0.4 0-0.5-0.5-1.1-0.5-2.1-1.3-0.7-0.4-0.9-0.9-0.5-1.3-2.4-4.9-2.4-3.9-0.5-1.1-0.2-1.7 0.2-4.4-0.2-2.1-0.8-2.8-0.6-2.3-0.4-1.6-0.4-1 0.2-0.1 0.4 0.5 0.4 0.8 0.5 0.5 0.5-0.4 0-0.5-0.1-0.6-0.2-0.6-0.1-0.5 0.6-0.2 0.6-0.1 0.6-0.2 0.7 0.2 0.4 0.3 0.4 0.3 0.4 0.4 0.4 0.4 1 0.3 1-0.2 0.6-0.6 0-1.1-0.1-0.8-0.2-0.8-0.3-0.7-0.2-0.8-0.2 0-0.1-0.1-0.2-0.1-0.1-0.1 0-0.1 0.1-0.3 0.1-0.2 0-0.2-0.3-0.2-0.3-0.1-0.3-0.1-0.2-0.3-0.2-0.4-0.1-0.3-0.2-0.2-0.3-0.2-0.3-0.2-0.2-0.1-0.2-0.3 0-0.3 0.1-0.6 0.5-0.7 0.5-0.6 0.5-0.5 0.5-0.4 0.5-0.4 0.6-0.4 0.3-0.4 0.3-0.4-0.1-0.3-0.1-0.3-0.3-0.4-0.2-0.5-0.1-0.4 0-0.4 0.2-0.6 0.4-0.5 0.4-0.3 0.7-0.1 0.7 0 1.5 0 1.5-0.1 1.5 0 1.5 0.2 1.4 0.5 1.3 0.6 1.4 0.8 1.3 0.7 0.6 0.3 0.4 0.3 0.3 0.4 0.3 0.6 0.3 0.9 0.4 0.8 0.3 0.8 0.3 0.8-0.2 0.4-0.7 0.7-0.7 0.6-0.4 0.4-0.5 0.6-0.3 0.4-0.2 0.5-0.1 0.8 0 0.8-0.1 0.9 0 1 0.1 0.6 0.8 0.1 0.8-0.5 0.8-0.6 0.6-0.6 0.8-0.6 0.9-0.6 0.8-0.7 0.9-0.6 0.6 0 0.9 0.5 1 0.6 0.6 0.4 0.2 0.3 0.2 0.4 0.1 0.4 0.1 0.4 0.2 1.1 0.3 1 0.4 0.9 0.8 0.7 0.7 0.5 0.8 0.5 0.9 0.4 0.7-0.1 1.1-0.4 1-0.5 1-0.4 1-0.5 0.2 1.2 0.2 1.3 0.1 1.2 0.2 1.2-0.1 0.4-0.1 0.4-0.2 0.4-0.1 0.5-0.4 1-0.4 1-0.3 1-0.4 1.1-0.4 0.8-0.1 0.6 0.2 0.5 0.6 0.6 1.1 1 1.1 1 1.1 1.1 1.1 1 0.9 1 0.9 1 0.8 1.1 0.8 1-0.1 0.5-0.3 0.8-0.4 0.9-0.2 0.6-0.2 0.5-0.1 0.5-0.1 0.5-0.1 0.5-0.2 1-0.4 0.9-0.5 0.7-0.6 0.8 1.9 1.2 1.9 1.1 1.9 1.1 1.7 1 0.2 0.1-0.3 0.3-0.2 0.5 0 1.3-0.2 0.6-0.4 0.5-1.6 1.5-0.6 0.4-0.6 0.1-2.3 0-1 0.2-0.2 0-0.3 0.5-0.3 0.4 0.1 0.6 0.2 0.7 0.1 0.5 0.1 0.6 0 0.6 0.1 0.6 0 0.1 0 0.2 0 0.1 0 0.1-0.1 0.7 0 0.6-0.2 0.7-0.3 0.5-0.1 0.3-0.2 0.3-0.1 0.3-0.2 0.3-0.4 0.8-0.3 0.9-0.3 0.8-0.1 1.1 0 0.5 0 0.5 0 0.4 0.1 0.5 0 0.3-0.1 0.2 0 0.2-0.1 0.2-0.6-0.4-0.7-0.3-0.6-0.4-0.4-0.5-0.3-0.6-0.6-0.5-0.6-0.3-0.7-0.4-0.5-0.4-0.5-0.4-0.4-0.5-0.3-0.6-0.6-0.8-0.6-0.4-0.7 0-0.8 0-0.7-0.1-0.5-0.3-0.5-0.5-0.4-0.5-0.3-0.2-0.2-0.2-0.3-0.2-0.2-0.2-0.4-0.4-0.3-0.2-0.3-0.1-0.5-0.2-0.3 0-0.3 0-0.3 0-0.3 0.1-1.2 0.8-1.2 1-1.2 0.8-1.4 0.3-0.3-0.1-0.3 0-0.3 0-0.2 0-0.2 0.1-0.1 0.1-0.2 0.1-0.1 0-0.1-0.2-0.1-0.3-0.1-0.2-0.4 0.1-1.1 0.5-0.9 0.9-0.8 1-0.6 1.1-0.6 0.9-0.8 0.9-0.7 1-0.5 1-0.3 0.2-0.4 0.2z` },
-    { id: "MXBCS", d: `M290.4 306.2l0.4 0.5 0.4 0.9 0 0.3 0.3 0.5-0.1 0.6-0.4-0.1-0.5-0.1-0.9-0.1-0.3-0.2 0.1-0.2-0.4-0.6-0.4-0.7-0.4-1.1-0.3-1 0.1-0.3 0.1-0.3-0.6-1.2 0.1-1.1 0-0.5 0.2 0 0.2 0.4 0.1 0.4 0.3 0.4 0.2 0.3 0.2 0.3 0.3 0.7 0.3 0.7 0.4 0.4 0.4 0.9 0.2 0.2z m-49.5-4.8l0.6 0.2 0.9 0.2 1.2 0.9 0.1 0.2-2-0.9-0.8-0.1-1.1-0.1-1.1 0.3-0.8 0.1-0.2-0.2 0.2-0.3 0.2-0.2 0.3 0.1 0.5 0 0.9-0.2 0.5 0.1 0.6-0.1z m-5.5-2.2l0.8 1.6 0.5 0.5 0.3 0 0.1 0.2-0.2 0.5 0.2 0.3-0.2 0.6-0.3 0.4 0.1 0.5-0.9-1.2-0.6-0.5-1.4-1.1-1.1-0.9-0.7-0.6-1.1-0.6-0.2-0.2-0.3-0.2-0.4-0.4-1-0.5-0.8-0.3-0.1-0.2 0.5-0.4 0.5 0.3 0.3 0 1.6-0.1 0.7 0.1 0.5-0.1 0.4 0.3 0.4-0.1-0.1 0.4 0.2 0.5 0.3 0.2 0.1 0.4 0.6 0.1 0.6 0 0.7 0.5z m41-2.2l0.2 0.4 0.3 0 0.1 0.5 0.2 0.4 0.2 0.2-0.1 0.4-0.4 0-0.2 0.3 0.2 0.5-0.3 0.2-0.2 0.2-0.1 0.6-0.6-0.1 0-0.3-0.1-0.2 0.1-0.3-0.2-0.2-0.2-0.1-0.2 0.3-0.1-0.3-0.1-0.3 0.5-0.2 0-0.1-0.2-0.1-0.1-0.1-0.2-0.2-0.2-0.1-0.2-0.3-0.1-0.5 0.2-0.2-0.3-0.2 0-0.3 0.4-0.1 0.2-0.2-0.3 0-0.3-0.2 0.1-0.3-0.3 0.1-0.1-0.3 0.1-0.2-0.2-0.1-0.1-0.3 0.4-0.3 0.1-0.3 0.3 0.1 0.2 0.4 0.1 0.2 0.4 0.3 0 0.4-0.1 0.4 0.6 0.1 0.6 0.4z m-11.1-18.3l0.1-0.2 0-0.1 0.1 0.1 0.2 0.3 0.3 0.8 0.5 0.5 0.8 0.1 0.8 0.2 0.6 0.2 0.1 0.3 0.1 0.1 0.3 0.2 0 0.3 0.2 0.3 0.1 0.6-0.2 0.7 0.3 0.7 0.2 0.3 0.2 0.4 0.4 0.7 0.2 0.3-0.2 0.1-0.6 0.2-0.3-0.1-0.2 0.1-0.2 0.3-0.2-0.1 0.2-0.2 0.1-0.2 0-0.3-0.3-0.2-0.3-0.2-0.4-0.2 0-0.2-0.3-0.1-0.3 0-0.3 0 0-0.2 0.1-0.2-0.2-0.4-0.3-0.2-0.2-0.5 0-0.2-0.1-0.3-0.2-0.3-0.1-0.3 0-0.4-0.2-0.3-0.4 0-0.2-0.3-0.3 0-0.1-0.3 0-0.5 0.1-0.2 0-0.4 0.1-0.7z m-40 15.1l0.2 0.4 0.5 0.7 0.2 0 0 0.3 0.2 0.2 0.2 0.4 0 0.5-0.3-0.1-0.6-0.3-0.4-0.2 0.1-0.2-0.1-0.6-0.3-0.5-0.4-0.4-0.3-0.2-0.2 0-0.4-0.8-0.4-0.1-0.1-0.2 0.2-0.2 0.1-0.4 0.2 0 0.2 0.1 0.2-0.1 0.2-0.3 0.1-0.5-0.1-0.5-0.2-0.6-0.3-0.3-0.3-0.4-0.3-0.3-0.4-0.3-0.5-0.3-0.2-0.1-0.3-0.1-0.3 0-0.3 0-0.1 0.1-0.2 0.1-0.1 0.2 0 0.2 0.1 0.6-0.1 0.1-0.2-0.3-0.1-0.5-1-0.6 0.1-0.3 0-0.2 0.1-0.1 0.3 0 0.4-0.9 0.5-1.4 1.5-4.2 0.4-1.5 0.8-2.9 0.5-2.3 0.1-0.9 0.1-0.3 0.4 0 0.1 1.4-0.2 0.6-0.4 1.3-0.4 0.7-0.4 2.1-0.3 0.9 0.3 0.5 0.1 0.3-0.1 0.4 0.2 0.3 0 0.3 0 0.4-0.2 0.2-0.3-0.2-0.2 0.5 0 0.2 0 1-0.2 0.2 0.1 0.8 0.2 0.3 0.2 0.3-0.2 0.2-0.3-0.1-0.3 0.1-0.1 0.1 0 0.2-0.2 0.3 0.1 0.2 0.1 0.5 0.1 0.2 0.3 0.2 0.2 0.2 0.1 0.2 0.2 0.1 0.2 0-0.1 0.1-0.1 0.1 0.3 0.4 0.1 0.5 0.7 0.7 0.2 0.3 0 0.4 0 0.2 0.1 0.1 0.1 0 0.3 0.6-0.3 0.5-0.2 0.2-0.2 0.2-0.1 0.3 0.1 0.2 0.1 0.3 0.9 0.5z m38.4-30.9l-0.6-0.4-0.5-1.2 0-1 0.4-0.7 0.2-0.4 0.3-0.1 0.1 0.5 0.2 0.1-0.1 0.6 0.2 0.9 0.2 1.5-0.4 0.2z m-9-12.9l0.3 0 0 0.4 0.1 0.1 0 0.3 0 0.2-0.2-0.2-0.2 0-0.2-0.3-0.2-0.1-0.2-0.4-0.3 0-0.2 0.2 0 0.2-0.1 0.3-0.3 0.4-0.3 0.3-0.3 0.7-0.6 0.6-0.2 0.3 0.1 0.2-0.2 0.5 0.1 0.5-0.2 0.3-0.3 0-0.2 0.4 0.1 0.6 0 0.5-0.1 0.2-0.2-0.4-0.2 0-0.3-0.2 0-0.3-0.1-0.4 0-0.2 0.4-0.7 0-0.4 0.3-1-0.1-0.4 0.3-0.4 0.1-0.4 0.3-0.5 0.4-0.3 0.1-0.3 0-0.5 0.1-0.6-0.3-0.4 0-0.3 0.4 0 0.8-0.3 0-0.3 0.2-0.2 0.2 0.3 0.5 0.2 0.7-0.2 0.1-0.3 0.6-0.1-0.5 0.6-0.3 0.8 0.1 1z m-85.6-64.5l1.3 0 5.2-0.1 5.2 0 5.1 0.1 5.2 0 5.2 0 5.1 0 5 0 0.1 0.1-0.1 0.4 0.2 0.5-0.1 0.2-0.2 0.8 0.1 0.6 0 0.4 0 0.2 0 0.2-0.1 0.1-0.1 0.4-0.1 0.5 0.4 0.6 0.5 0.3 0.1 0.2 0.4 0.3 0-0.2 0.1 0 0 0.3 0.2 0.4-0.1 0.2 0.1 0.5 0.2 0.2-0.1 0.3 0.2 0.4 0.3 0.4 0.4 0.5 0.2 0.4 0.2 0 0.2 0.3 0.3-0.1 0.1 0 0.2 0.2 0.1 0.3 0.3 0.2 0.1 0.3 0.6 0.4 0 0.4 0.9 0.4 0.7 0 0.4 0.2 0.4 0.2 0.5 0.2 0.4 0.1 0.1 0.2 0.4 0.3 0.3 0.2 1.1 0.3 0.4 0.3 0.9 0.5 0.5 0.6 0 0.4 0.6 0.6 0.3 0.7 0.1 1.1 0 0.5 0.3 0.7 0.3 0.6-0.1 0.4 0.1 0.4 0.3 0.4 0.5 0.3 0.2 0.5 0.2 0.4 0.4 0.1 0.2 0.4 0.2 0.8 0.3 0.2 0.3 0.7 0.4 0.4-0.2 0.6-0.2 0.2-0.1 0.2 0 0.3 0.5 0.3 0.4 0.4 0.3 0.4 0.1 0.3 0.3 0.1 0.6 0.1 0.6 0.6 0.7 0.3 0.6-0.1 0.1 0.2 0.3 0.2 1.3 0.2 0.5 0.7 0.9 0 0.3 0 0 0.3 0.1 0.2 0.1 0.3-0.4 0.2-0.4-0.1-0.4 0.3-0.5 0.7-0.3 0.7 0 0.5-0.1 0.6 0.4 0.9 0.6 0.4 0.2 0.1 0.1 0.3 0.4 0.5 0.2 0.6 0.3 0.2 0.7 0.3 0.2 0.6 1.1 1 0.2 0.7 0.1 0.5 0 0.2-0.4 0.2-0.1 0.4 0 0.3-0.4-0.2-0.4 0.9 0.1 0.6 0.5 0.1 0.6 0.6 0.3 0.5 0.1 0.5 0.1 0.2 0.1 0.4 0.5 0.1 0.4 0.4 0.4 0.5 0.4 1.3 0.6 0.6 0.8 0.5 0.6-0.4 1.1-1-0.1-0.4-0.4-0.3-0.6-0.8-0.8-0.8-0.4-0.2-0.3-0.5-0.8-0.5-0.4-0.8-0.2 0 0-0.2 0-0.3-0.1-0.3 0-0.8-0.1-0.4 0-0.5-0.2-0.5 0.1-0.4-0.2-0.2-0.1-0.2 0-0.3-0.1-0.2-0.2-0.2 0-0.4-0.2-0.2 0-0.2 0.5-0.1 0.3-0.2 0.2-0.2 0.7 0.4 0 0.3 0.7 0.4 0.7 0.6 0.5 0.7 0.2 0.5 1.2 0.9 0.3-0.1 0.2 0.4 0.1 0.3 0.3 0.2 0 0.2 0.6 0.2 0.1 0.2 0.4 0.3 0 0.1 0.7 0.3 0.4 0.2 0 0.2 0.3 0.1-0.1 0.8-0.1 0.7 0.1 0.8-0.1 1.6 0.1 0.6 0.4 0.3 0.7 0.2 0.6 0.3 0.6 0.1 0.3-0.1 0-0.1 0.4-0.1 0 0.3 0.1 0.1 0.4 0.3-0.2 0.1-0.2 0.2 0 0.7-0.4 0.6 0.1 0.8-0.1 0.7 0.2 0.6 0.7 0.5 0.3 0.1 0.1 0.2 0.1 0.1-0.3 0.2 0 0.2 0.2 0.3 0.5 0.2 0.4 0.5 0.2 0.5 0 0.4 0.1 0.8-0.3-0.1-0.1 0.9 0.2 0.3 0.1 0.2 0.3 0.7-0.1 0.4 0.1 0.6 0.3 0.2 0.2 0.4 0 0.6 0.2 0.6 0.3 0.5 0.5 0.4 0 0.4 0.2 0.4-0.1 0.3-0.2 0.1 0 0.4-0.4 0.3-0.1 0.3 0.2 0.5 0 0.8-0.3 0.4-0.4 0.4 0.2 0.6 0.2 0.6 0.3 0.6 0.1 0.2 0 0.5-0.1 0.4 0.1 0.2 0.1 0.9 0.2 0.2 0.2-0.1 0.2 0.1 0.3 0.3 0 0.2 0.2 0.1-0.1 0.2-0.2 0-0.1-0.2 0-0.1-0.3-0.1 0.1 0.1 0.1 0.5 0 0.4 0.1 0.3 0.1 0.2 0.4 0.3 0.3 0.4 0.4 0.1 0.3 0.2 0.2 0.3 0.1 0.3 0.2 0.1 0.1-0.2 0.2 0 0.4 0.7-0.1 0.3 0.1 0.3 0.1 0.5 0.2 0.5 0 0.4 0.1 0.3 0.2 0.5 0.2 0.4 0.3 0.2 0.3 0.7 0.4 0.1 0.1 0.2 0 0.2 0.2 0.5 0.3 0.1 0.1 0.3 0.3 0.1 0.3 0.1 0.1-0.2 0.1 0.1 0.6 0.1 0.2-0.3 0.1 0.1-0.2 0.3 0 0.1 0.3 0.1 0.1-0.2 0.1 0 0.2 0.1 0.2 0.1 0.1-0.2 0.1 0 0.1 0.1 0.3 0.1 0.2 0.3-0.2 0.2 0.2 0.5 0 0.2-0.2 0.1 0 0.4-0.2 0.1 0.1 0.3 0.1 0.3 0.2 0.5 0.3 0.2 0.1 0.8 0.1 0.3 0.4 0.7 0.1 0.6 0.2 0.2 0.5 0.2-0.1 0.2 0.3 0.2 0.1 0.3-0.1 0 0 0.3 0.2 0.1 0.2 0.1-0.1 0.1 0 0.1 0.1 0.2-0.1 0.2-0.2 0-0.1 0.3 0 0.2 0.3 0.3-0.1 0.4 0.2 0.6 0.3 0.2 0.2 0.5 0.2 0.2 0.1 0.2-0.2 0.1 0 0.6 0.2 0.5 0.4 0.4 0.3 0.1 0 0.1 0.2 0.2 0 0.1 0 0.1 0.2 0.2 0 0.2 0.1 0.2 0.1 0.4 0.4 0.2 0 0.2 0.5 0.1 0.2 0.2-0.1 0.3 0.1 0.2 0.2 0.3 0.4 0 0.2 0.1 0-0.2 0.1 0 0.2 0.1 0.1 0.2 0.6 0.4 0 0.2 0.1 0.1-0.1 0.2 0.2 0.1 0.1 0.2 0 0.5 0 0.3 0.4 0.3 0.2 0.4 0.3 0.3 0 0.2 0.2 0.2 0.1-0.1 0.2 0.2 0 0.1-0.2 0 0 0.1 0.1 0.1 0 0.1 0.4 0.4 0 0.1 0.2 0.1-0.1 0.1-0.1 0.2 0.2 0.2 0 0.1 0 0.3 0.1 0.2 0.1 0.2 0 0.2 0.1 0.2 0.1 0.2 0.1 0.3 0 0.1 0.1 0.1 0.1 0-0.1 0.3 0 0.2 0 0.1-0.1 0.4 0 0.4-0.4 0.5-0.2 0.6-0.1 0.3 0 0.3-0.1 0.3-0.5 0.1-0.4 0.5-0.1 0.6-0.1 0.8-0.2 0.5 0 0.6 0 0.5 0.1 0.5 0.1 0.3-0.2 0.2 0.1 0.3 0.2 0.7 0 0.2 0.2 0.4 1 1.2 0 0.4 0 0.3-0.2 0.3 0 0.3 0.1 0.3-0.1 0.3 0.2 0.3 0.1 0.2 0 0.3 0.1 0.2-0.1 0.4 0.8 1 0 0.2 0.5 0.3-0.1 0.2 0.4 0.7 0.3 0.5 0.2 0.5 0.3 0.2 0.5 0.2 0.1 0.5 0.4 0.2 0.1 0.2 0.6 0.3 0.8 0.2 0.8 0.2 0.9 0.2 1.5 0.3 1.5-0.1 0.5 0 0.2 0.1-0.1 0.2-0.3 0.2-0.4 0.2-0.5 0.2-0.3-0.2-0.7-0.4-0.8-0.2-0.1 0.2 0.3 0.2-0.1 0.5 0.2 0.3 0.1 0.3-0.1 0.2 0.1 0.4 0.7 0 0.7-0.2 0.2 0.1 0.3-0.1 0.1-0.3 0-0.3 0-0.2 0.1-0.1 0.6-0.5 0.5-0.6 0.2-1.2-0.4-0.1 0.1-0.3 0-0.3-0.2-0.1-0.2-0.1 0.1-0.1 0-0.3-0.1-0.3-0.1 0-0.1 0.3-0.2 0 0-0.6 0.1-0.2-0.1-0.1 0.1-0.3-0.1-0.2 0-0.3 0-0.2 0.4 0 0.1-0.1-0.3-0.1 0-0.2 0.2-0.2 0.4 0 0.2-0.2 0.2-0.3 0.6 0 0.7 0.2 0.1-0.1 0.4 0.2 0.1 0.2-0.2 0.1 0 0.4 0.2 0.2 0.3 0.1 0.2 0.3 0.4 0.1 0.2 0.2 0.2 0.4 0 0.3 0.2 0.3 0.1 0.2 0.8 0.2 0.3 0.3 0.3 0.3 0.2 0.1 0.5 0.3 0.4 0 0.1 0.1 0.2 0.1 0.1 0.3 0.3 0.1 0.1 0.2 0.4 0.1 0.4 0.3 0.4 0.3 0.3 0.3 0.1 0.7 0.2 0.2-0.1 0.5 0.2 0.1 0.1 1.4 0.1 0.6 0.3 0.3 0.6 0 0.7 0.3 1.1-0.3 1.1-0.4 0.5-0.3 0.2-0.1 0.1 0.2 0 0.3 0.1 0.3 0.3 0.2 0.2 0.3 0 0.3-0.1 0.1-0.1 0.2-0.4 0.4-0.1 0-0.1 0.1 0 0.3-0.1 0.5-0.1 0.3 0.1 0.4 0.2 0.6 0.1 0.3 0.3 0.1 0.2 0.1 0.1 0.2 0.2 0.2 0.1 0.1 0.2 0.2 0.4 0.1 0.9 1.1 0.6 0.5 0.3 0.6 0.4 0.3-0.4 0.7 0 0.9 0.2 0.7 0.3 1.1-0.1 0.8 0.5 0.5 0.6 0.3 0.5 0.2 0.1 0.2 0.5 0.1 0.3 0.1 0.7 0.3 0.2 0.3 0.3 0.1 0.8 0.2 0.5 0.1 0.2 0.2 0 0.4 0.5 0.2 0.6 0.1 0.3 0.1 0 0.3-0.3 0.2 0 0.5 0.3 0.6 0.7 1 0.5 0.5 0.1 0.6-0.2 0.5 0 0.4 0.4 0.1 0 0.5-0.1 0.3-0.3 0.2 0.1 0.3-0.1 0.6 0.1 0.3 0 0.7 0 0.5-0.2 0.4-0.2 0.1 0 0.3 0.1 0.7-0.1 0.3-0.1 0.3-0.3 0.5 0 0.4-0.3 0.2-0.3 0.5-0.6 0.9-0.3 0.2-0.3 0.6-0.3 0.1-0.2 0.4-0.9 0.4-0.4 0.4-0.8 0.1-0.6 0.3-1.3 0.4-0.6 0.5-0.6 0.3-0.1 0.5 0.2 0.2-0.6 0.7-0.8 0.1-1.3 0.9 0 0.6-0.6 0.5-0.3 0.3-0.4 0.3-0.3 0.1-0.7 0-0.5 0.2 0 0.3 0.2 0.2-1.1 0.1-0.6 0-0.3-0.2-0.4-0.1-0.6-0.4-0.8-0.7-0.4-0.5-0.5-0.6-0.6-0.9-0.1-0.3-0.2-0.7-0.2-0.2-0.3-0.9 0-0.9-1.3-4.7-0.2-2-0.2-0.9-0.3-0.3-0.2-0.3-0.7-1.2-0.2-0.5-0.4-0.4-0.1-0.6-1-1.7-0.3-0.3-0.8-1.6-1.4-1.3-1.4-0.8-3.4-1.6-1.6-0.7-2-1.7-3-3.3-1.8-2.2-1.1-0.9-0.5-0.4-0.3-0.1-0.1-0.4-0.3-0.3-1.1-1.2-0.6-0.5-0.9-0.8-0.7-0.5-0.2-0.4-0.7-0.6-1.2-0.8-0.7-0.6-0.9-0.5-1-0.5-1.5-1.2-1.6-0.8-4.7-2.5-0.1-0.2 0.3 0.1 2.3 1.2-0.5-0.5-1-0.7-1-0.4-0.4-0.1-0.5-0.4-0.3-0.6-1-1-0.6-0.3-0.6-0.1-0.9-0.7-0.7-1-0.3-1.1-0.6-1.1-0.1-0.3 0.3 0.1 0.3 0-0.4-0.4-0.6-0.5-0.3-0.3-0.5 0 0 0.5 0.3 0.4-0.4 0.7-0.8-0.1-0.3-0.2-0.3 0.1-0.5 0.1-0.6-0.1-0.5-0.1 0.6 0.6 0.6 0.4-0.5 0-0.3-0.1-0.3 0.1-0.3 0.3-0.2-0.4-0.1-0.5 0.1-0.4 0.1-0.8-0.6-1.6-0.4-1-0.5-0.5-0.5-0.6-0.6-0.8-0.7-0.5-0.3-0.5 0.1-0.1 0.6 0.5 0.1-0.1 0-0.3-0.6-0.3-0.6-0.6-0.4-0.7-0.2-0.4-0.1-0.6-0.2-0.6-0.3-0.6-0.4-0.3 0.3 0.9 0.1 0.9 0.2 0.7 0.6 0.6-0.1 0-0.5 0.4 0.2 0.1 0.3 0.4 0.1 0.1-0.2 0.1-0.2 0-0.2-0.2-0.2-0.3-0.5 0.6-0.3-0.5-0.6-1.6 0.3-0.2 0.1-0.3 0-0.3-0.1-0.3-0.5 0.3-0.1 0.4 0.2 1 0 0.7 0.1 0.3-0.5 0.1-0.5-0.3-0.2-0.4-0.2-0.4-0.1-0.6 0-1 0-0.3-0.2-0.2-0.2-0.1-0.2 0-0.2-0.6 0.3-0.1 0.5-0.5 0.2-0.2-0.2-0.7-0.1-0.2-0.1-0.1 0-0.3 0.1-0.1 0.4-0.3 0.1-0.2 0-0.2-0.3-0.4-0.1-0.4 0-0.3-0.2-0.2-0.2 0.2-0.3 0.4 0 0.6-0.2 0.3-0.3 0.4 0.2 0.6 0.3 0.6-0.4 0.6-0.3 0.5-0.3 0-0.1-0.6 0.1-0.4 0.1-0.8-0.3-0.2 0-0.2-0.1-0.3 0.2-0.2 0.4 0 0.1-0.3-0.2-0.3 0.2-0.4 0.3-0.6 0.2-0.9-0.1-0.2 0.2-0.5 0-0.4-0.3 0 0-0.2-0.3-0.2 0.1-0.4 0.1-0.4-0.1-0.5 0-0.5 0.2-0.9 0.4-0.9 0.5-0.8 0.5-0.6 0.1-0.5 0.1-1 0-1.7 0.1-0.9-0.4-0.1 0-0.5 0.2-0.5 0.2-0.3 0.1-0.5 0-0.3-0.4-0.1 0.2-0.4 0.8-0.3 0.5-0.2-0.3-0.1-0.8 0-0.3 0.2-0.1-0.3 0.2-0.2 0.4-0.3 0-0.6-0.1-1.1-0.2-0.7 0.2-0.7 0.1-1-0.3-1.9-0.1-0.9-0.2-0.3-0.2 0.2 0 0.5 0.1 3.4-0.2 1.4-0.1 1.2-0.2 0.2 0-0.3 0-0.8 0.1-1.8 0-4.2-0.2-1.8-0.7-1-0.2-1.3-0.6-1.1-0.6-2-0.5-1.3-0.6-0.7-0.6-0.8-0.7-0.4-0.8 0.1-0.5-0.6-0.1-1-0.2-1-0.7-1.5-1-1.3-0.7-0.7-1.1-0.6-0.3-0.1-0.4 0.2-0.2 0.3-0.2 0.3-0.5 0.1-1.7-1.2 0-0.1 0.1-0.5-0.2-0.3-0.4 0.3-0.5 0.1-0.4-0.3-0.2-0.6-0.1-0.1-0.5 0-1.2 0-0.4-0.1-1.1-1.5-0.8-0.6-0.9-0.5-0.5-0.4-0.8-0.6-0.9-0.9-1.1-1-1.5-0.8-0.1-0.3 0-0.1 0-0.1 0-0.2-0.1-0.1-0.2 0-0.6 0-0.4-0.2-0.4-0.4-0.8-0.7-0.5-0.5 0.1-0.4-0.1-0.5 0.2-0.4-0.1-0.3-0.2-0.2-0.3-0.6-0.3-0.5-0.5-0.6-0.3-0.2-0.4-0.5-0.3-0.5-0.1-0.4 0-0.3 0-0.4 0.5-0.3 0.2-0.1-0.3-0.2-0.2 0-0.4 0.2-0.4 0.1-0.1 0.4-0.1 0.4-0.4 0.1-0.3 0.1 0.1 0.3-0.1 0.2-0.3 0.2-0.3-0.2-0.3-0.4-0.1-0.3-0.1-0.5-0.2-0.2 0.2-0.1 0.6-0.1 0.2-0.2 0.4-0.3 0.3-0.2 0.3-0.4 0.3-0.4 0.4-0.2 0.2-0.4 0.2-0.6 0.2-0.3 0-1.6-0.2-0.6-0.4-0.5-0.5-0.1-0.5 0.2-0.4 0.7-0.1 2-0.2 1-0.8 0.7-0.4-0.2-0.3 0.4-0.2 0.4 0 0.3 0 0.3 0 0.2 0 0.4 0 0.5-0.2 0.2-0.4 0.1-1.2-0.9-1.1-0.6-1-0.2-0.6-0.1-0.8 0-0.6 0-1 0.4-0.4 0.8-0.2 0.5-0.5 0.4 0 0.7-0.4 0-0.5 0.4-0.7-0.1-1.1-0.5-0.8-1.4-1.7-1-0.3-0.5-0.1-0.4-0.5-1.1-1-1.9-0.8-0.9-1-0.6-0.7-0.5-0.9-0.3-1.5-0.2-0.4 0.2 0 0.4-0.3 0.1-0.3 0.2-0.3-0.2-1.3-1.3-0.4-1.1-0.6-0.8-0.8-0.9-1-0.6-1-0.5-0.7-0.1-0.8-0.4-1.1 0.2-0.5 0-0.1 0.7-0.7-0.6-0.9-0.7-1.3-0.5-0.7 0.5-0.4-0.3 0.2-0.4-0.1-0.3 0-0.4-0.4-0.2-0.5-0.2-0.4 0.1-0.3-0.6 0-1.4 0.1-1.4-0.2-1.3-0.5-1.4-0.6-0.6-0.3-0.3-0.7-0.4-0.5-0.1-0.5-0.9-1-0.3-1.4-0.6-1-0.5-0.5 0-0.4-0.8-0.1-0.2-0.4-0.5-0.1-0.2-0.4-0.9-0.7-0.6-0.7-0.3-0.2 0.1-0.2 0.3-0.3-0.1-0.2-0.3-0.4-0.5 0.1-0.1 0.4 0.3 0.3 0 0.1-0.7-0.1-0.3-0.1-0.4-0.3-0.2-0.3-0.2-0.4 0-0.1 0.2-0.2 0.3-0.1 0.5-0.3-0.2-0.6-0.2-0.2-0.8-0.3-0.5-0.7-0.3-0.4 0-0.4 0.3-0.3-0.4-0.3-0.4-0.3-0.6 0-0.6-0.4-0.6-0.1-0.4-0.1-0.4-0.1-0.1-0.7-0.9 0.8-0.3 0.4 0.1 0.5 0.4 0.3 0.5 1.3 0.1 1.3-0.3 1.1 0.2 0.4 0 0.6 0.2 0.3 0.4 0.6 0.1 0.9-0.2 0.6 0.1 0.7 0.2 0.5 0 0.1 0.3 0.3 0.2 0.5 0.1 0.6 0 0.9 0.2 1 0.2 1-0.2 1.1-0.2 0.9 0.4 1.1-0.5 0.8-0.3 0.8-0.6 0.4-0.3 0.3-0.3 0.5-0.5 0.6-0.4 0.3-0.2 0.2-0.1 0.3 0 0.3 0 0.2 0.2 0 0.2 0.1 0.3 0.1 0.6-0.1 0.5-0.2 0.5-0.2 0.4-0.1 0.3 0.2 0.5 0.7 1 0.6 0.3 0.6 0.6 0.4 0.3 0.9 0.2 0.5 0.4 0.7 0.3 0.5 0.4 0.2 0.5 0.2 0.2 0 0.3 0.3 0.2 0.2 0-0.1 0.3 0.1 0.3 0.3-0.2 0.3-0.2 0.2-0.3 0-0.2 0.5-0.4 0.3-0.4 0.1-0.4-0.2-0.2-0.2 0.1-0.1-0.2 0-0.1-0.1-0.1-0.2 0.1-0.2 0 0-0.2 0.1-0.2 0.3 0 0.3-0.1 0.2 0.1 0 0.2 0.1 0.2 0.4-0.1 0.3 0.1 0 0.3 0.2 0.1 0.5 0.3 0.8 0.1 0.4 0 0.1-0.2 0.2-0.3 0.2-0.3 0.1-0.3 0.4-0.3 0.1-0.4-0.1-0.3-0.3-0.2-0.3-0.1-0.1-0.2-0.5-0.2-0.2 0-0.2-0.1 0-0.3-0.2-0.1-0.2 0-0.2 0.2-0.2 0-0.4 0-0.1 0.1-0.2-0.1-0.3-0.6-0.2-0.5-0.2-0.3-0.2-0.3-0.2 0-0.1 0.1 0.1 0.3 0.2 0.5 0 0.3 0.3 0.2 0.1 0.3 0.2 0.4-0.1 0.2-0.2 0-0.1 0.2 0 0.2-0.1-0.1-0.2-0.1-0.3 0-0.2 0.2-0.4 0.2-0.3 0.2-0.4-0.1-0.2-0.1-0.2-0.3-0.3-0.3 0-0.3-0.1-0.5-0.2-0.3-0.3-0.3-0.3-0.5 0-0.4-0.1-0.4 0.1-0.4 0.2-0.2 0.1-0.4 0.5-0.6 0.3-0.4 0.1-0.4-0.1-0.1-0.3-0.1-0.1 0-0.1-0.1 0.3-0.2 0.1-0.1 0.1-0.1-0.1-0.2-0.3-0.1-0.2-0.1-0.1-0.2 0.1-0.3 0.1-0.2-0.3-0.2-0.2 0-0.2 0.1 0 0.3-0.2 0.2-0.2 0.1-0.2 0.2-0.3 0.2-0.4-0.1-0.5 0.3-0.2 0.3-0.3 0.3-0.3 0.2-0.3-0.5 0.1-0.5 0.1-0.4 0.3-0.5 0.2-0.3 0.6-0.5 0.2-0.4 0.4-0.5 0.1-0.1 1.7 0 0.3 0.4 0.2 0.5 0 0.3 0.7 1.1 0.4-0.9 0-0.6-0.1-0.7-0.1-0.1 0.8 0 0.1 0.1 0.2-0.1z m23.4 41.2l0.5-0.3 0.3 0.1 0.2 0.1 0.3 0.2-0.1 0.2 0.3 0.1 0.1-0.1 0.1-0.2 0.2 0 0.2 0 0.3 0.6 0.5 0.6 0.2 0.4 0 0.2-0.2 0-0.3-0.2-0.3-0.2-0.7-0.3-0.9-0.3-0.7-0.1-0.3-0.1-0.2-0.2 0.2-0.3 0.3-0.2z m76.4 60.3l0.3-0.2 0.2-0.1 0.1 0.1-0.1 0.3 0.1 0.1 0.1 0.2 0 0.2-0.2 0 0-0.2-0.2 0-0.2 0-0.1-0.2 0-0.2z m-3.7-15l0.3 0 0.2 0 0.2-0.2 0 0.2-0.1 0.1-0.3 0.5-0.1 0.5-0.2 0.3-0.2 0.1-0.2 0-0.1-0.2-0.1-0.4 0.1-0.3 0.5-0.6z m-40-5.6l0.1-0.2 0.2 0.1-0.1 0.5 0.1 0.5-0.1 0.8 0 0.6-0.2 0.6-0.1 0.9 0.2 0.7-0.1 0.5-0.2 0.4-0.1 0.4 0 0.5-0.1 0.1-0.3-0.2-0.2-0.3 0.1-0.5 0.3-0.5 0.2-1 0.1-1.4 0.3-1.2 0-0.6-0.1-0.7z m30.1-6.9l0-0.3 0.4 0.1 0-0.2 0.2 0 0.2 0.3 0.2 0.2 0.1 0.1 0.2 0.5-0.1 0.3-0.1 0.3-0.2 0.2-0.2 0-0.3-0.4-0.1-0.2 0.1-0.2-0.3-0.5-0.1-0.2z m-5.7-3.6l0.1 0.1 0 0.3 0.2 0-0.1 0.2 0.1 0.2 0.1 0-0.1 0.1 0 0.3 0.1 0.1 0 0.2-0.1 0-0.2-0.2-0.1-0.3 0-0.3 0-0.3-0.1-0.3 0.1-0.1z m-0.8-10l0.3-0.3 0.2 0 0.1 0 0.1 0.3-0.1 0.3-0.1 0.1 0.2 0.1-0.1 0.2-0.3 0-0.2 0-0.1 0 0.1-0.1 0-0.1 0.1-0.1-0.2-0.2 0-0.2z m-23.3-35.3l-0.3-0.4 0.5-0.7 0.7 0.6 0.6 0.8-0.2 0.7-0.4 0.5-0.6-0.1-0.2-0.7-0.1-0.7z m5.9-6.6l-0.4-0.3 0.1-0.4 0.6-0.1 0.5 0.2 0.2 0.3-0.1 0.3-0.6 0-0.3 0z m-95.1-15l0.2 0 0.4 0.3 0.3 0.3 0.3 0.2 0.1 0.2-0.2 0.3-0.2 0.1-0.2-0.1-0.1-0.5-0.3-0.5-0.5-0.1-0.3-0.1 0.1-0.2 0.4 0.1z` },
-    { id: "MXSIN", d: `M319.2 268.2l0.4 0.2 0.6 0.8 0.3 0.3-0.5 0.4-0.9-0.5-1-0.6-0.8-0.4-0.2 0-0.3-0.1-0.2-0.1-0.3 0-1.7 0-0.4-0.2-0.2-0.4 3.2 0 0.6 0.1 1.4 0.5z m-8.8-28.9l0.3-0.5 0.2-0.2 0.1-0.1 0.2-0.1 0.2-0.2 2.9-2.2 2.9-2.3 2.8-2.3 2.8-2.4 1.4-1.2 1.5-1.2 1.4-1.2 1.4-1.2 0.2-0.4 0.1-0.7 0-0.8 0-0.6 0.2-0.8 0.2-0.8 0.3-0.8 0.2-0.8 0.8-0.7 0.6-0.8 0.7-0.8 0.6-0.8 0.3 0.6 0.7 0.2 0.7 0 0.7-0.1 0.6 0.1 0.4 0.3 0.4 0.5 0.3 0.6 0.9 1.2 1.4 0.7 1.6 0.3 1.4 0.3 0.7 0.3 0.2 0.7 0 0.9 0 0.8 0.4 1 0.7 1 0.6 0.9 0.6 0.9 0.6 0.7 0.6 0.7 0.6 0.6 0.5 0.6 0.5 1.5 0.3 1.9 0.1 2 0.2 1.7 0.2 1.5 0.1 1.4 0.2 1.5 0.2 1.4 0.2 0.9 0.2 0.5 0.5 0.2 0.9 0.2 0.3 0 0.3 0.1 0.3 0.1 0.3 0 2 0.4 1.9 0.5 2 0.4 1.9 0.4 0.9 0.2 0.6 0.5 0.5 0.8 0.3 0.9 0.1 0.5 0.1 0.5 0.1 0.5 0.1 0.5 0.1 0.2 0 0.3 0.1 0.2 0 0.1 0.3 0.3 0.4 0.1 0.3 0.1 0.2 0.4 0.1 0.4 0.1 0.5 0.1 0.4 0 0.4 0.1 0.5 0.1 0.2 0.3 0.1 0.4 0.1 0.8 0.4 0.8 0.5 0.7 0.5 0.7 0.6 0.5 0.7 0.4 0.7 0.5 0.7 0.6 0.5 0.9 0.5 0.9 0.5 0.8 0.6 0.8 0.7-0.4 0.5-0.5 0.5-0.5 0.5-0.3 0.6-0.3 0.7-0.5 0.5-0.5 0.5-0.6 0.6-0.6 1.2-0.3 1.4-0.3 1.5-0.2 1.3-0.2 1.5-0.2 1.5 0 1.5 0.3 1.5 0.4 1.3 0.4 1.3 0.4 1.4 0.5 1.3 0.2 0.5 0.1 0.7 0.3 0.6 0.3 0.4 0.4 0.3 0.5 0.2 0.5 0.1 0.4 0.3 0.2 0.4 0.1 0.4 0 0.4 0 0.4 0.2 0.6 0.4 0.3 0.4 0.1 0.5 0.1 0.5 0 0.4 0 0.4 0.1 0.4 0.3 0.3 0.6 0.2 0.5 0.4 0.4 0.5 0.3 1 0.6 0.6 1 0.4 1.2 0.6 1.1 0.4 0.4 0.4 0.3 0.2 0.4 0.3 0.5 0.1 0.4 0.2 0.4 0.2 0.4 0.2 0.3 0.3 0.6 0.2 0.5 0.1 0.5 0 0.7 0 0.5 0 0.5 0.1 0.5 0.3 0.4 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.4 0.6 0.4 0.4 0.2 0.5 0.1 0.6-0.1 0.5 0 0.4 0 0.5 0 0.5-0.2 0.3-0.4 0.3-0.4 0.3-0.5 0.4-0.4 0.9-0.8 1.1-0.5 1-0.2 1.2 0.2 0.3 0.2 0.4 0.1 0.3 0.3 0.2 0.2 0.8 0.6 0.7 0.7 0.7 0.6 0.7 0.7 0.5 0.7 0.4 0.9 0.4 1 0.3 0.8 0.3 0.8 0.3 0.8 0.4 0.8 0.4 0.8 0.5 0.5 0.6 0.2 0.7-0.2 0.7-0.2-0.3 1-0.4 1-0.5 0.9-0.4 1-0.1 1.2 0 1.2 0.2 1.3 0.2 1.2 0.1 0.6 0 0.5 0.1 0.5 0.1 0.6 0.1 0.5 0.3 0.5 0.3 0.5 0.2 0.6 0.2 0.7 0.1 0.7 0.3 0.6 0.5 0.5 0.4 0.2 0.5 0.1 0.4 0.1 0.5 0.1 0.1 0.7 0.5 0.6 0.5 0.7 0.3 0.7-0.1 0.3-0.1 0.2 0 0.3 0.2 0.2 0.2 0.3 0.1 0.3 0 0.3-0.1 0.3-0.1 0.5 0.1 0.3 0.2 0.4 0.3 0.4 0.1 0.3 0 0.4-0.1 0.4 0.1 0.3 0.3 0.5 0.4 0.3 0.4 0.2 0.4 0.4 0.2 0.2 0 0.3 0.2 0.3 0.2 0.2 0.4 0.3 0.5 0.5 0.5 0.6 0.4 0.4 1 0.5 1.2 0.1 1.2-0.1 1.2-0.1 0 0.9 0 0.9 0 0.9 0.1 0.9-0.7 0-0.7 0.1-0.4 0.3-0.4 0.5-0.2 0.6 0 0.4 0.1 0.4 0.2 0.5 0.3 0.4 0.1 0.3 0.1 0.3-0.3 0.4-0.3 0.4-0.6 0.4-0.5 0.4-0.5 0.4-0.5 0.5-0.5 0.6-0.5 0.7-0.1 0.6 0 0.3 0.2 0.3 0.2 0.1 0.3 0.2 0.3 0.2 0.2 0.2 0.1 0.3 0.2 0.4 0.2 0.3 0.3 0.1 0.3 0.1 0.3 0.2 0 0.2-0.1 0.2-0.1 0.3 0 0.1 0.1 0.1 0.2 0.1 0.1 0.1 0.2 0 0.2 0.8 0.3 0.7 0.2 0.8 0.1 0.8 0 1.1-0.6 0.6-1 0.2-1-0.3-0.4-0.4-0.4-0.4-0.4-0.3-0.4-0.3-0.7-0.2-0.6 0.2-0.6 0.1-0.6 0.2 0.1 0.5 0.2 0.6 0.1 0.6 0 0.5-0.5 0.4-0.5-0.5-0.4-0.8-0.4-0.5 0.3-0.2-0.2-0.4-0.3-0.4-0.3-0.2-0.2 0.4-0.2 0-0.3-1.8-0.9-1.5-2.4-2.3-1.2-1.6-0.5-0.5-1.2-0.8-0.2-0.2-0.1-0.1-0.1-0.1-0.1-0.1-0.1-0.2 0.6-0.8-0.4 0-0.4 0.2-0.3 0.3-0.3 0.3-5.4-6.9-0.2-0.2-0.6-0.2-0.3-0.2-0.5-0.4-2.7-3.2-0.5-0.2-0.4 0.1-0.2 0.2-0.3 0.1-0.3-0.2-0.1-0.2 0.1-1.2-0.2-0.4-1-1.6-0.5-0.4 0-0.2 0.3-0.3 0-0.2-0.1-0.1-0.1-0.2-1.1-2.1-0.4-0.4-0.4-0.1-0.6-0.4-1.1-1.1-0.2-0.1-0.1-0.2-0.3-0.8-0.3-0.4-0.7-0.3-0.4-0.6-0.7-0.9-0.8-1-0.5-0.4-1.2-0.4-0.4-0.6-0.2-1.5-0.4-0.6-0.5-0.5-0.5-0.6-0.3-1.4-0.9-1.5-3.8-4.2-1.4-1.1-0.6-0.2-0.3-0.2-1.6-1.5-4.1-2.8-1.8-1.3-0.3-0.4-0.2-0.7-0.3-0.4-1.1-0.5-1.1-0.7-1.8-1.7-6.6-4.1-0.5-0.6-0.2-0.5 0-0.4 0.2 0 0.3 0.2 0.2 0.2 0 0.1 0.1 0.2 0 0.3 0 0.1 2.3 1.2 0.3 0.1 4 2.6 0.4 0.2 0.3 0.2 0.5 0.3-0.3-0.3-0.8-0.5-0.5-0.3 0.1-0.3 0.6 0.2 0.9 0.7 0.1-0.1 0.1-0.2 0-0.1-0.1 0-0.2 0-0.1 0 0.3-0.3 0.3-0.3 0.2-0.3 0-0.6-0.1-0.4-1.1-2.5-0.3-0.4-0.5-0.2-0.5 0-0.4 0.1-0.4 0.2-0.3 0.4 0.4 0.1 0.8-0.3 0.2 0.2-0.1 0.3-0.8 0.7-0.2 0.3-0.9 0.3-0.5-0.4-0.4-0.6-0.6-0.4-0.6 0.4-0.2 0-0.2 0-0.2-0.1-0.6-0.5-0.2-0.3 0-0.2-0.1-0.4-0.1-0.2-0.1-0.2-0.5-0.1-0.2-0.1-1.1-1.3-0.4-0.1-0.4 0.3-0.6-0.6-0.6-0.5-0.7-0.3-0.7-0.1 0.1 0.3 0.3 0.2 0.4 0.3 0.9 1 0.5 0.4 1.2 0.7 0.4 0.5-0.8-0.2-2.2-1.3-2.5-2.2-0.2-0.5-0.1-0.5-0.2-1.1-0.1-0.5-0.3-0.6-0.3-0.5-0.3-0.2-0.2-0.1-0.1-0.2 0-0.2 0.1-0.1 0.3 0 0.3 0.1 0.5 0.3 0.2 0.3 0.5 0.3 0.4 0 0.2-0.7-0.1-0.5-0.3-0.6-0.4-0.4-0.4-0.3 0.4-0.3 0-0.5-0.2-1.2 0.1-0.5 0.1-0.4 0.4-0.8-0.3-0.4-1.1-1-0.4-0.1 0 0.6 0.4 1.7 0 0.1 0.1 0.2 0 0.4-0.2 1.1-0.1 1.1-0.1 0.3-0.1 0.1-0.2 0-0.2 0-0.1-0.1-0.1-0.2-0.2-0.1-0.1 0.1-0.1 0.2-0.1 0.1-1.1-0.6-0.9-1.3-2.2-4.6-0.7-0.8-1-0.9-0.6-0.3-0.2-0.2-0.2-0.4 0.6 0 0.7 0.2 0.5 0.3 0.2 0.5 1.7 2.1 0.4 0.9 0 0.1 0.2 0 0.2 0 0.1-0.1 0.1-0.1 0.6 0.4 0.1 0.1 0.3-0.1 0-0.3 0-0.6-0.1-0.5-0.3 0-0.3 0.1-0.3-0.2 0-0.2 0.3-0.5 0.1-0.2 0.3-0.2 0.1-0.1 0.1 0.1 0.2 0.4 0.6 0.6 0.5 0.2 1.2 0.2 0.9 0.4 0.3-0.3 0.1-0.3-0.1-0.4-3-2.7-0.3-0.2-0.5 0 0.2 0.2 0 0.2-0.2 0.2-0.4 0-0.3 0-0.4-0.3-0.5-0.5-0.6-1.2-0.1-0.2-0.4 0.1-0.3 0.2-0.3 0.2-0.4-0.2-0.4 0.2-0.8 0.1-0.8-0.2-0.5-0.2-0.1-1 0-0.2 0.2 0 0.7 0.5 0.3 0.1-0.1-0.4 0-0.9-0.1-0.4-0.2-0.3-0.7-0.4-0.3-0.2-0.7 3.4-0.4 0.5 0-0.3 0.1-1.4 0-0.5-0.2-0.6-0.4-0.5-0.5-0.3-0.4-0.3-3-1.2-1.7-1.2-1.2-0.3-1.2-0.1-1 0 0.7-0.5 1.2 0.1 2.1 0.6-0.7-0.3-1.2-1-0.8-0.2-1.5 0.5-0.8 0.1-0.4-0.6 1.2 0 0.3-0.2-0.4-0.6-0.1-0.2 0-0.3 0-0.2-0.3 0-0.1 0-0.3 0.3-0.3 0.1 0.3-1 0.1-0.5 0-1.5-0.1-0.4-0.1-0.1-0.3 0.2-0.3 0-1-0.4 0-0.1 0-0.1-0.1-0.2-0.2-0.1-0.1 0.1-0.3 0.1-0.1 0.1-0.6-0.1-0.3-0.1-0.2 0 0 0.6 0.1 0.3 0.1 0.2 0.1 0.2 0.1 0.4-0.1 0.4-0.1 0.2-0.1 0.2-0.2 0.2-0.5 0.3-0.4 0-0.3-0.2-0.3-0.4 0.1 0 0.2-0.1 0.1-0.2-0.2-0.2-0.2-0.1-1.5 0.2-0.4 0.2 0 0.3 0.3 0.5-0.8 0.1-0.9-0.7-1.4-1.6 0.6-0.3 0.2-0.1 0.1-0.3 0.2-0.4 0.2-0.3 0.3-0.1 1 0.3 0.2 0 0.3-0.1 0.3 0.3 0.1 0.6 0.3 0.2 0.1-0.1 0-0.2 0.2-0.4 0-0.1 0-0.4 0-0.1 0.1-0.2 0.3 0 1.5-1.6 0.3-0.4 0-0.2-0.1-0.1 0-0.1 0.1-0.2 0.1-0.1 0.1-0.1 0.2 0 0-0.2 0-1 0.2-0.7 1.2-1 0.1-0.7-0.2-0.4-0.4 0.3-0.6 1.3-0.4 0.7-0.5 1-0.4 0.4-0.7 0.3-1.4 0.5-0.6 0.4-0.9 1.4-0.6 0.5-0.7-0.2-0.8 0.4-0.5 0-0.3-0.3-0.4-0.8-0.2-0.7-0.2-0.3-0.3-0.1-0.3-0.1-0.9-0.4-0.8-0.6-0.1 0.2 0.1 0.3 0.1 0.4 0.3 0.3 1.9 1.6 0.5 0.7-0.1 0.7-0.7-0.7-0.6-0.8-0.7-0.8-1-0.4-3.2 0.1-1.1-0.3 0.7-0.5 0.8-0.2 0.8 0 0.9 0.3-0.1-0.5 0.1-0.6 0.1-0.1 0.2-0.3 0.1-0.1-0.1-0.2 0-0.1-0.1-0.1 0-0.1-0.3-0.3-0.5-0.4-0.7-0.4-0.4-0.1-0.6 0-0.3 0.2-0.1 0.4-0.1 1.9-0.1 0.2-0.3-0.5 0.2-0.6 0-0.8-0.1-0.7-0.2-0.3-0.6-0.2-0.1-0.6 0.1-0.6 0.3-1.3 0.1-0.2 0.1-0.1 0-0.6 0-0.4-0.1-0.3-0.3-0.5-0.2-0.7 0-0.6 0-1.4 0.2-0.6 1-1.7 1.1-1.2 0.5-0.7 0.3-1.3 1.1-1.9 0-0.1 0.1 0 0.1 0 0.1-0.1 0 0.1-0.2 0.4 0.1 0.7-0.1 0.3-0.1 0.4-0.1 0.3 0.2 0.3 0.3 0.1 0.2-0.2 0.1-0.4 0.2-1 0.9-1.7 0.1-0.1 0.6-0.3 0.6-0.4 0.5-0.4 0.3-0.2 0 0.5-0.2 0.5-0.4 0.2 0 0.2 0.6 0.3 1.4 1.2 0.4 0.1 0-0.4-0.4-0.7 0-0.5 0.2-0.2 0.3-0.1 0.2-0.1-0.1-0.5-0.8 0.1-0.7-1.4z` },
-    { id: "MXYUC", d: `M930.5 391.1l0 0.4 0.4 5.8-0.1 1-1.2 1.7-0.4 1.9 0 1.2 1.3 2.9 0.1 1.9-1.8 3.5-0.1 1-0.2 1-0.6 1-0.4 1.1-0.9 1.8-1.8 1.1-1.5 1.2-0.9 0.6-2.4 2.1-2.4 1.3-0.8 0.3-1.7-0.1-0.9 0.3-0.8-0.4-0.8-0.6-0.9 0.2-0.7 0.6-0.5 0.9-0.6 0.9-0.5 1 0.4 1.3 0 1.1-0.7 0-0.3-0.9-0.6-0.7-0.9-0.1-0.8 0.6-0.7 2-1.3 1.5-1.7 0.5-1.6 1-1.6 0.3-0.9 0.4-0.9 0.6-0.9 0.4-1.7 1.1-0.6 0.8 0.2 0.6-0.3 0.5-0.6-0.6-0.8-0.4-1.7 1.7-0.3 0.3-0.5 0.3-0.5 0.1-3.2 0.1-0.9 0.6-1.8 0.6-0.7 0.8-0.8 0.8-3.1 0.4-0.9-0.1-0.8 0.4 0.1 1-0.1 0.9-0.3 1-0.4 1.1-0.6 1.1-0.8-1.7-0.3-2.1-1.4-1.9-1.6-1.6-2-3.9-1.8-1.3-1.9-0.8-1.5-1.5-0.7-2.2-1-1.9-1.7-1.2-0.5-0.4-0.5-1.2 0-0.8-0.5-0.8-1.1-1.6-0.8 0.5-0.5 1.1-0.9 0.2-0.5-0.5-0.5-0.5-0.6 0.2-0.5 0.3-0.8-0.7-0.4-1.1-0.8-0.8-1.1-0.2-1.4 0-1.4-0.1-0.5-0.9 0.3-7.6 0-0.9 0-0.1 0.4-1.6 0.7-1.8 0.1-1-0.2 0-0.4 1.6-0.5 1.2-0.1 0.2-0.1 0.8-0.4 0.8-0.6 0.7-0.7 0.3 0-0.2 0.6-0.7 1.8-5.6 0.3-0.5 0.5-0.5 3.2-2 0.6-0.5 1.9-0.7 1-0.8 0.6-0.3 0.3-0.1 0.9-0.1 1.5-0.6 1.8-1.3 0.5-0.2 0.5-0.1 2.9-1 3.1-0.6 2.3 0 4-0.7 5.4-0.5 2.4-0.7 1.1-0.2 0.7 0.2 0.3 0 0.3 0 0.6-0.3 0.2-0.1 2.5-0.4 1.8-0.6 1.3-0.1 0.6-0.2 1-0.4 3.5-0.8 1-0.7 1.8-1.6 0.5-0.3 1.8-0.2 0.6-0.2 1-0.5 0.6-0.1 2.2 0 0.5 0.1 1 0.4 0.5 0.1 0.5 0 1-0.3 1.5-0.2 0.6-0.2 0.3-0.2 0.5-0.2 1.8 0.1-0.6-0.3-0.6-0.1-0.7 0-1 0.5-1.2 0.3-0.2 0 0.1-0.2 0.6-0.4 0.6-0.2 0.8-0.1 0.7-0.3 0.2-0.1 0.4 0.1 1.3 0.3 2.5 0 0.6 0.1 1.8 0.8 1.2 0.3 2.6 0.4 1.7 0.5 0.1 0.1-0.3 0.2-0.3 0.1-0.3 0-0.4 0-0.2-0.2-0.5-0.2-2-0.4-0.6-0.2 0.7 0.6 0.9 0.5 0.9 0.3 0.9 0.1 2 0 0.9 0.2 0.5 0 0.5-0.2-1.2-0.1-0.6-0.1-0.5-0.3 0.2-0.2 1.9 0.3 1.6 0.6 0.7 0z` },
-    { id: "MXVER", d: `M612.5 362.7l1-0.1 1-0.3 0.9-0.1 0.9 0 0.2 0 0.1 0 0.2 0 0.2 0.1 0.2 0.2 0.1-0.1 0.1-0.1 0.2-0.1 0.4 0.3 0.3 0.3 0.3 0.1 0.4-0.4 0.3-0.1 0.2 0.5 0.2 0.3 0.5-0.2 0.3 0.2 0.4 0.1 0.4 0 0.3-0.2 0.1-0.6 0-0.7 0.2-0.6 0.4 0 0.4 0.2 0.1 0 0.2 0 0.3-0.1 0.3-0.1 0.2-0.2 0.3-0.1 0.4-0.1 0.6 0.2 0.2 0.6 0.2 0.8 0.6 0.5 0.4 0.4 0.5 0.4 0.5 0.4 0.5 0.1 0.6 0 0.7 0.2 0.8 0.3 0.7 0 0.4 0.1 0.6 0.3 0.5 0.4 0.5 0.3 0.4 0.3-0.2 0.4-0.3 0.4 0 0.5 0.3 0.3 0.3 0.2 0.2 0.3 0.3 0.3 0.3 0.3 0.3 0 0.3-0.3 0.2-0.3 0.3-0.2 0.2-0.1 0.8-0.5 0.2-0.2 0.3 0.6 0 3.8 0.3 1.1 4.4 8 2.9 3.5 0.5 0.3 1.6 1.5 0.3 0.1 0.3 0.5 2.1 1.3 0.7 1.3-0.1 1.3-0.4 1.3-0.2 1.3-0.2 0.5-0.8 1.4-0.3 0.5-0.3 0.5-0.2 0.7-0.2 1.4-0.2 0-0.4-2.1-0.7-1.6-0.2-0.9-0.3-0.3 0-0.2 0.5-0.5 0.5-0.4 0.5-0.3 0.6-0.1 0.3 0.3 0.3-0.6 0.1-0.4 0.1-0.5 0.1-0.5-0.3-0.6-0.6-0.5-1.1-0.7-1.4-1.3-0.4-0.7-1.6-1.7-1.3-1.9-0.7-0.6-0.1-0.3 0-0.4-0.5-2.1-0.3-0.7-0.8-0.5-2.4-4.3-0.3-1 0.1 0.7 0.5 1.1 0.2 0.4 0.2 0.6 0.7 1.7 0.2 1.2 0.1 2.6 0.6 2.1 0.5 2.6 0.4 1.2 2.3 4.2 0.4 0.5 0.5 0.2 0.4 0 0.5-0.1 0.4-0.4 0.3 0.4 0 0.6-0.3 1.2 0.1 0.7 2 4 0 0.3 0.4 0.2 0.3 0.4 0.2 1.1 1.7 4.6 2 3.9 2 3.6 0.3 1.1 0.3 0.5-0.2 0.1-0.1 0.1-0.3 0.4 1.4 2.9 3.3 4 1 0.9 1.1 0.6 0.6 0.5 0.4 1.2 0.4 0.5 0.8 0.8 2 2.4 1.8 1.5 0.5 0.6 0.4 0.9 0.3 0.3 0.3 0.2 0.1 0.2 0.3 0.1 0.3 0.2 1 1.8 1.9 2.3 1.9 2.9 1.5 1.9 0.5 0.9 1 2.9 0.3 2.7 1 3.6 0.3 0.5 0.9 1.2 0.2 0.5-0.3 0.8 0 0.4 0.4 1 0.2 1.2 0.3 0.6 0.3 0.6 0.7 0.4 2.4 2 0.4 0.3 0.7-0.4 0.3 0.5 0.1 0.7 0.2 0.5 0.2 0.5 0.4 1.5 0.4 0.6 0.4 0.5 0.6 0.4 0.7 0.2 0.7 0 0.4 0 0.2 0.4 0.4 2.1 0.5 1.2 0.5 0.9 0.6 0.8 1 1 0.7 0.5 0.5 0.2 0.5 0 0.6 0.2 0.6 0.3 0.4 0.3 0 0.2 0 0.8-0.7-0.4-1.4-1-1.6-0.5-1-1-0.6-0.2-0.6 0.4 0.6 0.5 1 0.5 0.6 0.2 0.2 0.5 0.7 0.6 1.2 0.8 0 0.3-0.5-0.1-0.7-0.3-0.5-0.1-0.3 0.2 0.1 0.5 0.4 0.4 0.2 0.2 0.5 0 0.3-0.1 0.7-0.3 0.1-0.1 0-0.2 0.1-0.1 0.3 0 0.3 0 3 0.9 0.6 0.1 0.6 0.3 0.6 0.6 0.6 0.3 0.5-0.4-1.2-0.7-1.9-0.7-1.5-0.8-0.1-1.3 1.9 1.5 2.3 0.9 2.6 0.4 3.7 0.1 2.6-0.2 1.9 0.1 0.5 0.1 0.5 0.2 1 0.9 2.5 1.7 0.4 0.4 0.1 0.6 0.3 0.4 0.6 0.3 3.8 0.6 0.5 0.2 1.3 0.2 0.6 0.3 0.5 0.9 0.9 2.3 0.6 1 1.9 1.8 0.7 0.9 1.3 2.9 0.2 0 0.9 0.7 0.4 0.1 0.8 0.1 1 0.4 0.8-0.1 0.8-0.1 0.7-0.1 0.9-0.4 4.3-0.6 2-0.6 0.1 0.3 0 0.3 0.1 0.4 0.1 0.2 0.3 0.2 0.3 0 0.2 0.1 0.1 0.4 0 0.4 0 0.4 0 0.4 0.2 0.3 0.3 0.2-0.1 0.2-0.2 0.1-0.1 0.2 0.1 0.2 0.1 0.1 0.2 0.2 0.1 0.3 0.1 0.3 0 0.3 0.1 0.3 0.2 0.3 0.2 0.4-0.2 0.4-0.3 0.4-0.1 0.5-0.1 0.6-0.1 0.7 0.1 0.7 0.4 0.4 0.2 0.1 0.3 0 0.2 0 0.2 0 0.1 0.2 0 0.1 0.1 0.2 0 0.1 0.4 0.2 0.4 0 0.4 0.1 0.4 0.1 0.5 0.7 0.1 0.8 0.3 0.8 1.1 0.3 0.6 0 0.5 0.1 0.2 0.2 0.1 0.6 0.1 0.2 0.3 0.1 0.3 0 0.3 0 0.8 0.2 0.8 0.4 0.7 0.5 0.5 0.7 0.3 0.5 0.6 0.7 0.6 0.7 0.4 0.3 0.8 0.4 0.3 0.5-0.2 0.6-0.1 0.7-0.1 0.3-0.1 0.3 0 0.3 0 0.3-0.1 0.3-0.1 0.4-0.1 0.3-0.1 0.2 0.2 0.6 0.4 0.4 0.5 0.2 0.5 0.2-0.1 0.3-0.2 0.3-0.1 0.3-0.1 0.3-0.3 0.6-0.6 0.5-0.6 0.4-0.5 0.4-1.1 0.7-1 0.7-1.1 0.7-1.1 0.7-0.3 0.3-0.3 0.2-0.4 0.2-0.4 0.2-4.4-0.3-4.5-0.3-4.5-0.2-4.5-0.3-0.8-0.1-0.9 0-0.9-0.1-0.8-0.1-1-0.1-1 0-0.9-0.1-1-0.1-1.5 0-2-0.1-1.8-0.2-1-0.6-0.1-0.5-0.2-0.5-0.1-0.5-0.2-0.4 0.1-0.2 0.1 0 0.1-0.1 0.1-0.1 0-0.2-0.1-0.3 0-0.2-0.1-0.2-0.4-0.5-0.7-0.5-0.8-0.3-0.7-0.2-0.3-0.5-0.4-0.4-0.4-0.4-0.5-0.4-0.9-1-0.9-1-0.8-1-0.9-1 0-0.4 0.1-0.3 0.1-0.4 0.1-0.3 0.3-0.2 0.3-0.1 0.3-0.1 0.2-0.2 0-0.2 0.1-0.3 0-0.4 0.1-0.2 0-0.4 0.1-0.4-0.1-0.4-0.3-0.2-0.1 0-0.3 0-0.3 0-0.2 0-0.2 0.2 0.2 0.3 0.1 0.2-0.2 0.1-0.3-0.1-0.3-0.1-0.3-0.1-0.3 0.1-0.3 0.7-0.3 0.5-0.6 0.2-0.8 0.1-0.1 0.2-0.1 0.1-0.1 0.1 0 0.2-0.6 0-0.7 0-0.6 0.2-0.6 0.3-0.2 0.3-0.2 0.4-0.3 0.3-0.4 0.1-0.3 0.1-0.5 0.3-0.5 0.3-0.4 0.2-0.1 0-0.1 0.2 0 0.1 0 0.2-0.1 0.2-0.2 0.1-0.3 0-0.3 0-0.3 0.4-0.4 0.1-0.3-0.1-0.5-0.2-0.6 0-0.5 0.2-0.5 0.3-0.7 0.1-0.1 0.1-0.1 0-0.1-0.1-0.1 0-0.5-0.2-0.5-0.1-0.4-0.2-0.4-0.5-0.6-1.2-0.6-1.2-0.6-1.2-0.6-1.2-0.5-0.9-0.3-0.9 0-0.8 0.3-0.9 0.1-0.2 0-0.1 0.1-0.1 0.1-0.2 1-1.1 0.9-1.1 0.8-1.2 0.5-1.5-0.5-0.9-0.3-1-0.4-1-0.6-0.8-0.2-0.2-0.2-0.1-0.2-0.1-0.2-0.1-0.2 0-0.3-0.1-0.2-0.1-0.3 0-0.3-0.1-0.4-0.1-0.3-0.2-0.3-0.2-0.3-0.1-0.2 0-0.3 0-0.3 0.1-0.1 0-0.1 0-0.1 0-0.3 0-0.5 0-0.4 0-0.3-0.2-0.6-0.1-0.4 0-0.2 0.2-0.4 0.5-0.1 0.2-0.4 0.1-0.4-0.1-0.4-0.1-0.3-0.1-0.3-0.4 0-0.2 0.1-0.3-0.1-0.2-0.3-0.1-0.3 0.1-0.4 0-0.1-0.1-0.2-0.1-0.1-0.1-0.3-0.2-0.2-0.8-0.2-0.9-0.2-0.8-0.3-0.5-0.3-0.4-0.4-0.4-0.4-0.3-0.2-0.1-0.3-0.1-0.2-0.2-0.2-0.2-0.8-0.9-0.5-1.2-0.5-1.4-0.2-1.2-0.3-0.8-0.5-0.5-0.6-0.3-0.9-0.2-1.3-0.2-1.1-0.4-0.9-0.6-1.1-0.9-0.2-0.2-0.2-0.2-0.3-0.2-0.2-0.2 0.2 0.9 0.3 1 0.3 1.1 0.1 1-0.3 0.9-0.6 0.9-0.7 0.8-0.7 0.7-0.1 0.1-0.1 0.1-0.1 0.2-0.1 0.1-0.3-0.5-0.5-0.5-0.5-0.5-0.4-0.6-0.1-0.7 0-0.9-0.3-0.6-0.7 0.1-0.1 0-0.1 0-0.8 0.2-0.7 0.1-0.7 0.2-0.7 0.2-0.4 0.1-0.4 0.1-0.4 0-0.4 0.2-0.3 0.2-0.4 0.4-0.4 0.3-0.4 0.1-0.4-0.2-0.5 0.1-0.4 0-0.4-0.1-0.3-0.4 0.1-0.6 0.3-0.5 0.2-0.5-0.2-0.5-0.3-0.3-0.4-0.5-0.1-0.6 0-0.2 0-0.3-0.1-0.2-0.1-0.2-0.1-0.1 0-0.1-0.3-0.1-0.3-0.1-0.3 0-0.3-0.1-0.3 0-0.3-0.2-0.3-0.2-0.4 0-0.4 0.2-0.5 0.2-0.4 0.1-0.6-0.2-0.2-0.1-0.2-0.3-0.2-0.2-0.2-0.3-0.3-0.8-0.3-1-0.1-0.9 0.3-0.8 0-0.1 0.1 0 0.2-0.2 0.2-0.1 0.2-0.2 0.2-0.2 0.2-0.3 0.1-0.4 0.2-0.3 0.3-0.2 0.6-0.2 0.5-0.1 0.2-0.2 0-0.7-0.1-0.3-0.1-0.4-0.2-0.3-0.1-0.4 0-0.1 0-0.1 0-0.1 0-0.2-0.1 0 0-0.1 0-0.1 0-0.1 0-0.1 0-0.1 0-0.2 0-0.1 0-0.4-0.1-0.3-0.1-0.4-0.1-0.3-0.2-0.7-0.2-1 0-0.9 0.2-0.8 0.3-0.1 0.3 0 0.4-0.1 0.3 0 0.4-0.2 0.4-0.2 0.3-0.2 0.4-0.2 0.5 0.1 0.6 0.3 0.6 0.1 0.3-0.3 0.1-0.3 0.1-0.2 0.2-0.1 0.3-0.1 0.1 0.1 0.1 0 0.1 0 0.1 0 0.2 0 0.2-0.1 0.2-0.2 0.2-0.2 0.1-0.1 0.1-0.2 0.1-0.1 0.2-0.2 0.1-0.2 0.1-0.1 0.2-0.2 0.2-0.1 0.1-0.2 0.2-0.1 0-0.2 0-0.2-0.3-0.2-0.4-0.3-0.4-0.1-0.4-0.2-0.4-0.1-0.3-0.1-0.4 0.1-0.4 0.2-0.1 0 0 0.1-0.6 0.1-0.8-0.2-0.8-0.4-0.7-0.1-0.1-0.1-0.2 0-0.1 0-0.1 0-0.5-0.3-0.4-0.6-0.4-0.7-0.5-0.5-0.3-0.1-0.3 0.2-0.4 0.1-0.3 0.1-0.2-0.2-0.2-0.2-0.1-0.3-0.2-0.2-0.4-0.1-0.5 0-0.4 0-0.4-0.2-0.2-0.5 0.2-0.2 0.5-0.1 0.4 0.1 0.6-0.1 0.5-0.3 0.3-0.5-0.3-0.6-0.2-0.1-0.1-0.2-0.2-0.1-0.2-0.1-0.1-0.2 0-0.3 0.1-0.3 0-0.2-0.4-0.3-0.4-0.2-0.3-0.3 0.1-0.5 0-0.1 0-0.1 0-0.1 0-0.6 0.2-0.8 0.3-0.5 0.5 0 0.9-0.9 0.5-1.7 0.1-1.8-0.1-1.3-0.1-0.2 0-0.3 0-0.2 0-0.3 0-0.2 0-0.2 0.1-0.2 0.1-0.2 0.1-0.1 0.1-0.1 0-0.1 0.1-0.1 0.3-0.6 0.4-0.6 0.4-0.5 0.5-0.4 0.2-0.3 0.2-0.3 0.2-0.2 0.3-0.3 0.3-0.4 0.4-0.4 0.4-0.4 0.4-0.4 0.5-1.3-0.5-0.7-1.1-0.4-1.1-0.4-0.3-0.1-0.2-0.1-0.3-0.1-0.2-0.2-0.6-0.2-0.5-0.3-0.5-0.4-0.4-0.3-0.8-0.6-0.6-0.3-0.6-0.1-0.8 0.3-0.1 0-0.1 0-0.1 0-0.2 0-0.6 0.4-0.3 0.5-0.3 0.7-0.4 0.5-0.2 0.4-0.3 0.3-0.3 0.4-0.3 0.3-0.2 0.1-0.2 0.2-0.2 0.1-0.2 0.1-0.1 0-0.1 0-0.1 0-0.2-0.1-0.1-0.2-0.1-0.1 0-0.3-0.1-0.8-0.2-0.6-0.5-0.1-0.8 0.3-0.1 0-0.1 0.1-0.1 0-0.5 0-0.3-0.3-0.2-0.5-0.2-0.5 0-0.1 0-0.1-0.1 0 0-0.1-0.1-0.1-0.1-0.1-0.1-0.2-0.2 0-0.4-0.3-0.6-0.2-0.4-0.4-0.2-0.5 0.2-0.4 0.2-0.3 0.1-0.4 0.1-0.3-0.1-0.2-0.1-0.2-0.1-0.2 0-0.3 0.1-0.5 0-0.5-0.2-0.5-0.2-0.5 0.3-0.3 0.4 0 0.4 0.1 0.4-0.1 0.4-0.4 0.3-0.3 0.3-0.1 0.5 0.4 0.3 0.5 0.3 0.4 0.4 0.2 0.5-0.1 0.4-0.4 0.4-0.6 0.3-0.6 0.3-0.5 0.2-0.1 0.1-0.1 0.1-0.1 0-0.2 0-0.7-0.3-0.9-0.5-0.8-0.6-0.3-0.4-0.1-0.4-0.1-0.4-0.1-0.3-0.1-0.3 0-0.4 0.1-0.3 0-0.3 0-0.5-0.2 0.1-0.3 0.3-0.4 0.3-0.4-0.3-0.5-0.4-0.5-0.3-0.5-0.2-0.6 0-0.7 0-0.6 0-0.7-0.4-0.5-0.7-0.6-0.5-0.1-0.5 0.1-0.8 0-0.3-0.2-0.3-0.1-0.4 0-0.3 0.1-0.3 0.5 0 0.5 0.1 0.5 0 0.4-0.3 0.3-0.3 0.1-0.4 0.2-0.2 0.3 0 0.4 0 0.5-0.2 0.3-0.3 0.2-0.4 0.1 0.1 0.3 0.2 0.3 0.2 0.2 0.1 0.3 0 0.3 0.1 0.4 0 0.3 0 0.7-0.1 0.6-0.1 0.6-0.2 0.6-0.2 0.5-0.3 0.4-0.3 0.3-0.4 0.2-0.3-0.3-0.3-0.4-0.1-0.5 0-0.5 0.1-0.4 0.3-0.4 0.2-0.4 0-0.5-0.2-0.2-0.1-0.1-0.1-0.2-0.2-0.2 0-0.3 0-0.3 0.1-0.3 0-0.4-0.3-0.3-0.5 0-0.4-0.1-0.2-0.4-0.1-0.1 0-0.1-0.1 0-0.1-0.1-0.9 0.3-1 1-1 1.3-0.6 1-0.5 0.5-0.5 0.5-0.5 0.6-0.4 0.6-0.3 0.4-0.4 0.4-0.4 0.4-0.4 0.5-0.5 0.6-0.3-0.1-0.4-0.5-0.5-0.4-0.3 0.3-0.2 0.5-0.2 0.5-0.1 0.5-0.8 1.1-1 0.5-0.9-0.2-0.6-1.3-0.4-0.7-0.5-0.7-0.4-0.7-0.1-0.7 0.2-0.3 0.3-0.2 0.3-0.3 0.2-0.3 0.2-0.5 0.1-0.6 0.1-0.6 0-0.5 0.4-0.7 0.7-0.5 0.7-0.5 0.6-0.6 0.3-0.4 0.3-0.6 0.1-0.5-0.1-0.5-0.3-0.2-0.3 0.2-0.4 0.3-0.4 0.1-0.5-0.1-0.3-0.3 0-0.4 0.3-0.5 0.4-0.1 0.3 0 0.4-0.1 0.4-0.1 0.3-0.2 0.2-0.2 0-0.3 0-0.3 0-0.4-0.2-0.3-0.2-0.2-0.1-0.4 0.2-0.4 0.4-0.2 0.5 0 0.4 0 0.4 0.1 0.4 0.1 0.3 0.1 0.4 0.2 0.6 0.4 0.6 0.4 0.7 0.2 0.7 0 0.2-0.1 0.1-0.1 0-0.1-0.1-0.2-0.2-0.8-0.1-1.1 0.2-1 0.4-0.7 0.2-0.2 0.2-0.3 0.2-0.2 0.2-0.3 0.2-0.3 0.2-0.2 0.1-0.2 0.2-0.2 0.1 0 0.1 0.1 0.1 0 0.2-0.1 0.1-0.3 0.2-0.4 0.2-0.5 0-0.3-0.1-0.3-0.3-0.1-0.2-0.1-0.2-0.2-0.2-0.3-0.2-0.3-0.2-0.1-0.3-0.1-0.6-0.9-0.5 0.3-0.6 0.5-0.8 0-0.3-0.6 0.3-0.8 0.3-0.8 0-0.8-0.2-0.5-0.3-0.3-0.4 0.1 0.1 0.5 0 0.6-0.5 0.6-0.7 0.6-0.6 0.4-0.4 0-0.4-0.1-0.4-0.3-0.3-0.2-0.5-0.6-0.4-0.7-0.5-0.5-0.6-0.2-0.2-0.1-0.1-0.2-0.1-0.2 0-0.2 0.1-0.9 0.4-0.6 0.5-0.6 0.5-0.7-0.5-0.3-0.5-0.4-0.5-0.3-0.4-0.3-0.1 0-0.1 0 0-0.1 0-0.5 0-0.6-0.1-0.6 0-0.6-0.1-0.9-0.2-0.7-0.6-0.4-0.8-0.4-0.7-0.3-0.5-0.3-0.4-0.5-0.3-0.6 0.2-0.3 0.3-0.3 0-0.5-0.1-0.5 0.2-0.8 0.4-0.4 1.1 0.2 0.4-0.4-0.2-0.3-0.1-0.2 0.2-0.2 0.3-0.2 0.2 0 0.3 0.2 0.2 0 0.1 0 0.1-0.2 0-0.1 0.1-0.1 0.7-0.4 0.4-0.3 0.3-0.4 0.1-0.2 0.2-0.5-0.1-0.4-0.5-0.1-0.2-0.2-0.1-0.3 0-0.4-0.1-0.3-1.2 0.1-0.4-0.3-0.4-0.7-0.2-0.7 0.7-0.2-0.2-0.6 0.3-0.4 0.4-0.3-0.1-0.2-0.5 0.1-0.7 0.2-0.5-0.1-0.1-0.8 0.1 0 0.3 0.1 1.1 0.1 0.2 0 0.3-0.2 0.4 0 0.3 0 0.3 0.2 0.3-0.1 0.3-0.3 0.2 0.2 0.2 0 0.2-0.5 0.1-0.5 0.2-0.5 0.2-0.4 0.7-1.1 0.6-1.2 0.6-1.2 0.4-1.2 0-0.9-0.3-0.7-0.5-0.7-0.6-0.5-0.9-0.5-0.8-0.5-0.8-0.5-0.9-0.6-0.5-0.4-0.6-0.4-0.5-0.5-0.6-0.3-0.2-0.2-0.2-0.1-0.1-0.1-0.2-0.1z m27.7 19.5l1 0.7 0.4 0.4-0.2 0.4-0.9-0.2-0.7-1-0.4-1.4-0.2-1.2 0.4 0.4 0.2 0.6 0.1 0.7 0.3 0.6z` },
-    { id: "MXJAL", d: `M472.9 468.6l-0.1-0.8-0.3-0.8-0.3-0.7-0.5-0.7-0.1-0.8 0.2-1.1 0.4-1.1 0.2-0.9-0.1-0.5-0.1-0.6-0.1-0.6 0-0.5 0.1-0.4 0.2-0.3 0.1-0.3 0-0.3-0.1-0.2-0.3-0.2-0.4-0.1-0.2-0.2-0.3-0.2-0.2-0.3-0.1-0.3-0.1-0.4-0.4-0.5-0.5-0.3-0.5-0.3-0.3-0.5-0.2-0.6-0.2-0.7-0.3-0.6-0.4-0.4-0.7 0.4-0.6 0.7-0.6 0.7-0.8 0.4-0.4 0.1-0.5 0-0.4 0-0.4 0.1-0.4 0.6-0.5 0.1-0.5-0.2-0.6-0.2-0.5-0.2-0.6-0.3-0.6-0.2-0.4-0.3-0.8-0.5-0.7-0.4-0.8-0.4-0.7-0.5 0.1-0.1 0-0.1-0.1-0.1 0-0.2 0-0.2-0.1-0.1 0-0.1-0.1-0.1-0.3 0.3-0.4 0.4-0.3 0.4-0.3 0.3-0.6 0.5-0.4 0.5-0.2 0.5-0.1 0.7-0.1 0.6-0.4 0.3-0.4 0.2-0.3 0.4-0.2 0.6-0.2 0.5-0.3 0.4-0.5 0-0.7 0-0.5 0.1-0.5 0.4-0.5 0.4-0.2 0.1-0.3 0.1-0.3 0-0.3 0.1-0.3 0-0.4 0.2-0.4 0.1-0.3 0-0.3-0.3-0.2-0.2-0.2 0-0.4 0.2-0.2 0.1-0.3 0.1-0.2 0.2-0.1 0.2-0.1 0.2 0 0.2 0 0.2 0 0.2-0.3 0.1-0.2-0.1-0.3-0.3-0.2-0.2-0.8-0.1-0.3 0.2-0.1 0.4-0.3 0.7-0.4 0.4-0.4 0.4-0.4 0.4 0 0.7-1.2-0.3-1.1-0.5-0.3-0.3-0.1-0.3-0.1-0.4-0.3-0.1-0.3 0.1-0.3-0.1-0.2-0.2-0.1-0.2 0-0.1-0.3-0.1-0.2 0-0.8 0.2-0.6 0-0.2-0.1 0-0.9 0.2-0.8-0.1-0.3-0.4-0.2-0.3 0.1-0.4 0.2-0.3 0.1-0.2 0-0.2-0.1-0.2 0.1-0.2 0.2-2.3-1.2-1-0.7-0.7-0.8-0.3-1.4-0.3-0.6-0.9-0.4 0-0.3 0.1-0.5 0-0.3-0.2-0.3-0.2-0.2-0.1-0.2-0.1-1.6-0.8-0.8-0.4 0-0.4 0.1-0.2-0.1-0.6-0.5-0.5-0.4-1.8-1.5-1.3-1.6-1.6-2.7-0.8-0.9-0.2-0.5-0.3-0.4-0.9-0.8-0.3-0.5-0.8-1.3-1.7-2.5-0.1-0.6-0.1-0.3-0.3-0.6 0-0.3 0-1.4-0.3-2-0.1-0.5-0.2-0.3-0.5-0.3-0.3-0.2-0.4-0.9-0.6-0.8-0.8-0.4-0.6-1.2-0.4-1-0.2-0.7 0.4-0.5 3.1-2 1.3-0.1 2 0 0.4-0.1 0.5-0.3 2-0.2 0.9-0.1 0.8-0.5 0.4-0.6 0.6-0.2 0.3-0.4 0.3-0.4 0.2-0.6 0.1-1-0.6-0.6-0.8-0.5-0.2-0.4 0.4-0.2 0.3-0.2 0.5-1 0.7-1 0.8-0.9 0.6-0.9 0.6-1.1 0.8-1 0.9-0.9 1.1-0.5 0.4-0.1 0.1 0.2 0.1 0.3 0.1 0.2 0.1 0 0.2-0.1 0.1-0.1 0.2-0.1 0.2 0 0.3 0 0.3 0 0.3 0.1 1.4-0.3 1.2-0.8 1.2-1 1.2-0.8 0.3-0.1 0.3 0 0.3 0 0.3 0 0.5 0.2 0.3 0.1 0.3 0.2 0.4 0.4 0.2 0.2 0.3 0.2 0.2 0.2 0.3 0.2 0.4 0.5 0.5 0.5 0.5 0.3 0.7 0.1 0.8 0 0.7 0 0.6 0.4 0.6 0.8 0.3 0.6 0.4 0.5 0.5 0.4 0.5 0.4 0.7 0.4 0.6 0.3 0.6 0.5 0.3 0.6 0.4 0.5 0.6 0.4 0.7 0.3 0.6 0.4 0.1-0.2 0-0.2 0.1-0.2 0-0.3-0.1-0.5 0-0.4 0-0.5 0-0.5 0.1-1.1 0.3-0.8 0.3-0.9 0.4-0.8 0.2-0.3 0.1-0.3 0.2-0.3 0.1-0.3 0.3-0.5 0.2-0.7 0-0.6 0.1-0.7 0-0.1 0-0.1 0-0.2 0-0.1-0.1-0.6 0-0.6-0.1-0.6-0.1-0.5-0.2-0.7-0.1-0.6 0.3-0.4 0.3-0.5 0.2 0 1-0.2 2.3 0 0.6-0.1 0.6-0.4 1.6-1.5 0.4-0.5 0.2-0.6 0-1.3 0.2-0.5 0.3-0.3-0.2-0.1-1.7-1-1.9-1.1-1.9-1.1-1.9-1.2 0.6-0.8 0.5-0.7 0.4-0.9 0.2-1 0.1-0.5 0.1-0.5 0.1-0.5 0.2-0.5 0.2-0.6 0.4-0.9 0.3-0.8 0.1-0.5-0.8-1-0.8-1.1-0.9-1-0.9-1-1.1-1-1.1-1.1-1.1-1-1.1-1-0.6-0.6-0.2-0.5 0.1-0.6 0.4-0.8 0.4-1.1 0.3-1 0.4-1 0.4-1 1-0.6 1.1-0.5 1.1-0.4 1.1-0.5 1.4-0.5 1.4-0.1 1.5-0.1 1.4-0.3 0.4-0.1 0.2 0 0.2-0.2 0.1-0.3 0.1-0.6 0.2-0.7 0.1-0.6 0.1-0.7 0.2-0.8-0.1-0.6-0.3-0.4-0.7-0.5-0.6-0.6-0.2-0.6 0-0.7 0-0.9 0.1-1.2 0-1.1 0.1-1.1 0-1.1 1.5 0.3 1.5 0.3 1.4 0.3 1.5 0.3-0.1 1-0.1 1.2-0.3 1.2-0.4 0.8-0.5 0.3-0.4 0.3-0.3 0.3 0 0.6 0.1 0.4 0 0.5 0 0.5-0.2 0.4-0.2 0.3-0.4 0.2-0.3 0.3 0 0.4 0.2 0.5 0.2 0.4 0.2 0.5 0 0.5-0.2 0.6-0.3 0.4-0.2 0.5-0.1 0.6 0 0.6 0.1 0.6 0.1 0.6 0.1 0.5 0.1 0.6 0.2 0.7 0.3 0.6 0.3 0.3 0-0.1 0-0.2 0.1-0.1 0-0.2 0.4-1.6 0.4-1.7 0.4-1.7 0.4-1.7 0.2-1.4 0.3-1.6 0.4-1.5 0.6-1.2 0.3-0.3 0.2 0.1 0.1 0.2 0.2 0.2 0.4 0 0.6 0 0.6 0 0.3 0.1 0.2 0.3-0.1 0.4-0.1 0.4 0 0.3 0.2 0.1 0.3 0.1 0.3 0 0.2 0.1 0.1 0.3 0 0.3 0 0.3 0 0.3-0.7 0.5-0.5 1.4-0.5 1.6-0.2 1-0.2 0.5-0.1 0.4 0 0.3 0.2 0.5 0.2 0.5 0.1 0.6 0.1 0.6 0 0.6-0.3 1.2-0.1 0.6 0 0.8 0.5 0.6 0.5 0.2 0.7-0.2 0.4-0.2 0.3-0.2 0.4-0.5 0.3-0.1 1 0.2 0.4-0.1 0.3 0.2 0.2 0.2 0.1 0.3 0.3-0.3 0.2-0.9 0.3-0.7 0.3-0.9 0.4-0.8 0.6-0.3 0.6-0.3 0.1-0.6 0-0.8 0.3-0.7 0.2-0.2 0.3-0.2 0.2-0.1 0.2-0.2 0.1-0.3-0.1-0.2-0.3-0.2-0.3 0-0.3-0.1-0.1-0.3-0.1-0.3-0.2-0.2-0.4-0.1-0.2-0.2 0-0.2 0.1-0.4 0.3-0.6 0.3-0.5 0.2-0.6 0.4-0.5 0-0.1 0.1-0.1 0.1-0.2 0-0.1 0.9 0.8 0.9 0.8 1 0.8 0.9 0.7 0.4 0.3 0.4 0.3 0.5 0.3 0.4 0.3 0.1 0.3 0 0.5-0.1 0.6-0.1 0.4 0.5-0.2 0.6-0.2 0.6-0.1 0.4 0 0.4 0.2 0.1 0.3 0.1 0.3 0.1 0.4 0.4 0 0.3-0.2 0.4 0 0.3 0.1 0.2 0.5-0.1 0.5-0.2 0.6-0.2 0.4-0.2 0.4-0.2 0.5-0.3 0.5-0.4 0.3-0.3 0.1-0.4 0.1-0.3 0.1-0.1 0.3 0 0.7 0.3 0.2 0.5 0 0.5 0.3 0.1 0.4 0 0.4-0.1 0.4-0.1 0.3-0.8 0.3-0.4 0.3-0.2 0.5-0.3 0.8-0.2 0.5-0.4 0.4-0.5 0.2-0.5 0.1-0.9-0.1-0.8-0.3-0.8 0.1-0.5 0.8-0.3 0.3-0.3 0.2-0.3 0.1-0.4 0.1-0.3 0-0.4 0-0.3 0.1-0.4 0.2-0.5 0.5-0.6 0.5-0.5 0.5-0.6 0.5-0.6 0.6-0.8 0.8-0.4 0.9 0.2 0.8 0.4 0.8 0.1 1.2 0 1.3 0 0.9-0.1 0.8-0.6 0.4-0.8 0.4-0.6 0.5-0.3 0.6-0.3 0.7-0.4 0.6-0.5 0.3-0.7 0-0.7-0.4-0.6-0.4-0.6-0.4 0.3 1.1 0.2 1.1 0.2 1.1 0.1 1.1 0 0.5-0.1 0.6-0.2 0.6-0.2 0.4-0.5 0.3-0.2 0.3 0 0.3 0 0.7-0.1 0.7 0.1 0.4 0.3 0 0.7-0.3 0.5-0.3 0.6-0.4 0.6-0.1 0.5 0.3 0.1 0.5 0.1 0.5 0.1 0.4 0.4 0.3 0.6 0.2 0.6 0 0.6-0.1 0.6-0.1 0.6 0.1 0.4 0.3 0.4 0.4 0.4 0.3 0.5 0.1 0.4 0 0.5-0.1 0.4 0 0.6 0.2 0.5 0.2 0.5 0.3 0.5 0.3 0.2 0.1 0.2 0.1 0.2 0.1 0.2 0.1 0.9 0.6 1.1 0.6 1.1 0.3 0.9-0.2 0.7 0 0.8 0.6 0.8 0.4 0.6-0.1 0.4-0.9 0-1.4-0.1-1.4-0.1-1 0-0.5 0-0.6 0-0.5-0.1-0.5 0.4-0.7 0.6-0.1 0.7 0.3 0.6 0.2 0.9 0 0.9-0.2 0.8-0.4 0.7-0.6 0.4-0.3 0.5-0.4 0.5-0.1 0.3 0.4-0.1 0.3-0.1 0.5 0 0.3 0.7-0.1 0.3-0.3 0.1-0.5 0.1-0.5 0.3-0.4 0.2-0.2 0.2-0.2 0.1-0.2 0.2-0.2 0.3-0.1 0.4-0.1 0.3-0.1 0.2-0.3 0.1 0 0.1-0.1 0-0.1 0.1-0.1 0.4-1.1 0.6-1.4 0.3-1.4-0.1-1.1-0.5-0.2-0.5 0-0.5 0-0.6-0.1-0.4-0.3-0.4-0.2-0.5-0.2-0.5-0.2-0.3-0.6 0.1-0.8 0.2-0.9 0.1-0.6 0.1-0.4 0.1-0.4 0-0.3 0.1-0.4 0.9-0.3 1-0.4 1-0.2 0.9 0.2 1.1 0.6 1.1 0.8 1.1 0.6 1.3 0.4 0.9 0.1 0.9 0.2 0.9 0.1 0.9 0.2 0.8 0.1 0.8 0.1 0.8-0.1 0.8-0.2 0.7-0.4 0.6-0.5 0.5-0.6 0.7-0.5 0.7-0.3 0.6-0.2 0.6-0.3 0.3-0.6 0.2-0.9 0.1-0.8 0.2-0.7 0.7-0.4 0.8-0.3 0.5-0.5 0.4-0.5 0.6-0.3 0.9-0.3 0.7-0.5 0.5-0.6 0.5-0.9 0.1-0.1 0-0.1 0.1-0.1 0.1-0.1 0.1 0.1 0.1 0 0.1 0.1 0.1 0 0.7 0.5 0.6 0.6 0.6 0.4 0.8 0.2 0.4-0.1 0.4 0 0.4-0.1 0.5 0 0.4 0.2 0.4 0.3 0.4 0.2 0.4 0.3 0.4 0.5 0.4 0.6 0.5 0.4 0.5 0.1 0.6-0.1 0.3 0.2 0.1 0.4 0.1 0.7-0.5 0.5-0.7 0.7-0.5 0.7-0.2 0.7 0.2 0.8 0.5 0.6 0.4 0.7 0.4 0.6-0.1 1-1 0.8-1.2 0.8-0.7 1 0.1 1.1 0.5 1 0.7 0.9 0.6 0.9 0.1 0.6 0.1 0.6-0.1 0.6-0.1 0.6-0.5 0.9-0.6 0.8-0.7 0.6-0.8 0.7-0.3 0.2-0.4 0.2-0.4 0.2-0.4 0-0.5 0-0.5 0-0.6 0-0.4 0.3-0.2 0.3-0.2 0.4-0.2 0.4-0.2 0.3-0.4 0.3-0.4 0.3-0.4 0.2-0.3 0.5-0.1 0.3-0.1 0.3-0.1 0.2-0.2 0.3-1 1.1-0.9 1.3-0.8 1.2-0.8 1.3-0.3 0.5-0.3 0.5-0.3 0.5-0.3 0.5 0 0.2-0.1 0.2-0.1 0.2-0.1 0.1-0.5 0.9-0.4 0.9-0.2 1 0.3 0.9 0.7 0.8 0.8 0.6 0.7 0.6 0.7 0.8 0.1 0 0 0.1 0.1 0.1 0 0.1 0.3 1.3-0.4 1-0.7 0.8-0.9 0.9-0.7 0.9-0.6 1-0.4 1-0.1 0.5-0.6 0.1-1.8 0.9-0.5 0.1-0.5 0.1-0.4 0.2-0.3 0.1-0.5-0.4-0.8-0.3-0.3 0-0.5 0-1.1 0.3-1.4 0.1-0.5 0.2-2.3 0.8-0.3 0.3-0.2 0.5-0.3 0.2-1.8 0.5-1.1 1-0.6 0.3-0.8 0.2-1.5 0-0.7 0.2-0.4 0.4-0.4 0.3-0.3 0.1-0.4 0.1-0.1 0-0.1 0.1-0.2 0-0.1 0-1.1 0.3-1.1 0.3-1.1 0.3-1.1 0.3-0.1 0-0.1 0-0.1 0.1-0.7 0.2-1 0.3-0.9 0.5-0.2 0.7 0 0.7 0.1 1 0.2 0.8 0.5 0.4 0.3 0.1 0.1 0.1 0.1 0.2 0.1 0.1 0.4 0 0.4-0.1 0.4-0.1 0.4-0.1 0.1 0 0.2-0.1 0.2-0.1 0.2 0 0.6-0.1 0.5 0.2 0.4 0.3 0.5 0.3 0.3 0.1 0.4 0 0.4 0 0.3-0.1 0.4 0 0.5 0.1 0.5 0.1 0.5 0 0.1 0 0.1 0.1 0.1 0.2 0.1 0.1 0 0.4-0.1 0.5 0 0.4 0.1 0.3 0.4 0.2 0.4 0.2 0.3 0.2 0.4 0.3-0.2 0.2-0.1 0.2-0.2 0.1-0.2 0.2-0.8 0.3-0.8 0-0.7 0.2-0.2 1 0 0.6 0.1 0.6 0.1 0.6 0.1 0.5 0.2 0.4 0.1 0.4 0.1 0.3 0.3 0.3 0.1 0.1 0.2 0.1 0.1 0.1 0.2 0.1 0.1 0.3 0 0.4 0.1 0.3 0.2 0.3 0.2 0.4 0.1 0.5-0.1 0.5-0.1 0.5 0 0.2-0.1 0.3 0 0.2 0 0.2 0 1.4 1.1 0.2 1.5-0.3 1.2-0.4 0.2 0 0.2 0.1 0.1 0.2 0 0.2 0.1 0.4 0.2 0.6 0.1 0.5 0.2 0.4 0.4 0.1 0.3 0.1 0.2 0.2-0.1 0.4-0.4 0.3-0.4 0.3-0.3 0.4-0.3 0.4 0 0.2 0 0.2 0.1 0.2-0.1 0.2-0.1 0.2-0.2 0.2-0.2 0.3-0.1 0.2-0.3 0.4-0.4 0.6-0.4 0.6-0.4 0.2-0.2 0-0.1-0.2 0-0.1-0.2-0.2-0.5-0.3-0.7-0.2-0.6-0.1-0.6 0.2-0.2 0.2-0.1 0.3-0.1 0.2-0.2 0.1-0.3 0-0.4 0.1-0.4 0.1-0.3 0.1-0.6 0.2-0.6 0.3-0.6 0.3-0.5 0.4-0.4 0.8-0.3 0.8-0.2 0.9-0.4 0.7-0.6 0.4-0.8 0.4-0.8 0.2-0.8 0.2-0.3 0.2-0.4 0.2-0.4 0.2-0.4 0.2-0.1 0.2 0 0.4-0.1 0.3 0 0.3-0.5 0.4-0.5-0.3-0.5-0.6-0.4-0.6-0.4-0.3-0.5 0-0.4 0-0.4-0.5-0.4-0.5-0.3-0.2-0.5 0.2-0.4 0.5-0.2 0.3-0.3 0.5-0.3 0.5-0.3 0.3-0.4 0.1-0.5 0-0.6 0-0.6 0-0.4 0-0.4 0-0.4 0-0.4 0.2z` },
-    { id: "MXMIC", d: `M465.3 477l0.3-0.2 0.4-0.3 0.3-0.3 0.2-0.5 0.1-0.4 0.1-0.3 0.2-0.4 0.2-0.3 0.5-0.2 0.4 0 0.3-0.1 0.3-0.4 0.2-0.4 0-0.4 0-0.4 0.2-0.4 0-0.1 0-0.1 0-0.2 0-0.1-0.1-0.2 0.1-0.2 0.1-0.1 0.1-0.1 0.4 0.2 0.2 0.1 0.3-0.1 0.3-0.2 0.2-0.2 0.4-0.2 0.4-0.2 0.2-0.1 0-0.1-0.1-0.2 0-0.1 0.1-0.1 0.1-0.1 0.2 0 0.2 0 0.1-0.1 0.1-0.3 0.1-0.4 0.2-0.2 0.3 0 0.4-0.2 0.4 0 0.4 0 0.4 0 0.6 0 0.6 0 0.5 0 0.4-0.1 0.3-0.3 0.3-0.5 0.3-0.5 0.2-0.3 0.4-0.5 0.5-0.2 0.3 0.2 0.4 0.5 0.4 0.5 0.4 0 0.5 0 0.4 0.3 0.4 0.6 0.5 0.6 0.5 0.3 0.5-0.4 0-0.3 0.1-0.3 0-0.4 0.1-0.2 0.4-0.2 0.4-0.2 0.4-0.2 0.3-0.2 0.8-0.2 0.8-0.2 0.8-0.4 0.6-0.4 0.4-0.7 0.2-0.9 0.3-0.8 0.4-0.8 0.5-0.4 0.6-0.3 0.6-0.3 0.6-0.2 0.3-0.1 0.4-0.1 0.4-0.1 0.3 0 0.2-0.1 0.1-0.2 0.1-0.3 0.2-0.2 0.6-0.2 0.6 0.1 0.7 0.2 0.5 0.3 0.2 0.2 0 0.1 0.1 0.2 0.2 0 0.4-0.2 0.4-0.6 0.4-0.6 0.3-0.4 0.1-0.2 0.2-0.3 0.2-0.2 0.1-0.2 0.1-0.2-0.1-0.2 0-0.2 0-0.2 0.3-0.4 0.3-0.4 0.4-0.3 0.4-0.3 0.1-0.4-0.2-0.2-0.3-0.1-0.4-0.1-0.2-0.4-0.1-0.5-0.2-0.6-0.1-0.4 0-0.2-0.1-0.2-0.2-0.1-0.2 0-1.2 0.4-1.5 0.3-1.1-0.2 0-1.4 0-0.2 0-0.2 0.1-0.3 0-0.2 0.1-0.5 0.1-0.5-0.1-0.5-0.2-0.4-0.2-0.3-0.1-0.3 0-0.4-0.1-0.3-0.2-0.1-0.1-0.1-0.2-0.1-0.1-0.1-0.3-0.3-0.1-0.3-0.1-0.4-0.2-0.4-0.1-0.5-0.1-0.6-0.1-0.6 0-0.6 0.2-1 0.7-0.2 0.8 0 0.8-0.3 0.2-0.2 0.2-0.1 0.1-0.2 0.2-0.2-0.4-0.3-0.3-0.2-0.4-0.2-0.4-0.2-0.1-0.3 0-0.4 0.1-0.5 0-0.4-0.1-0.1-0.1-0.2-0.1-0.1-0.1 0-0.5 0-0.5-0.1-0.5-0.1-0.4 0-0.3 0.1-0.4 0-0.4 0-0.3-0.1-0.5-0.3-0.4-0.3-0.5-0.2-0.6 0.1-0.2 0-0.2 0.1-0.2 0.1-0.1 0-0.4 0.1-0.4 0.1-0.4 0.1-0.4 0-0.1-0.1-0.1-0.2-0.1-0.1-0.3-0.1-0.5-0.4-0.2-0.8-0.1-1 0-0.7 0.2-0.7 0.9-0.5 1-0.3 0.7-0.2 0.1-0.1 0.1 0 0.1 0 1.1-0.3 1.1-0.3 1.1-0.3 1.1-0.3 0.1 0 0.2 0 0.1-0.1 0.1 0 0.4-0.1 0.3-0.1 0.4-0.3 0.4-0.4 0.7-0.2 1.5 0 0.8-0.2 0.6-0.3 1.1-1 1.8-0.5 0.3-0.2 0.2-0.5 0.3-0.3 2.3-0.8 0.5-0.2 1.4-0.1 1.1-0.3 0.5 0 0.3 0 0.8 0.3 0.5 0.4 0.3-0.1 0.4-0.2 0.5-0.1 0.5-0.1 1.8-0.9 0.6-0.1 3-0.5-0.5 1.2-0.1 0.6 0.3 0.3 0.4-0.2 0.3-0.8 0.5-0.2 0.4 0.3 0.2 0.7 0.3 2.8 0.1 0.1 0.1 0.1 0.1 0.1 0.3 0.8 0.2 0.3 0.3 0.2 0.7 0 0.3-0.1 0.3-0.3 0.3 0 0.3 0 0.4 0.3 0.2 0.1 0.2-0.1 0.3-0.3 0.3 0 0.2 0 0.8 0.2 1 0 0.6 0.1 0.4 0.3 0.3-0.4 0.7-0.9 0.2-0.5 0-0.2 0.3-0.4 0.1-0.3 0-0.3 0-0.3 0-0.3 0.1-0.3 0.2 0 1-0.1 0.2 0 0.6-0.3 0.3-0.1 0.5 0 1.1 0.1 0.5-0.1-0.1 0.4 0.1 0.3 0.2 0.2 0.4 0 0.5 0.1 0.6 0.1 0.6 0.4 0.1 0.5-0.2 0.4-0.6 0.3-0.5 0.3-0.3 0.4 0.1 0.3 0.1 0.1 0.3 0.1 0.1 0.2 0 0.3 0 0.1-0.1 0.2 0 0.2-0.1 0.1-0.1 0.1 0 0.1 0.1 0.2 0.1 0.1 0.1 0.2 0.1 0.2 0 0.2-0.1 0.9-0.2 0.9 0 0.7 0.8 0.5 0.3-0.1 0.3-0.2 0.2-0.1 0.3-0.1 0.2 0.1 0.2 0.1 0.2 0.1 0.2 0.1 0.4 0 0.4-0.1 0.3-0.1 0.4 0.1 0.5 0.3 0.6 0.1 0.6 0.1 0.6-0.2 0.4-0.6 0.2-0.8 0.3-0.6 0.6-0.2 0.3 0.3 0.4 0.2 0.3 0.1 0.4-0.1 0.6-0.2 0.8-0.1 0.7 0.1 0.6 0.2 0.1 0.2 0 0.3 0 0.2-0.1 0.3 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1-0.1 0.6-0.5 0.3-0.7 0.3-0.4 0.4 0.1 0.7 0.7 0.5 0.8 0.4 0.7 0.2 0.5 0.2 0.4 0.1 0.5-0.1 0.5-0.1 0.6-0.2 0.5-0.2 0.4-0.4 0.4-0.6 0.3 0.4 0.3 0.2 0.2 0.2 0.2 0.4 0.3 0.5 0.3 0.3 0.5 0 0.7 0.1 0.1-0.6 0.1-0.3 0.3-0.1 0.6 0 0.5 0 0.5-0.1 0.5 0 0.5 0 0.5 0 0.7-0.1 0.7 0 0.4 0.1 0.1 0.4 0 0.3 0 0.3 0.3 0.2 0.4-0.2 0.2-0.4 0.2-0.6 0.4-0.3 0.6-0.2 0.7-0.1 0.7 0 0.7 0 0.5-0.4 0-0.9-0.3-1.1-0.3-0.7 0-0.3 0.1-0.3 0.2-0.3 0.1-0.2 0-0.1-0.1-0.1-0.1-0.2 0.2-0.2 0.1 0 0.3 0 0.2 0 0.2 0.1 0.2-0.2 0.3-0.4 0.3-0.4 0.1-0.3 0.2-0.5 0.2-0.4 0.3-0.3 0.5-0.5 1.4 0.7 1.1 1.5 0.6 1.7 0 1.7 0 0.2 0 0.2 0 0.2 0 0.2 0 0.8 0.3 0.6 0.5 0.4 0.7 0.3 0 0.3-0.1 0.4-0.1 0.4 0 0.4-0.2 0.5-0.1 0.5-0.2 0.5-0.1 0.5-0.1 0.5-0.2 0.5-0.1 0.5-0.2 0.5 0 0.4 0.1 0.3 0.1 0.4 0 0.3-0.1 0.3-0.1 0.4-0.2 0.3-0.1 0.4-0.1 0.2 0 0.3-0.1 0.2-0.1 0.2-0.2 0.6-0.1 0.5-0.1 0.5-0.2 0.5 0.1 0.3 0.1 0.3 0.1 0.2 0.1 0.3 0 0.1 0 0.1 0.1 0.1 0 0.1 0.2 0.5 0.2 0.6 0.2 0.5 0.4 0.4 0.5 0.5-0.4 0.5-0.7 0.4-0.5 0.2-0.7 0.5-0.8 0.4-0.7 0.5-0.7 0.4-0.2 0.1-0.2 0.2-0.2 0.1-0.2 0.1 0.2 0.3 0.1 0.3 0.2 0.2 0.2 0.3 0 0.1 0.1 0.1 0.2 0.4-0.1 0.3-0.2 0.2-0.3 0.3-0.4 0.5-0.3 0.5-0.4 0.5-0.3 0.4-0.3 0.4-0.2 0.3-0.2 0.3-0.2 0.3-0.3 0.4-0.4 0.4-0.3 0.4-0.3 0.4-0.3 0.4-0.2 0.3-0.3 0.4-0.3 0.3-0.4 0.3-0.4 0.3-0.3 0.4-0.1 0.4-0.1 0.4 0 0.5-0.1 0.4-0.3 0.2-0.4 0.1-0.4 0.3-0.3 0.3-0.2 0.3-0.2 0.3-0.1 0-0.2 0-0.2 0-0.1 0.2-0.1 0.2 0 0.3-0.2 0.1-0.3 0.3-0.3 0.3-0.2 0.3-0.1 0.3 0 0.3-0.3 0.3-0.3 0.3-0.3 0.3-0.1-0.7-0.3-0.7-0.4-0.5-0.6-0.1-0.5 0.3-0.4 0.5-0.3 0.5-0.4 0.4 0 0.6 0.5 0.5 0.5 0.5 0.3 0.5-0.2 0.6-0.3 0.5-0.3 0.4 0.1 0.7 0.3 0.7 0.2 0.6 0.1 0.7 0.1 0.7 0 0.8 0.1 0.6 0.3 0.5 0.5 0.5 0.8 0.5 0.7 0.6 0.8 0.6 0.7 0.6 0.2 0.5-0.1 0.6-0.4 0.7-0.4 0.6-0.2-0.5-0.3-0.1-0.1 0-1 0.9-0.6-0.6-0.3-0.4 0-0.5 0.2-0.4 0.3-0.2 0.2-0.3 0.1-0.3-0.1-0.4-0.1-0.3-0.1-0.2-0.1 0-0.3-0.1-0.1-0.1 0 0.1-0.2 0.4 0 0.1-0.4-0.1-0.5-0.3-0.4-0.3-1-1.1-0.3-0.2-3.1 0 0.4 0.4-0.3 0.3-0.9 0.3-0.2-0.7-0.1-0.4-0.2-0.1-0.4 0-0.2 0.1-0.1 0.1-0.1-0.3 0-0.4-0.1-0.2-0.6-0.3-0.7 0-1.4 0.3-4.6-0.3-0.7 0.4-1.5 0.4-1.5 0.4-1.5 0.4-1.6 0.3-0.6-0.1-0.7-0.2-0.5-0.3-0.6-0.3-0.5-0.4-0.2-0.4-0.2-0.4-0.3-0.5-0.3-0.4-0.5-0.1-0.4-0.1-0.5-0.1-1.1 0-1.3-0.1-1.2 0-1 0.4-1.2 1.6-0.4 1.9 0.2 2.1 0.3 2.1 0 0.8-0.3 0.6-0.5 0.7-0.5 0.6-0.1 0.3 0 0.2-0.2 0.2-0.3 0.1-0.3 0-0.2-0.1-0.3 0-0.3 0-0.4 0.3-0.4 0.1-0.4-0.1-0.4 0-0.5 0.1-0.5 0.1-0.4 0.1-0.6 0-0.5 0-0.3 0.1-0.2 0.1-0.3 0.3-0.2 0.3-0.2 0.2 0 0.3-0.1 0.3-0.2 0.8-0.1 0.9 0 0.9 0 0.9 0.2 0.5 0.3 0.5 0.2 0.4 0.1 0.4-0.1 0.3-0.1 0.3-0.2 0.4-0.1 0.1 0 0.1-0.2 0.1-0.4 0-1.1-0.5-1.7-0.9-3.8-1.1-1.6-0.5-1.1-0.1-2.4-0.9-2.7-0.2-1.5-0.3-3.9-1.7-2.7-1.3-1.5-0.6-1-0.1-1.5-0.1-0.4-0.4-0.4 0.1-2.3-1-0.5 0.1-1.5-0.5-0.5-0.3-1-0.4-0.5 0.1-0.6-0.3-1.2-0.8-2.2-0.9-0.7-1.3-1.5-3.5-1-1.2-0.2-0.1-0.3-0.4-0.4-0.3-0.6-0.4-0.9-0.5-0.3-0.1-0.1-0.3 0.6-0.8-0.4-0.8-0.9-0.9-0.3-0.2z` },
-    { id: "MXGRO", d: `M510.5 500.3l0-0.1 0.1-0.1 0.2-0.4 0.1-0.3 0.1-0.3-0.1-0.4-0.2-0.4-0.3-0.5-0.2-0.5 0-0.9 0-0.9 0.1-0.9 0.2-0.8 0.1-0.3 0-0.3 0.2-0.2 0.2-0.3 0.3-0.3 0.2-0.1 0.3-0.1 0.5 0 0.6 0 0.4-0.1 0.5-0.1 0.5-0.1 0.4 0 0.4 0.1 0.4-0.1 0.4-0.3 0.3 0 0.3 0 0.2 0.1 0.3 0 0.3-0.1 0.2-0.2 0-0.2 0.1-0.3 0.5-0.6 0.5-0.7 0.3-0.6 0-0.8-0.3-2.1-0.2-2.1 0.4-1.9 1.2-1.6 1-0.4 1.2 0 1.3 0.1 1.1 0 0.5 0.1 0.4 0.1 0.5 0.1 0.3 0.4 0.3 0.5 0.2 0.4 0.2 0.4 0.5 0.4 0.6 0.3 0.5 0.3 0.7 0.2 0.6 0.1 1.6-0.3 1.5-0.4 1.5-0.4 1.5-0.4 0.7-0.4 4.6 0.3 1.4-0.3 0.7 0 0.6 0.3 0.1 0.2 0 0.4 0.1 0.3 0.1-0.1 0.2-0.1 0.4 0 0.2 0.1 0.1 0.4 0.2 0.7 0.9-0.3 0.3-0.3-0.4-0.4 3.1 0 0.3 0.2 1 1.1 0.4 0.3 0.5 0.3 0.4 0.1 0-0.1 0.2-0.4 0-0.1 0.1 0.1 0.3 0.1 0.1 0 0.1 0.2 0.1 0.3 0.1 0.4-0.1 0.3-0.2 0.3-0.3 0.2-0.2 0.4 0 0.5 0.3 0.4 0.6 0.6 1-0.9 0.1 0 0.3 0.1 0.2 0.5 0.4-0.6 0.4-0.7 0.1-0.6-0.2-0.5-0.7-0.6-0.8-0.6-0.7-0.6-0.8-0.5-0.5-0.5-0.3-0.5-0.1-0.6 0-0.8-0.1-0.7-0.1-0.7-0.2-0.6-0.3-0.7-0.1-0.7 0.3-0.4 0.3-0.5 0.2-0.6-0.3-0.5-0.5-0.5-0.5-0.5 0-0.6 0.4-0.4 0.3-0.5 0.4-0.5 0.5-0.3 0.6 0.1 0.4 0.5 0.3 0.7 0.1 0.7 0.3-0.3 0.3-0.3 0.3-0.3 0-0.3 0.1-0.3 0.2-0.3 0.3-0.3 0.3-0.3 1.1 0.4 1 0.3 1.1 0.1 1.2 0 0.4 0.1 0.2 0.1 0.1 0.3 0 0.5 0.1 0.3 0.2 0.2 0.2 0.3 0 0.3-0.3 0.7-0.3 0.5 0 0.6 0.3 0.6 0.2 0.4 0 0.4 0 0.3-0.1 0.4 0.1 0.3 0.2 0.3 0.2 0.3 0.3 0.3 0.5 0.5 0.5 0.5 0.4 0.6 0.2 0.7 0 0.8-0.3 0.8-0.2 0.7 0.3 0.6 0.3 0.2 0.2 0.3 0.2 0.3 0.2 0.2 0.3 0.3 0.4 0.1 0.4 0 0.4-0.1 0.3-0.2 0.2-0.3 0.2-0.3 0.4-0.1 0.6-0.5 0.6-0.5 0.7-0.5 0.6-0.6 0.7-0.7 0.4-0.7 0.5-0.8 0.4-0.9 0-0.1 0.1-0.1 0.1-0.2 0.6-0.1 0.6-0.1 0.5-0.2 0.6-0.1 0.6-0.3 0.6-0.2 0.6-0.1 0.6-0.2 0.1-0.1 0.2 0 0.1-0.1 0.2 0 0.6-0.1 0.5-0.1 0.4 0.1 0.5 0.4 0.3 0.4 0.3 0.3 0.3 0.1 0.5-0.5 0.3-0.3 0.1-0.3 0-0.3 0-0.4 0.2-0.3 0.2-0.3 0.3-0.1 0.3-0.3 0.2-0.2 0.3-0.3 0.3-0.2 0.2-0.2 0.7-0.6 0.6 0.2 0.5 0.6 0.5 0.6 0.4 0.1 0.2 0.2 0.1 0.3 0.2 0.3 0.4 0.3 0.7 0.2 0.7 0 0.4-0.1-0.2 0.5-0.2 0.6 0.1 0.4 0.6 0.2 0.5 0.1 0.2 0.5 0.1 0.5 0.6 0.2 0.2 0.3 0.2 0.4 0.2 0.4 0.2 0.3 0.3 0.4 0.3 0.3 0.3 0.2 0.4 0 0.6 0 0.1 0.5 0.1 0.6 0.2 0.3 0.6 0 0.6 0 0.6 0 0.6 0 0.2-0.3 0-0.4 0.1-0.4 0-0.4 0.2-0.7 0.4-0.6 0.5-0.4 0.8 0.1 0.2 0.1 0.2 0.1 0.2 0.2 0 0.3 0.1 0.4 0 0.3 0.1 0.4 0.2 0.3 0.2 0.2 0.2 0.2 0.1 0.2 0.1 0.3 0.3 0.8 0.7 0.7 0.6 0.7 0.2 1 0.1 0.5 0 0.4 0 0.5 0 0.5 0.2 0.4 0.1 0.3 0.2 0.4 0 0.4 0.2 0 0.2-0.1 0.2 0 0.2-0.1 0 0.5 0 0.3 0.2 0.4 0.3 0.3 0.5 0.3 0.4-0.2 0.3-0.3 0.4 0.2 0 0.6 0.1 0.6 0.2 0.5 0.4 0.2 0.5 0.1 0.7 0.1 0.7 0.1 0.3 0.2 0.4 1.4 0.7 1.1 1.1 0.7 1.3 0.6 0.6 0.1 0.6 0.2 0.6 0.1 0.6 0.1 0.2 0.1 0.3 0.2 0.3 0.1 0.2 0 0.9 0.2 1 0.1 1-0.1 0.9-0.2 0.5-0.1 0.3 0 0.3 0.1 0.4 0.3 0.4 0.4 0.4 0.5 0.4 0.4 0.4 0.4 0.5 0.6 0.1 0.5-0.2 0.5-0.3 0.7-0.2 0.5-0.2 0.6-0.1 0.6-0.1 0.5-0.1 0.4-0.1 0.4-0.1 0.4-0.1 0.4-0.2 0.8-0.1 0.7 0.1 0.7 0.4 0.6 0.2 0.1 0.1 0.2 0 0.1-0.2 0.2-0.3 0.3 0 0.4 0 0.4 0.1 0.4 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0 0 0.1 0.2 0.2 0.2 0.2 0.2 0.3 0.2 0.2 0.1 0.4-0.1 0.4-0.1 0.5-0.1 0.3 0.1 0.1 0 0.1 0.1 0.1 0.3 0.6-0.1 0.5-0.2 0.6-0.1 0.7 0.2 0.5 0.3 0.4 0.6 0.1 0.6 0.2 0.4 0.7 0.4 0.8 0.4 0.7 0.7 0.1 0.4 0 0.4 0 0.4 0 0.4 0.1 0.1 0.1 0.1 0.1 0.1 0.2 0.1 0.1 0.9 1.1 0.9 1.1 0.9 1.2 0.8 1.2 0.2 0.3 0.1 0.3 0 0.3 0 0.4-0.1 0.3-0.1 0.3-0.1 0.3-0.2 0.3-0.2 0.4-0.2 0.4-0.3 0.4-0.3 0.4-0.1 0.3 0 0.3 0 0.3 0 0.3-0.1 0.6-0.1 0.5-0.1 0.6 0 0.5-0.1 0.5-0.2 0.4-0.3 0.3-0.4 0.3 0 0.1-0.1 0.1 0 0.1-0.1 0.1-0.2 0.2-0.1 0.1-0.2 0.1-0.2 0-0.4 0.3-0.3 0.1-0.4 0.1-0.5-0.1-0.3-0.1-0.4 0-0.4 0.1-0.3 0.1 0.2 0.9 0.2 0.8 0.2 0.8-0.3 0.9 0 0.1-0.1 0.1 0 0.1-0.1 0-0.6 0.2-0.4 0-0.5-0.1-0.5 0-0.8 0.3-0.4 0.6 0.1 0.6 0.4 0.7 0.4 1.1-0.2 0.9-0.6 0.8-0.7 0.7-0.7 0.4-0.7 0.1-0.8 0-0.8 0.1-0.8 0.2-0.5 0.2-0.5 0.4-0.5 0.5 0 0.1-0.4-0.2-0.1 0 0.1-0.1 0.1-0.1-0.1-0.3-0.4-0.6-1.1-0.9-2.3-2.1-1-1.5-0.9-0.9-0.1-0.2-0.2-0.2-0.4 0.1-0.5-0.2-0.2 0.2-0.2 0-0.3 0.1-0.4 0.1-0.2 0.2-0.1 0.2 0 0.1-1-0.2-0.5 0-1.1-0.4-5.7-1.8-4.6-1.3-2-0.5-3.4-0.5-1.8 0-1.4 0.1-0.9-0.2-0.8-0.3-0.7-0.2-0.8-0.4-0.7-0.3-1.6-1.3-0.7-0.5-0.2 0-0.1 0.2-0.4-0.1-0.1-0.2-0.3-0.1 0.3-0.1 0.3 0.1 0.1-0.2-0.2-0.2-0.1 0-0.2 0.1-0.3-0.1-0.2 0-0.2-0.2 0.2 0 0-0.3 0.2-0.3 0.1 0.1 0.2-0.1 0-0.2-0.2-0.3-0.2-0.1-0.4-0.1-0.5 0.2-0.3 0.2 0.1 0.2 0.2-0.1 0.2 0.2-0.3 0.2-0.4 0.1-0.1-0.2-0.2-0.7-0.2-0.1-0.7-0.7-0.1-0.3-0.9-0.5-2.1-0.8-1.4-0.4-1.5-0.5-2-0.7-2.4-1-7-2.5-2.6-0.8-1.7-0.6-1.9-0.8-1.6-0.6-1.9-0.5-1.6-0.6-1.5-0.5-1-0.5-0.4 0.1-0.2-0.3 0.3-0.2 0-0.6-0.5-0.6-1-0.8-1.9-1.2-0.3-0.7-2.3-1.3-2.4-0.9-1.3-0.6-1.8-0.6-0.1-0.4 0.4 0 0.1-0.6-0.2-0.4-0.3-0.4-1.1-0.9-0.8-0.1-0.8 0.2-0.1-0.4-0.4 0-0.3-0.3-0.4 0-0.1-0.6-0.5-0.2-0.8-0.2-0.1-1.1-0.7-1.1-0.8-0.5-1.3-1-0.4-0.8-0.4-0.4 0-0.5-1.1-1.3-1.3-0.6-0.4-0.2-1.8-1-1.7-0.8-1.3-0.4-1.8 0.2-0.3 0.5-0.6 0.5-0.4 0.5-0.5 0.2-0.2 0.2z` },
-    { id: "MXOAX", d: `M748.6 523.5l0.3 0.7 0 0.9-0.1 0.9 0 0.8 0 0.2 0 0.2 0 0.2 0 0.2-0.8-0.1-0.3 0.5 0 0.8 0 0.8 0 0.4 0 0.6 0 0.6-0.2 0.4-0.4 0.2-0.4 0.3-0.4 0.3-0.4 0.2-0.5 0.3-0.6 0.3-0.6 0.4-0.4 0.4-0.1 0.6 0.1 0.8 0.1 0.8 0.1 0.7 0 0.6 0 0.6-0.1 0.6-0.3 0.6-0.7 1-0.9 1.2-0.6 1.2 0.3 1.2 0.3 0.5 0.2 0.6 0.3 0.5 0.2 0.6 0.4 0.8 0.4 1 0.4 1 0 0.9 0 0.5-0.1 0.6-0.1 0.6-0.2 0.5-0.2 0.4-0.3 0.4-0.2 0.4-0.2 0.3-0.5-0.5-0.4-0.4-0.2-0.4-0.2-0.9-0.4-0.1-0.6 0.2-0.6 0.3-1.1 0.1-1.3-0.3-1.1-0.7-1-0.8-0.6-0.7-0.4-0.2-0.7-0.1-0.5 0.2 0 0.4 0.1 0.6 0 0.4-0.2 0-0.3-0.1-0.1 0.1 0 0.2 0.3 0.1 0.3 0 0 0.2-0.2 0.1-0.4 0.1 2.6 1.8 1.5 0.6 0.8-0.2-2.2-0.8 0-0.2 0.8 0 1.1 0.5 0.6 0.1 0.7-0.1 0.3 0.1 0.4 0.2 1 0.6 0 0.2-0.4 0 0 0.2 2.1 0.5 0.5 0.2-0.6 1.2-6.6-2.7-0.4-0.3-1-0.6-1.3-0.3-2.7 0 0.2 0-1.5 0-0.8-0.2-0.5-0.2-0.5 0.2-0.5 0-1.2 0-0.6-0.1-0.2-0.3 0.1-0.4 0.4-0.3 2.5-0.7 1-0.8 0.2-1.3-0.3-0.4-1.1-0.3-0.4-0.2-0.3-0.2-0.2-0.1-0.2 0.1-0.2 0-0.1 0.5-0.1 0.2-0.2 0-0.3 0.1-0.1 0.1-0.3 0.3-0.2 0.2 0 0.1-0.8 0.4-0.4 0.2-0.5 0.7-0.4 0.3-0.3-0.5-0.1-0.3 0-0.4 0.3-0.3 0.5-0.2 0.2-0.4-0.3-0.4-0.4-0.5-0.1-0.3 0-0.3-0.2-0.5-0.2-0.2-0.3-0.4-0.4-0.3-0.4-0.1-0.7 0.1-0.7 0.4-0.5 0.5-1.3 1.9-0.3 0.2-1.7 0 0.2 0.5-0.2 0.2-0.4 0-0.1 0.2-0.4 0.5 0.1 0.3 0.5 0.2 1.3 0.3 1 0.1 1 0 0.8-0.1 0.4 0 0.6-0.2 0.2-0.2 0.5-0.6 0.3 0 0.1 0.4-0.8 0.5-1.3 0.3-0.8 0 1 0.3 2.6-0.1 0.8 0.4 0.4 0.6-0.1 0.2-1.5-0.5-2.2 0.1-1.5 0.3-1.3 0.2-0.7 0.1-1.4 0.2-1.1 0-0.5-0.1-0.4 0-0.4 0-0.2 0.2 0.1 0.2 0.1 0.2-0.3 0.2-0.8-0.2-0.3 0.3-0.5 0-0.5 0-0.4 0.3 0 0.4-0.6 0.2-0.4 0.3 0 0.3-0.1 0.1-0.3 0.1-0.3 0.2-0.9 0.2-0.4 0.3-0.8 0.9 0.2 0.6-0.3 0.2-0.5 0.4-0.7 0.2-0.1 0.5-0.2 0.3-1.6 0-0.2 0.3-2.1 0.2-0.3 0.4-0.8 0.1-0.1 0.3-1.4 0.6-1.3 0-0.7 0.2-0.7 0.1-0.4 0.3-0.3 0.2 0 0.3-0.6 0.1-0.6 0.2-0.7 0.2-0.9 0.2-0.3 0.2-2.1 0.5-0.2 0.3-1 0.2-0.8 0.5-0.6 0.2-0.8 0.5-0.3 0-0.2 0.2-0.3 0.2-0.3-0.2-0.3 0.3 0.1 0.4-2.3 1.1-0.9 0.6-1.5-0.1-2.1 0.1-1.1-0.3-0.9-0.1-0.4 0.4-0.7 0.3-0.5 0.3-0.5 0.1-0.6 0-0.7-0.2-0.2 0.2-1.6-0.6-2-0.9-3.5-0.7-1.2 0-2.4-1.5-1.8-0.5-0.9-0.2-0.7-0.7 0.1-0.1-0.5-0.8-0.4 0.1-0.8-0.4-1.6-1-1.3-0.5-1.8-0.5-0.5 0.1-1.7-0.4-0.7 0.4-2.6-0.3-2-0.7-0.8 0.2-1.7-0.4-1.3-0.1-0.3 0.2-0.3 0.3-1-0.2-1.6-0.4-0.5-0.2-0.6-0.5-0.7-0.2-0.3-0.2-0.2-0.2-0.2-0.1-0.5-0.4-1.9-1.4-1.1-0.6-3-1.7-1-0.3-0.9-0.5-0.6-0.5 1.7 0.5 0.9 0.1 0.4-0.4-0.4 0-0.4-0.3-0.4-0.2-0.4 0.3-0.6-0.3-0.6-0.1 0-0.1-0.1-0.1-0.1-0.2-0.1 0-0.2 0.2-0.2 0.1-0.2 0.1-0.5-0.1-2.9-0.9-3.7-0.7-1.8-0.7-0.7-0.2-0.4-0.1-0.2-0.1 0-0.1 0-0.1 0.5-0.5 0.5-0.4 0.5-0.2 0.8-0.2 0.8-0.1 0.8 0 0.7-0.1 0.7-0.4 0.7-0.7 0.6-0.8 0.2-0.9-0.4-1.1-0.4-0.7-0.1-0.6 0.4-0.6 0.8-0.3 0.5 0 0.5 0.1 0.4 0 0.6-0.2 0.1 0 0-0.1 0.1-0.1 0-0.1 0.3-0.9-0.2-0.8-0.2-0.8-0.2-0.9 0.3-0.1 0.4-0.1 0.4 0 0.3 0.1 0.5 0.1 0.4-0.1 0.3-0.1 0.4-0.3 0.2 0 0.2-0.1 0.1-0.1 0.2-0.2 0.1-0.1 0-0.1 0.1-0.1 0-0.1 0.4-0.3 0.3-0.3 0.2-0.4 0.1-0.5 0-0.5 0.1-0.6 0.1-0.5 0.1-0.6 0-0.3 0-0.3 0-0.3 0.1-0.3 0.3-0.4 0.3-0.4 0.2-0.4 0.2-0.4 0.2-0.3 0.1-0.3 0.1-0.3 0.1-0.3 0-0.4 0-0.3-0.1-0.3-0.2-0.3-0.8-1.2-0.9-1.2-0.9-1.1-0.9-1.1-0.1-0.1-0.1-0.2-0.1-0.1-0.1-0.1-0.4-0.1-0.4 0-0.4 0-0.4 0-0.7-0.1-0.4-0.7-0.4-0.8-0.4-0.7-0.6-0.2-0.6-0.1-0.3-0.4-0.2-0.5 0.1-0.7 0.2-0.6 0.1-0.5-0.3-0.6-0.1-0.1 0-0.1-0.1-0.1 0.1-0.3 0.1-0.5 0.1-0.4-0.1-0.4-0.2-0.2-0.2-0.3-0.2-0.2-0.2-0.2 0-0.1-0.1 0-0.1-0.1-0.1-0.1-0.1-0.1-0.1-0.1-0.1-0.1-0.1-0.4 0-0.4 0-0.4 0.3-0.3 0.2-0.2 0-0.1-0.1-0.2-0.2-0.1-0.4-0.6-0.1-0.7 0.1-0.7 0.2-0.8 0.1-0.4 0.1-0.4 0.1-0.4 0.1-0.4 0.1-0.5 0.1-0.6 0.2-0.6 0.2-0.5 0.3-0.7 0.2-0.5-0.1-0.5-0.5-0.6 0.1-0.1 0.2-0.1 0.1-0.1 0.2-0.1 0.1-0.2 0.1-0.1 0.2-0.1 0.1-0.1 0.2 0.1 0.2 0.1 0.3 0.1 0.2 0.1 1-0.1 0.8-0.8 0.6-1 0.4-1 0.2-0.3 0.3-0.2 0.4-0.1 0.4 0 0.3 0 0.2 0 0.3 0 0.2 0 0.5 0 0.5 0.1 0.4 0 0.5 0 0.3 0 0.3 0 0.2 0 0.3 0 0.3-0.1 0.2 0 0.3-0.1 0.2 0 0.3-0.1 0.4-0.1 0.3 0 0.3 0.1 0.2 0.3 0.1 0.4 0.1 0.5 0 0.4 0 0.2 0.1 0.2 0 0.2 0.1 0.2 0.1 0.5 0.2 0.4 0.3 0.2 0.5 0 0.3-0.1 0.4-0.2 0.3-0.1 0.4-0.2 0.3-0.2 0.3-0.2 0.3-0.3 0.3-0.3 0.3-0.2 0.3-0.3 0.2-0.2 0.2-0.4-0.1-0.3 0-0.2-0.1-0.3 0-0.3-0.3-0.4-0.2-0.3-0.3-0.4-0.3-0.3-0.1 0-0.1-0.1-0.1-0.1-0.5-0.3-0.3-0.4-0.1-0.6 0.2-0.5 0.2-0.3 0.2-0.4 0.2-0.3 0.2-0.4 0.3-0.5 0.2-0.5 0.3-0.5 0.3-0.5 0.3-0.5 0.3-0.5 0.3-0.4 0.4 0.1 0.8-0.2 1-0.9 0.9-0.4 0 1.2-0.3 1-0.5 1.3-0.3 1.3 0.1 0.9 0.3 0.5 0.5 0.3 0.5 0.2 0.4 0.3 0.3 0.2 0.2 0.2 0.3 0.1 0.2 0.2 0.3 0.3 0 0.4 0 0.5 0.1 0.5 0.2 0.3 0.2 0.3 0.3 0.4 0.2 0.3 0.2 0.4 0.4 0.2 0.4 0.2 0.4 0 0.4-0.1 0.3-0.2 0.3-0.4 0.1-0.4 0.7-1.6 1-1.3 1.2-1 1.5-0.6 0.1-0.1 0.1 0 0.1 0 0.6-0.2 0.6-0.1 0.6 0.1 0.6 0.2 0.5 0.3 0.4 0.2 0.5 0.2 0.5 0.1 0.1 0 0.1 0 1 0.3 0.9 0.3 0.9 0 0.8-0.7 0.2-0.2 0.1-0.2 0.1-0.2 0.1-0.3 0.1 0 0-0.1 0.1 0 0.1-0.2 0.1-0.2 0.2-0.2 0.1-0.1 0.1-0.2 0.2-0.1 0.1-0.1 0.1-0.2 0.1-0.1 0.1-0.1 0.1-0.1 0.1-0.1 0.4-0.3 0.4-0.2 0.5-0.1 0.4-0.1 0.2-0.1 0.2-0.1 0.2-0.1 0.2-0.1 0.5-0.4 0.4-0.5 0.2-0.5 0.3-0.7 0.3-0.5 0.3-0.5 0.2-0.5 0.1-0.6 0.1-0.1 0.1-0.2 0.1-0.1 0.1-0.1 0.7-0.7 0.7-0.8 0.6-0.9 0.3-0.9-0.1-1-0.3-1.1-0.3-1-0.2-0.9 0.2 0.2 0.3 0.2 0.2 0.2 0.2 0.2 1.1 0.9 0.9 0.6 1.1 0.4 1.3 0.2 0.9 0.2 0.6 0.3 0.5 0.5 0.3 0.8 0.2 1.2 0.5 1.4 0.5 1.2 0.8 0.9 0.2 0.2 0.2 0.2 0.3 0.1 0.2 0.1 0.4 0.3 0.4 0.4 0.3 0.4 0.3 0.5 0.2 0.8 0.2 0.9 0.2 0.8 0.3 0.2 0.1 0.1 0.2 0.1 0.1 0.1 0.4 0 0.3-0.1 0.3 0.1 0.1 0.2-0.1 0.3 0 0.2 0.3 0.4 0.3 0.1 0.4 0.1 0.4 0.1 0.4-0.1 0.1-0.2 0.4-0.5 0.2-0.2 0.4 0 0.6 0.1 0.3 0.2 0.4 0 0.5 0 0.3 0 0.1 0 0.1 0 0.1 0 0.3-0.1 0.3 0 0.2 0 0.3 0.1 0.3 0.2 0.3 0.2 0.4 0.1 0.3 0.1 0.3 0 0.2 0.1 0.3 0.1 0.2 0 0.2 0.1 0.2 0.1 0.2 0.1 0.2 0.2 0.6 0.8 0.4 1 0.3 1 0.5 0.9-0.5 1.5-0.8 1.2-0.9 1.1-1 1.1-0.1 0.2-0.1 0.1 0 0.1-0.1 0.2-0.3 0.9 0 0.8 0.3 0.9 0.5 0.9 0.6 1.2 0.6 1.2 0.6 1.2 0.6 1.2 0.4 0.5 0.4 0.2 0.5 0.1 0.5 0.2 0.1 0 0.1 0.1 0.1 0 0.1-0.1 0.7-0.1 0.5-0.3 0.5-0.2 0.6 0 0.5 0.2 0.3 0.1 0.4-0.1 0.3-0.4 0.3 0 0.3 0 0.2-0.1 0.1-0.2 0-0.2 0-0.1 0.1-0.2 0.1 0 0.4-0.2 0.5-0.3 0.5-0.3 0.3-0.1 0.4-0.1 0.3-0.3 0.2-0.4 0.2-0.3 0.6-0.3 0.6-0.2 0.7 0 0.6 0 0-0.2 0.1-0.1 0.1-0.1 0.1-0.2 0.8-0.1 0.6-0.2 0.3-0.5 0.3-0.7 0.3-0.1 0.3 0.1 0.3 0.1 0.3 0.1 0.2-0.1-0.1-0.2-0.2-0.3 0.2-0.2 0.2 0 0.3 0 0.3 0 0.1 0 0.3 0.2 0.1 0.4-0.1 0.4 0 0.4-0.1 0.2 0 0.4-0.1 0.3 0 0.2-0.2 0.2-0.3 0.1-0.3 0.1-0.3 0.2-0.1 0.3-0.1 0.4-0.1 0.3 0 0.4 0.9 1 0.8 1 0.9 1 0.9 1 0.5 0.4 0.4 0.4 0.4 0.4 0.3 0.5 0.7 0.2 0.8 0.3 0.7 0.5 0.4 0.5 0.1 0.2 0 0.2 0.1 0.3 0 0.2-0.1 0.1-0.1 0.1-0.1 0-0.1 0.2 0.2 0.4 0.1 0.5 0.2 0.5 0.1 0.5 1 0.6 1.8 0.2 2 0.1 1.5 0 1 0.1 0.9 0.1 1 0 1 0.1 0.8 0.1 0.9 0.1 0.9 0 0.8 0.1 4.5 0.3 4.5 0.2 4.5 0.3 4.4 0.3z` },
-    { id: "MXMEX", d: `M554.9 471.5l0.2-0.1 0-0.3 0.1-0.2 0.1-0.2 0.2 0 0.2 0 0.1 0 0.2-0.3 0.2-0.3 0.3-0.3 0.4-0.3 0.4-0.1 0.3-0.2 0.1-0.4 0-0.5 0.1-0.4 0.1-0.4 0.3-0.4 0.4-0.3 0.4-0.3 0.3-0.3 0.3-0.4 0.2-0.3 0.3-0.4 0.3-0.4 0.3-0.4 0.4-0.4 0.3-0.4 0.2-0.3 0.2-0.3 0.2-0.3 0.3-0.4 0.3-0.4 0.4-0.5 0.3-0.5 0.4-0.5 0.3-0.3 0.2-0.2 0.1-0.3-0.2-0.4-0.1-0.1 0-0.1-0.2-0.3-0.2-0.2-0.1-0.3-0.2-0.3 0.2-0.1 0.2-0.1 0.2-0.2 0.2-0.1 0.7-0.4 0.7-0.5 0.8-0.4 0.7-0.5 0.5-0.2 0.7-0.4 0.4-0.5-0.5-0.5-0.4-0.4-0.2-0.5-0.2-0.6-0.2-0.5 0-0.1-0.1-0.1 0-0.1 0-0.1-0.1-0.3-0.1-0.2-0.1-0.3-0.1-0.3 0.2-0.5 0.1-0.5 0.1-0.5 0.2-0.6 0.1-0.2 0.1-0.2 0-0.3 0.1-0.2 0.1-0.4 0.2-0.3 0.1-0.4 0.1-0.3 0-0.3-0.1-0.4-0.1-0.3 0-0.4 0.2-0.5 0.1-0.5 0.2-0.5 0.1-0.5 0.1-0.5 0.2-0.5 0.1-0.5 0.2-0.5 0-0.4 0.1-0.4 0.1-0.4 0-0.3 0.3-0.5 0.3-0.5 0.2-0.5 0.3-0.4 0.1-0.1 0-0.1 0.1-0.1 0.1 0 0.5-0.6 0.4-0.7 0.4-0.7 0.5-0.7 0.3-0.4 0.3-0.4 0.3-0.4 0.3-0.4 0.6-0.7 0.4-0.3 0.6-0.2 0.8-0.1-0.4-0.5-0.3-0.4-0.4-0.5-0.3-0.5 0.6-0.4 0.7-0.4 0.7-0.5 0.6-0.4 0.5 0.2 0.5 0.3 0.5 0.3 0.3 0.4 0.1 0.2 0.1 0.3 0.1 0.2 0.1 0.3 0.7 0.8 0.8 0.8 0.9 0.8 0.8 0.7 0.5 0.2 0.1-0.2 0.1-0.4 0.2-0.3 0.5-0.2 0.7 0 0.6 0 0.4 0.2 0.2 0.4 0.1 0.3 0.2 0.3 0.2 0.3 0.3 0.4 0.2 0.4 0.3 0.4 0.2 0.3 0 0.1 0.1 0 0 0.1-0.1 0.7-0.2 0.6-0.3 0.5-0.1 0.6-0.2 0.9 0.2 0.5 0.4 0.4 0.8 0.2 0.6 0.2 0.5 0.4 0.2 0.6-0.1 0.8 0.1 0.2 0.1 0.2 0.2 0.2 0.2 0.1 0.2 0.2 0.1 0.3 0 0.4 0 0.3 0.3 1 0.5-0.5 0.6-1 0.7-0.6 1 0.1 0.3-0.8 0.2-1 0.5-0.4 0.3 0 0.3 0 0.3-0.1 0.2-0.2 0.1-0.6 0-0.6 0-0.6 0.3-0.5 0.4-0.3 0.5-0.1 0.4 0 0.5 0 0.7-0.3 0.6-0.3 0.6-0.4 0.6-0.3 0.5-0.2 0.5 0 0.4 0 0.5 0.2 0.2 0.1 0.1 0.1 0.1 0 0.2 0.2 0.2 0.3 0.3 0.3 0.1 0.4 0.1 0.4 0 0.3 0 0.3-0.1 0.4-0.1 0.3 0.1 0 0.1 0 0.2 0.1 0.1 0-0.3 0.5-0.2 0.6-0.2 0.5-0.2 0.6 0 0.3-0.1 0.3 0 0.2-0.1 0.3 0.1 0.1 0 0.1 0.1 0.1 0 0.1 1.3 0.1 1.2-1.2 1.1-1.3 1 0.4 0.5 0.7 0.5 0.3 0.6 0 0.8-0.2 0.3-0.1 0.2 0 0.3 0.2 0.2 0.3 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.2 0.2 0.1 0.1 0.2 0.2 0.1 0.1 0.1 0.2 0.2 0.2 0.1 0.2 0.1 0.2 0.1 0.2 0.2 0.2 0.1 0.3 0.3 0.4 0.2 0.3 0.1 0.3-0.1 0.3-0.1 0.4-0.2 0.4-0.2 0.4-0.1 0.3-0.2 0.6-0.3 0.5-0.3 0.5-0.3 0.5 0 0.1 0 0.1-0.1 0-0.3 0-0.4 0-0.3 0.1-0.4 0 0.2 1 0.3 0.5 0.4 0.4 0.9 0.2 0.1 0.4 0 0.4 0 0.4 0.1 0.4-0.3 0.3-0.2 0.3-0.1 0.4-0.1 0.4-0.2 0.8 0.1 0.9 0.3 0.9 0.2 0.8 0 0.1 0 0.1 0 0.1 0.1 0.4 0.1 0.4 0.1 0.4 0 0.4 0.1 0.4 0 0.4 0.1 0.4 0 0.4-0.2 0.1-0.2 0.2-0.1 0.3 0 0.3 0 0.2 0 0.3-0.1 0.3 0 0.3 0 0.3 0 0.5 0 0.4 0.1 0.4 0.2 0.2 0.1 0.2 0 0.3-0.1 0.3 0 0.1 0 0.1-0.1 0.1 0 0.1-0.1 0.1-0.1 0-0.1 0.1-0.1 0.1-0.4 0.1-0.4 0.2-0.3 0.3-0.1 0.4-0.2 0.3-0.3 0.2-0.4 0-0.4 0.1-0.4 0-0.3-0.1-0.3 0-0.4-0.1-0.2 0-0.2 0-0.1-0.2-0.1-0.3 0-0.1-0.1-0.1-0.1-0.2 0-0.3-0.1-0.3-0.1-0.2 0-0.1 0-0.1-0.1-0.1 0-0.1-0.1-0.2-0.2 0-0.2 0-0.2 0-0.3-0.2-0.2-0.2-0.2-0.3-0.3-0.2-0.1 0 0-0.1-0.1 0-0.4-0.1-0.5-0.1-0.5-0.1-0.4-0.1 0.2-0.3 0.3-0.3 0.1-0.4 0.1-0.4 0-0.1-0.1-0.5-0.3-0.5-0.2-0.4-0.2-0.5 0.1-0.4 0-0.3 0.1-0.4 0-0.3 0.1-0.4-0.1-0.4 0-0.4-0.2-0.4 0-0.1 0-0.1-0.1-0.1-0.1-0.2-0.1-0.2-0.2-0.2-0.1-0.2-0.5-0.3-0.6-0.3-0.5-0.2-0.4-0.5 0.1-0.1 0.1-0.1 0.1 0 0.1-0.1-0.1-0.1-0.1-0.1-0.1-0.2-0.1-0.1 0.3-0.2 0.2-0.2 0.1-0.3-0.2-0.3-0.1 0 0-0.1 0-0.1-0.1-0.2-0.1-0.1 0-0.1-0.2-0.2-0.1-0.3-0.1-0.2-0.1-0.2-0.3-0.2-0.2-0.3-0.2-0.3 0-0.4 0-0.1 0-0.1 0-0.3-0.1-0.2-0.2-0.2-0.2-0.2-0.1-0.1-0.1 0 0-0.1-0.1-0.1-0.1 0.2-0.2 0.2-0.2 0.2-0.1 0.1-0.3 0.3 0 0.3 0 0.3-0.3 0.2 0.4 0.2 0.1 0.2-0.1 0.3-0.3 0.2-0.2 0-0.2 0.1-0.1 0.1-0.1 0.1-0.1 0.2-0.2 0.2-0.1 0.1-0.1 0.2-0.3 0.5-0.4 0.4-0.3 0.5-0.3 0.5-0.1 0.1 0 0.1-0.1 0.1-0.2 0.5-0.4 0.2-0.5-0.1-0.5-0.1-0.2 0.6-0.3 0.7-0.2 0.7 0.1 0.6 0.1 0.1 0.1 0.1 0 0.1 0 0.1-0.2 0.2-0.1 0.3 0 0.3 0.3 0.1 0.1 0.1 0.1 0 0.1 0.1 0 0.1 0 0.1 0 0.5 0 0.6 0.2 0.5 0.2 0.4 0.1 0.2 0.1 0 0.1 0.1 0.1 0.1-0.2 0.3-0.3 0.3-0.3 0.3-0.3 0.2-0.3 0.5 0.1 0.5 0.3 0.4 0.4 0.4-0.5 0.3-0.3 0.2-0.1 0.4 0.2 0.5 0.2 0.2 0.1 0.2 0.2 0.1 0.2 0.2 0.1 0.8-0.2 0.5-0.4 0.4-0.7 0.3-0.3 0.1-0.3 0.1-0.3 0.1-0.3 0.2-0.4 0.3-0.3 0.5-0.2 0.5-0.2 0.5-0.3 0.4-0.4 0.2-0.3 0.2-0.3 0.3 0 0.1 0 0.1 0 0.8-0.2 0.9-0.2 0.9-0.2 0.9-0.1 0.1-0.4 0.1-0.7 0-0.7-0.2-0.4-0.3-0.2-0.3-0.1-0.3-0.2-0.2-0.4-0.1-0.5-0.6-0.5-0.6-0.6-0.2-0.7 0.6-0.2 0.2-0.3 0.2-0.3 0.3-0.2 0.2-0.3 0.3-0.3 0.1-0.2 0.3-0.2 0.3 0 0.4 0 0.3-0.1 0.3-0.3 0.3-0.5 0.5-0.3-0.1-0.3-0.3-0.3-0.4-0.5-0.4-0.4-0.1-0.5 0.1-0.6 0.1-0.2 0-0.1 0.1-0.2 0-0.1 0.1-0.6 0.2-0.6 0.1-0.6 0.2-0.6 0.3-0.6 0.1-0.5 0.2-0.6 0.1-0.6 0.1-0.1 0.2-0.1 0.1 0 0.1-0.4 0.9-0.5 0.8-0.4 0.7-0.7 0.7-0.6 0.6-0.7 0.5-0.6 0.5-0.6 0.5-0.4 0.1-0.2 0.3-0.2 0.3-0.3 0.2-0.4 0.1-0.4 0-0.4-0.1-0.3-0.3-0.2-0.2-0.2-0.3-0.2-0.3-0.3-0.2-0.3-0.6 0.2-0.7 0.3-0.8 0-0.8-0.2-0.7-0.4-0.6-0.5-0.5-0.5-0.5-0.3-0.3-0.2-0.3-0.2-0.3-0.1-0.3 0.1-0.4 0-0.3 0-0.4-0.2-0.4-0.3-0.6 0-0.6 0.3-0.5 0.3-0.7 0-0.3-0.2-0.3-0.2-0.2-0.1-0.3 0-0.5-0.1-0.3-0.2-0.1-0.4-0.1-1.2 0-1.1-0.1-1-0.3-1.1-0.4z` },
-    { id: "MXPUE", d: `M630.2 422.3l0.4-0.2 0.3-0.3 0.3-0.4 0.2-0.5 0.2-0.6 0.1-0.6 0.1-0.6 0-0.7 0-0.3-0.1-0.4 0-0.3-0.1-0.3-0.2-0.2-0.2-0.3-0.1-0.3 0.4-0.1 0.3-0.2 0.2-0.3 0-0.5 0-0.4 0.2-0.3 0.4-0.2 0.3-0.1 0.3-0.3 0-0.4-0.1-0.5 0-0.5 0.3-0.5 0.3-0.1 0.4 0 0.3 0.1 0.3 0.2 0.8 0 0.5-0.1 0.5 0.1 0.7 0.6 0.4 0.5 0 0.7 0 0.6 0 0.7 0.2 0.6 0.3 0.5 0.4 0.5 0.3 0.5-0.3 0.4-0.3 0.4-0.1 0.3 0.5 0.2 0.3 0 0.3 0 0.4-0.1 0.3 0 0.3 0.1 0.4 0.1 0.4 0.1 0.4 0.1 0.6 0.3 0.5 0.8 0.3 0.9 0 0.7 0 0.2-0.1 0.1-0.1 0.1-0.2 0.1-0.3 0.5-0.3 0.6-0.4 0.6-0.4 0.4-0.5 0.1-0.4-0.2-0.3-0.4-0.3-0.5-0.5-0.4-0.3 0.1-0.3 0.3-0.4 0.4-0.4 0.1-0.4-0.1-0.4 0-0.3 0.3 0.2 0.5 0.2 0.5 0 0.5-0.1 0.5 0 0.3 0.1 0.2 0.1 0.2 0.1 0.2-0.1 0.3-0.1 0.4-0.2 0.3-0.2 0.4 0.2 0.5 0.4 0.4 0.6 0.2 0.4 0.3 0.2 0 0.1 0.2 0.1 0.1 0.1 0.1 0 0.1 0.1 0 0 0.1 0 0.1 0.2 0.5 0.2 0.5 0.3 0.3 0.5 0 0.1 0 0.1-0.1 0.1 0 0.8-0.3 0.5 0.1 0.2 0.6 0.1 0.8 0 0.3 0.1 0.1 0.1 0.2 0.2 0.1 0.1 0 0.1 0 0.1 0 0.2-0.1 0.2-0.1 0.2-0.2 0.2-0.1 0.3-0.3 0.3-0.4 0.3-0.3 0.2-0.4 0.4-0.5 0.3-0.7 0.3-0.5 0.6-0.4 0.2 0 0.1 0 0.1 0 0.1 0 0.8-0.3 0.6 0.1 0.6 0.3 0.8 0.6 0.4 0.3 0.5 0.4 0.5 0.3 0.6 0.2 0.2 0.2 0.3 0.1 0.2 0.1 0.3 0.1 1.1 0.4 1.1 0.4 0.5 0.7-0.5 1.3-0.4 0.4-0.4 0.4-0.4 0.4-0.3 0.4-0.3 0.3-0.2 0.2-0.2 0.3-0.2 0.3-0.5 0.4-0.4 0.5-0.4 0.6-0.3 0.6-0.1 0.1 0 0.1-0.1 0.1-0.1 0.1-0.1 0.2-0.1 0.2 0 0.2 0 0.2 0 0.3 0 0.2 0 0.3 0.1 0.2 0.1 1.3-0.1 1.8-0.5 1.7-0.9 0.9-0.5 0-0.3 0.5-0.2 0.8 0 0.6 0 0.1 0 0.1 0 0.1-0.1 0.5 0.3 0.3 0.4 0.2 0.4 0.3 0 0.2-0.1 0.3 0 0.3 0.1 0.2 0.2 0.1 0.2 0.1 0.1 0.2 0.2 0.1 0.3 0.6-0.3 0.5-0.5 0.3-0.6 0.1-0.4-0.1-0.5 0.1-0.2 0.2 0.2 0.5 0.4 0.2 0.4 0 0.5 0 0.4 0.1 0.2 0.2 0.1 0.3 0.2 0.2 0.2 0.2 0.3-0.1 0.4-0.1 0.3-0.2 0.3 0.1 0.5 0.5 0.4 0.7 0.4 0.6 0.5 0.3 0.1 0 0.1 0 0.2 0 0.1 0.1 0.7 0.1 0.8 0.4 0.8 0.2 0.6-0.1 0-0.1 0.1 0 0.4-0.2 0.4-0.1 0.3 0.1 0.4 0.1 0.4 0.2 0.4 0.1 0.4 0.3 0.3 0.2 0 0.2 0 0.2-0.2 0.1-0.1 0.2-0.2 0.1-0.2 0.2-0.1 0.1-0.1 0.2-0.2 0.2-0.1 0.1-0.1 0.2-0.1 0.1-0.2 0.2-0.2 0.2-0.2 0.1-0.2 0-0.1 0-0.1 0-0.1 0-0.1-0.1-0.3 0.1-0.2 0.1-0.1 0.2-0.1 0.3-0.3 0.3-0.6-0.1-0.6-0.3-0.5-0.1-0.4 0.2-0.3 0.2-0.4 0.2-0.4 0.2-0.3 0-0.4 0.1-0.3 0-0.3 0.1-0.2 0.8 0 0.9 0.2 1 0.2 0.7 0.1 0.3 0.1 0.4 0.1 0.3 0 0.4 0 0.1 0 0.2 0 0.1 0 0.1 0 0.1 0 0.1 0 0.1 0.1 0 0 0.2 0 0.1 0 0.1 0 0.1 0.1 0.4 0.2 0.3 0.1 0.4 0.1 0.3 0 0.7-0.2 0.2-0.5 0.1-0.6 0.2-0.3 0.2-0.2 0.3-0.1 0.4-0.2 0.3-0.2 0.2-0.2 0.2-0.2 0.1-0.2 0.2-0.1 0 0 0.1-0.3 0.8 0.1 0.9 0.3 1 0.3 0.8 0.2 0.3 0.2 0.2 0.2 0.3 0.2 0.1 0.6 0.2 0.4-0.1 0.5-0.2 0.4-0.2 0.4 0 0.3 0.2 0.3 0.2 0.3 0 0.3 0.1 0.3 0 0.3 0.1 0.3 0.1 0 0.1 0.1 0.1 0.1 0.2 0.1 0.2 0 0.3 0 0.2 0.1 0.6 0.4 0.5 0.3 0.3 0.2 0.5-0.2 0.5-0.3 0.5-0.1 0.6 0.3 0.4 0.4 0.1 0.4 0 0.5-0.1 0.4 0.2 0.4-0.1 0.4-0.3 0.4-0.4 0.3-0.2 0.4-0.2 0.4 0 0.4-0.1 0.4-0.1 0.7-0.2 0.7-0.2 0.7-0.1 0.8-0.2 0.1 0 0.1 0 0.7-0.1 0.3 0.6 0 0.9 0.1 0.7 0.4 0.6 0.5 0.5 0.5 0.5 0.3 0.5-0.1 0.6-0.2 0.5-0.3 0.5-0.3 0.5-0.3 0.7-0.2 0.5-0.4 0.5-0.5 0.4-0.2 0.1-0.2 0.1-0.2 0.1-0.2 0.1-0.4 0.1-0.5 0.1-0.4 0.2-0.4 0.3-0.1 0.1-0.1 0.1-0.1 0.1-0.1 0.1-0.1 0.2-0.1 0.1-0.2 0.1-0.1 0.2-0.1 0.1-0.2 0.2-0.1 0.2-0.1 0.2-0.1 0 0 0.1-0.1 0-0.1 0.3-0.1 0.2-0.1 0.2-0.2 0.2-0.8 0.7-0.9 0-0.9-0.3-1-0.3-0.1 0-0.1 0-0.5-0.1-0.5-0.2-0.4-0.2-0.5-0.3-0.6-0.2-0.6-0.1-0.6 0.1-0.6 0.2-0.1 0-0.1 0-0.1 0.1-1.5 0.6-1.2 1-1 1.3-0.7 1.6-0.1 0.4-0.3 0.4-0.3 0.2-0.4 0.1-0.4 0-0.4-0.2-0.4-0.2-0.2-0.4-0.2-0.3-0.3-0.4-0.2-0.3-0.2-0.3-0.1-0.5 0-0.5 0-0.4-0.3-0.3-0.2-0.2-0.3-0.1-0.2-0.2-0.3-0.2-0.4-0.3-0.5-0.2-0.5-0.3-0.3-0.5-0.1-0.9 0.3-1.3 0.5-1.3 0.3-1 0-1.2-0.9 0.4-1 0.9-0.8 0.2-0.4-0.1-0.3 0.4-0.3 0.5-0.3 0.5-0.3 0.5-0.3 0.5-0.2 0.5-0.3 0.5-0.2 0.4-0.2 0.3-0.2 0.4-0.2 0.3-0.2 0.5 0.1 0.6 0.3 0.4 0.5 0.3 0.1 0.1 0.1 0.1 0.1 0 0.3 0.3 0.3 0.4 0.2 0.3 0.3 0.4 0 0.3 0.1 0.3 0 0.2 0.1 0.3-0.2 0.4-0.2 0.2-0.3 0.3-0.3 0.2-0.3 0.3-0.3 0.3-0.3 0.2-0.3 0.2-0.4 0.2-0.3 0.1-0.4 0.2-0.3 0.1-0.5 0-0.3-0.2-0.2-0.4-0.1-0.5-0.1-0.2 0-0.2-0.1-0.2 0-0.2 0-0.4-0.1-0.5-0.1-0.4-0.2-0.3-0.3-0.1-0.3 0-0.4 0.1-0.3 0.1-0.2 0-0.3 0.1-0.2 0-0.3 0.1-0.3 0-0.2 0-0.3 0-0.3 0-0.5 0-0.4 0-0.5-0.1-0.5 0-0.2 0-0.3 0-0.2 0-0.3 0-0.4 0-0.4 0.1-0.3 0.2-0.2 0.3-0.4 1-0.6 1-0.8 0.8-1 0.1-0.2-0.1-0.3-0.1-0.2-0.1-0.2-0.1-0.1 0.1-0.2 0.1-0.1 0.1-0.1 0.2-0.2 0.1-0.1 0.1-0.2 0.1-0.1 0.1-0.4-0.4-0.4-0.4-0.4-0.5-0.4-0.4-0.4-0.3-0.3-0.1-0.3 0-0.5 0.1-0.9 0.2-1 0.1-1-0.1-0.9-0.2-0.2 0-0.3-0.1-0.3-0.2-0.2-0.1-0.6-0.1-0.6-0.1-0.6-0.2-0.6-0.1-1.3-0.6-1.1-0.7-0.7-1.1-0.4-1.4-0.3-0.2-0.7-0.1-0.7-0.1-0.5-0.1-0.4-0.2-0.2-0.5-0.1-0.6 0-0.6-0.4-0.2-0.3 0.3-0.4 0.2-0.5-0.3-0.3-0.3-0.2-0.4 0-0.3 0-0.5-0.2 0.1-0.2 0-0.2 0.1-0.2 0 0-0.4-0.2-0.4-0.1-0.3-0.2-0.4 0-0.5 0-0.5 0-0.4-0.1-0.5 0.7-0.5 0.6-0.3 0.6-0.3 0.8-0.2 0.5-0.3 0.2-0.5 0.1-0.5 0.4-0.4 0.1 0 0.4-0.1 0.2-0.3 0.1-0.3 0.3-0.2 0.3-0.2 0.4-0.1 0.4 0 0.4-0.1 0.5-0.1 0.5 0.2 0.5 0.3 0.5 0.3 0.5 0.5 0.6 0.6 0.6 0.3 0.5-0.1 0.1-0.4-0.1-0.6-0.2-0.6-0.1-0.5-0.2-0.6-0.2-0.8-0.3-0.7-0.3-0.5-0.1-0.1 0-0.1-0.1-0.1-0.1-0.5 0-0.4-0.1-0.5-0.2-0.4 0-0.3-0.1-0.3 0-0.3-0.1-0.3 0.6 0.1 0.6 0.1 0.5 0 0.6 0 0.1-0.1 0.1-0.2 0-0.1 0-0.2-0.2-0.4-0.2-0.4-0.2-0.4-0.3-0.4-0.1 0 0-0.1-0.1-0.1-0.1-0.1-0.1-0.1-0.1-0.2 0-0.2 0.1-0.2 0-0.1 0-0.1 0-0.1-0.2-0.1-0.2-0.1-0.1-0.1-0.2-0.1 0.4-0.5 0.4-0.5 0.4-0.5 0.5-0.5 0.5-0.4-0.2-0.4-0.3-0.5-0.1-0.6 0.3-0.2 0.2 0.1 0.2 0 0.1-0.5 0-0.5 0-0.4 0.1-0.5 0-0.5 0-0.1 0.1-0.1 0-0.1 0-0.1 0.1-0.3 0-0.3-0.1-0.2-0.2-0.2-0.1-0.4 0-0.4 0-0.5 0-0.3 0-0.3 0.1-0.3 0-0.3 0-0.2 0-0.3 0.1-0.3 0.2-0.2 0.2-0.1 0-0.4-0.1-0.4 0-0.4-0.1-0.4 0-0.4-0.1-0.4-0.1-0.4-0.1-0.4 0-0.1 0-0.1 0-0.1-0.2-0.8-0.3-0.9-0.1-0.9 0.2-0.8 0.1-0.4 0.1-0.4 0.2-0.3 0.3-0.3 0.8 0.2 0.9 0.3 0.9 0.2 0.8-0.1 0.5-0.3 0.3-0.1 0.3 0.1 0.5 0.4 0.1 0.1 0 0.1 0 0.1 0 0.1 0 0.4 0.2 0.4 0.1 0.3 0.2 0.3 0.2 0.4 0.1 0.3 0 0.4 0.3 0.2 0.1 0 0.1 0.1 0.1 0 0.4 0.4 0.4 0.4 0.3 0.4 0.2 0.5 0.1 0.2 0.1 0.2 0.1 0.3 0.1 0.2 0.1 0.2 0.1 0.2 0.1 0.2 0.2 0.1 0.2 0.2 0.2 0.2 0.2 0.1 0.3 0.1 0 0.1 0.1 0 0.1 0.1 0.2 0.1 0.1 0.1 0.1 0.1 0.1 0 0 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0 0.1 0.1 0.2 0.1 0 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.2 0.3 0.2 0.3 0.2 0.4 0.3 0.3 0.6 0.2 0.6-0.2 0.6-0.3 0.6-0.1 0.7-0.3 0.6-0.7 0.5-0.8 0.5-0.7 0.3 0 0.2 0.1 0.3 0.1 0.2 0.2 0.1 0 0.1 0 0.1 0.1 0.1 0 0.1 0.1 0.2 0.1 0.2 0 0.2 0.1 0.1 0.1 0.7 0.3 0.6 0.3 0.7 0.1 0.6-0.3 0.2-0.2 0.3-0.3 0.2-0.2 0.2-0.2 0.2-0.5-0.4-0.5-0.4-0.5-0.3-0.6 0-0.1 0.2-0.3 0.3-0.2 0.3-0.2 0.3-0.1 0.1-0.1 0.2-0.2 0.1-0.1 0.1-0.1 0.7 0.2 0.8 0.2 0.8 0.1 0.5-0.4 0.1 0.1 0 0.1 0.1 0 0 0.1 0.7 0.4 0.9 0 0.8-0.4 0.6-0.7 0.2-0.8-0.3-0.6-0.5-0.2-0.8 0.1-0.4-0.1-0.3-0.3-0.3-0.2-0.3-0.3-0.3-0.4-0.3-0.4-0.4-0.4-0.3-0.3-0.5-0.3-0.5 0-0.5 0.2-0.5 0.3-0.5 0.2-0.2-0.4-0.1-0.6-0.2-0.4-0.2 0-0.2-0.1-0.1-0.2 0-0.3 0.1-0.3 0.2-0.1 0.3 0 0.3-0.1 0.2-0.8-0.9-0.5-1.1-0.3-0.8-0.3-0.5-0.4-0.3-0.5-0.4-0.4-0.5-0.2-0.6-0.1-0.4-0.1-0.2-0.3 0.3-0.5 0.1-0.9-0.5-0.9-0.5-0.3-0.3 0.4 0 0.6 0.1 0.3-0.1 0.3-0.5 0.2-0.4 0-0.4 0-0.3 0-0.4-0.1-0.8-1-0.7-1.2-0.7-1.3-0.7-1.1-0.2-0.7 0.1-0.7 0.4-0.7 0.5-0.7 0.1-0.1 0-0.1 0.1-0.1 0.1-0.1 0.2-0.3 0.2-0.3 0.3-0.4 0.2-0.3 0.2-0.9 0.3-0.8 0.4-0.7 0.7-0.5 0.5-0.6 0-0.5-0.3-0.5-0.3-0.5 0-0.3 0-0.3 0-0.2 0-0.3-0.4-1.2-0.7-0.3-1 0.1-1 0.5-0.3 0-0.2 0-0.2-0.2-0.1-0.2-0.3-0.2-0.2-0.3 0-0.3 0.2-0.3 0.2-0.5 0.1-0.6 0.2-0.5 0.4-0.4 0.1 0 0.1 0 0.1 0 0.2-0.1 0.4 0 0.5-0.1 0.5 0 0.3-0.2 0.2-0.4 0.3-0.4 0.2-0.3 0.2-0.4 0.3-0.5 0.6-0.4 0.7-0.3 0.6-0.3 0.1-0.2 0.2-0.2 0.2-0.2 0.1-0.2 0.2-0.2 0.2-0.2 0.2-0.2 0.2-0.3 0.1-0.1z` },
-    { id: "MXMOR", d: `M600 487.3l-0.2-1-0.6-0.7-0.7-0.7-0.3-0.8-0.1-0.3-0.1-0.2-0.2-0.2-0.2-0.2-0.2-0.3-0.1-0.4 0-0.3-0.1-0.4 0-0.3-0.2-0.2-0.2-0.1-0.2-0.1-0.8-0.1-0.5 0.4-0.4 0.6-0.2 0.7 0 0.4-0.1 0.4 0 0.4-0.2 0.3-0.6 0-0.6 0-0.6 0-0.6 0-0.2-0.3-0.1-0.6-0.1-0.5-0.6 0-0.4 0-0.3-0.2-0.3-0.3-0.3-0.4-0.2-0.3-0.2-0.4-0.2-0.4-0.2-0.3-0.6-0.2-0.1-0.5-0.2-0.5-0.5-0.1-0.6-0.2-0.1-0.4 0.2-0.6 0.2-0.5 0.1-0.1 0.2-0.9 0.2-0.9 0.2-0.9 0-0.8 0-0.1 0-0.1 0.3-0.3 0.3-0.2 0.4-0.2 0.3-0.4 0.2-0.5 0.2-0.5 0.3-0.5 0.4-0.3 0.3-0.2 0.3-0.1 0.3-0.1 0.3-0.1 0.7-0.3 0.4-0.4 0.2-0.5-0.1-0.8-0.2-0.2-0.2-0.1-0.1-0.2-0.2-0.2-0.2-0.5 0.1-0.4 0.3-0.2 0.5-0.3-0.4-0.4-0.3-0.4-0.1-0.5 0.3-0.5 0.3-0.2 0.3-0.3 0.3-0.3 0.2-0.3 0.7 0.7 0.9 0.3 1 0.2 0.9 0.1 0.3 0 0.2 0.1 0.2 0 0.2 0 0.6 0.1 0.6 0.3 0.5 0.3 0.5 0.3 0.3 0.2 0.3-0.3 0.2-0.3 0.3-0.3 0.3-0.1 0.4 0 0.4 0 0.4 0 0.4 0.1 0.5 0.1 0.5 0.1 0.4 0.1 0.1 0 0 0.1 0.1 0 0.3 0.2 0.2 0.3 0.2 0.2 0.3 0.2 0.2 0 0.2 0 0.2 0 0.1 0.2 0 0.1 0.1 0.1 0 0.1 0 0.1 0.1 0.2 0.1 0.3 0 0.3 0.1 0.2 0.1 0.1 0 0.1 0.1 0.3 0.1 0.2 0.2 0 0.2 0 0.4 0.1 0.3 0 0.3 0.1 0.4 0 0.4-0.1 0.4 0 0.3-0.2 0.2-0.3 0.1-0.4 0.3-0.3 0.4-0.2 0.4-0.1 0.1-0.1 0.1-0.1 0.1 0 0.1-0.1 0 0.5-0.1 0.5 0 0.4 0 0.5-0.1 0.5-0.2 0-0.2-0.1-0.3 0.2 0.1 0.6 0.3 0.5 0.2 0.4-0.5 0.4-0.5 0.5-0.4 0.5-0.4 0.5-0.4 0.5 0.2 0.1 0.1 0.1 0.2 0.1 0.2 0.1 0 0.1 0 0.1 0 0.1-0.1 0.2 0 0.2 0.1 0.2 0.1 0.1 0.1 0.1 0.1 0.1 0 0.1 0.1 0 0.3 0.4 0.2 0.4 0.2 0.4 0.2 0.4 0 0.2 0 0.1-0.1 0.2-0.1 0.1-0.6 0-0.5 0-0.6-0.1-0.6-0.1 0.1 0.3 0 0.3 0.1 0.3 0 0.3 0.2 0.4 0.1 0.5 0 0.4 0.1 0.5 0.1 0.1 0 0.1 0.1 0.1 0.3 0.5 0.3 0.7 0.2 0.8 0.2 0.6 0.1 0.5 0.2 0.6 0.1 0.6-0.1 0.4-0.5 0.1-0.6-0.3-0.6-0.6-0.5-0.5-0.5-0.3-0.5-0.3-0.5-0.2-0.5 0.1-0.4 0.1-0.4 0-0.4 0.1-0.3 0.2-0.3 0.2-0.1 0.3-0.2 0.3-0.4 0.1-0.1 0-0.4 0.4-0.1 0.5-0.2 0.5-0.5 0.3-0.8 0.2-0.6 0.3-0.6 0.3-0.7 0.5z` },
-    { id: "MXQUE", d: `M569.2 439.1l-0.7-0.3-0.5-0.4-0.3-0.6 0-0.8 0-0.2 0-0.2 0-0.2 0-0.2 0-1.7-0.6-1.7-1.1-1.5-1.4-0.7-0.2-0.2-0.4-0.1-0.3-0.1-0.3-0.1-0.3-0.7-0.5-0.3-0.6-0.3-0.3-0.7-0.3-0.8-0.5-0.6-0.6-0.6-0.6-0.7-0.1-0.1-0.1-0.2-0.1-0.1-0.1-0.1-0.4-1.1-0.1-1 0-1.1-0.1-1.2-0.3-0.5-0.4-0.6-0.3-0.6-0.4-0.5-0.6-1.3-0.3-1.2 0.1-1.3 0.6-1.3 0.3-0.5 0.2-0.4 0.2-0.5 0.1-0.5 0-0.6 0.1-0.5 0.1-0.5 0.4-0.4 0.3-0.6 0.4-0.7 0.4-0.5 0.6-0.1 0.4 0.6 0.1 0.6 0.2 0.6 0.9 0.3 0.6 0.1 0.5 0.1 0.6 0 0.6-0.2 0.4-0.3 0.5-0.4 0.5-0.2 0.5 0 0.1 0.1 0.1 0 0.1 0.1 0.4 0.5 0.4 0.6 0.4 0.3 0.6 0 0.3-0.1 0.2-0.3 0.1-0.3 0.2-0.2 0.3-0.1 0.3 0 0.2-0.1 0.3-0.3 0.3-0.6 0.1-0.7 0.1-0.8 0-0.7 0.1-1.1 0.1-1.1 0.2-1.1 0.4-1.1 0.4-0.6 0.7-0.4 0.8-0.3 0.7 0 0.5 0.1 0.4 0.1 0.4 0.2 0.4 0.4 0.5 0.5 0.8 0.2 0.8-0.2 0.8-0.2 0.4-0.2 0.1-0.3 0.1-0.3 0.2-0.3 0.3-0.2 0.3-0.2 0.4-0.1 0.3-0.2 0.4-0.3 0.2-0.4-0.1-0.4-0.3-0.3-0.8-0.1-0.8-0.1-0.5-0.5-0.1-0.9 0.1-0.4 0.1-0.3 0-0.2-0.1-0.5-0.1-0.4 0-0.4 0.2-0.4 0-0.4 0.3-0.9 0.4-0.9 0.5-0.8 0.8-0.3 0.4 0.2 0.4 0.2 0.4 0.2 0.2 0.3 0.2 0.3 0.2 0.1 0.2 0.1 0.2 0.2 0.2 0.3 0.1 0.4 0.2 0.4 0.3 0.2 0.2 0.1 0.3 0.3 0.2 0.2 0.3 0.2 0.3 0 0.2-0.1 0.1-0.1 0.3-0.1 0.6 0 0.8 0 0.7-0.1 0.4-0.6 0.2 0 0.2-0.1 0.2 0 0.3-0.1 0.3-0.1 0.4 0.1 0.4 0 0.3 0 0.2-0.2 0.1-0.2 0.2-0.2 0.1-0.2 0.1-0.2 0.1-0.3 0.2-0.2 0.2-0.2 0.1-0.3 0.1-0.4 0-0.4 0.2-0.3 0.2-0.1 0.1-0.1 0.2 0 0.1 0.1 0.4 0.2 0.2 0 0.2-0.1 0.3-0.2 0.3-0.3 0-0.3 0-0.3 0-0.3 0.5-0.5 0.7-0.4 0.5-0.5 0-0.7 0 0.2 0.1 0.1 0 0.2 0.1 0.1 0.2 0.8 0.2 0.7 0.2 0.8 0.2 0.7 0.3 0.8 0.2 0.8 0.3 0.8 0.4 0.7 0.2 0.4 0.2 0.6 0.2 0.5 0.1 0.4-0.1 0.6-0.1 0.6-0.1 0.6-0.2 0.6 0.6-0.1 0.5 0.1 0.5 0.3 0.4 0.4 0 0.1 0 0.3 0 0.2 0 0.2 0 0.6 0 0.7 0.1 0.7-0.3 0-0.4-0.1-0.3 0-0.2 0.2-0.2 0.1-0.2 0-0.7-0.1-0.9 0.4-1.3 1.1-0.9 0.2-0.5-0.3-1-0.6-0.6 0-0.3 0.1-0.4 0.6-0.3 0.2-0.6 0.1-0.2 0.1-0.4 0.5 0 0.4 0.7 1.2 0 0.5-0.2 0.4-0.6 0.9-0.2 0.5-0.1 1.1-0.2 0.6-0.2 0.3-0.3 0.2-1.6 1-0.6 0.9-0.3 1-0.5 2 0 0.3 0.1 0.7 0.2 0.5 0.3 0.5 0.2 0.1 0.1 0.2-0.4 0.1-0.4 0.2-0.2 0.2-0.3 0.2-0.2 0.1-0.2 0-0.2 0.1-0.2 0.1-0.1 0.2-0.1 0.2-0.1 0.2-0.1 0.2-0.2-0.1-0.1-0.1-0.1 0-0.2-0.1-0.2 0.2-0.2 0.2-0.1 0.3-0.2 0.3-0.2 0.3-0.4 0.3-0.5 0-0.4-0.1-0.1 0.1 0 0.1-1 0.1-1.1 0.4-1 0.5-1 0.4 0 0.1 0.1 0.2 0 0.2 0 0.1-0.1 0.7-0.1 0.7-0.1 0.7-0.1 0.7-0.1 0.7-0.1 0.7-0.1 0.7-0.1 0.7-0.6 0.4-0.7 0.5-0.7 0.4-0.6 0.4 0.3 0.5 0.4 0.5 0.3 0.4 0.4 0.5-0.8 0.1-0.6 0.2-0.4 0.3-0.6 0.7-0.3 0.4-0.3 0.4-0.3 0.4-0.3 0.4-0.5 0.7-0.4 0.7-0.4 0.7-0.5 0.6-0.1 0-0.1 0.1 0 0.1-0.1 0.1-0.3 0.4-0.2 0.5-0.3 0.5-0.3 0.5z` },
-    { id: "MXHID", d: `M615.4 394.2l0 0.1 0.1 0 0.1 0 0.4 0.3 0.5 0.3 0.5 0.4 0.5 0.3-0.5 0.7-0.5 0.6-0.4 0.6-0.1 0.9 0 0.2 0.1 0.2 0.1 0.2 0.2 0.1 0.6 0.2 0.5 0.5 0.4 0.7 0.5 0.6 0.3 0.2 0.4 0.3 0.4 0.1 0.4 0 0.6-0.4 0.7-0.6 0.5-0.6 0-0.6-0.1-0.5 0.4-0.1 0.3 0.3 0.2 0.5 0 0.8-0.3 0.8-0.3 0.8 0.3 0.6 0.8 0 0.6-0.5 0.5-0.3 0.6 0.9 0.3 0.1 0.2 0.1 0.2 0.3 0.2 0.3 0.2 0.2 0.2 0.1 0.3 0.1 0.1 0.3 0 0.3-0.2 0.5-0.2 0.4-0.1 0.3-0.2 0.1-0.1 0-0.1-0.1-0.1 0-0.2 0.2-0.1 0.2-0.2 0.2-0.2 0.3-0.2 0.3-0.2 0.2-0.2 0.3-0.2 0.2-0.4 0.7-0.2 1 0.1 1.1 0.2 0.8 0.1 0.2 0 0.1-0.1 0.1-0.2 0.1-0.7 0-0.7-0.2-0.6-0.4-0.6-0.4-0.4-0.2-0.3-0.1-0.4-0.1-0.4-0.1-0.4 0-0.5 0-0.4 0.2-0.2 0.4 0.1 0.4 0.2 0.2 0.2 0.3 0 0.4 0 0.3 0 0.3-0.2 0.2-0.3 0.2-0.4 0.1-0.4 0.1-0.3 0-0.4 0.1-0.3 0.5 0 0.4 0.3 0.3 0.5 0.1 0.4-0.1 0.4-0.3 0.3-0.2 0.3 0.2 0.1 0.5-0.1 0.5-0.3 0.6-0.3 0.4-0.6 0.6-0.7 0.5-0.7 0.5-0.4 0.7 0 0.5-0.1 0.6-0.1 0.6-0.2 0.5-0.2 0.3-0.3 0.3-0.3 0.2-0.2 0.3 0.1 0.7 0.4 0.7 0.5 0.7 0.4 0.7 0.6 1.3 0.9 0.2 1-0.5 0.8-1.1 0.1-0.5 0.2-0.5 0.2-0.5 0.3-0.3 0.5 0.4 0.4 0.5 0.3 0.1 0.5-0.6 0.4-0.5 0.4-0.4 0.4-0.4 0.3-0.4 0.4-0.6 0.5-0.6 0.5-0.5 0.5-0.5 0.6-1 1-1.3 1-1 0.9-0.3 0.1 0.1 0.1 0 0 0.1 0.1 0.1 0.2 0.4 0.4 0.1 0.5 0 0.3 0.3 0 0.4-0.1 0.3 0 0.3 0 0.3 0.2 0.2 0.1 0.2 0.1 0.1 0.2 0.2 0 0.5-0.2 0.4-0.3 0.4-0.1 0.4 0 0.5 0.1 0.5 0.3 0.4 0.3 0.3-0.1 0.1-0.2 0.3-0.2 0.2-0.2 0.2-0.2 0.2-0.1 0.2-0.2 0.2-0.2 0.2-0.1 0.2-0.6 0.3-0.7 0.3-0.6 0.4-0.3 0.5-0.2 0.4-0.2 0.3-0.3 0.4-0.2 0.4-0.3 0.2-0.5 0-0.5 0.1-0.4 0-0.2 0.1-0.1 0-0.1 0-0.1 0-0.4 0.4-0.2 0.5-0.1 0.6-0.2 0.5-0.2 0.3 0 0.3 0.2 0.3 0.3 0.2 0.1 0.2 0.2 0.2 0.2 0 0.3 0 1-0.5 1-0.1 0.7 0.3 0.4 1.2 0 0.3 0 0.2 0 0.3 0 0.3 0.3 0.5 0.3 0.5 0 0.5-0.5 0.6-0.7 0.5-0.4 0.7-0.3 0.8-0.2 0.9-0.2 0.3-0.3 0.4-0.2 0.3-0.2 0.3-0.1 0.1-0.1 0.1 0 0.1-0.1 0.1-0.5 0.7-0.4 0.7-0.1 0.7 0.2 0.7 0.7 1.1 0.7 1.3 0.7 1.2 0.8 1-0.8 0.1-0.7-0.3-0.6-0.3-0.6-0.4-0.1-0.1-0.1-0.2-0.1-0.2-0.2 0-0.4 0.2-0.1 0.1 0 0.2-0.1 0.2-0.3 0.3-0.2 0.3-0.3 0.3-0.2 0.4-0.3 0.7-0.3 0.8-0.5 0.3-0.6-0.3-0.1 0 0-0.1-0.1-0.1-0.1 0-0.6-0.1-0.6-0.1-0.6 0-0.6-0.1-0.1-0.1-0.1-0.1-0.1-0.1-0.4-0.4-0.4 0.2-0.4 0.4-0.4 0.3-0.5 0-0.4-0.3-0.4-0.3-0.4 0.1-0.3 0.3-0.3 0.3-0.3 0.1-0.4-0.1-0.1 0.3-0.1 0.3-0.2 0.2-0.4 0 0.1 0 0-0.1 0-0.1 0.3-0.5 0.3-0.5 0.3-0.5 0.2-0.6 0.1-0.3 0.2-0.4 0.2-0.4 0.1-0.4 0.1-0.3-0.1-0.3-0.2-0.3-0.3-0.4-0.1-0.3-0.2-0.2-0.1-0.2-0.1-0.2-0.1-0.2-0.2-0.2-0.1-0.2-0.1-0.1-0.2-0.2-0.1-0.1-0.2-0.2-0.1-0.1-0.1-0.1-0.1-0.1-0.1-0.1-0.2-0.3-0.3-0.2-0.2 0-0.3 0.1-0.8 0.2-0.6 0-0.5-0.3-0.5-0.7-1-0.4-1.1 1.3-1.2 1.2-1.3-0.1 0-0.1-0.1-0.1 0-0.1-0.1-0.1 0.1-0.3 0-0.2 0.1-0.3 0-0.3 0.2-0.6 0.2-0.5 0.2-0.6 0.3-0.5-0.1 0-0.2-0.1-0.1 0-0.1 0 0.1-0.3 0.1-0.4 0-0.3 0-0.3-0.1-0.4-0.1-0.4-0.3-0.3-0.2-0.3-0.2-0.2-0.1 0-0.1-0.1-0.2-0.1-0.5-0.2-0.4 0-0.5 0-0.5 0.2-0.6 0.3-0.6 0.4-0.6 0.3-0.7 0.3-0.5 0-0.4 0-0.5 0.1-0.4 0.3-0.3 0.5 0 0.6 0 0.6-0.1 0.6-0.2 0.2-0.3 0.1-0.3 0-0.3 0-0.5 0.4-0.2 1-0.3 0.8-1-0.1-0.7 0.6-0.6 1-0.5 0.5-0.3-1 0-0.3 0-0.4-0.1-0.3-0.2-0.2-0.2-0.1-0.2-0.2-0.1-0.2-0.1-0.2 0.1-0.8-0.2-0.6-0.5-0.4-0.6-0.2-0.8-0.2-0.4-0.4-0.2-0.5 0.2-0.9 0.1-0.6 0.3-0.5 0.2-0.6 0.1-0.7 0-0.1-0.1 0 0-0.1-0.2-0.3-0.3-0.4-0.2-0.4-0.3-0.4-0.2-0.3-0.2-0.3-0.1-0.3-0.2-0.4-0.4-0.2-0.6 0-0.7 0-0.5 0.2-0.2 0.3-0.1 0.4-0.1 0.2-0.5-0.2-0.8-0.7-0.9-0.8-0.8-0.8-0.7-0.8-0.1-0.3-0.1-0.2-0.1-0.3-0.1-0.2-0.3-0.4-0.5-0.3-0.5-0.3-0.5-0.2 0.1-0.7 0.1-0.7 0.1-0.7 0.1-0.7 0.1-0.7 0.1-0.7 0.1-0.7 0.1-0.7 0-0.1 0-0.2-0.1-0.2 0-0.1 1-0.4 1-0.5 1.1-0.4 1-0.1 0-0.1 0.1-0.1 0.4 0.1 0.5 0 0.4-0.3 0.2-0.3 0.2-0.3 0.1-0.3 0.2-0.2 0.2-0.2 0.2 0.1 0.1 0 0.1 0.1 0.2 0.1 0.1-0.2 0.1-0.2 0.1-0.2 0.1-0.2 0.2-0.1 0.2-0.1 0.2 0 0.2-0.1 0.3-0.2 0.2-0.2 0.4-0.2 0.4-0.1-0.1-0.2-0.2-0.1-0.3-0.5-0.2-0.5-0.1-0.7 0-0.3 0.5-2 0.3-1 0.6-0.9 1.6-1 0.3-0.2 0.2-0.3 0.2-0.6 0.1-1.1 0.2-0.5 0.6-0.9 0.2-0.4 0-0.5-0.7-1.2 0-0.4 0.4-0.5 0.2-0.1 0.6-0.1 0.3-0.2 0.4-0.6 0.3-0.1 0.6 0 1 0.6 0.5 0.3 0.9-0.2 1.3-1.1 0.9-0.4 0.7 0.1 0.2 0 0.2-0.1 0.2-0.2 0.3 0 0.4 0.1 0.3 0-0.1-0.7 0-0.7 0-0.6 0-0.2 0-0.2 0-0.3 0-0.1 0.5-0.6 0.9-0.3 0.9-0.1 0.7 0.3 0.2 0.1 0.1 0.2 0.1 0.2 0.1 0.3 0.2 0.3 0 0.4 0.1 0.4 0.2 0.4 0.3 0.2 0.3 0.2 0.4 0.1 0.3 0.2 0.6 0.3 0.4 0.2 0.5 0.1 0.6-0.2 0.6-0.3 0.7-0.3 0.7-0.3 0.8-0.1 0.2 0.1 0.2 0 0.2 0.1 0.2 0.1 0.3 0 0.2 0 0.2 0 0.2-0.2 0.2-0.2 0.3-0.1 0.3 0.1 0.3 0.1 0.1-1 0.1-1.1-0.1-1.1 0-1.1-0.1-0.4 0.1-0.2 0.1-0.2 0.3-0.1 0.4-0.2 0.4-0.1 0.5-0.2 0.4-0.1z` },
-    { id: "MXGUA", d: `M512.5 425.3l0.1-0.5 0.4-1 0.6-1 0.7-0.9 0.9-0.9 0.7-0.8 0.4-1-0.3-1.3 0-0.1-0.1-0.1 0-0.1-0.1 0-0.7-0.8-0.7-0.6-0.8-0.6-0.7-0.8-0.3-0.9 0.2-1 0.4-0.9 0.5-0.9 0.1-0.1 0.1-0.2 0.1-0.2 0-0.2 0.3-0.5 0.3-0.5 0.3-0.5 0.3-0.5 0.8-1.3 0.8-1.2 0.9-1.3 1-1.1 0.2-0.3 0.1-0.2 0.1-0.3 0.1-0.3 0.3-0.5 0.4-0.2 0.4-0.3 0.4-0.3 0.2-0.3 0.2-0.4 0.2-0.4 0.2-0.3 0.4-0.3 0.6 0 0.5 0 0.5 0 0.4 0 0.4-0.2 0.4-0.2 0.3-0.2 0.8-0.7 0.7-0.6 0.6-0.8 0.5-0.9 0.1-0.6 0.1-0.6-0.1-0.6-0.1-0.6-0.6-0.9-0.7-0.9-0.5-1-0.1-1.1 0.7-1 1.2-0.8 1-0.8 0.1-1-0.4-0.6-0.4-0.7-0.5-0.6-0.2-0.8 0.2-0.7 0.5-0.7 0.7-0.7 0.5-0.5 1.2 0.5 0.9 0.1 0.8-0.4 1-0.7 0.1 0 0.1-0.1 0.1 0 0.7-0.3 0.7-0.1 0.6 0.2 0.5 0.6 0.1 0.4-0.1 0.5 0.1 0.4 0.1 0.4 0.3 0.3 0.3 0.3 0.3 0.3 0.4 0.1 1 0.2 1-0.2 1.1-0.3 1-0.1 1 0 0.9 0.1 1 0.2 0.9 0.4 0.4 0.4 0.5 0.4 0.4 0.5 0.5 0.4 1.3 1.1 1.4 1.1 1.3 1 1.4 1.1 0.5 0.5 0.6 0.5 0.6 0.5 0.7 0.5 0.9-0.1 1.1 0.1 1-0.2 0.6-0.5 0.2-0.6 0.2-0.7 0.1-0.7 0.1-0.6 0.2-0.4 0.1-0.4 0.2-0.4 0.2-0.4 0.2-0.2 0.3-0.3 0.3-0.2 0.3-0.2 0.4 0 0.2 0.1 0.1 0.2 0.3 0.2 0.3 0.1 0.3 0.1 0.3 0.1 0.3 0.2 0.5 0.2 0.6 0.3 0.5 0.2 0.5 0.2 0.4 0.2 0.3 0.2 0.3 0.1 0.4 0.1 1 0.3 0.9 0.3 1 0.3 0.9 0.3 0.1 0 0 0.1 0.1 0 0.1 0 1.1 0.9 1.1 1.2 1.2 0.9 1.2 0.1 1.1 0 0.8 0.3 0.8 0.4 0.9 0.4 0 0.4-0.2 0.4 0 0.4 0.1 0.4 0.1 0.5 0 0.2-0.1 0.3-0.1 0.4 0.1 0.9 0.5 0.5 0.8 0.1 0.8 0.1 0.3 0.3 0.1 0.4-0.2 0.4-0.4 0.3-0.3 0.2-0.4 0.1-0.3 0.2-0.3 0.2-0.2 0.3-0.1 0.3-0.1 0.3-0.4 0.2-0.8 0.2-0.8 0.2-0.8-0.2-0.5-0.5-0.4-0.4-0.4-0.2-0.4-0.1-0.5-0.1-0.7 0-0.8 0.3-0.7 0.4-0.4 0.6-0.4 1.1-0.2 1.1-0.1 1.1-0.1 1.1 0 0.7-0.1 0.8-0.1 0.7-0.3 0.6-0.3 0.3-0.2 0.1-0.3 0-0.3 0.1-0.2 0.2-0.1 0.3-0.2 0.3-0.3 0.1-0.6 0-0.4-0.3-0.4-0.6-0.4-0.5-0.1-0.1-0.1 0-0.1-0.1-0.5 0-0.5 0.2-0.5 0.4-0.4 0.3-0.6 0.2-0.6 0-0.5-0.1-0.6-0.1-0.9-0.3-0.2-0.6-0.1-0.6-0.4-0.6-0.6 0.1-0.4 0.5-0.4 0.7-0.3 0.6-0.4 0.4-0.1 0.5-0.1 0.5 0 0.6-0.1 0.5-0.2 0.5-0.2 0.4-0.3 0.5-0.6 1.3-0.1 1.3 0.3 1.2 0.6 1.3 0.4 0.5 0.3 0.6 0.4 0.6 0.3 0.5 0.1 1.2 0 1.1 0.1 1 0.4 1.1 0.1 0.1 0.1 0.1 0.1 0.2 0.1 0.1 0.6 0.7 0.6 0.6 0.5 0.6 0.3 0.8 0.3 0.7 0.6 0.3 0.5 0.3 0.3 0.7 0.3 0.1 0.3 0.1 0.4 0.1 0.2 0.2-0.5 0.5-0.3 0.3-0.2 0.4-0.2 0.5-0.1 0.3-0.3 0.4-0.3 0.4-0.2 0.2-0.2-0.1-0.2 0-0.3 0-0.1 0-0.2 0.2 0.1 0.2 0.1 0.1 0 0.1-0.1 0.2-0.2 0.3-0.1 0.3 0 0.3 0.3 0.7 0.3 1.1 0 0.9-0.5 0.4-0.7 0-0.7 0-0.7 0.1-0.6 0.2-0.4 0.3-0.2 0.6-0.2 0.4-0.4 0.2-0.3-0.2 0-0.3 0-0.3-0.1-0.4-0.4-0.1-0.7 0-0.7 0.1-0.5 0-0.5 0-0.5 0-0.5 0.1-0.5 0-0.6 0-0.3 0.1-0.1 0.3-0.1 0.6-0.7-0.1-0.5 0-0.3-0.3-0.3-0.5-0.2-0.4-0.2-0.2-0.3-0.2-0.3-0.4-0.4 0.6-0.4 0.4-0.5 0.2-0.6 0.2-0.5 0.1-0.5 0.1-0.4-0.1-0.5-0.2-0.7-0.2-0.8-0.4-0.7-0.5-0.1-0.7 0.4-0.4 0.7-0.3 0.5-0.3 0.1-0.6-0.1-0.1-0.1-0.1-0.1-0.1-0.1-0.1 0.1-0.3 0-0.2 0-0.3-0.1-0.2-0.6-0.2-0.7-0.1-0.8 0.1-0.6 0.2-0.4 0.1-0.3-0.1-0.4-0.2-0.3-0.3-0.6 0.2-0.3 0.6-0.2 0.8-0.4 0.6-0.6 0.2-0.6-0.1-0.6-0.1-0.5-0.3-0.4-0.1-0.3 0.1-0.4 0.1-0.4 0-0.2-0.1-0.2-0.1-0.2-0.1-0.2-0.1-0.3 0.1-0.2 0.1-0.3 0.2-0.3 0.1-0.8-0.5 0-0.7 0.2-0.9 0.1-0.9 0-0.2-0.1-0.2-0.1-0.2-0.1-0.1-0.1-0.2 0-0.1 0.1-0.1 0.1-0.1 0-0.2 0.1-0.2 0-0.1 0-0.3-0.1-0.2-0.3-0.1-0.1-0.1-0.1-0.3 0.3-0.4 0.5-0.3 0.6-0.3 0.2-0.4-0.1-0.5-0.6-0.4-0.6-0.1-0.5-0.1-0.4 0-0.2-0.2-0.1-0.3 0.1-0.4-0.5 0.1-1.1-0.1-0.5 0-0.3 0.1-0.6 0.3-0.2 0-1 0.1-0.2 0-0.1 0.3 0 0.3 0 0.3 0 0.3-0.1 0.3-0.3 0.4 0 0.2-0.2 0.5-0.7 0.9-0.3 0.4-0.4-0.3-0.6-0.1-1 0-0.8-0.2-0.2 0-0.3 0-0.3 0.3-0.2 0.1-0.2-0.1-0.4-0.3-0.3 0-0.3 0-0.3 0.3-0.3 0.1-0.7 0-0.3-0.2-0.2-0.3-0.3-0.8-0.1-0.1-0.1-0.1-0.1-0.1-0.3-2.8-0.2-0.7-0.4-0.3-0.5 0.2-0.3 0.8-0.4 0.2-0.3-0.3 0.1-0.6 0.5-1.2-3 0.5z` },
-    { id: "MXSLP", d: `M571.1 337.1l-0.2 0.9-0.2 0.9-0.3 1-0.2 0.9 0.5-0.4 0.7-0.7 0.7-0.4 0.5 0.1 0.1 0.6 0 0.6 0.1 0.5 0.3 0.6 0.7 0.8 0.8 0.7 0.6 0.8 0.2 1.1-0.1 0.4-0.1 0.4-0.2 0.4-0.3 0.3-0.6 0.5-0.7 0.2-0.7 0.2-0.6 0.4-0.4 0.4-0.1 0.4 0.2 0.3 0.3 0.5 0.2 0.4 0.1 0.3 0.1 0.4 0.1 0.5 0.2 0.2 0.3 0.2 0.5 0.2 0.4 0.1 0.6 0.3 0.7 0.3 0.6 0.3 0.7 0.2 1.5 0.6 1.5 0.6 1.5 0.7 1.5 0.6 0.6 0.2 0.5 0.2 0.6 0.1 0.5 0.2 0.8 0.3 0.5 0.1 0.2-0.2 0-0.9-0.1-0.4-0.1-0.5-0.1-0.4-0.1-0.5-0.1-0.3-0.1-0.1 0-0.1 0.3-0.1 0.3 0.1 0.3 0.2 0.3 0.3 0.3 0.2 0.4 0.5 0.5 0.7 0.5 0.6 0.5 0.3 0.4-0.1 0.4-0.4 0.4-0.5 0.3-0.5 0.1 0.2 0.1 0.2 0.1 0.1 0.1 0.2 0.4 0.9 0.5 0.8 0.5 0.9 0.5 0.9 0.3 0.7 0.3 0.8 0.4 0.7 0.4 0.6 0.6 0.5 0.6 0.2 0.7 0.1 0.7 0.1 0.8 0.1 0.9 0.2 0.8 0.2 0.8 0.3 0.1 0 0.1 0.1 0.1 0 0.9 0.4 0.9 0.3 0.9 0.2 1 0.2 0.6 0.1 0.7 0.1 0.8 0 0.6-0.1 0.3-0.3 0.3-0.4 0.3-0.4 0.4-0.2 0.9-0.1 0.9-0.1 0.8-0.3 0.5-0.7 0.3 0.3 0.3 0.2 0.3 0.1 0.3 0.2 0.2 0.1 0.1 0.1 0.2 0.1 0.2 0.2 0.6 0.3 0.5 0.5 0.6 0.4 0.5 0.4 0.9 0.6 0.8 0.5 0.8 0.5 0.9 0.5 0.6 0.5 0.5 0.7 0.3 0.7 0 0.9-0.4 1.2-0.6 1.2-0.6 1.2-0.7 1.1-0.2 0.4-0.2 0.5-0.1 0.5-0.2 0.5-0.2 0-0.2-0.2-0.3 0.3-0.3 0.1-0.3-0.2-0.3 0-0.4 0-0.3 0.2-0.2 0-1.1-0.1-0.3-0.1-0.1 0 0.1 0.8 0.5 0.1 0.7-0.2 0.5-0.1 0.1 0.2-0.4 0.3-0.3 0.4 0.2 0.6-0.7 0.2 0.2 0.7 0.4 0.7 0.4 0.3 1.2-0.1 0.1 0.3 0 0.4 0.1 0.3 0.2 0.2 0.5 0.1 0.1 0.4-0.2 0.5-0.1 0.2-0.3 0.4-0.4 0.3-0.7 0.4-0.1 0.1 0 0.1-0.1 0.2-0.1 0-0.2 0-0.3-0.2-0.2 0-0.3 0.2-0.2 0.2 0.1 0.2 0.2 0.3-0.4 0.4-1.1-0.2-0.4 0.4-0.2 0.8 0.1 0.5 0 0.5-0.3 0.3-0.2 0.3 0.3 0.6 0.4 0.5 0.5 0.3 0.7 0.3 0.8 0.4 0.6 0.4 0.2 0.7 0.1 0.9 0 0.6 0.1 0.6 0 0.6 0 0.5-0.4 0.1-0.5 0.2-0.4 0.1-0.4 0.2-0.3 0.1-0.1 0.2-0.1 0.2 0.1 0.4 0 1.1 0.1 1.1-0.1 1.1-0.1 1-0.3-0.1-0.3-0.1-0.3 0.1-0.2 0.2-0.2 0.2-0.2 0-0.2 0-0.3 0-0.2-0.1-0.2-0.1-0.2 0-0.2-0.1-0.8 0.1-0.7 0.3-0.7 0.3-0.6 0.3-0.6 0.2-0.5-0.1-0.4-0.2-0.6-0.3-0.3-0.2-0.4-0.1-0.3-0.2-0.3-0.2-0.2-0.4-0.1-0.4 0-0.4-0.2-0.3-0.1-0.3-0.1-0.2-0.1-0.2-0.2-0.1-0.7-0.3-0.9 0.1-0.9 0.3-0.5 0.6-0.4-0.4-0.5-0.3-0.5-0.1-0.6 0.1 0.2-0.6 0.1-0.6 0.1-0.6 0.1-0.6-0.1-0.4-0.2-0.5-0.2-0.6-0.2-0.4-0.4-0.7-0.3-0.8-0.2-0.8-0.3-0.8-0.2-0.7-0.2-0.8-0.2-0.7-0.2-0.8-0.1-0.1 0-0.2-0.1-0.1 0-0.2 0 0.7-0.5 0.5-0.7 0.4-0.5 0.5 0 0.3 0 0.3 0 0.3-0.3 0.3-0.3 0.2-0.2 0.1-0.2 0-0.4-0.2-0.1-0.1-0.2 0-0.1 0.1-0.2 0.1-0.2 0.3 0 0.4-0.1 0.4-0.1 0.3-0.2 0.2-0.2 0.2-0.1 0.3-0.1 0.2-0.1 0.2-0.2 0.2-0.1 0.2-0.2 0.2-0.3 0-0.4 0-0.4-0.1-0.3 0.1-0.3 0.1-0.2 0-0.2 0.1-0.2 0-0.4 0.6-0.7 0.1-0.8 0-0.6 0-0.3 0.1-0.1 0.1-0.2 0.1-0.3 0-0.3-0.2-0.2-0.2-0.3-0.3-0.2-0.1-0.3-0.2-0.2-0.4-0.1-0.4-0.2-0.3-0.2-0.2-0.2-0.1-0.2-0.1-0.2-0.3-0.2-0.3-0.4-0.2-0.4-0.2-0.4-0.2-0.8 0.3-0.5 0.8-0.4 0.9-0.3 0.9-0.9-0.4-0.8-0.4-0.8-0.3-1.1 0-1.2-0.1-1.2-0.9-1.1-1.2-1.1-0.9-0.1 0-0.1 0 0-0.1-0.1 0-0.9-0.3-1-0.3-0.9-0.3-1-0.3-0.4-0.1-0.3-0.1-0.3-0.2-0.4-0.2-0.5-0.2-0.5-0.2-0.6-0.3-0.5-0.2-0.3-0.2-0.3-0.1-0.3-0.1-0.3-0.1-0.3-0.2-0.1-0.2-0.2-0.1-0.4 0-0.3 0.2-0.3 0.2-0.3 0.3-0.2 0.2-0.2 0.4-0.2 0.4-0.1 0.4-0.2 0.4-0.1 0.6-0.1 0.7-0.2 0.7-0.2 0.6-0.6 0.5-1 0.2-1.1-0.1-0.9 0.1-0.7-0.5-0.6-0.5-0.6-0.5-0.5-0.5-1.4-1.1-1.3-1-1.4-1.1-1.3-1.1-0.5-0.4-0.4-0.5-0.5-0.4-0.4-0.4-0.9-0.4-1-0.2-0.9-0.1-1 0-1 0.1-1.1 0.3-1 0.2-1-0.2-0.4-0.1-0.3-0.3-0.3-0.3-0.3-0.3-0.1-0.4-0.1-0.4 0.1-0.5-0.1-0.4-0.5-0.6-0.6-0.2-0.7 0.1-0.7 0.3-0.1 0-0.1 0.1-0.1 0-1 0.7-0.8 0.4-0.9-0.1-1.2-0.5 1.2-1.6 1.2-1.6 1.2-1.6 1.2-1.6 0.2-0.4 0.4-0.4 0.2-0.5 0.1-0.4-0.1-0.9-0.1-1-0.1-1-0.1-0.9-0.3-1.1-0.3-1-0.4-1.1-0.2-1 0-0.7 0.1-0.6 0.4-0.4 0.4-0.4 0.6-0.3 0.5-0.3 0.3-0.4-0.1-0.7-0.3-0.8-0.4-0.9-0.3-0.8-0.4-0.8-0.5-0.5-0.6-0.1-0.6 0-0.7 0-1 0-1.2 0-1.3 0.1-0.8 0.6-0.4 0.9-0.4 1-0.5 0.8-1 0.2-0.2 0-0.2 0-0.2 0.1-0.2 0-0.7 0.4-0.7 0.5-0.6 0.3-0.8-0.1-0.7-0.4-0.5-0.5-0.5-0.6-0.5-0.7-0.1 0 0-0.1-0.1-0.1-0.6-1.1-0.8-1.4-0.9-1.1-1.1-0.6-0.3-0.1-0.3-0.1-0.3-0.2-0.3-0.2-1.2-1.1-1.2-1.1-1.1-1.3-0.8-1.4-0.3-0.8-0.3-0.7-0.3-0.7-0.4-0.7-0.3-0.8-0.4-0.7-0.1-0.7 0.3-0.8 0.4-0.8 0.2-0.7-0.1-0.7-0.3-0.8-0.1-0.6-0.1-0.7-0.2-0.6-0.3-0.5-0.4-0.3-0.4-0.2-0.3-0.3 0.1-0.6 0.3-0.6 0.3 0 0.5 0.1 0.5 0 0.3-0.4 0.2-0.6 0.2-0.7 0.1-0.6 0.1-0.4 0.2-0.7 0.2-0.6 0.2-0.3 0.5-0.1 0.5-0.1 0.5 0.1 0.3 0.3 0 0.5-0.1 0.5 0 0.4 0.5 0.2 0.6 0 0.6-0.3 0.6-0.3 0.5-0.3 1-0.8 0.9-0.8 0.8-0.9 0.7-1 0.7-1.1 0.9-1 0.9-0.9 1-0.7 0.5-0.1 0.5-0.1 0.4 0 0.5-0.2 0.3-0.4 0.2-0.5 0.2-0.5 0.2-0.5 0.9-0.9 1.1-0.8 1.3-0.6 1.1-0.6 1.4-1 1.2-1 1.2-1.1 1.1-1.3 0.5-0.6 0.5-0.7 0.6-0.6 0.6-0.3 0.8-0.2 0.6-0.2 0.5-0.3 0.5-0.7 1.3-2.5 1.4-2.5 1.5-2.4 1.4-2.5 0.6-1 0.7-1 0.8-0.8 1-0.6 1.1-0.6 0.5-0.8 0.3-1 0.4-1.3 1.1 1.3 1 1.5 1 1.4 1 1.4 0.5 0.6 0.5 0.6 0.5 0.6 0.4 0.6 0.2 0.9 0.1 1 0 1.1 0.1 0.9 0 1.7 0 1.7 0 1.7 0.2 1.6 0.5 1.4 0.8 1.2 1 1.1 0.9 1.1 0.2 1 0 1 0 0.9-0.3 1-0.1 1.1 0.1 1.1 0.3 1.2 0.3 1.1 0.2 0.4 0.1 0.4 0.1 0.4 0.1 0.5-0.1 0.5-0.2 0.5-0.2 0.5-0.1 0.6 0 0.4 0.2 0.5 0.2 0.4 0.1 0.5 0 0.6 0 0.5 0 0.5 0 0.6 0 0.2 0 0.2 0 0.1 0 0.2 0 0.2 0.1 0.2 0 0.2 0 0.1 0.4 0.9 0.4 0.6 0.7 0.3 0.9 0.2 0.4 0.1 0.4 0.1 0.3-0.1 0.1-0.3 0-0.4 0-0.4 0-0.4 0-0.4 1.9 0 2 0 1.9 0.1 1.9 0.3z` },
-    { id: "MXZAC", d: `M496.2 279.2l0.5-0.8 0.4-0.4 0.6-0.1 0.9-0.1 2.2-0.2 2.1-0.3 2.1-0.2 2.1-0.2 0.8-0.1 0.9-0.2 0.8-0.1 0.8 0.1 1.2 0.3 1.2 0.4 1.2 0.4 1.2 0.3 1 0.4 1.1 0.3 1 0.3 1 0.3 0.6 0.6 0.5 1 0.5 1.1 0.4 0.8 0.7 0.9 1 0.6 1.2 0.3 1.1 0 0.4 0 0.5 0.2 0.5 0.4 0.4 0.3 0.2 0.4 0.2 0.7 0 0.7 0.1 0.5-0.6-0.1-0.6-0.1-0.6-0.2-0.5-0.2 0.1 0.6 0.3 0.7 0.3 0.6 0.3 0.3 0.8 0.1 0.8 0 0.8 0.1 0.9 0 0.6 0 0.6 0.1 0.6-0.1 0.5-0.3 0.5-0.6 0.6-0.7 0.6-0.6 0.6-0.5 0 0.2 0 0.2 0 0.2 0.1 0.2 1.1-0.2 1.1-0.2 0.9 0.2 1 0.7 0.4 0.4 0.4 0.5 0.3 0.5 0.3 0.5 0.2 0.5 0.2 0.6 0.1 0.5 0.3 0.5 0.7 0.9 1.1 0.7 1.2 0.5 1 0.1 0.6-0.2 0.5-0.1 0.5-0.1 0.6 0.2 0.5 0.3 0.6 0.3 0.5 0.3 0.6 0.4-0.4 1.3-0.3 1-0.5 0.8-1.1 0.6-1 0.6-0.8 0.8-0.7 1-0.6 1-1.4 2.5-1.5 2.4-1.4 2.5-1.3 2.5-0.5 0.7-0.5 0.3-0.6 0.2-0.8 0.2-0.6 0.3-0.6 0.6-0.5 0.7-0.5 0.6-1.1 1.3-1.2 1.1-1.2 1-1.4 1-1.1 0.6-1.3 0.6-1.1 0.8-0.9 0.9-0.2 0.5-0.2 0.5-0.2 0.5-0.3 0.4-0.5 0.2-0.4 0-0.5 0.1-0.5 0.1-1 0.7-0.9 0.9-0.9 1-0.7 1.1-0.7 1-0.8 0.9-0.9 0.8-1 0.8-0.5 0.3-0.6 0.3-0.6 0.3-0.6 0-0.5-0.2 0-0.4 0.1-0.5 0-0.5-0.3-0.3-0.5-0.1-0.5 0.1-0.5 0.1-0.2 0.3-0.2 0.6-0.2 0.7-0.1 0.4-0.1 0.6-0.2 0.7-0.2 0.6-0.3 0.4-0.5 0-0.5-0.1-0.3 0-0.3 0.6-0.1 0.6 0.3 0.3 0.4 0.2 0.4 0.3 0.3 0.5 0.2 0.6 0.1 0.7 0.1 0.6 0.3 0.8 0.1 0.7-0.2 0.7-0.4 0.8-0.3 0.8 0.1 0.7 0.4 0.7 0.3 0.8 0.4 0.7 0.3 0.7 0.3 0.7 0.3 0.8 0.8 1.4 1.1 1.3 1.2 1.1 1.2 1.1 0.3 0.2 0.3 0.2 0.3 0.1 0.3 0.1 1.1 0.6 0.9 1.1 0.8 1.4 0.6 1.1 0.1 0.1 0 0.1 0.1 0 0.5 0.7 0.5 0.6 0.5 0.5 0.7 0.4 0.8 0.1 0.6-0.3 0.7-0.5 0.7-0.4 0.2 0 0.2-0.1 0.2 0 0.2 0 1-0.2 0.5-0.8 0.4-1 0.4-0.9 0.8-0.6 1.3-0.1 1.2 0 1 0 0.7 0 0.6 0 0.6 0.1 0.5 0.5 0.4 0.8 0.3 0.8 0.4 0.9 0.3 0.8 0.1 0.7-0.3 0.4-0.5 0.3-0.6 0.3-0.4 0.4-0.4 0.4-0.1 0.6 0 0.7 0.2 1 0.4 1.1 0.3 1 0.3 1.1 0.1 0.9 0.1 1 0.1 1 0.1 0.9-0.1 0.4-0.2 0.5-0.4 0.4-0.2 0.4-1.2 1.6-1.2 1.6-1.2 1.6-1.2 1.6-0.1-0.7-0.1-0.4-0.3-0.2-0.6 0.1-0.5-0.1-0.5-0.4-0.4-0.6-0.4-0.5-0.4-0.3-0.4-0.2-0.4-0.3-0.4-0.2-0.5 0-0.4 0.1-0.4 0-0.4 0.1-0.8-0.2-0.6-0.4-0.6-0.6-0.7-0.5-0.1 0-0.1-0.1-0.1 0-0.1-0.1-0.4-0.5-0.4-0.6-0.4-0.5-0.5-0.5-0.7-0.4-0.8-0.3-0.7-0.5-0.3-0.7 0-1 0.1-1.1 0-1.1-0.3-0.8-0.5-0.2-0.6 0-0.6-0.1-0.6-0.2-0.4-0.4-0.3-0.3-0.3-0.3-0.5 0.1-0.4-0.4-0.1-0.4-0.2-0.5-0.3-0.3-0.2 0-0.2 0.1-0.2 0.1-0.1 0.2-0.6 0.2-0.5-0.5-0.4-0.7-0.3-0.6-0.3-0.7-0.3-0.7-0.5-0.3-0.5 0.6-0.3 0.6-0.3 0.6-0.5 0.4-0.5-0.1-0.4 0.2-0.2 0.3-0.2 0.3-0.4 0.3-0.2 0.1-0.3-0.1-0.3 0-0.3 0-0.1 0-0.1 0-0.1 0.1-0.3 0.3-0.1 0.4-0.1 0.4-0.2 0.3-0.4 0.2-0.5 0.1-0.6 0-0.4-0.1-1.1 0-1.1 0.1-0.9 0.4-0.7 1 0.1 0.5 0.4 0.4 0.4 0.6-0.2 0.8-0.4 0.7-0.5 0.7-0.6 0.7-0.6 0.6-0.5 0.6-0.5 0.8-0.4 0.8-0.4 0.7-0.4 0.6-0.4 0.5-0.4 0.6-0.3 0.5-0.2 0.7-0.2 0.6 0 0.6 0 0.7 0.2 1.2 0.7 0.7 0.8 0.6 1 0.6-0.1 0.4 0 0.3-0.1 0.4-0.1 0.4-0.1 0.6-0.2 0.9-0.1 0.8 0.3 0.6 0.5 0.2 0.5 0.2 0.4 0.2 0.4 0.3 0.6 0.1 0.5 0 0.5 0 0.5 0.2 0.1 1.1-0.3 1.4-0.6 1.4-0.4 1.1-0.1 0.1 0 0.1-0.1 0.1-0.1 0-0.2 0.3-0.3 0.1-0.4 0.1-0.3 0.1-0.2 0.2-0.1 0.2-0.2 0.2-0.2 0.2-0.3 0.4-0.1 0.5-0.1 0.5-0.3 0.3-0.7 0.1 0-0.3 0.1-0.5 0.1-0.3-0.3-0.4-0.5 0.1-0.5 0.4-0.4 0.3-0.7 0.6-0.8 0.4-0.9 0.2-0.9 0-0.6-0.2-0.7-0.3-0.6 0.1-0.4 0.7 0.1 0.5 0 0.5 0 0.6 0 0.5 0.1 1 0.1 1.4 0 1.4-0.4 0.9-0.6 0.1-0.8-0.4-0.8-0.6-0.7 0-0.9 0.2-1.1-0.3-1.1-0.6-0.9-0.6-0.2-0.1-0.2-0.1-0.2-0.1-0.2-0.1-0.5-0.3-0.5-0.3-0.5-0.2-0.6-0.2-0.4 0-0.5 0.1-0.4 0-0.5-0.1-0.4-0.3-0.4-0.4-0.4-0.3-0.6-0.1-0.6 0.1-0.6 0.1-0.6 0-0.6-0.2-0.4-0.3-0.1-0.4-0.1-0.5-0.1-0.5-0.5-0.3-0.6 0.1-0.6 0.4-0.5 0.3-0.7 0.3-0.3 0-0.1-0.4 0.1-0.7 0-0.7 0-0.3 0.2-0.3 0.5-0.3 0.2-0.4 0.2-0.6 0.1-0.6 0-0.5-0.1-1.1-0.2-1.1-0.2-1.1-0.3-1.1 0.6 0.4 0.6 0.4 0.7 0.4 0.7 0 0.5-0.3 0.4-0.6 0.3-0.7 0.3-0.6 0.6-0.5 0.8-0.4 0.6-0.4 0.1-0.8 0-0.9 0-1.3-0.1-1.2-0.4-0.8-0.2-0.8 0.4-0.9 0.8-0.8 0.6-0.6 0.6-0.5 0.5-0.5 0.6-0.5 0.5-0.5 0.4-0.2 0.3-0.1 0.4 0 0.3 0 0.4-0.1 0.3-0.1 0.3-0.2 0.3-0.3 0.5-0.8 0.8-0.1 0.8 0.3 0.9 0.1 0.5-0.1 0.5-0.2 0.4-0.4 0.2-0.5 0.3-0.8 0.2-0.5 0.4-0.3 0.8-0.3 0.1-0.3 0.1-0.4 0-0.4-0.1-0.4-0.5-0.3-0.5 0-0.3-0.2 0-0.7 0.1-0.3 0.3-0.1 0.4-0.1 0.3-0.1 0.4-0.3 0.3-0.5 0.2-0.5 0.2-0.4 0.2-0.4 0.2-0.6 0.1-0.5-0.2-0.5-0.3-0.1-0.4 0-0.3 0.2-0.4 0-0.1-0.4-0.1-0.3-0.1-0.3-0.4-0.2-0.4 0-0.6 0.1-0.6 0.2-0.5 0.2 0.1-0.4 0.1-0.6 0-0.5-0.1-0.3-0.4-0.3-0.5-0.3-0.4-0.3-0.4-0.3-0.9-0.7-1-0.8-0.9-0.8-0.9-0.8 0 0.1-0.1 0.2-0.1 0.1 0 0.1-0.4 0.5-0.2 0.6-0.3 0.5-0.3 0.6-0.1 0.4 0 0.2 0.2 0.2 0.4 0.1 0.2 0.2 0.1 0.3 0.1 0.3 0.3 0.1 0.3 0 0.3 0.2 0.1 0.2-0.1 0.3-0.2 0.2-0.2 0.1-0.3 0.2-0.2 0.2-0.3 0.7 0 0.8-0.1 0.6-0.6 0.3-0.6 0.3-0.4 0.8-0.3 0.9-0.3 0.7-0.2 0.9-0.3 0.3-0.1-0.3-0.2-0.2-0.3-0.2-0.4 0.1-1-0.2-0.3 0.1-0.4 0.5-0.3 0.2-0.4 0.2-0.7 0.2-0.5-0.2-0.5-0.6 0-0.8 0.1-0.6 0.3-1.2 0-0.6-0.1-0.6-0.1-0.6-0.2-0.5-0.2-0.5 0-0.3 0.1-0.4 0.2-0.5 0.2-1 0.5-1.6 0.5-1.4 0.7-0.5 0-0.3 0-0.3 0-0.3-0.1-0.3-0.2-0.1-0.3 0-0.3-0.1-0.2-0.1 0-0.3 0.1-0.4 0.1-0.4-0.2-0.3-0.3-0.1-0.6 0-0.6 0-0.4 0-0.2-0.2-0.1-0.2-0.2-0.1-0.3 0.3-0.6 1.2-0.4 1.5-0.3 1.6-0.2 1.4-0.4 1.7-0.4 1.7-0.4 1.7-0.4 1.6 0 0.2-0.1 0.1 0 0.2 0 0.1-0.3-0.3-0.3-0.6-0.2-0.7-0.1-0.6-0.1-0.5-0.1-0.6-0.1-0.6 0-0.6 0.1-0.6 0.2-0.5 0.3-0.4 0.2-0.6 0-0.5-0.2-0.5-0.2-0.4-0.2-0.5 0-0.4 0.3-0.3 0.4-0.2 0.2-0.3 0.2-0.4 0-0.5 0-0.5-0.1-0.4 0-0.6 0.3-0.3 0.4-0.3 0.5-0.3 0.4-0.8 0.3-1.2 0.1-1.2 0.1-1-1.5-0.3-1.4-0.3-1.5-0.3-1.5-0.3 0 1.1-0.1 1.1 0 1.1-0.1 1.2 0 0.9 0 0.7 0.2 0.6 0.6 0.6 0.7 0.5 0.3 0.4 0.1 0.6-0.2 0.8-0.1 0.7-0.1 0.6-0.2 0.7-0.1 0.6-0.1 0.3-0.2 0.2-0.2 0-0.4 0.1-1.4 0.3-1.5 0.1-1.4 0.1-1.4 0.5-1.1 0.5-1.1 0.4-1.1 0.5-1 0.6 0.1-0.5 0.2-0.4 0.1-0.4 0.1-0.4 0.4-1.6 0.5-1.6 0.4-1.6 0.5-1.6 0.4-1.2 0.4-1.2 0.3-1.3 0.2-1.3 0.1-3.3 0.1-3.4 0.1-3.4 0.1-3.4 0.1-0.7 0.2-0.5 0.4-0.2 0.6-0.3 0.3-0.4 0.1-0.8 0.1-0.8 0-0.6 0.1-1.2 0.1-1.2 0.1-1.2 0.1-1.2 0.1-0.8 0.2-0.5 0.3-0.3 0.6-0.4 0.9-0.6 0.8-0.6 0.9-0.6 0.8-0.6 0.3-0.5 0.2-0.6 0-0.6 0.1-0.6 0.4-0.9 0.6-0.4 0.6 0.2 0.7 0.7 0.5 0.2 0.4-0.5 0.3-0.8 0.1-0.6-0.4-0.8-0.7-0.5-0.7-0.5-0.3-0.8 0.2-0.4 0.3-0.4 0.2-0.4 0.2-0.5-0.1-0.7-0.3-0.6-0.5-0.5-0.5-0.5-0.2-0.8 0.9-0.2 0.9-0.4 0.1-1-0.2-0.8 0.1-0.8 0.1-0.7-0.3-0.6 0.3-0.5 1.1-0.6 1.2-0.5 0.7-0.4 0.2 0 0.2-0.1 0.3-0.1 0.2-0.1 0.9-0.6 0.6-0.7 0.5-0.8 0.6-1 0.2-0.4 0.2-0.4 0.2-0.4 0.4-0.3 0.4-0.1 0.6 0 0.4-0.2 0.2-0.4-0.1-0.5 0.2-0.4 0.4-0.3 0.4-0.1 0.5 0 0.6 0.1 0.6-0.1 0.5-0.3 0.2-0.4 0.1-0.5 0-0.6 0.1-0.5 0.8-0.8 1.2-0.6 1.3-0.4 1.1-0.3 2.5 0.6 2.6 0.5 2.5 0.5 2.6 0.6 1.3 0.2 1.3 0.2 1.2 0 1.3-0.2 1.3-0.4 1.3-0.4 1.3-0.2 1.3-0.2 0.8 0 0.3-0.2 0.1-0.4 0-0.9 0-0.5 0-0.5 0-0.6 0-0.5 0-2-0.1-2 0-2.1 0-2-0.3-1.2-0.7-1.1-1-1.1-0.8-1-0.6-0.9-0.6-0.9-0.5-0.9-0.5-1z` },
-    { id: "MXAGU", d: `M519.8 375.1l-0.1 0.1-0.1 0.1 0 0.1-0.1 0.1-0.5 0.9-0.5 0.6-0.7 0.5-0.9 0.3-0.6 0.3-0.4 0.5-0.5 0.5-0.8 0.3-0.7 0.4-0.2 0.7-0.1 0.8-0.2 0.9-0.3 0.6-0.6 0.3-0.6 0.2-0.7 0.3-0.7 0.5-0.5 0.6-0.6 0.5-0.7 0.4-0.8 0.2-0.8 0.1-0.8-0.1-0.8-0.1-0.9-0.2-0.9-0.1-0.9-0.2-0.9-0.1-1.3-0.4-1.1-0.6-1.1-0.8-1.1-0.6-0.9-0.2-1 0.2-1 0.4-0.9 0.3-1-0.6-0.8-0.6-0.7-0.7-0.2-1.2 0-0.7 0-0.6 0.2-0.6 0.2-0.7 0.3-0.5 0.4-0.6 0.4-0.5 0.4-0.6 0.4-0.7 0.4-0.8 0.5-0.8 0.5-0.6 0.6-0.6 0.6-0.7 0.5-0.7 0.4-0.7 0.2-0.8-0.4-0.6-0.4-0.4-0.1-0.5 0.7-1 0.9-0.4 1.1-0.1 1.1 0 0.4 0.1 0.6 0 0.5-0.1 0.4-0.2 0.2-0.3 0.1-0.4 0.1-0.4 0.3-0.3 0.1-0.1 0.1 0 0.1 0 0.3 0 0.3 0 0.3 0.1 0.2-0.1 0.4-0.3 0.2-0.3 0.2-0.3 0.4-0.2 0.5 0.1 0.5-0.4 0.3-0.6 0.3-0.6 0.5-0.6 0.5 0.3 0.3 0.7 0.3 0.7 0.3 0.6 0.4 0.7 0.5 0.5 0.6-0.2 0.1-0.2 0.2-0.1 0.2-0.1 0.2 0 0.3 0.3 0.2 0.5 0.1 0.4 0.4 0.4 0.5-0.1 0.3 0.3 0.3 0.3 0.4 0.4 0.6 0.2 0.6 0.1 0.6 0 0.5 0.2 0.3 0.8 0 1.1-0.1 1.1 0 1 0.3 0.7 0.7 0.5 0.8 0.3 0.7 0.4 0.5 0.5 0.4 0.5 0.4 0.6 0.4 0.5z` },
-    { id: "MXDUR", d: `M373.6 261.4l0.8 0.1 0.9 0 0.8 0.1 0.8 0.1 0.5 0.1 0.7 0.2 0.6 0 0.6 0 0.5-0.4 0.6-0.5 0.5-0.6 0.5-0.5 0.6-0.4 0.5-0.5 0.5-0.5 0.6-0.5 0.1-0.1 0.1-0.1 0.2-0.1 0.1-0.1 0.4-0.4 0.4-0.3 0.2-0.4 0.1-0.6 0.1-0.9 0-0.8 0.1-0.9 0-0.9 0-1.2 0.1-1.1 0.3-1 0.9-0.5 0.6 0 0.5 0.1 0.5-0.1 0.4-0.4 0.4-0.6 0.2-0.6 0.2-0.7 0.2-0.7 0.1-1.1-0.2-1.2-0.5-1.1-0.4-1-0.4-1-0.3-1 0.1-0.9 0.9-0.7 1.2-0.3 1.3-0.4 1.2-0.4 1.3-0.4 0.6-0.2 0.3-0.3 0.1-0.4-0.1-0.7-0.2-0.6-0.2-0.7-0.2-0.6-0.2-0.7 0.1-0.5 0.4-0.4 0.6-0.5 0.4-0.3 0.2-0.2 0-0.5 0.1-0.4 0-0.4 0-0.8 0-0.9 0.1-0.9 0.4-0.7 0.4-0.2 0.4 0.2 0.4 0.5 0.3 0.4 0.3-0.6 0.3-0.6 0.3-0.6 0.3-0.6 0.1-0.3 0.2-0.2 0.2-0.2 0.1-0.3 0.5 0.4 0.4 0.3 0.4 0.3 0.5 0.4 1.1 0.8 1.1 1 1.1 0.8 1.2 0.7 0.8 0 0.7 0.1 0.8 0 0.7-0.2 0.7-0.1 0.5 0.5 0.4 0.7 0.4 0.7 0.6 0.6 0.5 0.6 0.5 0.5 0.7 0.5 0.8 0.4 0.8 0.5 0.8 0.4 0.8 0.5 0.8 0.5 0.9 0.4 0.8 0.5 0.8 0.4 0.6-0.1 0.8-0.4 0.9-0.5 0.5-0.3 0.9-0.4 0.8-0.4 0.8-0.4 0.8-0.5 0.4 0.4 0.6 0.8 0.7 1 0.4 0.5 0.5 0.3 0.3-0.4 0.4-0.6 0.4-0.4 0.6-0.1 0.7 0.1 0.7 0.1 0.7 0.1 1.7 0.4 1.6 0.5 1.6 0.8 1.4 1.1 1 0.9 1.2 1 1.1 0.3 1.1-1 1.3-1.7 1.3-1.8 1.3-1.7 1.3-1.8 1-1.4 0.9-1.5 1.1-1.3 1.2-1.1 1.1-0.4 1.1-0.1 1.2-0.1 1.1 0 0.7-0.1 0.7 0.1 0.6 0.2 0.7 0.3 2.3 0.9 2.2 0.9 2.3 1 2.2 0.9 0.4 0.3 0.3 0.3 0.4 0.3 0.3 0.4 1.2 1 1.1 1 1.2 1 1.1 1 1.3 1 1.4 1.3 1.2 1.4 0.4 1.6-0.3 1.6-0.7 1.5-0.7 1.4-0.5 1.6-0.1 1.6 0.1 1.6 0.1 1.7 0.2 1.6 0.1 0.9 0.1 0.9 0.1 1 0.1 0.9 0 0.2 0 0.1 0 0.2 0 0.2 0.1 0.7 0 1 0 0.9-0.4 0.5-0.5 0.3-0.3 0.4-0.1 0.4-0.3 0.5-0.3 0.3-0.2 0.3-0.3 0.3-0.2 0.4-0.3 0.2-0.3 0.1-0.3 0.2-0.3 0.2-0.4 0.3-0.4 0.3-0.3 0.4-0.1 0.5 0 0.7 0.3 0.5 0.3 0.5 0.5 0.4 0.3 0.3 0.3 0.3 0.2 0.4 0.1 0.3-0.2 0.2-0.3 0.1-0.4 0.1-0.2 0.1-0.5 0.8-0.5 0.8-0.2 0.8-0.2 0.9 0.1 0.5 0.2 0.4 0.4 0.3 0.4 0.4 0.6 0.5 0.4 0.5 0.4 0.6 0.3 0.8 0.7 1 1.1 0.7 1.2 0.7 0.9 0.7 0.5 1 0.1 1.3 0 1.2 0.1 1.3 0.7 1.1 1.2 0.8 1.3 0.5 1.2 0.3 1.2 0.2 1.3 0.3 1.2 0.5 1.1 0.5 0.6 0.4 0.7 0.5 0.6 0.5 0.6 0.5 0.1-1.3 0-1.4 0-1.3 0.1-1.4 0.6-0.1 0.7-0.7 0.6-0.9 0.4-0.6 0.6-0.9 0.7-0.8 0.6-0.8 0.7-0.9 0.5 1 0.5 0.9 0.6 0.9 0.6 0.9 0.8 1 1 1.1 0.7 1.1 0.3 1.2 0 2 0 2.1 0.1 2 0 2 0 0.5 0 0.6 0 0.5 0 0.5 0 0.9-0.1 0.4-0.3 0.2-0.8 0-1.3 0.2-1.3 0.2-1.3 0.4-1.3 0.4-1.3 0.2-1.2 0-1.3-0.2-1.3-0.2-2.6-0.6-2.5-0.5-2.6-0.5-2.5-0.6-1.1 0.3-1.3 0.4-1.2 0.6-0.8 0.8-0.1 0.5 0 0.6-0.1 0.5-0.2 0.4-0.5 0.3-0.6 0.1-0.6-0.1-0.5 0-0.4 0.1-0.4 0.3-0.2 0.4 0.1 0.5-0.2 0.4-0.4 0.2-0.6 0-0.4 0.1-0.4 0.3-0.2 0.4-0.2 0.4-0.2 0.4-0.6 1-0.5 0.8-0.6 0.7-0.9 0.6-0.2 0.1-0.3 0.1-0.2 0.1-0.2 0-0.7 0.4-1.2 0.5-1.1 0.6-0.3 0.5 0.3 0.6-0.1 0.7-0.1 0.8 0.2 0.8-0.1 1-0.9 0.4-0.9 0.2 0.2 0.8 0.5 0.5 0.5 0.5 0.3 0.6 0.1 0.7-0.2 0.5-0.2 0.4-0.3 0.4-0.2 0.4 0.3 0.8 0.7 0.5 0.7 0.5 0.4 0.8-0.1 0.6-0.3 0.8-0.4 0.5-0.5-0.2-0.7-0.7-0.6-0.2-0.6 0.4-0.4 0.9-0.1 0.6 0 0.6-0.2 0.6-0.3 0.5-0.8 0.6-0.9 0.6-0.8 0.6-0.9 0.6-0.6 0.4-0.3 0.3-0.2 0.5-0.1 0.8-0.1 1.2-0.1 1.2-0.1 1.2-0.1 1.2 0 0.6-0.1 0.8-0.1 0.8-0.3 0.4-0.6 0.3-0.4 0.2-0.2 0.5-0.1 0.7-0.1 3.4-0.1 3.4-0.1 3.4-0.1 3.3-0.2 1.3-0.3 1.3-0.4 1.2-0.4 1.2-0.5 1.6-0.4 1.6-0.5 1.6-0.4 1.6-0.2-1.2-0.1-1.2-0.2-1.3-0.2-1.2-1 0.5-1 0.4-1 0.5-1.1 0.4-0.7 0.1-0.9-0.4-0.8-0.5-0.7-0.5-0.8-0.7-0.4-0.9-0.3-1-0.2-1.1-0.1-0.4-0.1-0.4-0.2-0.4-0.2-0.3-0.6-0.4-1-0.6-0.9-0.5-0.6 0-0.9 0.6-0.8 0.7-0.9 0.6-0.8 0.6-0.6 0.6-0.8 0.6-0.8 0.5-0.8-0.1-0.1-0.6 0-1 0.1-0.9 0-0.8 0.1-0.8 0.2-0.5 0.3-0.4 0.5-0.6 0.4-0.4 0.7-0.6 0.7-0.7 0.2-0.4-0.3-0.8-0.3-0.8-0.4-0.8-0.3-0.9-0.3-0.6-0.3-0.4-0.4-0.3-0.6-0.3-1.3-0.7-1.4-0.8-1.3-0.6-1.4-0.5-1.5-0.2-1.5 0-1.5 0.1-1.5 0-0.1-0.9 0-0.9 0-0.9 0-0.9-1.2 0.1-1.2 0.1-1.2-0.1-1-0.5-0.4-0.4-0.5-0.6-0.5-0.5-0.4-0.3-0.2-0.2-0.2-0.3 0-0.3-0.2-0.2-0.4-0.4-0.4-0.2-0.4-0.3-0.3-0.5-0.1-0.3 0.1-0.4 0-0.4-0.1-0.3-0.3-0.4-0.2-0.4-0.1-0.3 0.1-0.5 0.1-0.3 0-0.3-0.1-0.3-0.2-0.3-0.2-0.2 0-0.3 0.1-0.2 0.1-0.3-0.3-0.7-0.5-0.7-0.5-0.6-0.1-0.7-0.5-0.1-0.4-0.1-0.5-0.1-0.4-0.2-0.5-0.5-0.3-0.6-0.1-0.7-0.2-0.7-0.2-0.6-0.3-0.5-0.3-0.5-0.1-0.5-0.1-0.6-0.1-0.5 0-0.5-0.1-0.6-0.2-1.2-0.2-1.3 0-1.2 0.1-1.2 0.4-1 0.5-0.9 0.4-1 0.3-1-0.7 0.2-0.7 0.2-0.6-0.2-0.5-0.5-0.4-0.8-0.4-0.8-0.3-0.8-0.3-0.8-0.3-0.8-0.4-1-0.4-0.9-0.5-0.7-0.7-0.7-0.7-0.6-0.7-0.7-0.8-0.6-0.2-0.2-0.3-0.3-0.4-0.1-0.3-0.2-1.2-0.2-1 0.2-1.1 0.5-0.9 0.8-0.4 0.4-0.3 0.5-0.3 0.4-0.3 0.4-0.5 0.2-0.5 0-0.4 0-0.5 0-0.6 0.1-0.5-0.1-0.4-0.2-0.6-0.4-0.5-0.4-0.5-0.5-0.5-0.5-0.5-0.5-0.3-0.4-0.1-0.5 0-0.5 0-0.5 0-0.7-0.1-0.5-0.2-0.5-0.3-0.6-0.2-0.3-0.2-0.4-0.2-0.4-0.1-0.4-0.3-0.5-0.2-0.4-0.4-0.3-0.4-0.4-0.6-1.1-0.4-1.2-0.6-1-1-0.6-0.5-0.3-0.4-0.4-0.2-0.5-0.3-0.6-0.4-0.3-0.4-0.1-0.4 0-0.5 0-0.5-0.1-0.4-0.1-0.4-0.3-0.2-0.6 0-0.4 0-0.4-0.1-0.4-0.2-0.4-0.4-0.3-0.5-0.1-0.5-0.2-0.4-0.3-0.3-0.4-0.3-0.6-0.1-0.7-0.2-0.5-0.5-1.3-0.4-1.4-0.4-1.3-0.4-1.3-0.3-1.5 0-1.5 0.2-1.5 0.2-1.5 0.2-1.3 0.3-1.5 0.3-1.4 0.6-1.2 0.6-0.6 0.5-0.5 0.5-0.5 0.3-0.7 0.3-0.6 0.5-0.5 0.5-0.5 0.4-0.5z` },
-    { id: "MXTLA", d: `M611.8 453.6l-0.1-0.4 0-0.4 0-0.4-0.1-0.4-0.9-0.2-0.4-0.4-0.3-0.5-0.2-1 0.4 0 0.3-0.1 0.4 0 0.3 0 0.4 0 0.2-0.2 0.1-0.3 0.1-0.3 0.4 0.1 0.3-0.1 0.3-0.3 0.3-0.3 0.4-0.1 0.4 0.3 0.4 0.3 0.5 0 0.4-0.3 0.4-0.4 0.4-0.2 0.4 0.4 0.1 0.1 0.1 0.1 0.1 0.1 0.6 0.1 0.6 0 0.6 0.1 0.6 0.1 0.1 0 0.1 0.1 0 0.1 0.1 0 0.6 0.3 0.5-0.3 0.3-0.8 0.3-0.7 0.2-0.4 0.3-0.3 0.2-0.3 0.3-0.3 0.1-0.2 0-0.2 0.1-0.1 0.4-0.2 0.2 0 0.1 0.2 0.1 0.2 0.1 0.1 0.6 0.4 0.6 0.3 0.7 0.3 0.8-0.1 0.4 0.1 0.3 0 0.4 0 0.4 0 0.5-0.2 0.1-0.3-0.1-0.3 0-0.6 0.3-0.4 0.5 0.3 0.5 0.9-0.1 0.9-0.3 0.5 0.2 0.3 0.4 0.1 0.6 0.1 0.5 0.2 0.4 0.4 0.3 0.5 0.5 0.4 0.8 0.3 1.1 0.3 0.9 0.5-0.2 0.8-0.3 0.1-0.3 0-0.2 0.1-0.1 0.3 0 0.3 0.1 0.2 0.2 0.1 0.2 0 0.2 0.4 0.1 0.6 0.2 0.4 0.5-0.2 0.5-0.3 0.5-0.2 0.5 0 0.5 0.3 0.3 0.3 0.4 0.4 0.3 0.4 0.3 0.4 0.3 0.3 0.3 0.2 0.3 0.3 0.4 0.1 0.8-0.1 0.5 0.2 0.3 0.6-0.2 0.8-0.6 0.7-0.8 0.4-0.9 0-0.7-0.4 0-0.1-0.1 0 0-0.1-0.1-0.1-0.5 0.4-0.8-0.1-0.8-0.2-0.7-0.2-0.1 0.1-0.1 0.1-0.2 0.2-0.1 0.1-0.3 0.1-0.3 0.2-0.3 0.2-0.2 0.3 0 0.1 0.3 0.6 0.4 0.5 0.4 0.5-0.2 0.5-0.2 0.2-0.2 0.2-0.3 0.3-0.2 0.2-0.6 0.3-0.7-0.1-0.6-0.3-0.7-0.3-0.1-0.1-0.2-0.1-0.2 0-0.2-0.1-0.1-0.1-0.1 0-0.1-0.1-0.1 0-0.1 0-0.2-0.2-0.3-0.1-0.2-0.1-0.3 0-0.5 0.7-0.5 0.8-0.6 0.7-0.7 0.3-0.6 0.1-0.6 0.3-0.6 0.2-0.6-0.2-0.3-0.3-0.2-0.4-0.2-0.3-0.2-0.3-0.1-0.1-0.1-0.1-0.1-0.1 0-0.1-0.2-0.1-0.1-0.1-0.1 0-0.1-0.1-0.1-0.1-0.1-0.1 0-0.1-0.1 0-0.1-0.1-0.1-0.1-0.2-0.1-0.1-0.1-0.1 0 0-0.1-0.3-0.1-0.2-0.1-0.2-0.2-0.2-0.2-0.2-0.1-0.1-0.2-0.1-0.2-0.1-0.2-0.1-0.2-0.1-0.3-0.1-0.2-0.1-0.2-0.2-0.5-0.3-0.4-0.4-0.4-0.4-0.4-0.1 0-0.1-0.1-0.1 0-0.3-0.2 0-0.4-0.1-0.3-0.2-0.4-0.2-0.3-0.1-0.3-0.2-0.4 0-0.4 0-0.1 0-0.1 0-0.1-0.1-0.1-0.5-0.4-0.3-0.1-0.3 0.1-0.5 0.3-0.8 0.1-0.9-0.2-0.9-0.3-0.8-0.2z` },
-    { id: "MXCMX", d: `M593.3 463.3l-0.1-0.1-0.1-0.1-0.1 0-0.1-0.2-0.2-0.4-0.2-0.5 0-0.6 0-0.5 0-0.1 0-0.1-0.1-0.1-0.1 0-0.1-0.1-0.3-0.1 0-0.3 0.1-0.3 0.2-0.2 0-0.1 0-0.1-0.1-0.1-0.1-0.1-0.1-0.6 0.2-0.7 0.3-0.7 0.2-0.6 0.5 0.1 0.5 0.1 0.4-0.2 0.2-0.5 0.1-0.1 0-0.1 0.1-0.1 0.3-0.5 0.3-0.5 0.4-0.4 0.3-0.5 0.1-0.2 0.1-0.1 0.2-0.2 0.1-0.2 0.1-0.1 0.1-0.1 0.2-0.1 0.2 0 0.3-0.2 0.1-0.3-0.1-0.2-0.4-0.2 0.3-0.2 0-0.3 0-0.3 0.3-0.3 0.1-0.1 0.2-0.2 0.2-0.2 0.1-0.2 0.1 0.1 0 0.1 0.1 0 0.1 0.1 0.2 0.2 0.2 0.2 0.1 0.2 0 0.3 0 0.1 0 0.1 0 0.4 0.2 0.3 0.2 0.3 0.3 0.2 0.1 0.2 0.1 0.2 0.1 0.3 0.2 0.2 0 0.1 0.1 0.1 0.1 0.2 0 0.1 0 0.1 0.1 0 0.2 0.3-0.1 0.3-0.2 0.2-0.3 0.2 0.1 0.1 0.1 0.2 0.1 0.1 0.1 0.1-0.1 0.1-0.1 0-0.1 0.1-0.1 0.1 0.4 0.5 0.5 0.2 0.6 0.3 0.5 0.3 0.1 0.2 0.2 0.2 0.1 0.2 0.1 0.2 0.1 0.1 0 0.1 0 0.1 0.2 0.4 0 0.4 0.1 0.4-0.1 0.4 0 0.3-0.1 0.4 0 0.3-0.1 0.4 0.2 0.5 0.2 0.4 0.3 0.5 0.1 0.5 0 0.1-0.1 0.4-0.1 0.4-0.3 0.3-0.2 0.3-0.4 0-0.4 0-0.4 0-0.3 0.1-0.3 0.3-0.2 0.3-0.3 0.3-0.3-0.2-0.5-0.3-0.5-0.3-0.6-0.3-0.6-0.1-0.2 0-0.2 0-0.2-0.1-0.3 0-0.9-0.1-1-0.2-0.9-0.3-0.7-0.7z` },
-  ];
-  const clients = ["MXBCN", "MXJAL", "MXCMX"];
-  const clientDots = [
-    { cx: 119.2, cy: 58.9,  label: "B.C."  },
-    { cx: 468.0, cy: 422.9, label: "GDL"   },
-    { cx: 597.2, cy: 460.0, label: "CDMX"  },
-  ];
-  return (
-    <div style={{ maxWidth: 840, margin: "0 auto", padding: "0 1rem" }}>
-      <svg viewBox="0 0 1000 630" xmlns="http://www.w3.org/2000/svg" style={{ width: "100%", height: "auto", display: "block", maxHeight: "500px" }}>
-        <defs>
-          <filter id="mapglow" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="3" result="blur"/>
-            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-          </filter>
-          <filter id="dotglow" x="-100%" y="-100%" width="300%" height="300%">
-            <feGaussianBlur stdDeviation="6" result="blur"/>
-            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-          </filter>
-        </defs>
-        {states.map((s) => {
-          const isClient = clients.includes(s.id);
-          return <path key={s.id} d={s.d} fill={isClient ? accent + "44" : accent + "0F"} stroke={accent} strokeWidth={isClient ? 1.5 : 0.5} strokeLinejoin="round" strokeLinecap="round" opacity={isClient ? 1 : 0.8} filter={isClient ? "url(#mapglow)" : undefined} />;
-        })}
-        {clientDots.map(({ cx, cy, label }, i) => (
-          <g key={label} filter="url(#dotglow)">
-            <circle cx={cx} cy={cy} r={12} fill="none" stroke={accent} strokeWidth={1}>
-              <animate attributeName="r" values="6;24;6" dur={`${2.4 + i * 0.6}s`} repeatCount="indefinite"/>
-              <animate attributeName="stroke-opacity" values="0.8;0;0.8" dur={`${2.4 + i * 0.6}s`} repeatCount="indefinite"/>
-            </circle>
-            <circle cx={cx} cy={cy} r={7} fill="none" stroke={accent} strokeWidth={1}>
-              <animate attributeName="r" values="3;14;3" dur={`${2.4 + i * 0.6}s`} repeatCount="indefinite" begin="0.4s"/>
-              <animate attributeName="stroke-opacity" values="1;0;1" dur={`${2.4 + i * 0.6}s`} repeatCount="indefinite" begin="0.4s"/>
-            </circle>
-            <circle cx={cx} cy={cy} r={7} fill={accent}/>
-            <rect x={cx - 30} y={cy - 24} width={60} height={17} rx={3} fill={bg} opacity={0.82}/>
-            <text x={cx} y={cy - 11} textAnchor="middle" fill={accent} fontSize="11" fontWeight="900" fontFamily="sans-serif">{label}</text>
-          </g>
+    <nav style={{
+      position: "fixed", top: 0, left: 0, right: 0, zIndex: 50,
+      backdropFilter: "blur(16px)", background: "rgba(244,244,242,0.78)",
+      borderBottom: "1px solid #0E0E0E10",
+      padding: "1.1rem clamp(1.25rem,4vw,2.5rem)",
+      display: "flex", alignItems: "center", justifyContent: "space-between",
+    }}>
+      <a href="#inicio" style={{
+        fontFamily: "'Playfair Display', serif", fontSize: "1.4rem", color: "#0E0E0E",
+        textDecoration: "none", letterSpacing: "-0.01em",
+      }}>Satori Agency</a>
+      <div className="nav-links" style={{ display: "flex", alignItems: "center", gap: "2.25rem" }}>
+        {[["#problema", c.nav.problema], ["#servicios", c.nav.servicios], ["#nosotros", c.nav.nosotros], ["#cotizar", c.nav.cotizar]].map(([href, label]) => (
+          <a key={href} href={href} style={{
+            fontSize: "0.66rem", fontWeight: 400, textTransform: "uppercase",
+            letterSpacing: "0.22em", color: "#0E0E0E", opacity: 0.72, textDecoration: "none",
+          }}>{label}</a>
         ))}
-      </svg>
-      <div style={{ display: "flex", justifyContent: "center", gap: "2.5rem", marginTop: "1.75rem", flexWrap: "wrap" }}>
-        {["Baja California", "Guadalajara", "CDMX"].map((city) => (
-          <div key={city} style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.68rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.14em", color: accent }}>
-            <div style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: accent }}/>{city}
-          </div>
-        ))}
+        <button onClick={onOpenLang} style={{
+          fontSize: "0.62rem", fontWeight: 400, letterSpacing: "0.2em", textTransform: "uppercase",
+          background: "transparent", border: "1px solid #0E0E0E20", padding: "0.4rem 0.9rem",
+          cursor: "pointer", fontFamily: "inherit", color: "#0E0E0E", opacity: 0.6, borderRadius: "999px",
+        }}>{lang === "es" ? "EN" : "ES"}</button>
+        <a href={CALENDLY} target="_blank" rel="noopener noreferrer" style={{
+          fontSize: "0.66rem", letterSpacing: "0.18em", textTransform: "uppercase",
+          color: "#F4F4F2", padding: "0.7rem 1.3rem", textDecoration: "none", borderRadius: "999px", background: "rgb(14, 14, 14)",
+        }}>{c.nav.cta}</a>
       </div>
-    </div>
+    </nav>
   );
 }
 
-function FaqItem({ q, a, t, last }: { q: string; a: string; t: typeof theme; last: boolean }) {
-  const [open, setOpen] = useState(false);
+// ---------- HERO ----------
+function Hero({ c }: { c: Content }) {
   return (
-    <div style={{ borderTop: `1px solid ${t.accent}18`, borderBottom: last ? `1px solid ${t.accent}18` : "none" }}>
-      <button onClick={() => setOpen(o => !o)} style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", padding: "1.4rem 0", background: "none", border: "none", cursor: "pointer", textAlign: "left", gap: "1rem" }}>
-        <span style={{ fontSize: "clamp(0.95rem,1.8vw,1.05rem)", fontWeight: 600, color: t.text, lineHeight: 1.4 }}>{q}</span>
-        <motion.span animate={{ rotate: open ? 45 : 0 }} transition={{ duration: 0.25 }} style={{ flexShrink: 0, fontSize: "1.4rem", color: t.accent, lineHeight: 1, display: "block" }}>+</motion.span>
-      </button>
-      <AnimatePresence initial={false}>
-        {open && (
-          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.35, ease: "easeInOut" }} style={{ overflow: "hidden" }}>
-            <p style={{ paddingBottom: "1.4rem", fontSize: "0.9rem", lineHeight: 1.8, color: t.sub, opacity: 0.9 }}>{a}</p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+    <section id="inicio" style={{
+      position: "relative", zIndex: 1,
+      padding: "9rem 1.5rem 6rem", maxWidth: "78rem", margin: "0 auto",
+    }}>
+      <div className="hero-grid" style={{
+        display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: "3rem", alignItems: "center",
+      }}>
+        <div style={{ textAlign: "left" }}>
+          <p style={{
+            fontSize: "0.6rem", letterSpacing: "0.36em", textTransform: "uppercase",
+            color: "#0E0E0E", opacity: 0.55, fontWeight: 400, marginBottom: "2rem",
+            display: "inline-flex", alignItems: "center", gap: "0.7rem",
+          }}>
+            <span style={{ width: "18px", height: "1px", background: "#A67C00", display: "inline-block" }}></span>
+            {c.hero.eyebrow}
+          </p>
+          <h1 style={{
+            fontWeight: 400,
+            fontSize: "clamp(3rem, 9vw, 7rem)", lineHeight: 0.98, letterSpacing: "-0.025em",
+            color: "#0E0E0E", margin: 0, fontFamily: "serif",
+          }}>
+            {c.hero.h1a}<br />
+            <span style={{ fontStyle: "italic", letterSpacing: "-2.4075px", fontWeight: 500, position: "relative", display: "inline-block", fontFamily: "\"DM Sans\"", fontSize: "78px" }}>
+              <span style={{ color: "rgb(140, 140, 140)" }}>{c.hero.h1b}</span>
+            </span>
+          </h1>
+          <p style={{
+            fontSize: "1.02rem", lineHeight: 1.7, color: "#0E0E0E", opacity: 0.62,
+            maxWidth: "30rem", marginTop: "2rem", fontWeight: 300,
+          }}>{c.hero.sub}</p>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem", marginTop: "2.5rem" }}>
+            <a href={CALENDLY} target="_blank" rel="noopener noreferrer" style={btnPrimary}>{c.hero.cta1}</a>
+            <a href="#servicios" style={btnGhost}>{c.hero.cta2}</a>
+          </div>
+        </div>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <Enso size={420} opacity={0.13} />
+        </div>
+      </div>
+    </section>
   );
 }
 
-function CountUp({ from, to, duration = 2, suffix = "" }: { from: number; to: number; duration?: number; suffix?: string }) {
-  const [val, setVal] = useState(from); const ref = useRef<HTMLSpanElement>(null); const started = useRef(false);
-  useEffect(() => { setVal(from); started.current = false; }, [from, to]);
-  useEffect(() => {
-    const el = ref.current; if (!el) return;
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting && !started.current) {
-        started.current = true;
-        const steps = 60; const stepTime = (duration * 1000) / steps; let step = 0;
-        const timer = setInterval(() => {
-          step++; const eased = 1 - Math.pow(1 - step / steps, 3);
-          setVal(Math.round(from + (to - from) * eased));
-          if (step >= steps) { clearInterval(timer); setVal(to); }
-        }, stepTime);
-      }
-    }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
-    observer.observe(el); return () => observer.disconnect();
-  }, [from, to, duration]);
-  return <span ref={ref}>{val}{suffix}</span>;
-}
-
-export default function Home() {
-  const [lang, setLang] = useState<"es" | "en">("es");
-  const [showPopup, setShowPopup] = useState(true);
-  const [shake, setShake] = useState(false);
-  const t = theme;
-
-  useEffect(() => {
-    const interval = setInterval(() => { setShake(true); setTimeout(() => setShake(false), 2100); }, 15000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const c = copy[lang];
-  const waLink = lang === "es" ? WHATSAPP_LINK : WHATSAPP_LINK_EN;
-  const Icons = [HandCoins, Zap, Target];
-  const shakeStyle: React.CSSProperties = shake ? { animation: "btnShake 2s ease" } : {};
-
+// ---------- PROBLEMA ----------
+function Problema({ c }: { c: Content }) {
   return (
-    <main style={{ backgroundColor: t.bg, color: t.text, minHeight: "100vh", position: "relative" }}>
-      <style>{`
-        @keyframes btnShake{0%{transform:translateX(0) rotate(0deg)}8%{transform:translateX(-6px) rotate(-5deg)}16%{transform:translateX(6px) rotate(5deg)}24%{transform:translateX(-5px) rotate(-4deg)}32%{transform:translateX(5px) rotate(4deg)}40%{transform:translateX(-4px) rotate(-3deg)}48%{transform:translateX(4px) rotate(3deg)}56%{transform:translateX(-3px) rotate(-2deg)}64%{transform:translateX(3px) rotate(2deg)}80%{transform:translateX(-1px) rotate(-1deg)}100%{transform:translateX(0) rotate(0deg)}}
-        html,body{overscroll-behavior:none;-webkit-overflow-scrolling:touch;}
-        canvas{backface-visibility:hidden;-webkit-backface-visibility:hidden;will-change:transform;}
-        @media(max-width:768px){section p:not(.no-scale),section span:not(.no-scale),section li{font-size:max(1rem,0.95em)!important;line-height:1.7!important;}section>div{text-align:center!important;}.mobile-left,.mobile-left *{text-align:left!important;}}
-      `}</style>
-
-      <MatrixBackground color={t.matrixColor}/>
-      <CursorGlow accent={t.accent}/>
-      <AnimatePresence>{showPopup && <LangPopup t={t} onSelect={l => { setLang(l); setShowPopup(false); }}/>}</AnimatePresence>
-
-      <a href={waLink} target="_blank" rel="noopener noreferrer" style={{ position: "fixed", bottom: "6rem", right: "1.5rem", zIndex: 100, display: "flex", alignItems: "center", gap: "0.5rem", padding: "0.75rem 1rem", borderRadius: 999, backgroundColor: "#25D366", color: "#000", fontWeight: 900, fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.05em", boxShadow: "0 8px 30px rgba(37,211,102,0.4)", textDecoration: "none", ...shakeStyle }}>
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        <span className="hidden md:inline">WhatsApp</span>
-      </a>
-
-      <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer" style={{ position: "fixed", bottom: "1.5rem", right: "1.5rem", zIndex: 100, display: "flex", alignItems: "center", gap: "0.5rem", padding: "0.75rem 1rem", borderRadius: 999, backgroundColor: t.accent, color: t.bg, fontWeight: 900, fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.05em", boxShadow: "0 8px 30px rgba(0,0,0,0.2)", textDecoration: "none", ...shakeStyle }}>
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
-        <span className="hidden md:inline">{c.btn_zoom}</span>
-      </a>
-
-      <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 50, backdropFilter: "blur(14px)", backgroundColor: t.navBg, borderBottom: `1px solid ${t.accent}18`, padding: "0.9rem 1.5rem", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <a href="#inicio"><Image src="/logo-satori.png" alt="SATORI" width={110} height={34} style={{ filter: t.logoFilter }}/></a>
-        <div className="hidden md:flex items-center" style={{ gap: "1.75rem" }}>
-          {([["#problema", c.nav.problema], ["#servicios", c.nav.soluciones], ["#cotizar", c.nav.cotizar]] as [string,string][]).map(([href, label]) => (
-            <motion.a key={href} href={href} whileHover={{ y: -1 }} style={{ fontSize: "0.68rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", color: t.sub, textDecoration: "none" }}>{label}</motion.a>
-          ))}
-          <a href={CALENDLY_LINK} target="_blank" style={{ padding: "0.45rem 1.3rem", backgroundColor: t.accent, color: t.bg, fontWeight: 900, fontSize: "0.68rem", textTransform: "uppercase", textDecoration: "none", borderRadius: "999px" }}>{c.nav.cta}</a>
+    <section id="problema" style={{
+      position: "relative", zIndex: 1, padding: "7rem 1.5rem", borderTop: "1px solid #0E0E0E10", fontFamily: "\"Playfair Display\"",
+    }}>
+      <div style={{ maxWidth: "62rem", margin: "0 auto" }}>
+        <div style={{ marginBottom: "4rem" }}>
+          <p style={eyebrowStyle}>{c.problema.label}</p>
+          <h2 style={h2Style}>{c.problema.h}</h2>
         </div>
-        <button onClick={() => setShowPopup(true)} className="md:hidden" style={{ display: "flex", alignItems: "center", gap: "0.25rem", padding: "0.3rem 0.8rem", border: `1px solid ${t.accent}30`, borderRadius: 999, fontSize: "0.68rem", fontWeight: 700, color: t.text, backgroundColor: `${t.accent}08`, cursor: "pointer" }}>
-          <Globe size={12}/> {lang === "es" ? "EN" : "ES"}
-        </button>
-      </nav>
-
-      <section id="inicio" style={{ paddingTop: "9rem", paddingBottom: "5rem", paddingLeft: "1.5rem", paddingRight: "1.5rem", maxWidth: "72rem", margin: "0 auto", position: "relative", zIndex: 1 }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "3rem", alignItems: "center" }} className="!grid-cols-1 md:!grid-cols-2">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
-            <div style={{ display: "inline-block", padding: "0.2rem 1rem", borderRadius: 999, border: `1px solid ${t.accent}30`, backgroundColor: `${t.accent}08`, marginBottom: "1.5rem" }}>
-              <p style={{ fontSize: "0.58rem", letterSpacing: "0.3em", textTransform: "uppercase", fontWeight: 900, color: t.accent }}>{c.badge}</p>
-            </div>
-            <h1 style={{ fontSize: "clamp(3.5rem,8vw,6rem)", fontFamily: "serif", fontWeight: 700, lineHeight: 1, marginBottom: "1rem", letterSpacing: "-0.02em" }}>
-              {c.h1a}<br/><span style={{ color: t.accent, fontStyle: "italic", fontWeight: 400 }}>{c.h1b}</span>
-            </h1>
-            <p style={{ fontSize: "1rem", marginBottom: "2.5rem", opacity: 0.65, maxWidth: "28rem", lineHeight: 1.75 }}>{c.hero_sub}</p>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem" }}>
-              <motion.a href={CALENDLY_LINK} target="_blank" whileHover={{ scale: 1.04, y: -2 }} style={{ padding: "1rem 2.2rem", backgroundColor: t.accent, color: t.bg, fontWeight: 900, textTransform: "uppercase", fontSize: "0.75rem", letterSpacing: "0.05em", textDecoration: "none", borderRadius: "999px" }}>{c.cta1}</motion.a>
-              <motion.a href="#servicios" whileHover={{ scale: 1.04, y: -2 }} style={{ padding: "1rem 2.2rem", border: `1px solid ${t.accent}`, color: t.accent, fontWeight: 700, textTransform: "uppercase", fontSize: "0.75rem", textDecoration: "none", borderRadius: "999px" }}>{c.cta2}</motion.a>
-            </div>
-          </motion.div>
-          <div style={{ display: "flex", justifyContent: "center" }}><SpinningEnso filter={t.logoFilter} opacity={0.75}/></div>
-        </div>
-      </section>
-
-      <section id="problema" style={{ padding: "6rem 1.5rem", position: "relative", zIndex: 1, overflow: "hidden", backgroundColor: `${t.card}CC`, backdropFilter: "blur(2px)" }}>
-        <div style={{ position: "absolute", right: "-2rem", top: "50%", transform: "translateY(-50%)", fontSize: "clamp(12rem,25vw,22rem)", fontFamily: "serif", fontWeight: 900, color: t.accent, opacity: 0.04, lineHeight: 1, pointerEvents: "none", userSelect: "none" }}>?</div>
-        <div style={{ maxWidth: "60rem", margin: "0 auto", position: "relative" }}>
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
-            <p style={{ fontSize: "0.82rem", textTransform: "uppercase", letterSpacing: "0.35em", color: t.accent, fontWeight: 900, marginBottom: "1rem" }}>El problema</p>
-            <h2 style={{ fontSize: "clamp(1.8rem,5.5vw,5rem)", fontFamily: "serif", lineHeight: 1.0, marginBottom: "3.5rem" }}>{c.problema_h}</h2>
-          </motion.div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
-            {c.problemas.map(({ q, desc }, i) => { const Icon = Icons[i]; return (
-              <motion.div key={i} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-60px" }} transition={{ delay: i * 0.15, duration: 0.5, ease: "easeOut" }} className="mobile-left"
-                style={{ display: "grid", gridTemplateColumns: "3rem 1fr auto", gap: "1.5rem", alignItems: "start", padding: "1.5rem", borderRadius: "1.25rem", marginBottom: "0.75rem", backgroundColor: `${t.accent}06` }}>
-                <div style={{ fontSize: "clamp(2rem,4vw,3rem)", fontFamily: "serif", fontWeight: 700, color: t.accent, opacity: 0.22, lineHeight: 1, paddingTop: "0.1rem" }}>{String(i + 1).padStart(2, "0")}</div>
-                <div>
-                  <p style={{ fontSize: "clamp(1.1rem,2.5vw,1.4rem)", fontWeight: 700, lineHeight: 1.3, marginBottom: "0.7rem" }}>{q}</p>
-                  <p style={{ fontSize: "1rem", opacity: 0.7, lineHeight: 1.75, color: t.text, maxWidth: "36rem" }}>{desc}</p>
-                </div>
-                <motion.div animate={{ y: [0, -5, 0] }} transition={{ duration: 3, repeat: Infinity, delay: i * 0.8, ease: "easeInOut" }} style={{ paddingTop: "0.2rem" }}>
-                  <Icon size={22} style={{ color: t.accent, opacity: 0.5 }}/>
-                </motion.div>
-              </motion.div>
-            );})}
-          </div>
-          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.5 }} style={{ marginTop: "3rem", display: "flex", alignItems: "center", gap: "1.5rem", flexWrap: "wrap" }}>
-            <a href={waLink} target="_blank" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", color: t.bg, fontSize: "0.72rem", textDecoration: "none", backgroundColor: t.accent, padding: "0.85rem 2rem", borderRadius: "999px" }}>{c.problema_cta}</a>
-            <span style={{ fontSize: "0.88rem", fontWeight: 800, color: t.accent, opacity: 0.8 }}>— es gratis, sin compromiso</span>
-          </motion.div>
-        </div>
-      </section>
-
-      <section style={{ padding: "5rem 1.5rem", position: "relative", zIndex: 1 }}>
-        <div style={{ maxWidth: "56rem", margin: "0 auto" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(1rem,4vw,3rem)" }}>
-            {[
-              { label: c.stats[0].label, from: 1,   to: 24, suffix: "/7", desc: lang === "es" ? "Siempre disponible" : "Always available" },
-              { label: c.stats[1].label, from: 100, to: 0,  suffix: "",   desc: "" },
-              { label: c.stats[2].label, from: 90,  to: 30, suffix: "",   desc: lang === "es" ? "días" : "days" },
-            ].map(({ label, from, to, suffix, desc }, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} whileHover={{ y: -4 }} viewport={{ once: true }} transition={{ delay: i * 0.12, duration: 0.5 }} style={{ textAlign: "center", padding: "2.5rem 1rem", cursor: "default" }}>
-                <p style={{ fontSize: "0.55rem", textTransform: "uppercase", letterSpacing: "0.25em", color: t.sub, marginBottom: "1rem", lineHeight: 1.6 }}>{label}</p>
-                <p style={{ fontSize: "clamp(3rem,6vw,5rem)", fontFamily: "serif", fontWeight: 700, color: t.accent, lineHeight: 1, marginBottom: "0.5rem" }}><CountUp from={from} to={to} duration={2.2} suffix={suffix}/></p>
-                <p style={{ fontSize: "0.65rem", opacity: 0.4, textTransform: "uppercase", letterSpacing: "0.15em", color: t.sub }}>{desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="servicios" style={{ backgroundColor: t.card, position: "relative", zIndex: 1 }}>
-        <div style={{ padding: "4rem clamp(1.5rem,5vw,4rem) 0.5rem", maxWidth: "72rem", margin: "0 auto" }}>
-          <Typewriter text={c.camino_label} style={{ fontSize: "0.82rem", textTransform: "uppercase", letterSpacing: "0.35em", color: t.accent, fontWeight: 900, display: "block", whiteSpace: "nowrap", marginBottom: "0.75rem" }}/>
-          <h2 style={{ fontSize: "clamp(2.8rem,6vw,5rem)", fontFamily: "serif", fontWeight: 700, lineHeight: 1.0, marginBottom: "1rem", textAlign: "center" }}>{c.camino_h}</h2>
-          <p style={{ fontSize: "0.88rem", opacity: 0.5, lineHeight: 1.4, color: t.sub, marginBottom: "0rem", textAlign: "center" }}>{c.camino_sub}</p>
-        </div>
-        <RutaTimeline t={t} c={c}/>
-        <ServicesBento t={t} c={c}/>
-      </section>
-
-      <section id="nosotros" style={{ padding: "5rem 1.5rem", position: "relative", zIndex: 1 }}>
-        <div style={{ maxWidth: "68rem", margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4rem", alignItems: "center" }} className="!grid-cols-1 md:!grid-cols-2">
-          <div style={{ position: "relative" }}>
-            <Image src="/rodrigo.png" alt="Rodrigo Tristán" width={500} height={600} className="object-cover" style={{ width: "100%", height: "auto" }}/>
-            <div style={{ position: "absolute", top: "-1.5rem", left: "-1.5rem", width: "5rem", height: "5rem", borderTop: `2px solid ${t.accent}`, borderLeft: `2px solid ${t.accent}` }}/>
-          </div>
-          <div>
-            <p style={{ fontSize: "0.62rem", textTransform: "uppercase", letterSpacing: "0.35em", fontWeight: 900, color: t.accent, marginBottom: "1rem" }}>{c.nosotros_label}</p>
-            <h2 style={{ fontSize: "clamp(2.2rem,4vw,3.2rem)", fontFamily: "serif", fontWeight: 700, marginBottom: "0.4rem" }}>{c.nosotros_nombre}</h2>
-            <p style={{ fontSize: "0.68rem", textTransform: "uppercase", letterSpacing: "0.2em", color: t.sub, marginBottom: "1.75rem" }}>{c.nosotros_cargo}</p>
-            <div style={{ display: "flex", flexDirection: "column", gap: "1rem", marginBottom: "1.75rem" }}>
-              <p style={{ fontSize: "1.2rem", fontStyle: "italic", fontWeight: 600, lineHeight: 1.4 }}>{c.nosotros_quote}</p>
-              <p style={{ fontSize: "0.9rem", opacity: 0.7, lineHeight: 1.8 }}>{c.nosotros_p1}</p>
-              <p style={{ fontSize: "0.9rem", opacity: 0.7, lineHeight: 1.8 }}>{c.nosotros_p2}</p>
-              <div style={{ padding: "1.25rem", border: `1px solid ${t.accent}22`, backgroundColor: `${t.accent}06`, borderRadius: "1.25rem" }}>
-                <p style={{ fontWeight: 700, fontSize: "0.78rem", color: t.accent, marginBottom: "0.4rem" }}>{c.garantia_title}</p>
-                <p style={{ fontSize: "0.8rem", opacity: 0.68, lineHeight: 1.7 }}>{c.garantia_text}</p>
+        <div style={{ display: "grid", gap: "1.25rem" }}>
+          {c.problema.items.map((it, i) => (
+            <div key={i} style={{
+              display: "grid", gridTemplateColumns: "3.5rem 1fr", gap: "1.5rem",
+              padding: "1.75rem", border: "1px solid #0E0E0E12", background: "#0E0E0E03", borderRadius: "24px",
+            }}>
+              <div style={{
+                fontFamily: "'JetBrains Mono', monospace", fontSize: "0.7rem",
+                letterSpacing: "0.15em", color: "#A67C00", opacity: 0.7, paddingTop: "0.4rem",
+              }}>{String(i + 1).padStart(2, "0")}</div>
+              <div>
+                <p style={{
+                  fontFamily: "'Playfair Display', serif",
+                  fontWeight: 400, lineHeight: 1.3, marginBottom: "0.65rem", color: "#0E0E0E", fontSize: "28px",
+                }}>{it.q}</p>
+                <p style={{ lineHeight: 1.7, color: "#0E0E0E", opacity: 0.6, fontWeight: 300, fontSize: "0.95rem" }}>{it.d}</p>
               </div>
             </div>
-            <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
-              <motion.a href={CALENDLY_LINK} target="_blank" animate={{ scale: [1, 1.05, 1] }} transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }} whileHover={{ scale: 1.1 }} style={{ padding: "0.85rem 1.75rem", backgroundColor: t.accent, color: t.bg, fontWeight: 700, fontSize: "0.78rem", textDecoration: "none", borderRadius: "999px", display: "inline-block" }}>{c.btn_zoom}</motion.a>
-              <motion.a href={`mailto:${EMAIL}`} animate={{ scale: [1, 1.04, 1] }} transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut", delay: 0.4 }} whileHover={{ scale: 1.08 }} style={{ padding: "0.85rem 1.75rem", fontWeight: 700, fontSize: "0.78rem", textDecoration: "none", borderRadius: "999px", border: `1px solid ${t.accent}40`, color: t.text, display: "inline-block", opacity: 0.75 }}>{c.btn_email}</motion.a>
+          ))}
+        </div>
+        <div style={{ marginTop: "3rem", display: "flex", alignItems: "center", gap: "1.5rem", flexWrap: "wrap" }}>
+          <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" style={btnPrimary}>{c.problema.cta} →</a>
+          <span style={{
+            fontFamily: "'JetBrains Mono', monospace", fontSize: "0.7rem", letterSpacing: "0.12em",
+            color: "#0E0E0E", opacity: 0.45,
+          }}>{c.problema.hint}</span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ---------- STATS ----------
+function Stats({ c }: { c: Content }) {
+  return (
+    <section style={{ padding: "6rem 1.5rem", borderTop: "1px solid #0E0E0E10", position: "relative", zIndex: 1 }}>
+      <div style={{ maxWidth: "62rem", margin: "0 auto" }}>
+        <div className="stats-grid" style={{
+          display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: "1px",
+          background: "#0E0E0E15",
+        }}>
+          {c.stats.map((s, i) => (
+            <div key={i} style={{
+              padding: "3rem 1.5rem", background: "#F4F4F2", textAlign: "center", position: "relative",
+            }}>
+              {i === 1 && <span style={{ position: "absolute", top: "1.5rem", left: "50%", transform: "translateX(-50%)", width: "4px", height: "4px", borderRadius: "50%", background: "#A67C00" }}></span>}
+              <p style={{
+                fontSize: "0.58rem", letterSpacing: "0.3em", textTransform: "uppercase",
+                color: "#0E0E0E", opacity: 0.5, marginBottom: "1.5rem",
+              }}>{s.label}</p>
+              <p style={{
+                fontFamily: "'Playfair Display', serif", fontSize: "clamp(3.5rem,7vw,5.5rem)",
+                fontWeight: 400, color: "#0E0E0E", lineHeight: 1, letterSpacing: "-0.03em",
+              }}>{s.n}</p>
+              <p style={{
+                fontFamily: "'JetBrains Mono', monospace", fontSize: "0.65rem",
+                letterSpacing: "0.16em", textTransform: "uppercase",
+                color: "#A67C00", opacity: 0.7, marginTop: "1.25rem",
+              }}>{s.desc}</p>
             </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ---------- RUTA ----------
+function Ruta({ c }: { c: Content }) {
+  const [hovered, setHovered] = useState<number | null>(null);
+  return (
+    <div style={{ padding: "5rem clamp(1rem,4vw,3rem) 4rem", maxWidth: "78rem", margin: "0 auto" }}>
+      <p style={{ ...eyebrowStyle, textAlign: "center", marginBottom: "3rem", fontSize: "0.66rem" }}>{c.ruta.label}</p>
+      <div className="ruta-row" style={{ position: "relative", display: "flex", alignItems: "flex-start" }}>
+        <div style={{
+          position: "absolute", top: "1.65rem", left: "10%", right: "10%", height: "1px",
+          background: "#0E0E0E20", zIndex: 0,
+        }} />
+        {c.ruta.steps.map((s, i) => {
+          const isH = hovered === i;
+          return (
+            <div key={i}
+              onMouseEnter={() => setHovered(i)} onMouseLeave={() => setHovered(null)}
+              style={{
+                flex: 1, display: "flex", flexDirection: "column", alignItems: "center",
+                textAlign: "center", padding: "0 0.5rem", position: "relative", zIndex: 1,
+                transition: "transform .35s ease",
+                transform: isH ? "translateY(-6px)" : "translateY(0)",
+              }}>
+              <div style={{
+                width: "3.4rem", height: "3.4rem", borderRadius: "50%",
+                border: `1px solid ${isH ? "#0E0E0E" : "#0E0E0E25"}`,
+                background: isH ? "#0E0E0E" : "#F4F4F2",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                marginBottom: "1.25rem", transition: "all .3s ease",
+                fontFamily: "'JetBrains Mono', monospace", fontSize: "0.68rem",
+                letterSpacing: "0.05em", color: isH ? "#F4F4F2" : "#0E0E0E", fontWeight: 400,
+              }}>{s.paso}</div>
+              <p style={{
+                fontSize: "0.66rem", textTransform: "uppercase", letterSpacing: "0.18em",
+                fontWeight: 500, color: "#0E0E0E", marginBottom: "0.5rem",
+              }}>{s.label}</p>
+              <p style={{
+                fontSize: "0.74rem", lineHeight: 1.6, color: "#0E0E0E", opacity: isH ? 0.65 : 0.4,
+                fontWeight: 300, transition: "opacity .3s",
+                maxHeight: isH ? "5rem" : "2.6rem", overflow: "hidden",
+              }}>{s.desc}</p>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// ---------- SERVICE IMAGE ----------
+function ServiceImage({ src, label, ratio }: { src: string; label: string; ratio: string }) {
+  return (
+    <div style={{
+      aspectRatio: ratio, width: "100%", overflow: "hidden",
+      background: "#EFEFEC", position: "relative", borderRadius: "24px",
+    }}>
+      <img src={src} alt={label} style={{
+        width: "100%", height: "100%", display: "block",
+        filter: "grayscale(1) sepia(0.6) hue-rotate(-15deg) saturate(1.6) contrast(1.05)",
+        objectFit: "cover",
+      }} />
+    </div>
+  );
+}
+
+// ---------- SERVICIOS ----------
+function Servicios({ c }: { c: Content }) {
+  return (
+    <section id="servicios" style={{
+      position: "relative", zIndex: 1, borderTop: "1px solid #0E0E0E10",
+      background: "#EFEFEC",
+    }}>
+      <div style={{ padding: "7rem clamp(1.5rem,5vw,3rem) 2rem", maxWidth: "78rem", margin: "0 auto" }}>
+        <p style={eyebrowStyle}>{c.servicios.eyebrow}</p>
+        <h2 style={{ ...h2Style, maxWidth: "32rem" }}>{c.servicios.h}</h2>
+        <p style={{ fontSize: "0.95rem", lineHeight: 1.7, color: "#0E0E0E", opacity: 0.55, fontWeight: 300, maxWidth: "32rem", marginTop: "1.25rem" }}>{c.servicios.sub}</p>
+      </div>
+
+      <Ruta c={c} />
+
+      <div style={{ padding: "0 clamp(1.5rem,5vw,3rem) 7rem", maxWidth: "78rem", margin: "0 auto" }}>
+        <div className="serv-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: "1.5rem" }}>
+          {c.servicios.items.map((s, i) => (
+            <div key={i} style={{
+              background: "#F4F4F2", padding: "2rem", display: "flex", flexDirection: "column",
+              border: "1px solid #0E0E0E12", borderRadius: "28px",
+            }} data-bubble>
+              <ServiceImage src={s.img} label={s.tag} ratio="4/3" />
+              <p style={{
+                fontFamily: "'JetBrains Mono', monospace", fontSize: "0.62rem",
+                letterSpacing: "0.22em", color: "#A67C00", opacity: 0.75,
+                textTransform: "uppercase", marginTop: "1.5rem", marginBottom: "0.75rem",
+              }}>{s.num} — {s.tag}</p>
+              <h3 style={{
+                fontFamily: "'Playfair Display', serif", fontSize: "1.65rem",
+                fontWeight: 400, lineHeight: 1.1, marginBottom: "0.5rem", letterSpacing: "-0.01em",
+              }}>{s.t}</h3>
+              <p style={{
+                fontSize: "0.62rem", letterSpacing: "0.18em", textTransform: "uppercase",
+                color: "#0E0E0E", opacity: 0.45, marginBottom: "1.25rem",
+              }}>{s.sub}</p>
+              <p style={{ fontSize: "0.92rem", lineHeight: 1.65, color: "#0E0E0E", opacity: 0.65, fontWeight: 300, marginBottom: "1.5rem" }}>{s.d}</p>
+              <ul style={{ listStyle: "none", padding: 0, margin: "0 0 1.75rem", display: "grid", gap: "0.55rem", flex: 1 }}>
+                {s.benefits.map((b, bi) => (
+                  <li key={bi} style={{ display: "flex", gap: "0.7rem", alignItems: "baseline" }}>
+                    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem", color: "#A67C00", opacity: 0.6 }}>—</span>
+                    <span style={{ fontSize: "0.85rem", color: "#0E0E0E", opacity: 0.78, fontWeight: 300 }}>{b}</span>
+                  </li>
+                ))}
+              </ul>
+              <a href={`https://wa.me/525625018281?text=Hola%20Rodrigo,%20me%20interesa%20${encodeURIComponent(s.t)}`} target="_blank" rel="noopener noreferrer" style={{ ...btnGhost, padding: "0.8rem 1.25rem", fontSize: "0.62rem" }}>
+                {c.servicios.cta} →
+              </a>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ---------- NOSOTROS ----------
+function Nosotros({ c }: { c: Content }) {
+  return (
+    <section id="nosotros" style={{ padding: "7rem 1.5rem", borderTop: "1px solid #0E0E0E10", position: "relative", zIndex: 1 }}>
+      <div className="nosotros-grid" style={{
+        maxWidth: "70rem", margin: "0 auto",
+        display: "grid", gridTemplateColumns: "0.85fr 1.15fr", gap: "4rem", alignItems: "center",
+      }}>
+        <div style={{ position: "relative" }}>
+          <div style={{
+            aspectRatio: "4/5", width: "100%", overflow: "visible",
+            position: "relative", display: "flex", alignItems: "flex-end", justifyContent: "center",
+          }}>
+            <img src="/assets/rodrigo.png" alt="Rodrigo" style={{
+              width: "100%", height: "100%", objectFit: "contain", objectPosition: "center bottom",
+              filter: "grayscale(1) sepia(0.6) hue-rotate(-15deg) saturate(1.6) contrast(1.05)",
+              display: "block",
+            }} />
+          </div>
+          <div style={{ position: "absolute", top: "-1.25rem", left: "-1.25rem", width: "4rem", height: "4rem", borderTop: "1px solid #0E0E0E", borderLeft: "1px solid #0E0E0E" }} />
+          <div style={{ position: "absolute", bottom: "-1.25rem", right: "-1.25rem", width: "4rem", height: "4rem", borderBottom: "1px solid #0E0E0E", borderRight: "1px solid #0E0E0E" }} />
+        </div>
+        <div>
+          <p style={eyebrowStyle}>{c.nosotros.label}</p>
+          <h2 style={{
+            fontFamily: "'Playfair Display', serif", fontSize: "clamp(2rem,3.5vw,2.8rem)",
+            fontWeight: 400, marginBottom: "0.4rem", lineHeight: 1.05, letterSpacing: "-0.015em",
+          }}>{c.nosotros.nombre}</h2>
+          <p style={{
+            fontSize: "0.62rem", letterSpacing: "0.22em", textTransform: "uppercase",
+            color: "#0E0E0E", opacity: 0.45, marginBottom: "2rem",
+          }}>{c.nosotros.cargo}</p>
+          <p style={{
+            fontFamily: "'Playfair Display', serif", fontSize: "1.6rem",
+            fontStyle: "italic", fontWeight: 400, lineHeight: 1.35, marginBottom: "1.5rem",
+            color: "#0E0E0E", letterSpacing: "-0.01em",
+          }}>&ldquo;{c.nosotros.quote}&rdquo;</p>
+          <p style={{ fontSize: "0.95rem", lineHeight: 1.75, color: "#0E0E0E", opacity: 0.7, marginBottom: "1.25rem", fontWeight: 300 }}>{c.nosotros.p1}</p>
+          <p style={{ fontSize: "0.95rem", lineHeight: 1.75, color: "#0E0E0E", opacity: 0.7, marginBottom: "2rem", fontWeight: 300 }}>{c.nosotros.p2}</p>
+          <div style={{
+            padding: "1.5rem", border: "1px solid #A67C0030", background: "#A67C0008", marginBottom: "2rem", borderRadius: "24px",
+          }}>
+            <p style={{
+              fontFamily: "'JetBrains Mono', monospace", fontSize: "0.66rem",
+              letterSpacing: "0.18em", textTransform: "uppercase", color: "#A67C00", opacity: 0.8,
+              marginBottom: "0.6rem", fontWeight: 400,
+            }}>{c.nosotros.garantia_t}</p>
+            <p style={{ fontSize: "0.88rem", lineHeight: 1.7, color: "#0E0E0E", opacity: 0.7, fontWeight: 300 }}>{c.nosotros.garantia_d}</p>
+          </div>
+          <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+            <a href={CALENDLY} target="_blank" rel="noopener noreferrer" style={btnPrimary}>{c.nosotros.cta1}</a>
+            <a href={`mailto:${EMAIL}`} style={btnGhost}>{c.nosotros.cta2}</a>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
+  );
+}
 
-      <section style={{ padding: "5rem 1.5rem", backgroundColor: t.card, position: "relative", zIndex: 1 }}>
-        <div style={{ maxWidth: "64rem", margin: "0 auto" }}>
-          <div style={{ marginBottom: "3rem", textAlign: "center" }}>
-            <p style={{ fontSize: "0.6rem", textTransform: "uppercase", letterSpacing: "0.4em", color: t.accent, fontWeight: 900, marginBottom: "0.5rem" }}>{c.reviews_label}</p>
-            <h2 style={{ fontSize: "clamp(2.4rem,4.5vw,3.8rem)", fontFamily: "serif", fontWeight: 700 }}>{c.reviews_h}</h2>
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1.5rem" }}>
-            {c.reviews.slice(0,3).map((r, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} style={{ padding: "1.75rem", backgroundColor: t.bg, border: `1px solid ${t.accent}12`, borderRadius: "1.5rem", display: "flex", flexDirection: "column", gap: "1rem", boxShadow: "0 4px 24px rgba(0,0,0,0.05)" }}>
-                <div style={{ display: "flex", gap: "0.15rem", alignItems: "center" }}>
-                  {[1,2,3,4,5].map((s) => (<span key={s} style={{ color: s <= Math.floor(r.stars) ? "#C9920A" : s - 0.5 === r.stars ? "#C9920A" : "#D1D5DB", fontSize: "0.85rem" }}>{s - 0.5 === r.stars ? "⯨" : "★"}</span>))}
-                </div>
-                <p style={{ fontSize: "0.9rem", lineHeight: 1.75, color: t.text, opacity: 0.8, fontStyle: "italic" }}>"{r.text}"</p>
-                <div style={{ marginTop: "auto" }}>
-                  <p style={{ fontWeight: 700, fontSize: "0.82rem", color: t.text }}>{r.name}</p>
-                  <p style={{ fontSize: "0.72rem", color: t.sub, opacity: 0.7 }}>{r.role}</p>
-                </div>
-              </motion.div>
+// ---------- REVIEWS ----------
+function Reviews({ c }: { c: Content }) {
+  return (
+    <section style={{ padding: "7rem 1.5rem", background: "#EFEFEC", borderTop: "1px solid #0E0E0E10", position: "relative", zIndex: 1 }}>
+      <div style={{ maxWidth: "70rem", margin: "0 auto" }}>
+        <div style={{ marginBottom: "3.5rem" }}>
+          <p style={eyebrowStyle}>{c.reviews.label}</p>
+          <h2 style={{ ...h2Style, maxWidth: "26rem" }}>{c.reviews.h}</h2>
+        </div>
+        <div className="rev-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: "1.25rem" }}>
+          {c.reviews.items.map((r, i) => (
+            <div key={i} style={{ background: "#F4F4F2", padding: "2.25rem", display: "flex", flexDirection: "column", borderRadius: "28px", border: "1px solid #0E0E0E10" }} data-bubble>
+              <div style={{ display: "flex", gap: "0.18rem", marginBottom: "1.25rem" }}>
+                {[1, 2, 3, 4, 5].map((s) => (
+                  <span key={s} style={{ color: "#A67C00", fontSize: "0.85rem", opacity: s <= r.stars ? 1 : 0.18 }}>★</span>
+                ))}
+              </div>
+              <p style={{
+                fontFamily: "'Playfair Display', serif", fontSize: "1.05rem", fontStyle: "italic",
+                fontWeight: 400, lineHeight: 1.55, color: "#0E0E0E", marginBottom: "1.5rem", flex: 1,
+              }}>&ldquo;{r.text}&rdquo;</p>
+              <div>
+                <p style={{ fontSize: "0.82rem", fontWeight: 500, color: "#0E0E0E" }}>{r.name}</p>
+                <p style={{
+                  fontFamily: "'JetBrains Mono', monospace", fontSize: "0.62rem",
+                  letterSpacing: "0.16em", textTransform: "uppercase",
+                  color: "#0E0E0E", opacity: 0.5, marginTop: "0.25rem",
+                }}>{r.role}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ---------- MAPA ----------
+function Mapa({ c }: { c: Content }) {
+  const dots = [
+    { x: 119.2, y: 58.9, label: "B.C.N.", city: "Baja California Norte" },
+    { x: 468, y: 422.9, label: "GDL", city: "Guadalajara" },
+    { x: 580.7, y: 453.9, label: "EDOMEX", city: "Estado de México" },
+    { x: 597.2, y: 460, label: "CDMX", city: "Ciudad de México" },
+  ];
+  return (
+    <section style={{ padding: "7rem 1.5rem", borderTop: "1px solid #0E0E0E10", position: "relative", zIndex: 1 }}>
+      <div style={{ maxWidth: "62rem", margin: "0 auto", textAlign: "center" }}>
+        <p style={eyebrowStyle}>{c.mapa.label}</p>
+        <h2 style={{ ...h2Style, maxWidth: "30rem", margin: "0 auto 0.6rem" }}>{c.mapa.h}</h2>
+        <p style={{
+          fontFamily: "'Playfair Display', serif", fontSize: "1.05rem", fontStyle: "italic",
+          color: "#0E0E0E", opacity: 0.55, marginBottom: "4rem",
+        }}>— {c.mapa.sub}</p>
+
+        <div style={{ position: "relative", maxWidth: "820px", margin: "0 auto", aspectRatio: "1000/630" }}>
+          <img src="/assets/mexico.svg" alt="México" style={{
+            width: "100%", height: "100%", display: "block",
+          }} />
+          <svg viewBox="0 0 1000 630" preserveAspectRatio="xMidYMid meet" style={{
+            position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none",
+          }}>
+            {dots.map((d, i) => (
+              <g key={i}>
+                <circle cx={d.x} cy={d.y} r="14" fill="none" stroke="#A67C00" strokeWidth="2">
+                  <animate attributeName="r" values="8;28;8" dur={`${2.4 + i * 0.6}s`} repeatCount="indefinite" />
+                  <animate attributeName="stroke-opacity" values="0.9;0;0.9" dur={`${2.4 + i * 0.6}s`} repeatCount="indefinite" />
+                </circle>
+                <circle cx={d.x} cy={d.y} r="5" fill="#A67C00" />
+                <text x={d.x} y={d.y - 16} textAnchor="middle" style={{
+                  fontFamily: "'JetBrains Mono', monospace", fontSize: "11px",
+                  letterSpacing: "0.08em", fill: "#A67C00", fontWeight: 600,
+                }}>{d.label}</text>
+              </g>
             ))}
-          </div>
+          </svg>
         </div>
-      </section>
 
-      <section style={{ padding: "5rem 1.5rem", position: "relative", zIndex: 1 }}>
-        <div style={{ maxWidth: "62rem", margin: "0 auto", textAlign: "center" }}>
-          <p style={{ fontSize: "0.6rem", textTransform: "uppercase", letterSpacing: "0.4em", color: t.accent, fontWeight: 900, marginBottom: "0.5rem" }}>{lang === "es" ? "Presencia nacional" : "National presence"}</p>
-          <h2 style={{ fontSize: "clamp(2rem,4vw,3rem)", fontFamily: "serif", fontWeight: 700, marginBottom: "0.75rem" }}>{lang === "es" ? "Clientes en todo México." : "Clients across Mexico."}</h2>
-          <p style={{ fontSize: "0.88rem", opacity: 0.45, marginBottom: "3rem", color: t.sub }}>{lang === "es" ? "Y creciendo." : "And growing."}</p>
-          <MexicoMap accent={t.accent} bg={t.bg}/>
+        <div style={{ display: "flex", justifyContent: "center", gap: "2.5rem", marginTop: "2.5rem", flexWrap: "wrap" }}>
+          {dots.map((d) => (
+            <div key={d.city} style={{
+              display: "flex", alignItems: "center", gap: "0.6rem",
+              fontFamily: "'JetBrains Mono', monospace", fontSize: "0.66rem",
+              letterSpacing: "0.16em", textTransform: "uppercase", color: "#0E0E0E", opacity: 0.6,
+            }}>
+              <span style={{ width: "6px", height: "6px", background: "#A67C00", borderRadius: "50%" }} />
+              {d.city}
+            </div>
+          ))}
         </div>
-      </section>
+      </div>
+    </section>
+  );
+}
 
-      <section style={{ padding: "5rem 1.5rem", position: "relative", zIndex: 1, backgroundColor: `${t.card}E8` }}>
-        <div style={{ maxWidth: "52rem", margin: "0 auto" }}>
-          <div style={{ marginBottom: "3rem", textAlign: "center" }}>
-            <p style={{ fontSize: "0.6rem", textTransform: "uppercase", letterSpacing: "0.4em", color: t.accent, fontWeight: 900, marginBottom: "0.5rem" }}>{c.faq_label}</p>
-            <h2 style={{ fontSize: "clamp(2.4rem,4.5vw,3.8rem)", fontFamily: "serif", fontWeight: 700 }}>{c.faq_h}</h2>
-          </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
-            {c.faqs.map((f, i) => <FaqItem key={i} q={f.q} a={f.a} t={t} last={i === c.faqs.length - 1}/>)}
-          </div>
+// ---------- FAQ ----------
+function FaqItem({ q, a }: { q: string; a: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div style={{
+      background: "#F4F4F2", borderRadius: "24px", marginBottom: "0.6rem",
+      border: "1px solid #0E0E0E10", overflow: "hidden",
+      transition: "box-shadow .25s ease",
+      boxShadow: open ? "0 4px 24px -8px #0E0E0E18" : "none",
+    }} data-bubble>
+      <button onClick={() => setOpen((o) => !o)} style={{
+        width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center",
+        padding: "1.4rem 1.75rem", background: "none", border: "none", cursor: "pointer", textAlign: "left",
+        gap: "1rem", fontFamily: "inherit",
+      }}>
+        <span style={{
+          fontFamily: "'Playfair Display', serif", fontSize: "clamp(1.05rem,1.8vw,1.25rem)",
+          fontWeight: 400, color: "#0E0E0E", lineHeight: 1.4,
+        }}>{q}</span>
+        <span style={{
+          flexShrink: 0, fontSize: "1rem", color: "#0E0E0E", opacity: 0.5,
+          transform: open ? "rotate(45deg)" : "rotate(0)", transition: "transform .3s",
+          fontFamily: "'JetBrains Mono', monospace",
+        }}>+</span>
+      </button>
+      <div style={{
+        maxHeight: open ? "20rem" : 0, overflow: "hidden", transition: "max-height .35s ease",
+      }}>
+        <p style={{
+          padding: "0 1.75rem 1.4rem", fontSize: "0.95rem", lineHeight: 1.75,
+          color: "#0E0E0E", opacity: 0.65, fontWeight: 300, maxWidth: "44rem",
+        }}>{a}</p>
+      </div>
+    </div>
+  );
+}
+
+function Faq({ c }: { c: Content }) {
+  return (
+    <section style={{ padding: "7rem 1.5rem", borderTop: "1px solid #0E0E0E10", position: "relative", zIndex: 1 }}>
+      <div style={{ maxWidth: "54rem", margin: "0 auto" }}>
+        <div style={{ marginBottom: "3rem" }}>
+          <p style={eyebrowStyle}>{c.faq.label}</p>
+          <h2 style={{ ...h2Style, maxWidth: "30rem" }}>{c.faq.h}</h2>
         </div>
-      </section>
-
-      <section id="cotizar" style={{ padding: "5rem 1.5rem", position: "relative", zIndex: 1 }}>
-        <div style={{ maxWidth: "38rem", margin: "0 auto", textAlign: "center" }}>
-          <h2 style={{ fontSize: "clamp(2.6rem,5vw,4rem)", fontFamily: "serif", fontWeight: 700, marginBottom: "1rem", lineHeight: 1.05 }}>{c.cotizar_h}</h2>
-          <p style={{ fontSize: "0.95rem", opacity: 0.62, lineHeight: 1.8, marginBottom: "2rem", color: t.sub }}>{c.cotizar_sub}</p>
-          <motion.a href={waLink} target="_blank" animate={{ scale: [1, 1.06, 1] }} transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }} whileHover={{ scale: 1.1 }} style={{ display: "inline-block", padding: "1rem 2.5rem", backgroundColor: t.accent, color: t.bg, fontWeight: 900, textTransform: "uppercase", fontSize: "0.78rem", letterSpacing: "0.08em", textDecoration: "none", borderRadius: "999px", boxShadow: `0 8px 32px ${t.accent}40` }}>
-            {c.cotizar_cta}
-          </motion.a>
+        <div>
+          {c.faq.items.map((f, i) => <FaqItem key={i} q={f.q} a={f.a} />)}
         </div>
-      </section>
+      </div>
+    </section>
+  );
+}
 
-      <footer style={{ padding: "2.5rem 1.5rem", borderTop: `1px solid ${t.accent}14`, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "1rem", position: "relative", zIndex: 1 }}>
-        <Image src="/logo-satori.png" alt="SATORI" width={85} height={26} style={{ filter: t.logoFilter }}/>
-        <p style={{ fontSize: "0.58rem", letterSpacing: "0.25em", textTransform: "uppercase", opacity: 0.3 }}>{c.footer}</p>
-      </footer>
+// ---------- COTIZAR ----------
+function Cotizar({ c, lang }: { c: Content; lang: Lang }) {
+  const wa = lang === "es"
+    ? WHATSAPP
+    : "https://wa.me/525625018281?text=Hi%20Rodrigo,%20I%20saw%20your%20page%20and%20I'd%20like%20a%20free%20audit.";
+  return (
+    <section id="cotizar" style={{
+      padding: "9rem 1.5rem", borderTop: "1px solid #0E0E0E10",
+      position: "relative", zIndex: 1, background: "#0E0E0E", color: "#F4F4F2",
+      textAlign: "center",
+    }}>
+      <div style={{ maxWidth: "44rem", margin: "0 auto" }}>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <Enso size={120} opacity={0.18} color="#F4F4F2" />
+        </div>
+        <h2 style={{
+          fontFamily: "'Playfair Display', serif", fontSize: "clamp(2.5rem,6vw,4.5rem)",
+          fontWeight: 400, marginTop: "2rem", marginBottom: "1.25rem", lineHeight: 1, letterSpacing: "-0.02em",
+        }}>{c.cotizar.h}</h2>
+        <p style={{
+          fontSize: "1rem", lineHeight: 1.7, opacity: 0.65, fontWeight: 300,
+          maxWidth: "28rem", margin: "0 auto 2.5rem",
+        }}>{c.cotizar.sub}</p>
+        <a href={wa} target="_blank" rel="noopener noreferrer" style={{
+          ...btnGold, padding: "1.1rem 2.2rem", fontSize: "0.72rem",
+        }}>{c.cotizar.cta} →</a>
+      </div>
+    </section>
+  );
+}
+
+// ---------- FOOTER ----------
+function Footer({ c }: { c: Content }) {
+  return (
+    <footer style={{
+      padding: "2.5rem 1.5rem", background: "#0E0E0E", color: "#F4F4F2",
+      display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "1rem",
+    }}>
+      <p style={{ fontFamily: "'Playfair Display', serif", letterSpacing: "-0.01em", fontSize: "1.6rem" }}>Satori Agency</p>
+      <p style={{
+        fontFamily: "'JetBrains Mono', monospace", fontSize: "0.62rem",
+        letterSpacing: "0.16em", textTransform: "uppercase", opacity: 0.4,
+      }}>{c.footer}</p>
+    </footer>
+  );
+}
+
+// ---------- FLOATING WHATSAPP ----------
+function FloatingCTAs({ lang }: { lang: Lang }) {
+  const wa = lang === "es"
+    ? WHATSAPP
+    : "https://wa.me/525625018281?text=Hi%20Rodrigo";
+  return (
+    <div style={{ position: "fixed", bottom: "1.5rem", right: "1.5rem", zIndex: 100, display: "flex", flexDirection: "column", gap: "0.6rem" }}>
+      <a href={wa} target="_blank" rel="noopener noreferrer" style={{
+        display: "flex", alignItems: "center", gap: "0.6rem",
+        padding: "0.8rem 1.1rem", color: "#F4F4F2",
+        textDecoration: "none", fontSize: "0.62rem", letterSpacing: "0.18em",
+        textTransform: "uppercase", fontWeight: 500, fontFamily: "inherit", borderRadius: "999px", background: "rgb(166, 124, 0)",
+      }}>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347" /></svg>
+        WhatsApp
+      </a>
+    </div>
+  );
+}
+
+// ---------- APP ----------
+export default function Page() {
+  const [lang, setLang] = useState<Lang>("es");
+  const [showLangPopup, setShowLangPopup] = useState(true);
+  const c = content[lang];
+
+  const onLangSelect = (l: Lang) => {
+    setLang(l);
+    setShowLangPopup(false);
+  };
+
+  return (
+    <main style={{ position: "relative", minHeight: "100vh", background: "#F4F4F2" }}>
+      <MatrixBackground opacity={0.07} color="#A67C00" />
+      {showLangPopup && <LangPopup onSelect={onLangSelect} />}
+      <Nav c={c} lang={lang} onOpenLang={() => setShowLangPopup(true)} />
+      <Hero c={c} />
+      <Problema c={c} />
+      <Stats c={c} />
+      <Servicios c={c} />
+      <Nosotros c={c} />
+      <Reviews c={c} />
+      <Mapa c={c} />
+      <Faq c={c} />
+      <Cotizar c={c} lang={lang} />
+      <Footer c={c} />
+      <FloatingCTAs lang={lang} />
     </main>
   );
 }
