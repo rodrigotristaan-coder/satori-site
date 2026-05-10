@@ -13,7 +13,7 @@ const content = {
     nav: { problema: "Problema", servicios: "Servicios", nosotros: "Nosotros", cotizar: "Cotizar", cta: "Agendar" },
     hero: {
       eyebrow: "Estrategia · Marca · Crecimiento",
-      h1a: "Más clientes.",
+      h1a: "Más Clientes.",
       h1b: "Menos ruido.",
       sub: "Estrategia digital para empresarios que valoran su tiempo. Identidad, posicionamiento y marketing con IA — sin caos, sin promesas vacías.",
       cta1: "Auditoría gratis",
@@ -21,7 +21,7 @@ const content = {
     },
     problema: {
       label: "El problema",
-      h: "¿Te suena alguno?",
+      h: "Lo que resolvemos:",
       items: [
         { q: "Pago anuncios y no llega el cliente correcto.", d: "Tu inversión en ads se pierde sin un sistema que filtre y nutra prospectos antes de que se enfríen." },
         { q: "Pierdo clientes por no contestar a tiempo.", d: "El 78% de las ventas las gana quien responde primero. Sin automatización, no compites." },
