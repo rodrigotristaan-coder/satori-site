@@ -1,0 +1,355 @@
+/* SATORI — Proyectos (proyectos.html). ES/EN. */
+
+const { useState, useEffect } = React;
+
+const PROYECTOS_ES = [
+  {
+    titulo: "Bot IA Finanzas",
+    cat: "Soluciones IA",
+    year: "2025",
+    descripcion: "Asistente conversacional para finanzas personales: registro de gastos por voz, categorización automática y reportes mensuales por WhatsApp.",
+    tags: ["WhatsApp", "Categorización IA", "Reportes auto"],
+    img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=720&q=75&auto=format&fit=crop"
+  },
+  {
+    titulo: "Landing Pages",
+    cat: "Identidad",
+    year: "2025",
+    descripcion: "Sistema de landings de alta conversión: copy, diseño, formularios conectados a CRM y experimentación A/B continua.",
+    tags: ["Copy + diseño", "A/B testing", "CRM-ready"],
+    img: "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=720&q=75&auto=format&fit=crop"
+  },
+  {
+    titulo: "Bots y Ventas",
+    cat: "Soluciones IA",
+    year: "2025",
+    descripcion: "Atención y prospección automatizada en WhatsApp, Instagram y redes: responde, agenda, califica leads y resume conversaciones en bullets accionables.",
+    tags: ["WhatsApp Business", "Instagram", "Lead scoring"],
+    img: "https://images.unsplash.com/photo-1611605698335-8b1569810432?w=720&q=75&auto=format&fit=crop"
+  },
+  {
+    titulo: "Branding · Sesión de fotos",
+    cat: "Identidad",
+    year: "2024",
+    descripcion: "Dirección creativa para sesiones de marca: moodboard, locación, vestuario y guion de tomas. Identidad lista para 3 meses de contenido.",
+    tags: ["Dirección creativa", "Moodboard", "Plan 3 meses"],
+    img: "https://images.unsplash.com/photo-1606112219348-204d7d8b94ee?w=720&q=75&auto=format&fit=crop"
+  },
+  {
+    titulo: "Posicionamiento Online",
+    cat: "Posicionamiento",
+    year: "2024",
+    descripcion: "Estrategia integral de contenido, redes sociales y publicidad pagada para construir autoridad en el sector.",
+    tags: ["Contenido", "Ads", "SEO"],
+    img: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=720&q=75&auto=format&fit=crop"
+  }
+];
+
+const PROYECTOS_EN = [
+  {
+    titulo: "AI Finance Bot",
+    cat: "AI Solutions",
+    year: "2025",
+    descripcion: "Conversational assistant for personal finances: voice expense logging, automatic categorization and monthly reports over WhatsApp.",
+    tags: ["WhatsApp", "AI categorization", "Auto reports"],
+    img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=720&q=75&auto=format&fit=crop"
+  },
+  {
+    titulo: "Landing Pages",
+    cat: "Identity",
+    year: "2025",
+    descripcion: "High-conversion landing-page system: copy, design, CRM-wired forms and continuous A/B testing.",
+    tags: ["Copy + design", "A/B testing", "CRM-ready"],
+    img: "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=720&q=75&auto=format&fit=crop"
+  },
+  {
+    titulo: "Bots & Sales",
+    cat: "AI Solutions",
+    year: "2025",
+    descripcion: "Automated attention and prospecting on WhatsApp, Instagram and social: answers, books, qualifies leads, summarizes conversations into actionable bullets.",
+    tags: ["WhatsApp Business", "Instagram", "Lead scoring"],
+    img: "https://images.unsplash.com/photo-1611605698335-8b1569810432?w=720&q=75&auto=format&fit=crop"
+  },
+  {
+    titulo: "Branding · Photo session",
+    cat: "Identity",
+    year: "2024",
+    descripcion: "Creative direction for brand photo sessions: moodboard, location, wardrobe and shot list. Identity ready for 3 months of content.",
+    tags: ["Creative direction", "Moodboard", "3-month plan"],
+    img: "https://images.unsplash.com/photo-1606112219348-204d7d8b94ee?w=720&q=75&auto=format&fit=crop"
+  },
+  {
+    titulo: "Online Positioning",
+    cat: "Positioning",
+    year: "2024",
+    descripcion: "Integrated content, social and paid-media strategy to build sector authority.",
+    tags: ["Content", "Ads", "SEO"],
+    img: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=720&q=75&auto=format&fit=crop"
+  }
+];
+
+// ---------- HEADER ----------
+function ProjectsHero() {
+  const [lang] = useLang();
+  const c = lang === "en" ? {
+    eyebrow: "Selected work",
+    title: "Projects.",
+    accent: "Live.",
+    sub: "A curated selection of what I've built. Each case, a clear path: identity → positioning → AI automation."
+  } : {
+    eyebrow: "Selección de trabajo",
+    title: "Proyectos.",
+    accent: "En vivo.",
+    sub: "Una selección curada de lo que hemos construido. Cada caso, una ruta clara: identidad → posicionamiento → automatización con IA."
+  };
+  return (
+    <PageHero
+      eyebrow={c.eyebrow}
+      title={c.title}
+      accent={c.accent}
+      sub={c.sub}
+    />
+  );
+}
+
+// ---------- GRID (sin filtros) ----------
+function ProjectsGrid() {
+  const [lang] = useLang();
+  const items = lang === "en" ? PROYECTOS_EN : PROYECTOS_ES;
+  return (
+    <section
+      style={{
+        padding: "3rem clamp(1.25rem,4vw,2.5rem) 5rem",
+        background: `linear-gradient(180deg, ${SATORI.CREAM} 0%, ${SATORI.CREAM_2} 100%)`,
+        position: "relative",
+        zIndex: 1,
+        borderTop: `1px solid ${SATORI.INK}08`
+      }}
+    >
+      <div className="container">
+        <div
+          className="grid-3"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: "1.5rem"
+          }}
+        >
+          {items.map((p) => (
+            <article
+              key={p.titulo}
+              data-card
+              data-reveal
+              className="project-card"
+              style={{
+                background: SATORI.WHITE,
+                borderRadius: "22px",
+                overflow: "hidden",
+                border: `1px solid ${SATORI.INK}10`,
+                display: "flex",
+                flexDirection: "column",
+                position: "relative"
+              }}
+            >
+              <div className="project-image" style={{ position: "relative", overflow: "hidden", aspectRatio: "4/3" }}>
+                <img
+                  src={p.img}
+                  alt={p.titulo}
+                  loading="lazy"
+                  decoding="async"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    display: "block",
+                    transition: "transform 1s cubic-bezier(.2,.7,.2,1), filter .8s ease"
+                  }}
+                />
+                <div
+                  aria-hidden="true"
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    background: `linear-gradient(180deg, transparent 50%, ${SATORI.INK}55 100%)`,
+                    pointerEvents: "none"
+                  }}
+                />
+                <div
+                  className="project-accent"
+                  aria-hidden="true"
+                  style={{
+                    position: "absolute",
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    height: "3px",
+                    background: SATORI.GOLD,
+                    transform: "scaleX(0)",
+                    transformOrigin: "left center",
+                    transition: "transform .7s cubic-bezier(.2,.7,.2,1)"
+                  }}
+                />
+                <span
+                  style={{
+                    position: "absolute",
+                    top: "1rem",
+                    right: "1rem",
+                    color: SATORI.CREAM,
+                    fontFamily: TYPE.mono,
+                    fontSize: "0.58rem",
+                    letterSpacing: "0.22em",
+                    opacity: 0.85
+                  }}
+                >
+                  {p.year}
+                </span>
+              </div>
+              <div style={{ padding: "1.5rem 1.75rem 1.75rem", flex: 1, display: "flex", flexDirection: "column" }}>
+                <h3
+                  style={{
+                    fontFamily: TYPE.display,
+                    fontWeight: 500,
+                    fontSize: "1.55rem",
+                    lineHeight: 1.15,
+                    margin: 0,
+                    color: SATORI.INK,
+                    letterSpacing: "-0.015em"
+                  }}
+                >
+                  {p.titulo}
+                </h3>
+                <p
+                  style={{
+                    ...bodyStyle,
+                    fontSize: "0.95rem",
+                    marginTop: "0.65rem",
+                    marginBottom: "1.25rem",
+                    flex: 1
+                  }}
+                >
+                  {p.descripcion}
+                </p>
+                <div
+                  style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: "0.4rem",
+                    paddingTop: "1.25rem",
+                    borderTop: `1px solid ${SATORI.INK}10`
+                  }}
+                >
+                  {p.tags.map((m) => (
+                    <span
+                      key={m}
+                      style={{
+                        fontFamily: TYPE.mono,
+                        fontSize: "0.6rem",
+                        letterSpacing: "0.14em",
+                        textTransform: "uppercase",
+                        padding: "0.3rem 0.7rem",
+                        borderRadius: "999px",
+                        background: `${SATORI.INK}06`,
+                        color: SATORI.INK,
+                        opacity: 0.85
+                      }}
+                    >
+                      {m}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ---------- METODOLOGÍA (horizontal animada) ----------
+function Metodologia() {
+  const [lang] = useLang();
+  const pasosEs = [
+    { key: "01", num: "01", label: "Inmersión", desc: "Sesión de 60 min para entender tu negocio." },
+    { key: "02", num: "02", label: "Diagnóstico", desc: "Auditoría honesta de marca, presencia y conversión." },
+    { key: "03", num: "03", label: "Plan", desc: "Ruta de 90 días con entregables y métricas claras." },
+    { key: "04", num: "04", label: "Ejecución", desc: "Sprints de dos semanas, sin reuniones de relleno." }
+  ];
+  const pasosEn = [
+    { key: "01", num: "01", label: "Immersion", desc: "60-min session to understand your business." },
+    { key: "02", num: "02", label: "Diagnosis", desc: "Honest audit of brand, presence and conversion." },
+    { key: "03", num: "03", label: "Plan", desc: "90-day roadmap with deliverables and clear metrics." },
+    { key: "04", num: "04", label: "Execution", desc: "Two-week sprints, zero filler meetings." }
+  ];
+  const c = lang === "en" ? {
+    eyebrow: "How we work",
+    h1: "Same method",
+    h2: "every project."
+  } : {
+    eyebrow: "Cómo trabajamos",
+    h1: "Misma metodología",
+    h2: "en cada proyecto."
+  };
+  return (
+    <section
+      style={{
+        padding: "5rem clamp(1.25rem,4vw,2.5rem) 6rem",
+        position: "relative",
+        zIndex: 1,
+        background: SATORI.CREAM,
+        borderTop: `1px solid ${SATORI.INK}08`
+      }}
+    >
+      <div className="container">
+        <div style={{ textAlign: "center", marginBottom: "1rem" }}>
+          <p style={eyebrowStyle}>
+            <span className="satori-rule" style={{ width: "18px" }} />
+            {c.eyebrow}
+          </p>
+          <h2 style={h2Style} data-reveal>
+            {c.h1} <span style={{ color: SATORI.GOLD }}>{c.h2}</span>
+          </h2>
+        </div>
+        <HorizontalTimeline items={lang === "en" ? pasosEn : pasosEs} />
+      </div>
+    </section>
+  );
+}
+
+// ---------- APP ----------
+function App() {
+  useEffect(() => {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) e.target.setAttribute("data-revealed", "1");
+        });
+      },
+      { threshold: 0.01, rootMargin: "0px 0px 200px 0px" }
+    );
+    document.querySelectorAll("[data-reveal]").forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
+  const ctaTitulo = { es: "¿Tu proyecto es el siguiente?", en: "Is your project next?" };
+  const ctaSub = {
+    es: "Si te identificas con lo que ves, conversemos. 30 minutos, sin compromiso.",
+    en: "If you connect with what you see, let's talk. 30 minutes, no commitment."
+  };
+
+  return (
+    <main style={{ position: "relative", minHeight: "100vh", background: SATORI.CREAM }}>
+      <MatrixBackground opacity={0.035} color={SATORI.GOLD} />
+      <Nav current="proyectos" />
+      <ProjectsHero />
+      <ProjectsGrid />
+      <Metodologia />
+      <CtaBlock titulo={ctaTitulo} sub={ctaSub} />
+      <Footer social="satori" />
+      <MobileMenuFab current="proyectos" />
+      <FloatingWhatsApp />
+    </main>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
