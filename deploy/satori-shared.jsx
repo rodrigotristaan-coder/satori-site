@@ -123,15 +123,17 @@ const btnGold = {
 // onLight: logo transparente con texto negro (para usar sobre fondo claro)
 // gold: variante ícono dorado
 function SatoriMark({ height = 42, variant = "onDark" }) {
-  const src =
-    variant === "onDark"
-      ? "assets/logo-satori-agency-cream-transparent.png"
-      : variant === "gold"
-      ? "assets/logo-satori-agency-gold.png"
-      : "assets/logo-satori-agency.png";
+  const M = {
+    onDark: { src: "assets/logo-satori-agency-cream-transparent.webp", w: 900, h: 180 },
+    gold:   { src: "assets/logo-satori-agency-gold.webp", w: 1093, h: 157 },
+    onLight:{ src: "assets/logo-satori-agency.webp", w: 1100, h: 220 }
+  };
+  const m = M[variant] || M.onLight;
   return (
     <img
-      src={src}
+      src={m.src}
+      width={m.w}
+      height={m.h}
       alt="SATORI"
       style={{
         height: height + "px",
@@ -1747,7 +1749,7 @@ function WelcomeAnimation({ duration = 3400, onComplete, storageKey = "satori_se
         }}
       >
         <img
-          src="assets/logo-satori-agency-cream-transparent.png"
+          src="assets/logo-satori-agency-cream-transparent.webp"
           alt="SATORI"
           style={{
             width: "min(72vmin, 560px)",

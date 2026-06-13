@@ -146,7 +146,10 @@ function injectSeo(html, info) {
     .replace(/\s*<meta property="og:[^>]*>/g, '')
     .replace(/\s*<meta name="twitter:[^>]*>/g, '')
     .replace(/\s*<link rel="canonical"[^>]*>/g, '')
-    .replace(/\s*<link rel="stylesheet" href="satori-shared\.css"\/?>/g, `\n<link rel="stylesheet" href="${cssName}"/>`);
+    .replace(/\s*<link rel="stylesheet" href="satori-shared\.css"\/?>/g, `\n<link rel="stylesheet" href="${cssName}"/>`)
+    // Fuentes de Google: carga NO bloqueante (no retrasa el primer render)
+    .replace(/<link href="(https:\/\/fonts\.googleapis\.com[^"]*)" rel="stylesheet"\/?>/,
+      (m, url) => `<link rel="stylesheet" href="${url}" media="print" onload="this.media='all'"/><noscript><link rel="stylesheet" href="${url}"/></noscript>`);
   return html.replace('</head>', `${seoBlock(info)}</head>`);
 }
 
