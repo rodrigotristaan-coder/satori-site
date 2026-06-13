@@ -180,7 +180,7 @@ function BrandManifesto() {
         </div>
 
         {/* slogan de misión */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: "0.85rem" }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: "0.85rem", width: "100%", maxWidth: "100%" }}>
           <p
             style={{
               fontFamily: TYPE.display,
@@ -192,7 +192,7 @@ function BrandManifesto() {
               color: SATORI.INK,
               opacity: 0.85,
               margin: "0 auto",
-              maxWidth: "44ch",
+              maxWidth: "min(44ch, 100%)",
               textAlign: "center"
             }}
           >

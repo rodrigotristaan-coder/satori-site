@@ -539,7 +539,7 @@ function Recomendacion() {
               top: "-2.5rem",
               left: "1rem",
               fontFamily: TYPE.display,
-              fontSize: "12rem",
+              fontSize: "clamp(3.5rem, 16vw, 12rem)",
               lineHeight: 1,
               color: SATORI.GOLD,
               opacity: 0.18,
@@ -641,7 +641,7 @@ function Recomendacion() {
 // Floating, drifting yellow quote glyphs that move slowly across the section
 function FloatingQuotes() {
   const glyphs = [
-    { ch: "\u201C", left: "5%", top: "12%", size: "12rem", dur: "26s", delay: "0s", opacity: 0.10 },
+    { ch: "\u201C", left: "5%", top: "12%", size: "clamp(3.5rem, 16vw, 12rem)", dur: "26s", delay: "0s", opacity: 0.10 },
     { ch: "\u201D", left: "82%", top: "8%", size: "9rem", dur: "32s", delay: "4s", opacity: 0.09 },
     { ch: "\u201C", left: "70%", top: "62%", size: "14rem", dur: "38s", delay: "2s", opacity: 0.07 },
     { ch: "\u201D", left: "10%", top: "70%", size: "8rem", dur: "30s", delay: "6s", opacity: 0.12 }

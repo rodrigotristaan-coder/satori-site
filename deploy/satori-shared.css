@@ -279,3 +279,21 @@ a[href]:hover, button:hover { transform: translateY(-2px); }
   opacity: 0.55;
   margin-bottom: 0.5rem;
 }
+
+/* ===== Red de seguridad responsive (móvil) — no afecta escritorio ===== */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+/* Imágenes/embeds nunca exceden el ancho de pantalla (no toco svg/canvas
+   para no afectar logos ni el globo del home) */
+img, video, iframe {
+  max-width: 100%;
+}
+@media (max-width: 640px) {
+  /* El texto largo siempre envuelve, nunca se desborda ni se corta */
+  p, h1, h2, h3, h4, h5, li, blockquote, a, span, figcaption {
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+}
