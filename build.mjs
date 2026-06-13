@@ -13,6 +13,11 @@ const OUT = 'dist';
 const SITE = 'https://satorimkt.com';
 const OG_IMAGE = `${SITE}/assets/og-cover.jpg`;
 
+// Google Ads / gtag — se inyecta en TODAS las paginas (antes solo en privacidad)
+const GTAG_ID = 'AW-18155927624';
+const GTAG_INLINE = `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${GTAG_ID}');`;
+const GTAG = `<script async src="https://www.googletagmanager.com/gtag/js?id=${GTAG_ID}"></script>\n<script>${GTAG_INLINE}</script>\n`;
+
 // HTML React -> archivo de pagina + ruta canonica
 const PAGES = [
   { html: 'index.html',         jsx: 'page-home.jsx',      path: '/' },
@@ -170,6 +175,7 @@ for (const p of PAGES) {
     .replace(/<script type="text\/babel"[^>]*><\/script>\s*/g, '')
     .replace('</body>', `<script src="js/${jsName}"></script>\n</body>`);
   html = injectSeo(html, { title: meta(html).title, desc: meta(html).desc, url: SITE + p.path, isHome: p.path === '/' });
+  html = html.replace('</head>', `${GTAG}</head>`); // Google Ads en todas las paginas
 
   // Pre-render: inyecta el HTML real en #root (el cliente luego re-monta)
   const ssr = await prerender(pageCode, p.jsx);
