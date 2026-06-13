@@ -488,7 +488,7 @@ function Recomendacion() {
     quote: <React.Fragment>
       Rodrigo destacó por su <strong style={{ color: SATORI.GOLD }}>compromiso, ética de trabajo y capacidad para liderar proyectos complejos</strong>. Su habilidad para coordinar equipos multidisciplinarios, planear tareas, anticipar riesgos y mantener una comunicación clara fue fundamental para alcanzar los objetivos estratégicos.
       <br /><br />
-      Es un hombre íntegro, confiable y dedicado. Su presencia elevó el ambiente laboral y generó un impacto muy valioso en el equipo. Estoy convencido de que aportará el mismo nivel de excelencia, compromiso y liderazgo en cualquier organización donde decida continuar su desarrollo profesional.
+      Es un <strong style={{ color: SATORI.GOLD }}>hombre íntegro, confiable y dedicado</strong>. Su presencia elevó el ambiente laboral y generó un impacto muy valioso en el equipo. Estoy convencido de que aportará el mismo nivel de <strong style={{ color: SATORI.GOLD }}>excelencia, compromiso y liderazgo</strong> en cualquier organización donde decida continuar su desarrollo profesional.
     </React.Fragment>,
     role: "Dirección de Mercadotecnia",
     badge: "CARTA ORIGINAL"
