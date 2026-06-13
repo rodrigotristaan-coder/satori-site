@@ -16,7 +16,7 @@ const SERVICIOS_EN = [
       "Positioning for CEOs",
       "Templates for the whole team"
     ],
-    img: "assets/marca-propia.png"
+    img: "assets/marca-propia.webp"
   },
   {
     num: "02",
@@ -31,7 +31,7 @@ const SERVICIOS_EN = [
       "Verifiable reputation",
       "Recommendations in ChatGPT / Claude / Gemini"
     ],
-    img: "assets/posicionamiento.png"
+    img: "assets/posicionamiento.webp"
   },
   {
     num: "03",
@@ -45,7 +45,7 @@ const SERVICIOS_EN = [
       "WhatsApp chat & group summaries",
       "Sales bots on social media"
     ],
-    img: "assets/marketing-ia.png"
+    img: "assets/marketing-ia.webp"
   }
 ];
 
@@ -107,7 +107,7 @@ const SERVICIOS = [
       "Posicionamiento para CEO",
       "Plantillas para todo el equipo"
     ],
-    img: "assets/marca-propia.png"
+    img: "assets/marca-propia.webp"
   },
   {
     num: "02",
@@ -122,7 +122,7 @@ const SERVICIOS = [
       "Reputación verificable",
       "Recomendaciones en ChatGPT / Claude / Gemini"
     ],
-    img: "assets/posicionamiento.png"
+    img: "assets/posicionamiento.webp"
   },
   {
     num: "03",
@@ -136,7 +136,7 @@ const SERVICIOS = [
       "Resúmenes de chats y grupos de WhatsApp",
       "Bots de venta en redes sociales"
     ],
-    img: "assets/marketing-ia.png"
+    img: "assets/marketing-ia.webp"
   }
 ];
 

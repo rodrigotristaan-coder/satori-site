@@ -11,7 +11,7 @@ import { pathToFileURL } from 'node:url';
 const SRC = 'deploy';
 const OUT = 'dist';
 const SITE = 'https://satorimkt.com';
-const OG_IMAGE = `${SITE}/assets/marketing-ia.png`;
+const OG_IMAGE = `${SITE}/assets/og-cover.jpg`;
 
 // HTML React -> archivo de pagina + ruta canonica
 const PAGES = [

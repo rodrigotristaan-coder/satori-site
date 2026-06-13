@@ -259,7 +259,7 @@ function ArticleBody() {
           }}
         >
           <img
-            src="assets/rodrigo.png"
+            src="assets/rodrigo.webp"
             alt="Rodrigo Tristán"
             style={{
               width: "56px",
