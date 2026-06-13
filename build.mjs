@@ -6,6 +6,7 @@ import esbuild from 'esbuild';
 import { readFileSync, writeFileSync, mkdirSync, cpSync, rmSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { join } from 'node:path';
+import { pathToFileURL } from 'node:url';
 
 const SRC = 'deploy';
 const OUT = 'dist';
@@ -38,6 +39,66 @@ writeFileSync(join(OUT, cssName), cssRaw);
 
 const stripReactHooks = (code) => code.replace(/const\s*\{[^}]*\}\s*=\s*React\s*;?/g, '');
 const shared = stripReactHooks(readFileSync(join(SRC, 'satori-shared.jsx'), 'utf8'));
+
+// ---- PRE-RENDER (SSG) ----
+// Shims minimos del navegador para que renderToStaticMarkup no truene al leer
+// window/document/localStorage en los inicializadores. Los efectos (useEffect)
+// NO corren en el render servidor, asi que canvas/animaciones no se tocan aqui.
+const noopMQ = () => ({ matches: false, media: '', onchange: null, addEventListener() {}, removeEventListener() {}, addListener() {}, removeListener() {}, dispatchEvent() { return false; } });
+global.localStorage = { getItem: () => null, setItem() {}, removeItem() {}, clear() {} };
+global.window = {
+  innerWidth: 1366, innerHeight: 768, devicePixelRatio: 1, scrollY: 0, pageYOffset: 0,
+  location: { href: SITE + '/', origin: SITE, pathname: '/', search: '', hash: '' },
+  localStorage: global.localStorage, matchMedia: noopMQ,
+  scrollTo() {}, scrollBy() {}, addEventListener() {}, removeEventListener() {},
+  requestAnimationFrame: () => 0, cancelAnimationFrame() {},
+  getComputedStyle: () => ({ getPropertyValue: () => '' }),
+  IntersectionObserver: class { observe() {} unobserve() {} disconnect() {} },
+};
+const styleObj = () => new Proxy({}, { get: () => '', set: () => true });
+global.document = {
+  getElementById: () => null, querySelector: () => null, querySelectorAll: () => [],
+  createElement: () => ({ style: styleObj(), setAttribute() {}, appendChild() {}, getContext: () => null, classList: { add() {}, remove() {} } }),
+  addEventListener() {}, removeEventListener() {}, cookie: '',
+  documentElement: { style: styleObj(), classList: { add() {}, remove() {}, toggle() {}, contains: () => false }, scrollTop: 0 },
+  body: { style: styleObj(), classList: { add() {}, remove() {} }, appendChild() {} },
+  head: { appendChild() {} },
+};
+global.matchMedia = noopMQ;
+global.requestAnimationFrame = () => 0;
+global.cancelAnimationFrame = () => {};
+
+const SSR_DIR = join(OUT, '.ssr');
+mkdirSync(SSR_DIR, { recursive: true });
+
+// Renderiza una pagina a HTML estatico. Devuelve '' si algo falla (fallback seguro).
+async function prerender(pageCode, jsxName) {
+  try {
+    const serverCode = pageCode.replace(/ReactDOM\.createRoot\([\s\S]*?\)\.render\([\s\S]*?\);?/, '');
+    const entry = [
+      `import * as React from 'react';`,
+      `import * as ReactDOMServer from 'react-dom/server';`,
+      `const { useState, useEffect, useRef, useMemo, useCallback } = React;`,
+      shared, serverCode,
+      `globalThis.__SSR_HTML__ = ReactDOMServer.renderToStaticMarkup(React.createElement(App));`,
+    ].join('\n');
+    const built = await esbuild.build({
+      stdin: { contents: entry, resolveDir: process.cwd(), loader: 'jsx', sourcefile: jsxName },
+      bundle: true, format: 'esm', platform: 'node', target: ['node18'],
+      external: ['react', 'react-dom', 'react-dom/server'],
+      jsx: 'transform', jsxFactory: 'React.createElement', jsxFragment: 'React.Fragment',
+      write: false, logLevel: 'silent',
+    });
+    const tmp = join(SSR_DIR, jsxName.replace(/\.jsx$/, '.mjs'));
+    writeFileSync(tmp, built.outputFiles[0].text);
+    globalThis.__SSR_HTML__ = '';
+    await import(pathToFileURL(tmp).href);
+    return globalThis.__SSR_HTML__ || '';
+  } catch (e) {
+    console.log(`  ⚠ pre-render de ${jsxName} falló (queda CSR): ${e.message.split('\n')[0]}`);
+    return '';
+  }
+}
 
 // Extrae title/description del shell para construir el SEO
 const meta = (html) => ({
@@ -109,8 +170,12 @@ for (const p of PAGES) {
     .replace(/<script type="text\/babel"[^>]*><\/script>\s*/g, '')
     .replace('</body>', `<script src="js/${jsName}"></script>\n</body>`);
   html = injectSeo(html, { title: meta(html).title, desc: meta(html).desc, url: SITE + p.path, isHome: p.path === '/' });
+
+  // Pre-render: inyecta el HTML real en #root (el cliente luego re-monta)
+  const ssr = await prerender(pageCode, p.jsx);
+  if (ssr) html = html.replace('<div id="root"></div>', () => `<div id="root">${ssr}</div>`);
   writeFileSync(join(OUT, p.html), html);
-  console.log(`  ✓ ${p.html}  ->  js/${jsName}`);
+  console.log(`  ✓ ${p.html}  ->  js/${jsName}${ssr ? `  (pre-render ${(ssr.length / 1024).toFixed(0)}KB)` : ''}`);
 }
 
 // HTML estatico (privacidad): canonica + css con hash
@@ -129,5 +194,6 @@ writeFileSync(join(OUT, 'sitemap.xml'),
   urls.map(u => `  <url><loc>${SITE}${u === '/' ? '/' : u}</loc>${u === '/' ? '<priority>1.0</priority>' : ''}</url>`).join('\n') +
   `\n</urlset>\n`);
 
+rmSync(SSR_DIR, { recursive: true, force: true });
 console.log('  ✓ robots.txt + sitemap.xml');
 console.log('Build OK -> dist/');
