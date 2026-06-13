@@ -14,6 +14,7 @@ const SATORI = {
   INK_SOFT: "#1A1A1A",
   GOLD: "#A67C00",
   GOLD_SOFT: "#C9920A",
+  GOLD_DEEP: "#806000", // dorado AA-compliant para texto chico sobre fondo claro
   WHATSAPP: "https://wa.me/525625018281?text=Hola,%20vi%20la%20p%C3%A1gina%20de%20SATORI%20y%20me%20gustar%C3%ADa%20conversar.",
   CALENDLY: "https://calendly.com/rodrigo-tristaan",
   EMAIL: "hola@satorimkt.com",

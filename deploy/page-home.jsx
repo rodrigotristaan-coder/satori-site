@@ -198,7 +198,7 @@ function BrandManifesto() {
           >
             {c.parts.map((p, i) =>
               p.gold ? (
-                <span key={i} style={{ color: SATORI.GOLD, fontWeight: 500 }}>{p.text}</span>
+                <span key={i} style={{ color: SATORI.GOLD_DEEP, fontWeight: 500 }}>{p.text}</span>
               ) : (
                 <React.Fragment key={i}>{p.text}</React.Fragment>
               )
@@ -1113,36 +1113,48 @@ function SatoriGlobe() {
     if (!d3Ready) return;
     let raf;
     let last = performance.now();
+    let visible = true;
     const AUTO_SPIN = 0.006; // deg/ms ≈ 6°/s
     const DECAY = 0.96; // multiplicador por frame (~16ms)
     const MIN_V = 0.0008; // umbral debajo del cual paramos el momentum
+    // Pausa el globo cuando NO está en pantalla (ahorra CPU y batería en móvil)
+    let io;
+    if (svgRef.current && typeof IntersectionObserver !== "undefined") {
+      io = new IntersectionObserver(
+        ([e]) => { visible = e.isIntersecting; if (visible) last = performance.now(); },
+        { threshold: 0 }
+      );
+      io.observe(svgRef.current);
+    }
     const tick = (t) => {
       const dt = t - last;
       last = t;
-      const st = dragState.current;
-      if (!st.active) {
-        // ¿Aún hay momentum?
-        if (Math.abs(st.vRot) > MIN_V || Math.abs(st.vTilt) > MIN_V) {
-          setRotation((r) => (r + st.vRot * dt) % 360);
-          setTilt((tt) => Math.max(-80, Math.min(80, tt + st.vTilt * dt)));
-          // decaimiento normalizado por frame
-          const k = Math.pow(DECAY, dt / 16.67);
-          st.vRot *= k;
-          st.vTilt *= k;
-          st.idleAt = t;
-        } else {
-          st.vRot = 0;
-          st.vTilt = 0;
-          const idleFor = t - st.idleAt;
-          if (idleFor > 1200) {
-            setRotation((r) => (r + dt * AUTO_SPIN) % 360);
+      if (visible) {
+        const st = dragState.current;
+        if (!st.active) {
+          // ¿Aún hay momentum?
+          if (Math.abs(st.vRot) > MIN_V || Math.abs(st.vTilt) > MIN_V) {
+            setRotation((r) => (r + st.vRot * dt) % 360);
+            setTilt((tt) => Math.max(-80, Math.min(80, tt + st.vTilt * dt)));
+            // decaimiento normalizado por frame
+            const k = Math.pow(DECAY, dt / 16.67);
+            st.vRot *= k;
+            st.vTilt *= k;
+            st.idleAt = t;
+          } else {
+            st.vRot = 0;
+            st.vTilt = 0;
+            const idleFor = t - st.idleAt;
+            if (idleFor > 1200) {
+              setRotation((r) => (r + dt * AUTO_SPIN) % 360);
+            }
           }
         }
       }
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+    return () => { cancelAnimationFrame(raf); if (io) io.disconnect(); };
   }, [d3Ready]);
 
   // Drag handlers (se montan en un hit-target circular que cubre EXACTAMENTE el disco)

@@ -15,8 +15,10 @@ const OG_IMAGE = `${SITE}/assets/og-cover.jpg`;
 
 // Google Ads / gtag — se inyecta en TODAS las paginas (antes solo en privacidad)
 const GTAG_ID = 'AW-18155927624';
-const GTAG_INLINE = `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${GTAG_ID}');`;
-const GTAG = `<script async src="https://www.googletagmanager.com/gtag/js?id=${GTAG_ID}"></script>\n<script>${GTAG_INLINE}</script>\n`;
+// gtag DIFERIDO: encola config y carga gtag.js tras la 1a interaccion o a los 5s
+// (lo saca de la ruta critica -> mejor LCP/TBT, sin perder tracking)
+const GTAG_INLINE = `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${GTAG_ID}');function loadGtag(){if(window.__gtag)return;window.__gtag=1;var s=document.createElement('script');s.async=1;s.src='https://www.googletagmanager.com/gtag/js?id=${GTAG_ID}';document.head.appendChild(s);}['scroll','mousemove','touchstart','keydown','click'].forEach(function(ev){window.addEventListener(ev,loadGtag,{once:true,passive:true});});setTimeout(loadGtag,5000);`;
+const GTAG = `<script>${GTAG_INLINE}</script>\n`;
 
 // HTML React -> archivo de pagina + ruta canonica
 const PAGES = [
