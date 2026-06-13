@@ -449,10 +449,10 @@ function InteractiveTimeline({ items }) {
                   marginTop: it.kpi ? "0.65rem" : 0,
                   marginBottom: 0,
                   maxWidth: "60ch",
-                  fontSize: isActive ? "clamp(1.35rem, 2.1vw, 1.6rem)" : "clamp(1.1rem, 1.7vw, 1.25rem)",
+                  fontSize: "clamp(1.1rem, 1.7vw, 1.25rem)",
                   color: isActive ? SATORI.INK : `${SATORI.INK}55`,
                   filter: isActive ? "none" : "saturate(0.6)",
-                  transition: "color .35s ease, font-size .35s ease, filter .35s ease"
+                  transition: "color .35s ease, filter .35s ease"
                 }}
               >
                 {it.desc}
