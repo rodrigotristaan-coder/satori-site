@@ -703,7 +703,7 @@ function ContactForm() {
     f_message: "Tell me about your project",
     f_message_ph: "What you do, where you are today and what you want to solve.",
     submit: "Send via WhatsApp →",
-    submit_sent: "Opened in WhatsApp ✓",
+    submit_sent: "Sent ✓",
     privacy: "Privacy notice",
     calendly_label: "DIRECT CONTACT",
     contact_form_note: "Prefer a form? Scroll down for the full message form below.",
@@ -735,7 +735,7 @@ function ContactForm() {
     f_message: "Cuéntame tu proyecto",
     f_message_ph: "A qué te dedicas, dónde estás hoy y qué quieres resolver.",
     submit: "Enviar por WhatsApp →",
-    submit_sent: "Abierto en WhatsApp ✓",
+    submit_sent: "Enviado ✓",
     privacy: "Aviso de privacidad",
     calendly_label: "CONTACTO DIRECTO",
     contact_form_note: "¿Prefieres el formulario? Baja para el mensaje completo.",
@@ -749,20 +749,32 @@ function ContactForm() {
     ]
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData(e.target);
     const nombre = data.get("nombre") || "";
     const empresa = data.get("empresa") || "";
     const mensaje = data.get("mensaje") || "";
     const presupuesto = data.get("presupuesto") || "";
-    const prefix = lang === "en" ? "Hi, I'm" : "Hola, soy";
-    const budgetLabel = lang === "en" ? "Approx. budget" : "Presupuesto aproximado";
-    const text =
-      `${prefix} ${nombre}${empresa ? " · " + empresa : ""}.%0A` +
-      `${budgetLabel}: ${presupuesto}.%0A` +
-      `${encodeURIComponent(mensaje)}`;
-    window.open(`https://wa.me/525625018281?text=${text}`, "_blank");
+    try {
+      await fetch(N8N_FORM_WEBHOOK, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nombre, empresa, presupuesto, mensaje,
+          pagina: typeof document !== "undefined" ? document.title : "",
+          url: typeof location !== "undefined" ? location.href : ""
+        })
+      });
+    } catch (err) {
+      // Respaldo: si falla la red, abre WhatsApp para no perder el lead
+      const prefix = lang === "en" ? "Hi, I'm" : "Hola, soy";
+      const budgetLabel = lang === "en" ? "Approx. budget" : "Presupuesto aproximado";
+      const text =
+        `${prefix} ${nombre}${empresa ? " · " + empresa : ""}.%0A` +
+        `${budgetLabel}: ${presupuesto}.%0A${encodeURIComponent(mensaje)}`;
+      window.open(`https://wa.me/525625018281?text=${text}`, "_blank");
+    }
     setSent(true);
   };
 

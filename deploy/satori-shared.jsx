@@ -31,6 +31,9 @@ const SATORI = {
 const waInterest = (topic) =>
   `https://wa.me/525625018281?text=Hola%20Rodrigo,%20me%20interesa%20${encodeURIComponent(topic)}`;
 
+// Webhook de n8n -> grupo de Telegram (los leads del formulario caen ahí)
+const N8N_FORM_WEBHOOK = "https://n8n.satorimkt.com/webhook/53c20586-fc46-4646-a88f-d349c8267233";
+
 // ---------- TIPOGRAFÍA / TOKENS ----------
 const TYPE = {
   // DM Sans para todo. JetBrains Mono solo para etiquetas/eyebrows.
@@ -1194,8 +1197,8 @@ function CtaBlock({ titulo = "Hablemos.", sub = "30 minutos. Sin compromiso. Sal
     mensaje: "Briefly tell us about your business",
     submit: "Send message",
     sending: "Sending…",
-    sent_t: "Message ready.",
-    sent_d: "Your email client just opened. If you don't see it, write directly to hola@satorimkt.com",
+    sent_t: "Message sent!",
+    sent_d: "Thanks, we got your message. We'll reply within 24h. In a hurry? Message us on WhatsApp.",
     legal: "By sending you accept our",
     legalLink: "Privacy Notice",
     or: "or",
@@ -1211,8 +1214,8 @@ function CtaBlock({ titulo = "Hablemos.", sub = "30 minutos. Sin compromiso. Sal
     mensaje: "Cuéntanos brevemente sobre tu negocio",
     submit: "Enviar mensaje",
     sending: "Enviando…",
-    sent_t: "Mensaje listo.",
-    sent_d: "Se abrió tu cliente de email con tu mensaje. Si no lo ves, escríbenos directo a hola@satorimkt.com",
+    sent_t: "¡Mensaje enviado!",
+    sent_d: "Gracias, recibimos tu mensaje. Te respondemos en menos de 24h. ¿Urge? Escríbenos por WhatsApp.",
     legal: "Al enviar aceptas nuestro",
     legalLink: "Aviso de Privacidad",
     or: "o",
@@ -1220,18 +1223,31 @@ function CtaBlock({ titulo = "Hablemos.", sub = "30 minutos. Sin compromiso. Sal
     microcopy: "Gratis · respuesta en 24h · sin compromiso"
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    const subject = encodeURIComponent(`[SATORI] ${form.nombre || "Nuevo mensaje"}${form.empresa ? " · " + form.empresa : ""}`);
-    const body = encodeURIComponent(
-      `Nombre: ${form.nombre}\n` +
-      `Empresa: ${form.empresa}\n` +
-      `Sitio web: ${form.sitioWeb}\n` +
-      `Email: ${form.email}\n` +
-      `Teléfono: ${form.telefono}\n\n` +
-      `${form.mensaje}\n`
-    );
-    window.location.href = `mailto:${SATORI.EMAIL}?subject=${subject}&body=${body}`;
+    try {
+      await fetch(N8N_FORM_WEBHOOK, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nombre: form.nombre,
+          empresa: form.empresa,
+          sitioWeb: form.sitioWeb,
+          email: form.email,
+          telefono: form.telefono,
+          mensaje: form.mensaje,
+          pagina: typeof document !== "undefined" ? document.title : "",
+          url: typeof location !== "undefined" ? location.href : ""
+        })
+      });
+    } catch (err) {
+      // Respaldo: si falla la red, abre el correo para no perder el lead
+      const subject = encodeURIComponent(`[SATORI] ${form.nombre || "Nuevo mensaje"}${form.empresa ? " · " + form.empresa : ""}`);
+      const body = encodeURIComponent(
+        `Nombre: ${form.nombre}\nEmpresa: ${form.empresa}\nSitio web: ${form.sitioWeb}\nEmail: ${form.email}\nTeléfono: ${form.telefono}\n\n${form.mensaje}\n`
+      );
+      window.location.href = `mailto:${SATORI.EMAIL}?subject=${subject}&body=${body}`;
+    }
     setSent(true);
   };
 
