@@ -1183,7 +1183,7 @@ function TypewriterTitle({ text, className }) {
 function CtaBlock({ titulo = "Hablemos.", sub = "30 minutos. Sin compromiso. Salimos con claridad.", calendly = true }) {
   const [lang] = useLang();
   const pick = (v) => (v && typeof v === "object" ? (v[lang] || v.es) : v);
-  const [form, setForm] = useState({ nombre: "", empresa: "", sitioWeb: "", email: "", telefono: "", mensaje: "" });
+  const [form, setForm] = useState({ nombre: "", empresa: "", sitioWeb: "", email: "", telefono: "", presupuesto: "", mensaje: "" });
   const [sent, setSent] = useState(false);
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
 
@@ -1194,6 +1194,8 @@ function CtaBlock({ titulo = "Hablemos.", sub = "30 minutos. Sin compromiso. Sal
     sitioWeb: "Company website (optional)",
     email: "Email",
     telefono: "Phone (optional)",
+    presupuesto_ph: "Approx. budget (optional)",
+    budgets: ["Under $20,000 MXN/mo", "$20,000 – $50,000 MXN/mo", "$50,000 – $120,000 MXN/mo", "Over $120,000 MXN/mo", "Not sure yet"],
     mensaje: "Briefly tell us about your business",
     submit: "Send message",
     sending: "Sending…",
@@ -1211,6 +1213,8 @@ function CtaBlock({ titulo = "Hablemos.", sub = "30 minutos. Sin compromiso. Sal
     sitioWeb: "Sitio web de empresa (opcional)",
     email: "Email",
     telefono: "Teléfono (opcional)",
+    presupuesto_ph: "Presupuesto aproximado (opcional)",
+    budgets: ["Menos de $20,000 MXN/mes", "$20,000 – $50,000 MXN/mes", "$50,000 – $120,000 MXN/mes", "Más de $120,000 MXN/mes", "Aún no lo sé"],
     mensaje: "Cuéntanos brevemente sobre tu negocio",
     submit: "Enviar mensaje",
     sending: "Enviando…",
@@ -1235,6 +1239,7 @@ function CtaBlock({ titulo = "Hablemos.", sub = "30 minutos. Sin compromiso. Sal
           sitioWeb: form.sitioWeb,
           email: form.email,
           telefono: form.telefono,
+          presupuesto: form.presupuesto,
           mensaje: form.mensaje,
           pagina: typeof document !== "undefined" ? document.title : "",
           url: typeof location !== "undefined" ? location.href : ""
@@ -1465,6 +1470,13 @@ function CtaBlock({ titulo = "Hablemos.", sub = "30 minutos. Sin compromiso. Sal
               </div>
               <input className="cta-input" type="url" placeholder={T.sitioWeb}
                 value={form.sitioWeb} onChange={set("sitioWeb")} style={inputStyle} />
+              <select className="cta-input" value={form.presupuesto} onChange={set("presupuesto")}
+                style={{ ...inputStyle, fontFamily: TYPE.body, color: form.presupuesto ? SATORI.CREAM : "rgba(244,244,242,0.5)" }}>
+                <option value="" style={{ color: SATORI.INK }}>{T.presupuesto_ph}</option>
+                {T.budgets.map((b) => (
+                  <option key={b} value={b} style={{ color: SATORI.INK }}>{b}</option>
+                ))}
+              </select>
               <textarea required className="cta-input" placeholder={T.mensaje}
                 value={form.mensaje} onChange={set("mensaje")} rows={5}
                 style={{ ...inputStyle, resize: "vertical", minHeight: "130px", fontFamily: TYPE.body }} />
