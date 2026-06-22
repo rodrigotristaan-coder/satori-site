@@ -291,14 +291,14 @@ function HomeHero() {
   const c = lang === "en" ? {
     eyebrow: "Strategy · Brand · Growth",
     h1a: "More strategy.",
-    h1b: "Less noise.",
+    h1b: "More clarity.",
     p: "Marketing | Sales | AI | Automation",
     cta1: "Contact",
     cta2: "See services"
   } : {
     eyebrow: "Estrategia · Marca · Crecimiento",
     h1a: "Más estrategia.",
-    h1b: "Menos ruido.",
+    h1b: "Más claridad.",
     p: "Marketing | Ventas | IA | Automatización",
     cta1: "Contactar",
     cta2: "Ver servicios"
@@ -319,7 +319,7 @@ function HomeHero() {
         className="container home-hero-grid"
         style={{
           display: "grid",
-          gridTemplateColumns: "1.2fr 1fr",
+          gridTemplateColumns: "1fr",
           gap: "4rem",
           alignItems: "center"
         }}
@@ -342,13 +342,13 @@ function HomeHero() {
               }}
               className="fade-up-d1"
             >
-              <span style={{ color: SATORI.GOLD }}>{c.h1a}</span>
+              <span style={{ color: SATORI.INK }}>{c.h1a}</span>
               <br />
               <span
                 style={{
-                  fontWeight: 400,
-                  color: "#8c8c8c",
-                  fontSize: "clamp(1.7rem, 6vw, 4.2rem)"
+                  fontWeight: 600,
+                  color: SATORI.GOLD,
+                  fontSize: "clamp(3.2rem, 11vw, 8rem)"
                 }}
               >
                 {c.h1b}
@@ -383,30 +383,6 @@ function HomeHero() {
             </div>
           </div>
 
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              position: "relative"
-            }}
-            className="fade-up-d2 hero-enso-wrap"
-          >
-            {/* Soft warm halo behind the enso — muy sutil */}
-            <div
-              aria-hidden="true"
-              style={{
-                position: "absolute",
-                width: "520px",
-                height: "520px",
-                borderRadius: "999px",
-                background: `radial-gradient(ellipse at center, ${SATORI.GOLD}08 0%, transparent 65%)`,
-                filter: "blur(24px)",
-                pointerEvents: "none"
-              }}
-            />
-            <Enso size={460} color="#bdbdbd" opacity={0.16} spinning={true} />
-          </div>
         </div>
       </div>
     </section>
