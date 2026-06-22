@@ -31,7 +31,10 @@ const PAGES = [
   { html: 'blog.html',          jsx: 'page-blog.jsx',      path: '/blog.html' },
   { html: 'sobre-rodrigo.html', jsx: 'page-sobre.jsx',     path: '/sobre-rodrigo.html' },
 ];
-const STATIC_HTML = [{ html: 'privacidad.html', path: '/privacidad.html' }];
+const STATIC_HTML = [
+  { html: 'privacidad.html', path: '/privacidad.html' },
+  { html: 'gracias.html', path: '/gracias.html', noindex: true }, // thank-you (conversión); fuera del sitemap
+];
 
 const hash8 = (s) => createHash('sha256').update(s).digest('hex').slice(0, 8);
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
@@ -202,7 +205,7 @@ for (const s of STATIC_HTML) {
 
 // robots.txt + sitemap.xml
 writeFileSync(join(OUT, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`);
-const urls = [...PAGES.map(p => p.path), ...STATIC_HTML.map(s => s.path)];
+const urls = [...PAGES.map(p => p.path), ...STATIC_HTML.filter(s => !s.noindex).map(s => s.path)];
 writeFileSync(join(OUT, 'sitemap.xml'),
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
   urls.map(u => `  <url><loc>${SITE}${u === '/' ? '/' : u}</loc>${u === '/' ? '<priority>1.0</priority>' : ''}</url>`).join('\n') +

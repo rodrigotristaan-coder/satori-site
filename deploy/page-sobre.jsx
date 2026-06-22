@@ -749,33 +749,25 @@ function ContactForm() {
     ]
   };
 
-  const onSubmit = async (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
     const data = new FormData(e.target);
     const nombre = data.get("nombre") || "";
     const empresa = data.get("empresa") || "";
     const mensaje = data.get("mensaje") || "";
     const presupuesto = data.get("presupuesto") || "";
-    try {
-      await fetch(N8N_FORM_WEBHOOK, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          nombre, empresa, presupuesto, mensaje,
-          pagina: typeof document !== "undefined" ? document.title : "",
-          url: typeof location !== "undefined" ? location.href : ""
-        })
-      });
-    } catch (err) {
-      // Respaldo: si falla la red, abre WhatsApp para no perder el lead
-      const prefix = lang === "en" ? "Hi, I'm" : "Hola, soy";
-      const budgetLabel = lang === "en" ? "Approx. budget" : "Presupuesto aproximado";
-      const text =
-        `${prefix} ${nombre}${empresa ? " · " + empresa : ""}.%0A` +
-        `${budgetLabel}: ${presupuesto}.%0A${encodeURIComponent(mensaje)}`;
-      window.open(`https://wa.me/525625018281?text=${text}`, "_blank");
-    }
-    setSent(true);
+    // keepalive: el lead se envía aunque naveguemos a la página de gracias
+    fetch(N8N_FORM_WEBHOOK, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      keepalive: true,
+      body: JSON.stringify({
+        nombre, empresa, presupuesto, mensaje,
+        pagina: typeof document !== "undefined" ? document.title : "",
+        url: typeof location !== "undefined" ? location.href : ""
+      })
+    }).catch(() => {});
+    window.location.href = "gracias.html";
   };
 
   return (

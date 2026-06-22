@@ -1227,33 +1227,26 @@ function CtaBlock({ titulo = "Hablemos.", sub = "30 minutos. Sin compromiso. Sal
     microcopy: "Gratis · respuesta en 24h · sin compromiso"
   };
 
-  const onSubmit = async (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
-    try {
-      await fetch(N8N_FORM_WEBHOOK, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          nombre: form.nombre,
-          empresa: form.empresa,
-          sitioWeb: form.sitioWeb,
-          email: form.email,
-          telefono: form.telefono,
-          presupuesto: form.presupuesto,
-          mensaje: form.mensaje,
-          pagina: typeof document !== "undefined" ? document.title : "",
-          url: typeof location !== "undefined" ? location.href : ""
-        })
-      });
-    } catch (err) {
-      // Respaldo: si falla la red, abre el correo para no perder el lead
-      const subject = encodeURIComponent(`[SATORI] ${form.nombre || "Nuevo mensaje"}${form.empresa ? " · " + form.empresa : ""}`);
-      const body = encodeURIComponent(
-        `Nombre: ${form.nombre}\nEmpresa: ${form.empresa}\nSitio web: ${form.sitioWeb}\nEmail: ${form.email}\nTeléfono: ${form.telefono}\n\n${form.mensaje}\n`
-      );
-      window.location.href = `mailto:${SATORI.EMAIL}?subject=${subject}&body=${body}`;
-    }
-    setSent(true);
+    // keepalive: el lead se envía aunque naveguemos a la página de gracias
+    fetch(N8N_FORM_WEBHOOK, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      keepalive: true,
+      body: JSON.stringify({
+        nombre: form.nombre,
+        empresa: form.empresa,
+        sitioWeb: form.sitioWeb,
+        email: form.email,
+        telefono: form.telefono,
+        presupuesto: form.presupuesto,
+        mensaje: form.mensaje,
+        pagina: typeof document !== "undefined" ? document.title : "",
+        url: typeof location !== "undefined" ? location.href : ""
+      })
+    }).catch(() => {});
+    window.location.href = "gracias.html";
   };
 
   const inputStyle = {
@@ -2266,13 +2259,12 @@ function SectionRail({ sections = [] }) {
       aria-label="Secciones de la página"
       style={{
         position: "fixed",
-        left: "1.5rem",
         top: "50%",
         transform: "translateY(-50%)",
         zIndex: 70,
-        display: "none",
+        display: "flex",
         flexDirection: "column",
-        gap: "0.6rem"
+        gap: "0.85rem"
       }}
     >
       {sections.map((s) => {
@@ -2281,11 +2273,12 @@ function SectionRail({ sections = [] }) {
           <a
             key={s.id}
             href={"#" + s.id}
+            aria-label={(s.label && (s.label[lang] || s.label.es)) || s.id}
             aria-current={on ? "true" : undefined}
             style={{
               display: "flex",
               alignItems: "center",
-              gap: "0.65rem",
+              gap: "0.7rem",
               textDecoration: "none",
               fontFamily: TYPE.mono,
               fontSize: "0.62rem",
@@ -2298,14 +2291,17 @@ function SectionRail({ sections = [] }) {
             <span
               aria-hidden="true"
               style={{
-                width: on ? "26px" : "12px",
-                height: "2px",
-                borderRadius: "2px",
-                background: on ? SATORI.GOLD : `${SATORI.INK}30`,
+                width: on ? "11px" : "7px",
+                height: on ? "11px" : "7px",
+                borderRadius: "50%",
+                flex: "none",
+                background: on ? SATORI.GOLD : "transparent",
+                border: on ? "none" : `1.5px solid ${SATORI.INK}40`,
+                boxShadow: on ? `0 0 0 4px ${SATORI.GOLD}22` : "none",
                 transition: "all .3s ease"
               }}
             />
-            <span style={{ opacity: on ? 1 : 0.7 }}>{(s.label && (s.label[lang] || s.label.es)) || s.id}</span>
+            <span className="rail-label" style={{ opacity: on ? 1 : 0.7 }}>{(s.label && (s.label[lang] || s.label.es)) || s.id}</span>
           </a>
         );
       })}

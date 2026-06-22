@@ -298,7 +298,11 @@ img, video, iframe {
   }
 }
 
-/* Section rail (scrollspy lateral): solo en pantallas anchas, donde hay margen libre */
+/* Section rail (scrollspy lateral). En móvil: solo puntos, pegados al borde
+   para no chocar con el contenido. En pantallas anchas: punto + etiqueta. */
+.section-rail { left: 0.5rem; }
+.section-rail .rail-label { display: none; }
 @media (min-width: 1200px) {
-  .section-rail { display: flex !important; }
+  .section-rail { left: 1.5rem; }
+  .section-rail .rail-label { display: inline; }
 }
