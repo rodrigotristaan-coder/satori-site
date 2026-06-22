@@ -356,13 +356,13 @@ function App() {
   return (
     <main style={{ position: "relative", minHeight: "100vh", background: SATORI.CREAM }}>
       <MatrixBackground opacity={0.035} color={SATORI.GOLD} />
-      <Nav current="proyectos" />
+      <Nav current="productos" />
       <ProjectsHero />
       <ProjectsGrid />
       <Metodologia />
       <CtaBlock titulo={ctaTitulo} sub={ctaSub} />
       <Footer social="satori" />
-      <MobileMenuFab current="proyectos" />
+      <MobileMenuFab current="productos" />
       <FloatingWhatsApp />
     </main>
   );
