@@ -999,8 +999,8 @@ function MobileMenuFab({ current }) {
           alignItems: "center",
           justifyContent: "center",
           boxShadow: open
-            ? `0 14px 32px -8px ${SATORI.GOLD}55, 0 2px 6px rgba(0,0,0,0.18)`
-            : "0 14px 32px -8px rgba(14,14,14,0.55), 0 2px 6px rgba(0,0,0,0.18)",
+            ? `0 14px 32px -8px ${SATORI.GOLD}55, 0 2px 6px rgba(14,14,14,0.18)`
+            : "0 14px 32px -8px rgba(14,14,14,0.55), 0 2px 6px rgba(14,14,14,0.18)",
           transform: open ? "rotate(180deg)" : "rotate(0)",
           transition: "transform .45s cubic-bezier(.2,.9,.3,1.4), box-shadow .35s ease, background .35s ease"
         }}
@@ -1051,7 +1051,7 @@ function FloatingWhatsApp({ topic }) {
         display: "inline-flex",
         alignItems: "center",
         justifyContent: "center",
-        boxShadow: "0 14px 32px -8px rgba(37,211,102,0.5), 0 2px 6px rgba(0,0,0,0.12)",
+        boxShadow: "0 14px 32px -8px rgba(37,211,102,0.5), 0 2px 6px rgba(14,14,14,0.12)",
         textDecoration: "none",
         opacity: visible ? 1 : 0,
         transform: visible ? "translateY(0) scale(1)" : "translateY(20px) scale(0.6)",
