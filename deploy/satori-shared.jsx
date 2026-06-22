@@ -2239,6 +2239,80 @@ function ReviewsSection() {
   );
 }
 
+// ---------- SECTION RAIL (scrollspy lateral izquierdo, por página) ----------
+// sections = [{ id, label: { es, en } }]. Resalta la sección visible al hacer scroll.
+// Oculto en móvil/tablet (CSS: .section-rail solo a partir de 1200px).
+function SectionRail({ sections = [] }) {
+  const [lang] = useLang();
+  const [active, setActive] = useState(sections[0] ? sections[0].id : "");
+  useEffect(() => {
+    const els = sections.map((s) => document.getElementById(s.id)).filter(Boolean);
+    if (!els.length) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        const vis = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (vis[0]) setActive(vis[0].target.id);
+      },
+      { rootMargin: "-35% 0px -55% 0px", threshold: [0, 0.2, 0.5, 1] }
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, [sections]);
+  return (
+    <nav
+      className="section-rail"
+      aria-label="Secciones de la página"
+      style={{
+        position: "fixed",
+        left: "1.5rem",
+        top: "50%",
+        transform: "translateY(-50%)",
+        zIndex: 70,
+        display: "none",
+        flexDirection: "column",
+        gap: "0.6rem"
+      }}
+    >
+      {sections.map((s) => {
+        const on = s.id === active;
+        return (
+          <a
+            key={s.id}
+            href={"#" + s.id}
+            aria-current={on ? "true" : undefined}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.65rem",
+              textDecoration: "none",
+              fontFamily: TYPE.mono,
+              fontSize: "0.62rem",
+              letterSpacing: "0.16em",
+              textTransform: "uppercase",
+              color: on ? SATORI.GOLD_DEEP : `${SATORI.INK}66`,
+              transition: "color .3s ease"
+            }}
+          >
+            <span
+              aria-hidden="true"
+              style={{
+                width: on ? "26px" : "12px",
+                height: "2px",
+                borderRadius: "2px",
+                background: on ? SATORI.GOLD : `${SATORI.INK}30`,
+                transition: "all .3s ease"
+              }}
+            />
+            <span style={{ opacity: on ? 1 : 0.7 }}>{(s.label && (s.label[lang] || s.label.es)) || s.id}</span>
+          </a>
+        );
+      })}
+    </nav>
+  );
+}
+
 // expose
 Object.assign(window, {
   SATORI, TYPE, waInterest, useLang,
@@ -2248,5 +2322,5 @@ Object.assign(window, {
   Nav, Footer, SocialRow, SocialIcon,
   FloatingWhatsApp, CtaBlock, PageHero, CalendlyInline,
   WelcomeAnimation, HorizontalTimeline, MobileMenuFab,
-  ReviewsSection
+  ReviewsSection, SectionRail
 });

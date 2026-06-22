@@ -297,3 +297,8 @@ img, video, iframe {
     word-break: break-word;
   }
 }
+
+/* Section rail (scrollspy lateral): solo en pantallas anchas, donde hay margen libre */
+@media (min-width: 1200px) {
+  .section-rail { display: flex !important; }
+}

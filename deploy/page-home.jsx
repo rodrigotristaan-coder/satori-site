@@ -466,7 +466,7 @@ function ShowroomTeaser() {
     cta: "Ver productos"
   };
   return (
-    <section data-reveal style={{
+    <section id="showroom" data-reveal style={{
       padding: "6rem clamp(1.25rem,4vw,2.5rem)", background: SATORI.INK,
       color: SATORI.CREAM, position: "relative", zIndex: 1, textAlign: "center"
     }}>
@@ -1612,6 +1612,13 @@ function App() {
     <main style={{ position: "relative", minHeight: "100vh", background: SATORI.CREAM }}>
       <MatrixBackground opacity={0.045} color={SATORI.GOLD} />
       <Nav current="home" />
+      <SectionRail sections={[
+        { id: "inicio", label: { es: "Inicio", en: "Home" } },
+        { id: "que-hacemos", label: { es: "Qué hacemos", en: "What we do" } },
+        { id: "metodologia", label: { es: "Metodología", en: "Method" } },
+        { id: "showroom", label: { es: "Showroom", en: "Showroom" } },
+        { id: "resenas", label: { es: "Reseñas", en: "Reviews" } }
+      ]} />
       <BrandManifesto />
       <HomeHero />
       <QueHacemos />
