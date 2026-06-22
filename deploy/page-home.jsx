@@ -289,18 +289,18 @@ function BrandManifesto() {
 function HomeHero() {
   const [lang] = useLang();
   const c = lang === "en" ? {
-    eyebrow: "Strategy · Brand · Growth",
     h1a: "More strategy.",
     h1b: "More clarity.",
-    p: "Marketing | Sales | AI | Automation",
-    cta1: "Contact",
+    lead: "Brand, web, marketing and AI automation for business owners who want to grow with clarity.",
+    chips: ["Brand", "Web", "Marketing", "Ads", "Automation"],
+    cta1: "Book a call",
     cta2: "See services"
   } : {
-    eyebrow: "Estrategia · Marca · Crecimiento",
     h1a: "Más estrategia.",
     h1b: "Más claridad.",
-    p: "Marketing | Ventas | IA | Automatización",
-    cta1: "Contactar",
+    lead: "Marca, web, marketing y automatización con IA para empresarios que quieren crecer con claridad.",
+    chips: ["Marca", "Web", "Marketing", "Ads", "Automatización"],
+    cta1: "Agendar llamada",
     cta2: "Ver servicios"
   };
   return (
@@ -343,24 +343,35 @@ function HomeHero() {
             </h1>
             <p
               style={{
-                fontFamily: TYPE.mono,
-                fontSize: "0.78rem",
-                letterSpacing: "0.32em",
-                textTransform: "uppercase",
-                color: "#9a9a9a",
-                opacity: 0.55,
-                marginTop: "2rem",
-                fontWeight: 400
+                ...bodyStyle,
+                fontSize: "clamp(1.1rem, 2.2vw, 1.45rem)",
+                fontWeight: 400,
+                opacity: 0.82,
+                maxWidth: "640px",
+                margin: "1.6rem auto 0"
               }}
               className="fade-up-d2"
             >
-              {c.p}
+              {c.lead}
             </p>
+            <div
+              style={{ display: "flex", gap: "0.5rem", marginTop: "1.75rem", flexWrap: "wrap", justifyContent: "center" }}
+              className="fade-up-d2"
+            >
+              {c.chips.map((chip) => (
+                <span key={chip} style={{
+                  fontFamily: TYPE.mono, fontSize: "0.66rem", letterSpacing: "0.18em",
+                  textTransform: "uppercase", color: SATORI.GOLD_DEEP,
+                  border: `1px solid ${SATORI.GOLD}33`, borderRadius: "999px",
+                  padding: "0.4rem 0.85rem", background: `${SATORI.GOLD}0a`
+                }}>{chip}</span>
+              ))}
+            </div>
             <div
               style={{ display: "flex", gap: "0.85rem", marginTop: "2.5rem", flexWrap: "wrap", justifyContent: "center" }}
               className="fade-up-d3"
             >
-              <a href="#contacto" className="cta-btn-gold pulse-gold" style={btnGold}>
+              <a href={SATORI.CALENDLY} target="_blank" rel="noopener" className="cta-btn-gold pulse-gold" style={btnGold}>
                 <span>{c.cta1}</span>
                 <span className="cta-arrow">→</span>
               </a>
@@ -370,6 +381,64 @@ function HomeHero() {
             </div>
           </div>
 
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ---------- QUÉ HACEMOS (4 pilares de servicio — claridad arriba) ----------
+function QueHacemos() {
+  const [lang] = useLang();
+  const en = lang === "en";
+  const T = en ? {
+    eyebrow: "What we do",
+    title: "Four ways we make you grow",
+    sub: "Strategy first, then execution. Everything points to one thing: clients arriving with clarity.",
+    cta: "See all services",
+    items: [
+      { t: "Brand & Design", d: "Identity that sets you apart and builds trust." },
+      { t: "Web & Positioning", d: "Fast sites that rank and get recommended by AI." },
+      { t: "Marketing & Ads", d: "Campaigns that bring qualified leads, not noise." },
+      { t: "AI Automation", d: "Systems that capture and follow up leads on autopilot." }
+    ]
+  } : {
+    eyebrow: "Qué hacemos",
+    title: "Cuatro formas de hacerte crecer",
+    sub: "Primero estrategia, luego ejecución. Todo apunta a lo mismo: clientes llegando con claridad.",
+    cta: "Ver todos los servicios",
+    items: [
+      { t: "Marca & Diseño", d: "Identidad que te distingue y genera confianza." },
+      { t: "Web & Posicionamiento", d: "Sitios rápidos, que rankean y que la IA recomienda." },
+      { t: "Marketing & Ads", d: "Campañas que traen prospectos calificados, no ruido." },
+      { t: "Automatización con IA", d: "Sistemas que captan y dan seguimiento a leads solos." }
+    ]
+  };
+  return (
+    <section id="que-hacemos" data-reveal style={{
+      padding: "7rem clamp(1.25rem,4vw,2.5rem)", background: SATORI.CREAM,
+      position: "relative", zIndex: 1
+    }}>
+      <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: "3rem" }}>
+          <div style={{ ...eyebrowStyle, justifyContent: "center" }}>{T.eyebrow}</div>
+          <h2 style={h2Style}>{T.title}</h2>
+          <p style={{ ...bodyStyle, maxWidth: "560px", margin: "1rem auto 0" }}>{T.sub}</p>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))", gap: "1.2rem" }}>
+          {T.items.map((it, i) => (
+            <div key={i} style={{
+              background: SATORI.WHITE, border: "1px solid rgba(14,14,14,0.08)",
+              borderRadius: "18px", padding: "1.8rem", boxShadow: "0 10px 30px rgba(14,14,14,0.04)"
+            }}>
+              <div style={{ fontFamily: TYPE.mono, fontSize: "0.8rem", color: SATORI.GOLD, marginBottom: "0.9rem" }}>{String(i + 1).padStart(2, "0")}</div>
+              <h3 style={{ fontFamily: TYPE.display, fontSize: "1.2rem", fontWeight: 500, color: SATORI.INK, margin: "0 0 0.5rem" }}>{it.t}</h3>
+              <p style={{ ...bodyStyle, fontSize: "0.96rem", margin: 0 }}>{it.d}</p>
+            </div>
+          ))}
+        </div>
+        <div style={{ textAlign: "center", marginTop: "2.5rem" }}>
+          <a href="servicios.html" style={btnGhost}>{T.cta}</a>
         </div>
       </div>
     </section>
@@ -990,7 +1059,7 @@ function RutaCrecimiento() {
   };
   return (
     <section
-      id="ruta"
+      id="metodologia"
       style={{
         padding: "6rem clamp(1.25rem,4vw,2.5rem) 7rem",
         position: "relative",
@@ -1510,6 +1579,7 @@ function App() {
       <Nav current="home" />
       <BrandManifesto />
       <HomeHero />
+      <QueHacemos />
       <RutaCrecimiento />
       <MapaPresencia />
       <ReviewsSection />
