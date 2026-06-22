@@ -342,7 +342,7 @@ function HomeHero() {
               }}
               className="fade-up-d1"
             >
-              <span style={{ color: SATORI.INK }}>{c.h1a}</span>
+              <span style={{ color: SATORI.INK, fontWeight: 400 }}>{c.h1a}</span>
               <br />
               <span
                 style={{

@@ -2009,22 +2009,26 @@ const N8N_REVIEWS_LIST = "https://n8n.satorimkt.com/webhook/satori-reviews";
 const N8N_REVIEWS_NEW = "https://n8n.satorimkt.com/webhook/satori-reviews-new";
 
 // Redimensiona la foto elegida a un cuadrado pequeño -> data URL JPEG ligero.
-// Va como data: (permitido por la CSP); evita blob: que la CSP no permite.
+// IMPORTANTE: se carga vía FileReader -> data: URL (NO createObjectURL/blob:,
+// que la CSP img-src no permite y haría fallar la lectura -> foto vacía).
 function fileToAvatarDataUrl(file, size = 256) {
   return new Promise((resolve, reject) => {
-    const img = new Image();
-    const url = URL.createObjectURL(file);
-    img.onload = () => {
-      const s = Math.min(img.width, img.height);
-      const sx = (img.width - s) / 2, sy = (img.height - s) / 2;
-      const c = document.createElement("canvas");
-      c.width = c.height = size;
-      c.getContext("2d").drawImage(img, sx, sy, s, s, 0, 0, size, size);
-      URL.revokeObjectURL(url);
-      resolve(c.toDataURL("image/jpeg", 0.82));
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        const s = Math.min(img.width, img.height);
+        const sx = (img.width - s) / 2, sy = (img.height - s) / 2;
+        const c = document.createElement("canvas");
+        c.width = c.height = size;
+        c.getContext("2d").drawImage(img, sx, sy, s, s, 0, 0, size, size);
+        resolve(c.toDataURL("image/jpeg", 0.82));
+      };
+      img.onerror = () => reject(new Error("img"));
+      img.src = reader.result; // data: URL — permitido por la CSP
     };
-    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("img")); };
-    img.src = url;
+    reader.onerror = () => reject(new Error("read"));
+    reader.readAsDataURL(file);
   });
 }
 
@@ -2033,15 +2037,15 @@ function ReviewCard({ rv }) {
   const initial = (rv.name || "?").trim().slice(0, 1).toUpperCase();
   return (
     <figure style={{
-      background: SATORI.WHITE, border: "1px solid rgba(14,14,14,0.08)",
+      background: SATORI.INK, border: "1px solid rgba(255,255,255,0.10)",
       borderRadius: "18px", padding: "1.8rem", margin: 0,
-      display: "flex", flexDirection: "column", boxShadow: "0 10px 30px rgba(14,14,14,0.05)"
+      display: "flex", flexDirection: "column", boxShadow: "0 12px 34px rgba(14,14,14,0.18)"
     }}>
       <div aria-label={`${rating} de 5`} style={{ color: SATORI.GOLD, fontSize: "1.1rem", letterSpacing: "2px" }}>
-        {"★".repeat(rating)}<span style={{ color: "rgba(14,14,14,0.18)" }}>{"★".repeat(5 - rating)}</span>
+        {"★".repeat(rating)}<span style={{ color: "rgba(255,255,255,0.22)" }}>{"★".repeat(5 - rating)}</span>
       </div>
       <blockquote style={{
-        ...bodyStyle, opacity: 0.92, fontStyle: "italic", flex: 1,
+        ...bodyStyle, color: SATORI.CREAM, opacity: 0.94, fontStyle: "italic", flex: 1,
         margin: "0.85rem 0 1.25rem", fontSize: "1rem"
       }}>“{rv.text}”</blockquote>
       <figcaption style={{ display: "flex", alignItems: "center", gap: "0.8rem", marginTop: "auto" }}>
@@ -2050,10 +2054,10 @@ function ReviewCard({ rv }) {
               style={{ width: 48, height: 48, borderRadius: "50%", objectFit: "cover", flex: "none" }} />
           : <span aria-hidden="true" style={{
               width: 48, height: 48, borderRadius: "50%", flex: "none",
-              background: SATORI.GOLD, color: SATORI.CREAM, display: "flex",
+              background: SATORI.GOLD, color: SATORI.INK, display: "flex",
               alignItems: "center", justifyContent: "center", fontWeight: 600, fontFamily: TYPE.display
             }}>{initial}</span>}
-        <span style={{ fontWeight: 600, color: SATORI.INK, fontFamily: TYPE.body }}>{rv.name}</span>
+        <span style={{ fontWeight: 600, color: SATORI.WHITE, fontFamily: TYPE.body }}>{rv.name}</span>
       </figcaption>
     </figure>
   );
@@ -2090,7 +2094,7 @@ function ReviewsSection() {
     cta: "Leave a review", formTitle: "Leave your review",
     note: "Published after a quick review by the team.",
     name: "Your name", rating: "Rating", review: "Your review",
-    photo: "Photo (optional)", submit: "Submit review", sending: "Sending…",
+    photo: "Profile photo (optional)", submit: "Submit review", sending: "Sending…",
     thanks: "Thank you! Your review will appear after a quick check.",
     err: "Couldn't send. Please try again.", needed: "Please add your name and review."
   } : {
@@ -2100,7 +2104,7 @@ function ReviewsSection() {
     cta: "Dejar una reseña", formTitle: "Deja tu reseña",
     note: "Se publica tras una breve revisión del equipo.",
     name: "Tu nombre", rating: "Calificación", review: "Tu reseña",
-    photo: "Foto (opcional)", submit: "Enviar reseña", sending: "Enviando…",
+    photo: "Foto de perfil (opcional)", submit: "Enviar reseña", sending: "Enviando…",
     thanks: "¡Gracias! Tu reseña aparecerá tras una breve revisión.",
     err: "No se pudo enviar. Intenta de nuevo.", needed: "Completa tu nombre y reseña."
   };
