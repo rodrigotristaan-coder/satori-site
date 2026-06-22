@@ -394,7 +394,7 @@ function QueHacemos() {
   const en = lang === "en";
   const T = en ? {
     eyebrow: "What we do",
-    title: "Four ways we make you grow",
+    title: "Six ways we make you grow",
     sub: "Strategy first, then execution. Everything points to one thing: clients arriving with clarity.",
     cta: "See all services",
     items: [
@@ -407,7 +407,7 @@ function QueHacemos() {
     ]
   } : {
     eyebrow: "Qué hacemos",
-    title: "Cuatro formas de hacerte crecer",
+    title: "Seis formas de hacerte crecer",
     sub: "Primero estrategia, luego ejecución. Todo apunta a lo mismo: clientes llegando con claridad.",
     cta: "Ver todos los servicios",
     items: [

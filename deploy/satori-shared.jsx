@@ -297,10 +297,9 @@ function useLang() {
 // ---------- NAV MULTI-PÁGINA ----------
 // `current` = "home" | "sobre" | "proyectos" | "servicios"
 const NAV_LINKS = [
-  { key: "resenas", href: "index.html#resenas", label: { es: "Reseñas", en: "Reviews" } },
-  { key: "metodologia", href: "index.html#metodologia", label: { es: "Metodología", en: "Methodology" } },
-  { key: "productos", href: "proyectos.html", label: { es: "Productos", en: "Products" } },
+  { key: "home", href: "index.html", label: { es: "Inicio", en: "Home" } },
   { key: "servicios", href: "servicios.html", label: { es: "Servicios", en: "Services" } },
+  { key: "productos", href: "proyectos.html", label: { es: "Productos", en: "Products" } },
   { key: "sobre", href: "sobre-rodrigo.html", label: { es: "Fundador", en: "Founder" } },
   { key: "blog", href: "blog.html", label: { es: "Blog", en: "Blog" } }
 ];
