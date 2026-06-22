@@ -14,6 +14,7 @@ const SERVICIOS_EN = [
       "Naming, manual and brand kit",
       "Complete visual & verbal identity",
       "Positioning for CEOs",
+      "Your CV as a website",
       "Templates for the whole team"
     ],
     img: "assets/marca-propia.webp"
@@ -105,6 +106,7 @@ const SERVICIOS = [
       "Naming, manual y kit de marca",
       "Identidad visual y verbal completa",
       "Posicionamiento para CEO",
+      "Tu CV en página web",
       "Plantillas para todo el equipo"
     ],
     img: "assets/marca-propia.webp"
