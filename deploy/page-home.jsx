@@ -325,20 +325,21 @@ function HomeHero() {
         }}
       >
         <div className="grid-2-col fade-up" style={{ display: "contents" }}>
-          <div>
+          <div style={{ textAlign: "center", maxWidth: "900px", margin: "0 auto" }}>
             <h1
               style={{
                 fontFamily: TYPE.display,
                 fontWeight: 400,
-                fontSize: "clamp(3.2rem, 11vw, 8rem)",
+                fontSize: "clamp(2.8rem, 9vw, 6.6rem)",
                 lineHeight: 1.0,
                 letterSpacing: "-0.04em",
-                color: SATORI.GOLD,
                 margin: 0
               }}
               className="fade-up-d1"
             >
-              “{c.h1b}”
+              <span style={{ color: SATORI.INK }}>{c.h1a}</span>
+              <br />
+              <span style={{ color: SATORI.GOLD, fontSize: "clamp(3.2rem, 11vw, 8rem)" }}>{c.h1b}</span>
             </h1>
             <p
               style={{
@@ -356,7 +357,7 @@ function HomeHero() {
               {c.p}
             </p>
             <div
-              style={{ display: "flex", gap: "0.85rem", marginTop: "2.5rem", flexWrap: "wrap" }}
+              style={{ display: "flex", gap: "0.85rem", marginTop: "2.5rem", flexWrap: "wrap", justifyContent: "center" }}
               className="fade-up-d3"
             >
               <a href="#contacto" className="cta-btn-gold pulse-gold" style={btnGold}>
