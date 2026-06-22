@@ -13,6 +13,15 @@ const PROYECTOS_ES = [
     img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=720&q=75&auto=format&fit=crop"
   },
   {
+    titulo: "Invitación de boda — Verónica & Carlos",
+    cat: "Web",
+    year: "2025",
+    descripcion: "Invitación de boda digital: sobre interactivo que se abre con música, galería, itinerario, confirmación de asistencia (RSVP) y mesa de regalos. Diseño y desarrollo por Satori.",
+    tags: ["Landing", "Invitación digital", "Animación", "RSVP"],
+    video: "assets/showroom/invitacion-boda-famsalasglez-16x9.mp4",
+    poster: "assets/showroom/invitacion-boda-famsalasglez-poster.jpg"
+  },
+  {
     titulo: "Landing Pages",
     cat: "Identidad",
     year: "2025",
@@ -63,6 +72,15 @@ const PROYECTOS_EN = [
     descripcion: "Personal-finance bot with automatic logging and reporting over WhatsApp. AI categorization and clear monthly reports — no spreadsheets.",
     tags: ["WhatsApp", "Auto-logging", "AI reports"],
     img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=720&q=75&auto=format&fit=crop"
+  },
+  {
+    titulo: "Wedding invitation — Verónica & Carlos",
+    cat: "Web",
+    year: "2025",
+    descripcion: "Digital wedding invitation: an interactive envelope that opens with music, gallery, itinerary, RSVP and gift registry. Designed and developed by Satori.",
+    tags: ["Landing", "Digital invite", "Animation", "RSVP"],
+    video: "assets/showroom/invitacion-boda-famsalasglez-16x9.mp4",
+    poster: "assets/showroom/invitacion-boda-famsalasglez-poster.jpg"
   },
   {
     titulo: "Landing Pages",
@@ -169,20 +187,39 @@ function ProjectsGrid() {
                 position: "relative"
               }}
             >
-              <div className="project-image" style={{ position: "relative", overflow: "hidden", aspectRatio: "4/3" }}>
-                <img
-                  src={p.img}
-                  alt={p.titulo}
-                  loading="lazy"
-                  decoding="async"
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    display: "block",
-                    transition: "transform 1s cubic-bezier(.2,.7,.2,1), filter .8s ease"
-                  }}
-                />
+              <div className="project-image" style={{ position: "relative", overflow: "hidden", aspectRatio: "4/3", background: SATORI.INK }}>
+                {p.video ? (
+                  <video
+                    src={p.video}
+                    poster={p.poster}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                    aria-label={p.titulo}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      display: "block"
+                    }}
+                  />
+                ) : (
+                  <img
+                    src={p.img}
+                    alt={p.titulo}
+                    loading="lazy"
+                    decoding="async"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      display: "block",
+                      transition: "transform 1s cubic-bezier(.2,.7,.2,1), filter .8s ease"
+                    }}
+                  />
+                )}
                 <div
                   aria-hidden="true"
                   style={{
