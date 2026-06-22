@@ -394,7 +394,8 @@ function QueHacemos() {
   const en = lang === "en";
   const T = en ? {
     eyebrow: "What we do",
-    title: "Six ways we make you grow",
+    title: "Six ways we ",
+    titleAccent: "make you grow",
     sub: "Strategy first, then execution. Everything points to one thing: clients arriving with clarity.",
     cta: "See all services",
     items: [
@@ -407,7 +408,8 @@ function QueHacemos() {
     ]
   } : {
     eyebrow: "Qué hacemos",
-    title: "Seis formas de hacerte crecer",
+    title: "Seis formas de ",
+    titleAccent: "hacerte crecer",
     sub: "Primero estrategia, luego ejecución. Todo apunta a lo mismo: clientes llegando con claridad.",
     cta: "Ver todos los servicios",
     items: [
@@ -427,7 +429,7 @@ function QueHacemos() {
       <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: "3rem" }}>
           <div style={{ ...eyebrowStyle, justifyContent: "center" }}>{T.eyebrow}</div>
-          <h2 style={h2Style}>{T.title}</h2>
+          <h2 style={h2Style}>{T.title}<span style={{ color: SATORI.GOLD }}>{T.titleAccent}</span></h2>
           <p style={{ ...bodyStyle, maxWidth: "560px", margin: "1rem auto 0" }}>{T.sub}</p>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))", gap: "1.2rem" }}>
@@ -456,12 +458,14 @@ function ShowroomTeaser() {
   const en = lang === "en";
   const T = en ? {
     eyebrow: "Showroom",
-    title: "See what we've built",
+    title: "See what we've ",
+    titleAccent: "built",
     sub: "Our products like MyCFO, plus landing pages, sales bots, branding and more.",
     cta: "Explore products"
   } : {
     eyebrow: "Showroom",
-    title: "Mira lo que hemos construido",
+    title: "Mira lo que hemos ",
+    titleAccent: "construido",
     sub: "Nuestros productos como MyCFO, además de landing pages, bots de ventas, branding y más.",
     cta: "Ver productos"
   };
@@ -472,7 +476,7 @@ function ShowroomTeaser() {
     }}>
       <div style={{ maxWidth: "780px", margin: "0 auto" }}>
         <div style={{ ...eyebrowStyle, justifyContent: "center", color: SATORI.GOLD, opacity: 1 }}>{T.eyebrow}</div>
-        <h2 style={{ ...h2Style, color: SATORI.CREAM }}>{T.title}</h2>
+        <h2 style={{ ...h2Style, color: SATORI.CREAM }}>{T.title}<span style={{ color: SATORI.GOLD }}>{T.titleAccent}</span></h2>
         <p style={{ ...bodyStyle, color: SATORI.CREAM, opacity: 0.8, maxWidth: "560px", margin: "1rem auto 2rem" }}>{T.sub}</p>
         <a href="proyectos.html" style={btnGold}>{T.cta}</a>
       </div>
@@ -574,7 +578,7 @@ function BrandReel() {
         style={{
           position: "absolute",
           inset: 0,
-          background: "radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.55) 100%)",
+          background: "radial-gradient(ellipse at center, transparent 50%, rgba(14,14,14,0.55) 100%)",
           pointerEvents: "none",
           zIndex: 3
         }}
