@@ -291,15 +291,15 @@ function HomeHero() {
   const c = lang === "en" ? {
     h1a: "More strategy.",
     h1b: "More clarity.",
-    lead: "Brand, web, marketing and AI automation for business owners who want to grow with clarity.",
-    chips: ["Brand", "Web", "Marketing", "Ads", "Automation"],
+    lead: "Technology for business owners who want to grow with clarity.",
+    chips: [{ t: "Brand" }, { t: "Web" }, { t: "Marketing" }, { t: "Ads" }, { t: "Automation" }, { t: "AI", gold: true }],
     cta1: "Book a call",
     cta2: "See services"
   } : {
     h1a: "Más estrategia.",
     h1b: "Más claridad.",
-    lead: "Marca, web, marketing y automatización con IA para empresarios que quieren crecer con claridad.",
-    chips: ["Marca", "Web", "Marketing", "Ads", "Automatización"],
+    lead: "Tecnología para empresarios que quieren crecer con claridad.",
+    chips: [{ t: "Marca" }, { t: "Web" }, { t: "Marketing" }, { t: "Ads" }, { t: "Automatización" }, { t: "IA", gold: true }],
     cta1: "Agendar llamada",
     cta2: "Ver servicios"
   };
@@ -359,12 +359,13 @@ function HomeHero() {
               className="fade-up-d2"
             >
               {c.chips.map((chip) => (
-                <span key={chip} style={{
+                <span key={chip.t} style={{
                   fontFamily: TYPE.mono, fontSize: "0.66rem", letterSpacing: "0.18em",
-                  textTransform: "uppercase", color: SATORI.GOLD_DEEP,
-                  border: `1px solid ${SATORI.GOLD}33`, borderRadius: "999px",
-                  padding: "0.4rem 0.85rem", background: `${SATORI.GOLD}0a`
-                }}>{chip}</span>
+                  textTransform: "uppercase", borderRadius: "999px", padding: "0.4rem 0.85rem",
+                  ...(chip.gold
+                    ? { color: SATORI.CREAM, background: SATORI.GOLD, border: `1px solid ${SATORI.GOLD}`, fontWeight: 600 }
+                    : { color: SATORI.GOLD_DEEP, background: `${SATORI.GOLD}0a`, border: `1px solid ${SATORI.GOLD}33` })
+                }}>{chip.t}</span>
               ))}
             </div>
             <div
@@ -400,7 +401,9 @@ function QueHacemos() {
       { t: "Brand & Design", d: "Identity that sets you apart and builds trust." },
       { t: "Web & Positioning", d: "Fast sites that rank and get recommended by AI." },
       { t: "Marketing & Ads", d: "Campaigns that bring qualified leads, not noise." },
-      { t: "AI Automation", d: "Systems that capture and follow up leads on autopilot." }
+      { t: "AI Automation", d: "Systems that capture and follow up leads on autopilot." },
+      { t: "MyCFO", d: "Your AI CFO: manage your business finances by chat." },
+      { t: "Web Invitations", d: "Digital invitations for weddings and events, with RSVP." }
     ]
   } : {
     eyebrow: "Qué hacemos",
@@ -411,7 +414,9 @@ function QueHacemos() {
       { t: "Marca & Diseño", d: "Identidad que te distingue y genera confianza." },
       { t: "Web & Posicionamiento", d: "Sitios rápidos, que rankean y que la IA recomienda." },
       { t: "Marketing & Ads", d: "Campañas que traen prospectos calificados, no ruido." },
-      { t: "Automatización con IA", d: "Sistemas que captan y dan seguimiento a leads solos." }
+      { t: "Automatización con IA", d: "Sistemas que captan y dan seguimiento a leads solos." },
+      { t: "MyCFO", d: "Tu CFO con IA: controla las finanzas de tu negocio por chat." },
+      { t: "Invitaciones Web", d: "Invitaciones digitales para bodas y eventos, con RSVP." }
     ]
   };
   return (
