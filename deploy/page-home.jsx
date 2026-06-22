@@ -450,6 +450,36 @@ function QueHacemos() {
   );
 }
 
+// ---------- SHOWROOM (teaser -> página Productos) ----------
+function ShowroomTeaser() {
+  const [lang] = useLang();
+  const en = lang === "en";
+  const T = en ? {
+    eyebrow: "Showroom",
+    title: "See what we've built",
+    sub: "Our products like MyCFO, plus landing pages, sales bots, branding and more.",
+    cta: "Explore products"
+  } : {
+    eyebrow: "Showroom",
+    title: "Mira lo que hemos construido",
+    sub: "Nuestros productos como MyCFO, además de landing pages, bots de ventas, branding y más.",
+    cta: "Ver productos"
+  };
+  return (
+    <section data-reveal style={{
+      padding: "6rem clamp(1.25rem,4vw,2.5rem)", background: SATORI.INK,
+      color: SATORI.CREAM, position: "relative", zIndex: 1, textAlign: "center"
+    }}>
+      <div style={{ maxWidth: "780px", margin: "0 auto" }}>
+        <div style={{ ...eyebrowStyle, justifyContent: "center", color: SATORI.GOLD, opacity: 1 }}>{T.eyebrow}</div>
+        <h2 style={{ ...h2Style, color: SATORI.CREAM }}>{T.title}</h2>
+        <p style={{ ...bodyStyle, color: SATORI.CREAM, opacity: 0.8, maxWidth: "560px", margin: "1rem auto 2rem" }}>{T.sub}</p>
+        <a href="proyectos.html" style={btnGold}>{T.cta}</a>
+      </div>
+    </section>
+  );
+}
+
 // ---------- VIDEO SNEAK PEEK (CSS-animated brand reel "hecho con IA") ----------
 function SneakPeeks() {
   const [lang] = useLang();
@@ -1586,6 +1616,7 @@ function App() {
       <HomeHero />
       <QueHacemos />
       <RutaCrecimiento />
+      <ShowroomTeaser />
       <MapaPresencia />
       <ReviewsSection />
       <CtaBlock

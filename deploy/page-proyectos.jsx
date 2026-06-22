@@ -6,6 +6,7 @@ const PROYECTOS_ES = [
   {
     titulo: "My CFO",
     cat: "Soluciones IA",
+    producto: true,
     year: "2025",
     descripcion: "Bot de finanzas personales con registro y reporting automático por WhatsApp. Categorización por IA y reportes mensuales claros, sin tocar hojas de cálculo.",
     tags: ["WhatsApp", "Registro automático", "Reportes IA"],
@@ -57,6 +58,7 @@ const PROYECTOS_EN = [
   {
     titulo: "My CFO",
     cat: "AI Solutions",
+    producto: true,
     year: "2025",
     descripcion: "Personal-finance bot with automatic logging and reporting over WhatsApp. AI categorization and clear monthly reports — no spreadsheets.",
     tags: ["WhatsApp", "Auto-logging", "AI reports"],
@@ -108,15 +110,15 @@ const PROYECTOS_EN = [
 function ProjectsHero() {
   const [lang] = useLang();
   const c = lang === "en" ? {
-    eyebrow: "Selected work",
-    title: "Projects.",
+    eyebrow: "Products & work",
+    title: "Products.",
     accent: "Live.",
-    sub: "A curated selection of what I've built. Each case, a clear path: identity → positioning → AI automation."
+    sub: "Our products like MyCFO, plus a curated selection of what we've built for clients. Each case, a clear path: identity → positioning → AI automation."
   } : {
-    eyebrow: "Selección de trabajo",
-    title: "Proyectos.",
+    eyebrow: "Productos & casos",
+    title: "Productos.",
     accent: "En vivo.",
-    sub: "Una selección curada de lo que hemos construido. Cada caso, una ruta clara: identidad → posicionamiento → automatización con IA."
+    sub: "Nuestros productos como MyCFO, más una selección curada de lo que hemos construido para clientes. Cada caso, una ruta clara: identidad → posicionamiento → automatización con IA."
   };
   return (
     <PageHero
@@ -219,6 +221,26 @@ function ProjectsGrid() {
                 >
                   {p.year}
                 </span>
+                {p.producto && (
+                  <span
+                    style={{
+                      position: "absolute",
+                      top: "1rem",
+                      left: "1rem",
+                      background: SATORI.GOLD,
+                      color: SATORI.INK,
+                      fontFamily: TYPE.mono,
+                      fontSize: "0.55rem",
+                      letterSpacing: "0.18em",
+                      textTransform: "uppercase",
+                      fontWeight: 600,
+                      padding: "0.3rem 0.6rem",
+                      borderRadius: "999px"
+                    }}
+                  >
+                    {lang === "en" ? "Satori Product" : "Producto Satori"}
+                  </span>
+                )}
               </div>
               <div style={{ padding: "1.5rem 1.75rem 1.75rem", flex: 1, display: "flex", flexDirection: "column" }}>
                 <h3
