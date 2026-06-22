@@ -326,33 +326,19 @@ function HomeHero() {
       >
         <div className="grid-2-col fade-up" style={{ display: "contents" }}>
           <div>
-            <p style={eyebrowStyle} className="fade-up">
-              <span className="satori-rule" style={{ width: "18px" }} />
-              {c.eyebrow}
-            </p>
             <h1
               style={{
                 fontFamily: TYPE.display,
-                fontWeight: 500,
-                fontSize: "clamp(2.8rem, 9vw, 6.6rem)",
-                lineHeight: 0.98,
+                fontWeight: 400,
+                fontSize: "clamp(3.2rem, 11vw, 8rem)",
+                lineHeight: 1.0,
                 letterSpacing: "-0.04em",
-                color: SATORI.INK,
+                color: SATORI.GOLD,
                 margin: 0
               }}
               className="fade-up-d1"
             >
-              <span style={{ color: SATORI.INK, fontWeight: 400 }}>{c.h1a}</span>
-              <br />
-              <span
-                style={{
-                  fontWeight: 600,
-                  color: SATORI.GOLD,
-                  fontSize: "clamp(3.2rem, 11vw, 8rem)"
-                }}
-              >
-                {c.h1b}
-              </span>
+              “{c.h1b}”
             </h1>
             <p
               style={{
