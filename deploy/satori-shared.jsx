@@ -2003,6 +2003,238 @@ function HorizontalTimeline({ items, accent = SATORI.GOLD }) {
   );
 }
 
+// ---------- RESEÑAS (lista + formulario; backend n8n + Telegram) ----------
+// GET aprobadas / POST nueva (queda pendiente hasta aprobar por Telegram).
+const N8N_REVIEWS_LIST = "https://n8n.satorimkt.com/webhook/satori-reviews";
+const N8N_REVIEWS_NEW = "https://n8n.satorimkt.com/webhook/satori-reviews-new";
+
+// Redimensiona la foto elegida a un cuadrado pequeño -> data URL JPEG ligero.
+// Va como data: (permitido por la CSP); evita blob: que la CSP no permite.
+function fileToAvatarDataUrl(file, size = 256) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      const s = Math.min(img.width, img.height);
+      const sx = (img.width - s) / 2, sy = (img.height - s) / 2;
+      const c = document.createElement("canvas");
+      c.width = c.height = size;
+      c.getContext("2d").drawImage(img, sx, sy, s, s, 0, 0, size, size);
+      URL.revokeObjectURL(url);
+      resolve(c.toDataURL("image/jpeg", 0.82));
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("img")); };
+    img.src = url;
+  });
+}
+
+function ReviewCard({ rv }) {
+  const rating = Math.max(1, Math.min(5, rv.rating || 5));
+  const initial = (rv.name || "?").trim().slice(0, 1).toUpperCase();
+  return (
+    <figure style={{
+      background: SATORI.WHITE, border: "1px solid rgba(14,14,14,0.08)",
+      borderRadius: "18px", padding: "1.8rem", margin: 0,
+      display: "flex", flexDirection: "column", boxShadow: "0 10px 30px rgba(14,14,14,0.05)"
+    }}>
+      <div aria-label={`${rating} de 5`} style={{ color: SATORI.GOLD, fontSize: "1.1rem", letterSpacing: "2px" }}>
+        {"★".repeat(rating)}<span style={{ color: "rgba(14,14,14,0.18)" }}>{"★".repeat(5 - rating)}</span>
+      </div>
+      <blockquote style={{
+        ...bodyStyle, opacity: 0.92, fontStyle: "italic", flex: 1,
+        margin: "0.85rem 0 1.25rem", fontSize: "1rem"
+      }}>“{rv.text}”</blockquote>
+      <figcaption style={{ display: "flex", alignItems: "center", gap: "0.8rem", marginTop: "auto" }}>
+        {rv.photo
+          ? <img src={rv.photo} alt={rv.name} width="48" height="48" loading="lazy"
+              style={{ width: 48, height: 48, borderRadius: "50%", objectFit: "cover", flex: "none" }} />
+          : <span aria-hidden="true" style={{
+              width: 48, height: 48, borderRadius: "50%", flex: "none",
+              background: SATORI.GOLD, color: SATORI.CREAM, display: "flex",
+              alignItems: "center", justifyContent: "center", fontWeight: 600, fontFamily: TYPE.display
+            }}>{initial}</span>}
+        <span style={{ fontWeight: 600, color: SATORI.INK, fontFamily: TYPE.body }}>{rv.name}</span>
+      </figcaption>
+    </figure>
+  );
+}
+
+function ReviewsSection() {
+  const [lang] = useLang();
+  const en = lang === "en";
+  const [reviews, setReviews] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [done, setDone] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [status, setStatus] = useState("");
+  const [name, setName] = useState("");
+  const [rating, setRating] = useState(5);
+  const [hover, setHover] = useState(0);
+  const [text, setText] = useState("");
+  const [company, setCompany] = useState(""); // honeypot anti-bots
+  const [photoData, setPhotoData] = useState("");
+
+  useEffect(() => {
+    let alive = true;
+    fetch(N8N_REVIEWS_LIST)
+      .then((r) => r.json())
+      .then((d) => { if (alive && d && Array.isArray(d.reviews)) setReviews(d.reviews); })
+      .catch(() => {});
+    return () => { alive = false; };
+  }, []);
+
+  const T = en ? {
+    eyebrow: "Reviews", title: "What our clients say",
+    sub: "Real words from teams we've worked with.",
+    empty: "No reviews yet — be the first to leave one.",
+    cta: "Leave a review", formTitle: "Leave your review",
+    note: "Published after a quick review by the team.",
+    name: "Your name", rating: "Rating", review: "Your review",
+    photo: "Photo (optional)", submit: "Submit review", sending: "Sending…",
+    thanks: "Thank you! Your review will appear after a quick check.",
+    err: "Couldn't send. Please try again.", needed: "Please add your name and review."
+  } : {
+    eyebrow: "Reseñas", title: "Lo que dicen nuestros clientes",
+    sub: "Palabras reales de equipos con los que hemos trabajado.",
+    empty: "Aún no hay reseñas — sé el primero en dejar una.",
+    cta: "Dejar una reseña", formTitle: "Deja tu reseña",
+    note: "Se publica tras una breve revisión del equipo.",
+    name: "Tu nombre", rating: "Calificación", review: "Tu reseña",
+    photo: "Foto (opcional)", submit: "Enviar reseña", sending: "Enviando…",
+    thanks: "¡Gracias! Tu reseña aparecerá tras una breve revisión.",
+    err: "No se pudo enviar. Intenta de nuevo.", needed: "Completa tu nombre y reseña."
+  };
+
+  const onPhoto = async (e) => {
+    const f = e.target.files && e.target.files[0];
+    if (!f) { setPhotoData(""); return; }
+    try { setPhotoData(await fileToAvatarDataUrl(f)); } catch (err) { setPhotoData(""); }
+  };
+
+  const submit = async (e) => {
+    e.preventDefault();
+    if (!name.trim() || !text.trim()) { setStatus(T.needed); return; }
+    setSending(true); setStatus(T.sending);
+    try {
+      const res = await fetch(N8N_REVIEWS_NEW, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: name.trim(), rating, text: text.trim(), photo: photoData, company })
+      });
+      if (!res.ok) throw new Error("bad");
+      setDone(true); setStatus(T.thanks);
+    } catch (err) { setStatus(T.err); }
+    finally { setSending(false); }
+  };
+
+  const inputStyle = {
+    width: "100%", padding: "0.85rem 1rem", background: SATORI.WHITE,
+    border: "1px solid rgba(14,14,14,0.16)", borderRadius: "12px",
+    color: SATORI.INK, fontFamily: TYPE.body, fontSize: "0.96rem", outline: "none"
+  };
+  const fieldLabel = { ...eyebrowStyle, marginBottom: "0.5rem", display: "block", opacity: 0.6 };
+
+  return (
+    <section id="resenas" data-reveal style={{
+      padding: "7rem clamp(1.25rem,4vw,2.5rem)", background: SATORI.CREAM_2,
+      position: "relative", zIndex: 1
+    }}>
+      <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: "3rem" }}>
+          <div style={{ ...eyebrowStyle, justifyContent: "center" }}>{T.eyebrow}</div>
+          <h2 style={h2Style}>{T.title}</h2>
+          <p style={{ ...bodyStyle, maxWidth: "560px", margin: "1rem auto 0" }}>{T.sub}</p>
+        </div>
+
+        {reviews.length > 0 ? (
+          <div style={{
+            display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(290px, 1fr))",
+            gap: "1.4rem"
+          }}>
+            {reviews.map((rv, i) => <ReviewCard key={i} rv={rv} />)}
+          </div>
+        ) : (
+          <p style={{ ...bodyStyle, textAlign: "center", opacity: 0.6 }}>{T.empty}</p>
+        )}
+
+        {/* CTA / formulario */}
+        <div style={{ textAlign: "center", marginTop: "2.5rem" }}>
+          {!open && !done && (
+            <button type="button" onClick={() => setOpen(true)} style={{ ...btnGold, border: "none" }}>
+              ★ {T.cta}
+            </button>
+          )}
+        </div>
+
+        {done && (
+          <p style={{
+            ...bodyStyle, textAlign: "center", marginTop: "1.5rem",
+            color: SATORI.GOLD_DEEP, fontWeight: 500
+          }}>{T.thanks}</p>
+        )}
+
+        {open && !done && (
+          <div style={{
+            maxWidth: "620px", margin: "2rem auto 0", background: SATORI.WHITE,
+            border: "1px solid rgba(14,14,14,0.08)", borderRadius: "20px",
+            padding: "2rem", boxShadow: "0 16px 40px rgba(14,14,14,0.07)"
+          }}>
+            <h3 style={{ fontFamily: TYPE.display, fontSize: "1.3rem", fontWeight: 500, color: SATORI.INK, margin: "0 0 0.25rem" }}>{T.formTitle}</h3>
+            <p style={{ ...bodyStyle, fontSize: "0.9rem", margin: "0 0 1.4rem" }}>{T.note}</p>
+            <form onSubmit={submit} style={{ display: "grid", gap: "1.1rem" }}>
+              <div>
+                <label htmlFor="rv-name" style={fieldLabel}>{T.name}</label>
+                <input id="rv-name" type="text" maxLength={60} value={name}
+                  onChange={(e) => setName(e.target.value)} style={inputStyle} required />
+              </div>
+              <div>
+                <span style={fieldLabel}>{T.rating}</span>
+                <div role="group" aria-label={T.rating} style={{ display: "flex", gap: "0.2rem", fontSize: "1.9rem", lineHeight: 1 }}>
+                  {[1, 2, 3, 4, 5].map((v) => (
+                    <button key={v} type="button" aria-label={`${v}`}
+                      onClick={() => setRating(v)}
+                      onMouseEnter={() => setHover(v)} onMouseLeave={() => setHover(0)}
+                      style={{
+                        background: "none", border: 0, cursor: "pointer", padding: "0 2px", lineHeight: 1,
+                        color: (hover || rating) >= v ? SATORI.GOLD : "rgba(14,14,14,0.2)"
+                      }}>★</button>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <label htmlFor="rv-text" style={fieldLabel}>{T.review}</label>
+                <textarea id="rv-text" rows={4} maxLength={800} value={text}
+                  onChange={(e) => setText(e.target.value)} style={{ ...inputStyle, resize: "vertical" }} required />
+              </div>
+              <div>
+                <label htmlFor="rv-photo" style={fieldLabel}>{T.photo}</label>
+                <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+                  <input id="rv-photo" type="file" accept="image/*" onChange={onPhoto}
+                    style={{ fontFamily: TYPE.body, fontSize: "0.88rem", color: SATORI.INK }} />
+                  {photoData && (
+                    <img src={photoData} alt="preview" width="46" height="46"
+                      style={{ width: 46, height: 46, borderRadius: "50%", objectFit: "cover", flex: "none" }} />
+                  )}
+                </div>
+              </div>
+              {/* honeypot oculto */}
+              <input type="text" tabIndex={-1} autoComplete="off" aria-hidden="true" value={company}
+                onChange={(e) => setCompany(e.target.value)}
+                style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }} />
+              <button type="submit" disabled={sending} style={{ ...btnPrimary, border: "none", opacity: sending ? 0.6 : 1 }}>
+                {sending ? T.sending : T.submit}
+              </button>
+              {status && (
+                <p style={{ ...bodyStyle, fontSize: "0.9rem", margin: 0, fontWeight: 500, color: status === T.err || status === T.needed ? "#B23B3B" : SATORI.GOLD_DEEP }}>{status}</p>
+              )}
+            </form>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
 // expose
 Object.assign(window, {
   SATORI, TYPE, waInterest, useLang,
@@ -2011,5 +2243,6 @@ Object.assign(window, {
   SatoriMark, Enso, MatrixBackground, ImagePlaceholder,
   Nav, Footer, SocialRow, SocialIcon,
   FloatingWhatsApp, CtaBlock, PageHero, CalendlyInline,
-  WelcomeAnimation, HorizontalTimeline, MobileMenuFab
+  WelcomeAnimation, HorizontalTimeline, MobileMenuFab,
+  ReviewsSection
 });

@@ -1549,6 +1549,7 @@ function App() {
       <HomeHero />
       <RutaCrecimiento />
       <MapaPresencia />
+      <ReviewsSection />
       <CtaBlock
         titulo={{ es: "¿Listo para una ruta clara?", en: "Ready for a clear path?" }}
         sub={{
