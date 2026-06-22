@@ -207,4 +207,36 @@ writeFileSync(join(OUT, 'sitemap.xml'),
 
 rmSync(SSR_DIR, { recursive: true, force: true });
 console.log('  ✓ robots.txt + sitemap.xml');
+
+// --- Verificacion de CSP ---
+// La CSP estricta (vercel.json) esta ENFORCED: cada <script> inline y cada
+// handler inline (onload=...) necesita su hash en script-src, o el navegador
+// lo bloquea. Aqui escaneamos el dist/ y FALLAMOS el build si algo quedo fuera,
+// asi un cambio al gtag/fuentes no rompe analitica/CSP en produccion en silencio.
+function verifyCsp() {
+  const vc = JSON.parse(readFileSync('vercel.json', 'utf8'));
+  const csp = vc.headers.flatMap(h => h.headers).find(h => h.key === 'Content-Security-Policy');
+  if (!csp) throw new Error('CSP: falta Content-Security-Policy en vercel.json');
+  const scriptSrc = (csp.value.match(/script-src ([^;]*)/) || [, ''])[1];
+  const sha = (s) => 'sha256-' + createHash('sha256').update(s, 'utf8').digest('base64');
+  const has = (h) => scriptSrc.includes(`'${h}'`);
+  const problems = [];
+  for (const file of [...PAGES, ...STATIC_HTML].map(p => p.html)) {
+    const html = readFileSync(join(OUT, file), 'utf8');
+    for (const m of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)) {
+      const [, attrs, body] = m;
+      if (/\bsrc\s*=/i.test(attrs)) continue;                          // externo: lo cubre el host
+      if (/type\s*=\s*["']application\/ld\+json/i.test(attrs)) continue; // datos, no ejecuta
+      if (!has(sha(body))) problems.push(`${file}: <script> inline sin hash -> '${sha(body)}'`);
+    }
+    for (const m of html.matchAll(/\son\w+\s*=\s*"([^"]*)"/gi)) {
+      if (!has(sha(m[1]))) problems.push(`${file}: handler "${m[1]}" sin hash -> '${sha(m[1])}'`);
+      else if (!scriptSrc.includes("'unsafe-hashes'")) problems.push(`${file}: handler inline requiere 'unsafe-hashes'`);
+    }
+  }
+  if (problems.length) throw new Error('CSP desincronizada con el HTML:\n  - ' + problems.join('\n  - '));
+  console.log('  ✓ CSP verificada (scripts/handlers inline con hash)');
+}
+verifyCsp();
+
 console.log('Build OK -> dist/');
