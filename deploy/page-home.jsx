@@ -461,12 +461,14 @@ function ShowroomTeaser() {
     title: "See what we've ",
     titleAccent: "built",
     sub: "Our products like MyCFO, plus landing pages, sales bots, branding and more.",
+    caption: "Live example: Esmeralda vacation rental (Acapulco)",
     cta: "Explore products"
   } : {
     eyebrow: "Showroom",
     title: "Mira lo que hemos ",
     titleAccent: "construido",
     sub: "Nuestros productos como MyCFO, además de landing pages, bots de ventas, branding y más.",
+    caption: "Ejemplo en vivo: renta vacacional Esmeralda (Acapulco)",
     cta: "Ver productos"
   };
   return (
@@ -474,10 +476,31 @@ function ShowroomTeaser() {
       padding: "6rem clamp(1.25rem,4vw,2.5rem)", background: SATORI.INK,
       color: SATORI.CREAM, position: "relative", zIndex: 1, textAlign: "center"
     }}>
-      <div style={{ maxWidth: "780px", margin: "0 auto" }}>
+      <div style={{ maxWidth: "860px", margin: "0 auto" }}>
         <div style={{ ...eyebrowStyle, justifyContent: "center", color: SATORI.GOLD, opacity: 1 }}>{T.eyebrow}</div>
         <h2 style={{ ...h2Style, color: SATORI.CREAM }}>{T.title}<span style={{ color: SATORI.GOLD }}>{T.titleAccent}</span></h2>
-        <p style={{ ...bodyStyle, color: SATORI.CREAM, opacity: 0.8, maxWidth: "560px", margin: "1rem auto 2rem" }}>{T.sub}</p>
+        <p style={{ ...bodyStyle, color: SATORI.CREAM, opacity: 0.8, maxWidth: "560px", margin: "1rem auto 1.75rem" }}>{T.sub}</p>
+        <video
+          src="assets/showroom/landing-esmeralda-airbnb-16x9.mp4"
+          poster="assets/showroom/landing-esmeralda-airbnb-poster.jpg"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          aria-label={T.caption}
+          style={{
+            width: "100%",
+            maxWidth: "760px",
+            aspectRatio: "16 / 9",
+            objectFit: "cover",
+            borderRadius: "16px",
+            display: "block",
+            margin: "0 auto 0.9rem",
+            boxShadow: "0 24px 60px rgba(14,14,14,0.45)"
+          }}
+        />
+        <p style={{ fontFamily: TYPE.mono, fontSize: "0.66rem", letterSpacing: "0.14em", textTransform: "uppercase", color: SATORI.GOLD, opacity: 0.85, margin: "0 0 2rem" }}>{T.caption}</p>
         <a href="proyectos.html" style={btnGold}>{T.cta}</a>
       </div>
     </section>

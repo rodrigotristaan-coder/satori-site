@@ -22,6 +22,15 @@ const PROYECTOS_ES = [
     poster: "assets/showroom/invitacion-boda-famsalasglez-poster.jpg"
   },
   {
+    titulo: "Renta vacacional — Esmeralda (Acapulco)",
+    cat: "Web",
+    year: "2025",
+    descripcion: "Landing de renta vacacional para un departamento en Acapulco: galería, amenidades, recámaras, disponibilidad y reserva directa. Diseño y desarrollo por Satori.",
+    tags: ["Landing", "Airbnb", "Reserva directa", "Galería"],
+    video: "assets/showroom/landing-esmeralda-airbnb-16x9.mp4",
+    poster: "assets/showroom/landing-esmeralda-airbnb-poster.jpg"
+  },
+  {
     titulo: "Landing Pages",
     cat: "Identidad",
     year: "2025",
@@ -81,6 +90,15 @@ const PROYECTOS_EN = [
     tags: ["Landing", "Digital invite", "Animation", "RSVP"],
     video: "assets/showroom/invitacion-boda-famsalasglez-16x9.mp4",
     poster: "assets/showroom/invitacion-boda-famsalasglez-poster.jpg"
+  },
+  {
+    titulo: "Vacation rental — Esmeralda (Acapulco)",
+    cat: "Web",
+    year: "2025",
+    descripcion: "Vacation-rental landing for an apartment in Acapulco: gallery, amenities, bedrooms, availability and direct booking. Designed and developed by Satori.",
+    tags: ["Landing", "Airbnb", "Direct booking", "Gallery"],
+    video: "assets/showroom/landing-esmeralda-airbnb-16x9.mp4",
+    poster: "assets/showroom/landing-esmeralda-airbnb-poster.jpg"
   },
   {
     titulo: "Landing Pages",
