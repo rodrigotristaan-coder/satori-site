@@ -28,8 +28,8 @@ const PROYECTOS_ES = [
     descripcion: "Landing bilingüe con reservas directas, calendario y sincronización con Airbnb.",
     tags: ["Landing", "Reservas", "Airbnb", "Bilingüe"],
     url: "https://esmeraldalakes.com",
-    video: "assets/showroom/landing-esmeralda-airbnb-16x9.mp4",
-    poster: "assets/showroom/landing-esmeralda-airbnb-poster.jpg"
+    video: "assets/showroom/landing-esmeralda-airbnb-green-16x9.mp4",
+    poster: "assets/showroom/landing-esmeralda-airbnb-green-poster.jpg"
   },
   {
     titulo: "Landing Pages",
@@ -99,8 +99,8 @@ const PROYECTOS_EN = [
     descripcion: "Bilingual landing with direct booking, calendar and Airbnb sync.",
     tags: ["Landing", "Booking", "Airbnb", "Bilingual"],
     url: "https://esmeraldalakes.com",
-    video: "assets/showroom/landing-esmeralda-airbnb-16x9.mp4",
-    poster: "assets/showroom/landing-esmeralda-airbnb-poster.jpg"
+    video: "assets/showroom/landing-esmeralda-airbnb-green-16x9.mp4",
+    poster: "assets/showroom/landing-esmeralda-airbnb-green-poster.jpg"
   },
   {
     titulo: "Landing Pages",
