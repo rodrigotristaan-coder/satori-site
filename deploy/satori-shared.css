@@ -247,6 +247,9 @@ a[href]:hover, button:hover { transform: translateY(-2px); }
     grid-column: 2 !important;
     grid-row: 2 !important;
   }
+  /* Más legible en móvil: número y descripción de cada paso un poco más grandes */
+  .htimeline-rail-wrap .htl-above div { font-size: 0.85rem !important; }
+  .htimeline-rail-wrap .htl-below p { font-size: 1.02rem !important; line-height: 1.5 !important; }
 }
 
 /* Page-specific helpers */

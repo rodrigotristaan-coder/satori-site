@@ -461,15 +461,15 @@ function ShowroomTeaser() {
     title: "See what we've ",
     titleAccent: "built",
     sub: "Our products like MyCFO, plus landing pages, sales bots, branding and more.",
-    caption: "Live example: Esmeralda vacation rental (Acapulco)",
-    cta: "Explore products"
+    caption: "Live example: Esmeralda Lakes — landing & booking",
+    cta: "Explore projects"
   } : {
     eyebrow: "Showroom",
     title: "Mira lo que hemos ",
     titleAccent: "construido",
     sub: "Nuestros productos como MyCFO, además de landing pages, bots de ventas, branding y más.",
-    caption: "Ejemplo en vivo: renta vacacional Esmeralda (Acapulco)",
-    cta: "Ver productos"
+    caption: "Ejemplo en vivo: Esmeralda Lakes — landing & reservas",
+    cta: "Ver proyectos"
   };
   return (
     <section id="showroom" data-reveal style={{

@@ -299,7 +299,7 @@ function useLang() {
 const NAV_LINKS = [
   { key: "home", href: "index.html", label: { es: "Inicio", en: "Home" } },
   { key: "servicios", href: "servicios.html", label: { es: "Servicios", en: "Services" } },
-  { key: "productos", href: "proyectos.html", label: { es: "Productos", en: "Products" } },
+  { key: "productos", href: "proyectos.html", label: { es: "Proyectos en vivo", en: "Live projects" } },
   { key: "sobre", href: "sobre-rodrigo.html", label: { es: "Fundador", en: "Founder" } },
   { key: "blog", href: "blog.html", label: { es: "Blog", en: "Blog" } }
 ];

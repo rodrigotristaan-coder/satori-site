@@ -22,11 +22,12 @@ const PROYECTOS_ES = [
     poster: "assets/showroom/invitacion-boda-famsalasglez-poster.jpg"
   },
   {
-    titulo: "Renta vacacional — Esmeralda (Acapulco)",
+    titulo: "Esmeralda Lakes — Landing & Reservas",
     cat: "Web",
     year: "2025",
-    descripcion: "Landing de renta vacacional para un departamento en Acapulco: galería, amenidades, recámaras, disponibilidad y reserva directa. Diseño y desarrollo por Satori.",
-    tags: ["Landing", "Airbnb", "Reserva directa", "Galería"],
+    descripcion: "Landing bilingüe con reservas directas, calendario y sincronización con Airbnb.",
+    tags: ["Landing", "Reservas", "Airbnb", "Bilingüe"],
+    url: "https://esmeraldalakes.com",
     video: "assets/showroom/landing-esmeralda-airbnb-16x9.mp4",
     poster: "assets/showroom/landing-esmeralda-airbnb-poster.jpg"
   },
@@ -92,11 +93,12 @@ const PROYECTOS_EN = [
     poster: "assets/showroom/invitacion-boda-famsalasglez-poster.jpg"
   },
   {
-    titulo: "Vacation rental — Esmeralda (Acapulco)",
+    titulo: "Esmeralda Lakes — Landing & Booking",
     cat: "Web",
     year: "2025",
-    descripcion: "Vacation-rental landing for an apartment in Acapulco: gallery, amenities, bedrooms, availability and direct booking. Designed and developed by Satori.",
-    tags: ["Landing", "Airbnb", "Direct booking", "Gallery"],
+    descripcion: "Bilingual landing with direct booking, calendar and Airbnb sync.",
+    tags: ["Landing", "Booking", "Airbnb", "Bilingual"],
+    url: "https://esmeraldalakes.com",
     video: "assets/showroom/landing-esmeralda-airbnb-16x9.mp4",
     poster: "assets/showroom/landing-esmeralda-airbnb-poster.jpg"
   },
@@ -146,15 +148,15 @@ const PROYECTOS_EN = [
 function ProjectsHero() {
   const [lang] = useLang();
   const c = lang === "en" ? {
-    eyebrow: "Products & work",
-    title: "Products.",
+    eyebrow: "Selected work",
+    title: "Projects.",
     accent: "Live.",
-    sub: "Our products like MyCFO, plus a curated selection of what we've built for clients. Each case, a clear path: identity → positioning → AI automation."
+    sub: "A curated selection of what we've built — from our own products to client work. Each case, a clear path: identity → positioning → AI automation."
   } : {
-    eyebrow: "Productos & casos",
-    title: "Productos.",
+    eyebrow: "Selección de trabajo",
+    title: "Proyectos.",
     accent: "En vivo.",
-    sub: "Nuestros productos como MyCFO, más una selección curada de lo que hemos construido para clientes. Cada caso, una ruta clara: identidad → posicionamiento → automatización con IA."
+    sub: "Una selección curada de lo que hemos construido — de productos propios a trabajo para clientes. Cada caso, una ruta clara: identidad → posicionamiento → automatización con IA."
   };
   return (
     <PageHero
@@ -350,6 +352,28 @@ function ProjectsGrid() {
                     </span>
                   ))}
                 </div>
+                {p.url && (
+                  <a
+                    href={p.url}
+                    target="_blank"
+                    rel="noopener"
+                    style={{
+                      marginTop: "1.1rem",
+                      fontFamily: TYPE.mono,
+                      fontSize: "0.66rem",
+                      letterSpacing: "0.16em",
+                      textTransform: "uppercase",
+                      fontWeight: 600,
+                      color: SATORI.GOLD_DEEP,
+                      textDecoration: "none",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "0.4rem"
+                    }}
+                  >
+                    {lang === "en" ? "View site" : "Ver sitio"} <span aria-hidden="true">→</span>
+                  </a>
+                )}
               </div>
             </article>
           ))}
