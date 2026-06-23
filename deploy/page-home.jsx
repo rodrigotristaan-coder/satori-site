@@ -1296,6 +1296,7 @@ function SatoriGlobe() {
     { name: "CDMX", lng: -99.1332, lat: 19.4326 },
     { name: "Guadalajara", lng: -103.3496, lat: 20.6597 },
     { name: "Tijuana", lng: -117.0382, lat: 32.5149 },
+    { name: "Acapulco", lng: -99.8237, lat: 16.8531 },
     { name: lang === "en" ? "Mexico State" : "Edo. de México", lng: -99.7233, lat: 19.4969 },
     { name: lang === "en" ? "La Rioja · Spain" : "La Rioja · España", lng: -2.4449, lat: 42.4627 }
   ];
@@ -1491,8 +1492,8 @@ function SatoriGlobe() {
 function MapaPresencia() {
   const [lang] = useLang();
   const CIUDADES = lang === "en"
-    ? ["Mexico City", "Guadalajara", "Mexico State", "Tijuana", "La Rioja · Spain", "Monterrey", "Querétaro", "Puebla"]
-    : ["Ciudad de México", "Guadalajara", "Estado de México", "Tijuana", "La Rioja · España", "Monterrey", "Querétaro", "Puebla"];
+    ? ["Mexico City", "Guadalajara", "Mexico State", "Tijuana", "Acapulco", "La Rioja · Spain", "Monterrey", "Querétaro", "Puebla"]
+    : ["Ciudad de México", "Guadalajara", "Estado de México", "Tijuana", "Acapulco", "La Rioja · España", "Monterrey", "Querétaro", "Puebla"];
 
   const c = lang === "en" ? {
     h1a: "Satori Map",
