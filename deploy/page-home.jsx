@@ -293,14 +293,14 @@ function HomeHero() {
     h1b: "More clarity.",
     lead: "Technology for business owners who want to grow with clarity.",
     chips: [{ t: "Brand" }, { t: "Web" }, { t: "Marketing" }, { t: "Ads" }, { t: "Automation" }, { t: "AI", gold: true }],
-    cta1: "Book a call",
+    cta1: "Founder",
     cta2: "See services"
   } : {
     h1a: "Más estrategia.",
     h1b: "Más claridad.",
     lead: "Tecnología para empresarios que quieren crecer con claridad.",
     chips: [{ t: "Marca" }, { t: "Web" }, { t: "Marketing" }, { t: "Ads" }, { t: "Automatización" }, { t: "IA", gold: true }],
-    cta1: "Agendar llamada",
+    cta1: "Fundador",
     cta2: "Ver servicios"
   };
   return (
@@ -372,7 +372,7 @@ function HomeHero() {
               style={{ display: "flex", gap: "0.85rem", marginTop: "2.5rem", flexWrap: "wrap", justifyContent: "center" }}
               className="fade-up-d3"
             >
-              <a href={SATORI.CALENDLY} target="_blank" rel="noopener" className="cta-btn-gold pulse-gold" style={btnGold}>
+              <a href="sobre-rodrigo.html" className="cta-btn-gold pulse-gold" style={btnGold}>
                 <span>{c.cta1}</span>
                 <span className="cta-arrow">→</span>
               </a>
