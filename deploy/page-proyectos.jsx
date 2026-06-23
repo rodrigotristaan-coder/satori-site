@@ -41,6 +41,15 @@ const PROYECTOS_ES = [
     img: "assets/showroom/laura-humancore.jpg"
   },
   {
+    titulo: "Money Shop Polanco — CDMX",
+    cat: "Posicionamiento",
+    year: "2025",
+    descripcion: "Posicionamiento y presencia digital para una casa de cambio en Polanco.",
+    tags: ["Posicionamiento", "Marketing", "Casa de cambio", "Polanco"],
+    url: "https://www.money-shop.mx/",
+    img: "assets/showroom/money-shop.jpg"
+  },
+  {
     titulo: "Landing Pages",
     cat: "Identidad",
     year: "2025",
@@ -119,6 +128,15 @@ const PROYECTOS_EN = [
     tags: ["Landing", "Automation", "Lead capture", "Consulting"],
     url: "https://laurahumancore.com",
     img: "assets/showroom/laura-humancore.jpg"
+  },
+  {
+    titulo: "Money Shop Polanco — CDMX",
+    cat: "Positioning",
+    year: "2025",
+    descripcion: "Digital positioning and presence for a currency-exchange business in Polanco.",
+    tags: ["Positioning", "Marketing", "Currency exchange", "Polanco"],
+    url: "https://www.money-shop.mx/",
+    img: "assets/showroom/money-shop.jpg"
   },
   {
     titulo: "Landing Pages",
