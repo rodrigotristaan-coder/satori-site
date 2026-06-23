@@ -61,7 +61,7 @@ const PROYECTOS_ES = [
     year: "2024",
     descripcion: "Identidad visual y verbal completa: naming, logotipo, sistema gráfico, paleta, tipografía y manual de marca aplicable a todos los puntos de contacto.",
     tags: ["Naming", "Sistema gráfico", "Manual de marca"],
-    img: "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=720&q=75&auto=format&fit=crop"
+    img: "assets/showroom/branding-vc.jpg"
   },
   {
     titulo: "Posicionamiento Online",
@@ -132,7 +132,7 @@ const PROYECTOS_EN = [
     year: "2024",
     descripcion: "Complete visual and verbal identity: naming, logo, graphic system, palette, typography and brand manual — ready to apply across every touchpoint.",
     tags: ["Naming", "Graphic system", "Brand manual"],
-    img: "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=720&q=75&auto=format&fit=crop"
+    img: "assets/showroom/branding-vc.jpg"
   },
   {
     titulo: "Online Positioning",
