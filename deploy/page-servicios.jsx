@@ -7,8 +7,8 @@ const SERVICIOS_EN = [
   {
     num: "01",
     tag: "Brand",
-    titulo: "Own brand",
-    subtitulo: "Identity · Presence · Authority",
+    titulo: "Brand & Design",
+    subtitulo: "Identity · Design · Authority",
     descripcion: "The identity a serious entrepreneur deserves. We define how you look, sound and how you're remembered.",
     benefits: [
       "Naming, manual and brand kit",
@@ -21,32 +21,63 @@ const SERVICIOS_EN = [
   },
   {
     num: "02",
-    tag: "Image",
-    titulo: "Online positioning",
-    subtitulo: "Reputation · Visibility · Trust",
-    descripcion: "Your company in front of the right people. We build real authority — and we also make sure AI models like ChatGPT, Claude and Gemini recommend you when prospects ask.",
+    tag: "Web",
+    titulo: "Web & Positioning",
+    subtitulo: "Web · SEO · Reputation",
+    descripcion: "Your company in front of the right people, with a fast site and real authority — so AI models like ChatGPT, Claude and Gemini recommend you when prospects ask.",
     benefits: [
-      "Social media management",
-      "Paid advertising & campaigns",
+      "High-conversion sites & landing pages",
       "SEO & organic content",
       "Verifiable reputation",
-      "Recommendations in ChatGPT / Claude / Gemini"
+      "Recommendations in ChatGPT / Claude / Gemini",
+      "Measurement & analytics"
     ],
     img: "assets/posicionamiento.webp"
   },
   {
     num: "03",
-    tag: "AI",
-    titulo: "AI Solutions",
-    subtitulo: "Automation · Data · Scale",
-    descripcion: "Custom tools that automate tasks, attend clients and summarize information non-stop.",
+    tag: "Marketing",
+    titulo: "Marketing & Ads",
+    subtitulo: "Campaigns · Social · Growth",
+    descripcion: "Campaigns that bring qualified leads to your business: social, paid ads and content with intent.",
     benefits: [
-      "Personal finance bots",
-      "Automated news for your sector",
-      "WhatsApp chat & group summaries",
-      "Sales bots on social media"
+      "Social media management",
+      "Paid advertising (Google & Meta)",
+      "Content strategy",
+      "Funnels & lead capture",
+      "Clear reports"
     ],
     img: "assets/marketing-ia.webp"
+  },
+  {
+    num: "04",
+    tag: "AI Bots",
+    titulo: "Automation & AI Bots",
+    subtitulo: "Bots · Automation · Data",
+    descripcion: "Custom bots and systems that attend, log and analyze for you — from sales to a CFO that understands your business.",
+    benefits: [
+      "Sales & support bots on WhatsApp / social",
+      "CFO bots that analyze your business finances",
+      "Process automation (n8n)",
+      "Automatic summaries & reports",
+      "Custom integrations"
+    ],
+    img: "https://images.unsplash.com/photo-1611605698335-8b1569810432?w=720&q=75&auto=format&fit=crop"
+  },
+  {
+    num: "05",
+    tag: "Product",
+    titulo: "MyCFO",
+    subtitulo: "Satori product · Finance with AI",
+    descripcion: "Your AI CFO by chat: log and check your business finances, with clear reports and a daily status.",
+    benefits: [
+      "Log & query by chat (Telegram / WhatsApp)",
+      "AI categorization",
+      "Clear monthly reports",
+      "Daily status",
+      "Already used by real clients"
+    ],
+    img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=720&q=75&auto=format&fit=crop"
   }
 ];
 
@@ -84,7 +115,7 @@ const PAQUETES_EN = [
     descripcion: "Complete digital operation for companies growing seriously.",
     features: [
       "Everything in Professional",
-      "AI Solutions implemented",
+      "Automation & AI Bots implemented",
       "Multi-channel campaigns",
       "CRM and automated funnels",
       "SEO & positioning",
@@ -99,8 +130,8 @@ const SERVICIOS = [
   {
     num: "01",
     tag: "Marca",
-    titulo: "Marca propia",
-    subtitulo: "Identidad · Presencia · Autoridad",
+    titulo: "Marca & Diseño",
+    subtitulo: "Identidad · Diseño · Autoridad",
     descripcion: "La identidad que un empresario serio merece. Definimos cómo te ves, cómo suenas y cómo te recuerdan.",
     benefits: [
       "Naming, manual y kit de marca",
@@ -113,32 +144,63 @@ const SERVICIOS = [
   },
   {
     num: "02",
-    tag: "Imagen",
-    titulo: "Posicionamiento online",
-    subtitulo: "Reputación · Visibilidad · Confianza",
-    descripcion: "Tu empresa frente a las personas correctas. Construimos autoridad real — y también nos enfocamos en que los modelos de IA como ChatGPT, Claude y Gemini te recomienden cuando los prospectos pregunten.",
+    tag: "Web",
+    titulo: "Web & Posicionamiento",
+    subtitulo: "Web · SEO · Reputación",
+    descripcion: "Tu empresa frente a las personas correctas, con una web rápida y autoridad real — y que los modelos de IA como ChatGPT, Claude y Gemini te recomienden cuando los prospectos pregunten.",
     benefits: [
-      "Gestión de redes sociales",
-      "Publicidad pagada y campañas",
+      "Sitios y landing pages de alta conversión",
       "SEO y contenido orgánico",
       "Reputación verificable",
-      "Recomendaciones en ChatGPT / Claude / Gemini"
+      "Recomendaciones en ChatGPT / Claude / Gemini",
+      "Medición y analítica"
     ],
     img: "assets/posicionamiento.webp"
   },
   {
     num: "03",
-    tag: "IA",
-    titulo: "Soluciones con IA",
-    subtitulo: "Automatización · Datos · Escala",
-    descripcion: "Herramientas a tu medida que automatizan tareas, atienden clientes y resumen información sin parar.",
+    tag: "Marketing",
+    titulo: "Marketing & Ads",
+    subtitulo: "Campañas · Redes · Crecimiento",
+    descripcion: "Campañas que traen prospectos calificados a tu negocio: redes, publicidad pagada y contenido con intención.",
     benefits: [
-      "Bots de finanzas personales",
-      "Noticias automatizadas de tu sector",
-      "Resúmenes de chats y grupos de WhatsApp",
-      "Bots de venta en redes sociales"
+      "Gestión de redes sociales",
+      "Publicidad pagada (Google y Meta)",
+      "Estrategia de contenido",
+      "Embudos y captura de leads",
+      "Reportes claros"
     ],
     img: "assets/marketing-ia.webp"
+  },
+  {
+    num: "04",
+    tag: "IA Bots",
+    titulo: "Automatización & Bots con IA",
+    subtitulo: "Bots · Automatización · Datos",
+    descripcion: "Bots y sistemas a tu medida que atienden, registran y analizan por ti — desde ventas hasta un CFO que entiende tu negocio.",
+    benefits: [
+      "Bots de venta y atención en WhatsApp / redes",
+      "Bots CFO que analizan las finanzas de tu negocio",
+      "Automatización de procesos (n8n)",
+      "Resúmenes y reportes automáticos",
+      "Integraciones a tu medida"
+    ],
+    img: "https://images.unsplash.com/photo-1611605698335-8b1569810432?w=720&q=75&auto=format&fit=crop"
+  },
+  {
+    num: "05",
+    tag: "Producto",
+    titulo: "MyCFO",
+    subtitulo: "Producto Satori · Finanzas con IA",
+    descripcion: "Tu CFO con IA por chat: registra y consulta las finanzas de tu negocio, con reportes claros y estatus diario.",
+    benefits: [
+      "Registro y consulta por chat (Telegram / WhatsApp)",
+      "Categorización con IA",
+      "Reportes mensuales claros",
+      "Estatus diario",
+      "Ya en uso por clientes reales"
+    ],
+    img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=720&q=75&auto=format&fit=crop"
   }
 ];
 
@@ -176,7 +238,7 @@ const PAQUETES = [
     descripcion: "Operación digital completa para empresas en crecimiento serio.",
     features: [
       "Todo lo de Profesional",
-      "Soluciones con IA implementadas",
+      "Automatización & Bots con IA implementados",
       "Campañas multi-canal",
       "CRM y embudos automatizados",
       "SEO y posicionamiento",
@@ -231,7 +293,7 @@ function ServiciosDetalle() {
         className="container grid-3"
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
+          gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 340px), 1fr))",
           gap: "1.5rem"
         }}
       >
@@ -618,7 +680,7 @@ function Paquetes() {
 function Faq() {
   const [lang] = useLang();
   const itemsEs = [
-    { q: "¿Cuánto tarda en ver resultados?", a: "Marca propia: primeras semanas. Posicionamiento: 1–3 meses. Soluciones con IA: desde la activación." },
+    { q: "¿Cuánto tarda en ver resultados?", a: "Marca & Diseño: primeras semanas. Web & Posicionamiento: 1–3 meses. Automatización & Bots: desde la activación." },
     { q: "¿Necesito saber de tecnología?", a: "Para nada. Nos encargamos de toda la parte técnica. Tú nos cuentas tu negocio, nosotros hacemos el resto." },
     { q: "¿Firmo contrato largo?", a: "No. Trabajamos mes a mes. Cancela cuando quieras, con 30 días de aviso." },
     { q: "¿Qué necesito para empezar?", a: "Una llamada de 30 minutos. Entendemos tu negocio, proponemos la ruta, te damos un precio claro." },
@@ -626,7 +688,7 @@ function Faq() {
     { q: "¿Ofrecen garantía?", a: "30 días. Si no sientes que el valor supera la inversión, seguimos 20 días más sin costo. Sin preguntas." }
   ];
   const itemsEn = [
-    { q: "How long until I see results?", a: "Own brand: first weeks. Positioning: 1–3 months. AI Solutions: from activation." },
+    { q: "How long until I see results?", a: "Brand & Design: first weeks. Web & Positioning: 1–3 months. Automation & Bots: from activation." },
     { q: "Do I need to know tech?", a: "Not at all. We handle everything technical. You tell us your business, we do the rest." },
     { q: "Do I sign a long contract?", a: "No. Month-to-month. Cancel anytime with 30 days notice." },
     { q: "What do I need to start?", a: "A 30-minute call. We understand your business, propose the path, give you a clear price." },
