@@ -209,15 +209,10 @@ function ProjectsGrid() {
             >
               <div className="project-image" style={{ position: "relative", overflow: "hidden", aspectRatio: "4/3", background: SATORI.INK }}>
                 {p.video ? (
-                  <video
+                  <ShowcaseVideo
                     src={p.video}
                     poster={p.poster}
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="metadata"
-                    aria-label={p.titulo}
+                    label={p.titulo}
                     style={{
                       width: "100%",
                       height: "100%",

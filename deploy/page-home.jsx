@@ -480,15 +480,10 @@ function ShowroomTeaser() {
         <div style={{ ...eyebrowStyle, justifyContent: "center", color: SATORI.GOLD, opacity: 1 }}>{T.eyebrow}</div>
         <h2 style={{ ...h2Style, color: SATORI.CREAM }}>{T.title}<span style={{ color: SATORI.GOLD }}>{T.titleAccent}</span></h2>
         <p style={{ ...bodyStyle, color: SATORI.CREAM, opacity: 0.8, maxWidth: "560px", margin: "1rem auto 1.75rem" }}>{T.sub}</p>
-        <video
+        <ShowcaseVideo
           src="assets/showroom/landing-esmeralda-airbnb-green-16x9.mp4"
           poster="assets/showroom/landing-esmeralda-airbnb-green-poster.jpg"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          aria-label={T.caption}
+          label={T.caption}
           style={{
             width: "100%",
             maxWidth: "760px",

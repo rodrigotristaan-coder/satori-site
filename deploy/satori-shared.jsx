@@ -2309,6 +2309,44 @@ function SectionRail({ sections = [] }) {
   );
 }
 
+// ---------- SHOWCASE VIDEO (muestra el poster/portada `delay` ms y luego reproduce) ----------
+// Sin autoplay: se queda en la portada hasta que el video entra en pantalla; ahí
+// espera `delay` ms (1s) y arranca. Muted/loop/playsInline para reproducir sin gesto.
+function ShowcaseVideo({ src, poster, label, style, delay = 1000 }) {
+  const ref = useRef(null);
+  useEffect(() => {
+    const v = ref.current;
+    if (!v) return;
+    let timer = null;
+    const start = () => { if (v.play) { const p = v.play(); if (p && p.catch) p.catch(() => {}); } };
+    if (typeof IntersectionObserver === "undefined") {
+      timer = setTimeout(start, delay);
+      return () => { if (timer) clearTimeout(timer); };
+    }
+    const io = new IntersectionObserver((entries) => {
+      if (entries[0] && entries[0].isIntersecting && timer === null) {
+        timer = setTimeout(start, delay); // portada visible -> espera 1s -> reproduce
+        io.disconnect();
+      }
+    }, { threshold: 0.3 });
+    io.observe(v);
+    return () => { io.disconnect(); if (timer) clearTimeout(timer); };
+  }, [delay]);
+  return (
+    <video
+      ref={ref}
+      src={src}
+      poster={poster}
+      muted
+      loop
+      playsInline
+      preload="metadata"
+      aria-label={label}
+      style={style}
+    />
+  );
+}
+
 // expose
 Object.assign(window, {
   SATORI, TYPE, waInterest, useLang,
@@ -2318,5 +2356,5 @@ Object.assign(window, {
   Nav, Footer, SocialRow, SocialIcon,
   FloatingWhatsApp, CtaBlock, PageHero, CalendlyInline,
   WelcomeAnimation, HorizontalTimeline, MobileMenuFab,
-  ReviewsSection, SectionRail
+  ReviewsSection, SectionRail, ShowcaseVideo
 });
