@@ -32,6 +32,15 @@ const PROYECTOS_ES = [
     poster: "assets/showroom/landing-esmeralda-airbnb-green-poster.jpg"
   },
   {
+    titulo: "Laura — HUMAN-CORE",
+    cat: "Web",
+    year: "2025",
+    descripcion: "Landing del HUMAN-CORE System (consultoría de talento y liderazgo): web + automatización de leads, medición y SEO. Diseño y desarrollo por Satori.",
+    tags: ["Landing", "Automatización", "Captura de leads", "Consultoría"],
+    url: "https://laurahumancore.com",
+    img: "assets/showroom/laura-humancore.jpg"
+  },
+  {
     titulo: "Landing Pages",
     cat: "Identidad",
     year: "2025",
@@ -101,6 +110,15 @@ const PROYECTOS_EN = [
     url: "https://esmeraldalakes.com",
     video: "assets/showroom/landing-esmeralda-airbnb-green-16x9.mp4",
     poster: "assets/showroom/landing-esmeralda-airbnb-green-poster.jpg"
+  },
+  {
+    titulo: "Laura — HUMAN-CORE",
+    cat: "Web",
+    year: "2025",
+    descripcion: "Landing for the HUMAN-CORE System (talent & leadership consulting): web + lead automation, measurement and SEO. Designed and built by Satori.",
+    tags: ["Landing", "Automation", "Lead capture", "Consulting"],
+    url: "https://laurahumancore.com",
+    img: "assets/showroom/laura-humancore.jpg"
   },
   {
     titulo: "Landing Pages",
