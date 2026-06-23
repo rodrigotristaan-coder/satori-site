@@ -13,11 +13,11 @@ const PROYECTOS_ES = [
     img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=720&q=75&auto=format&fit=crop"
   },
   {
-    titulo: "Invitación de boda — Verónica & Carlos",
+    titulo: "Invitación de boda — V&C",
     cat: "Web",
     year: "2025",
-    descripcion: "Invitación de boda digital: sobre interactivo que se abre con música, galería, itinerario, confirmación de asistencia (RSVP) y mesa de regalos. Diseño y desarrollo por Satori.",
-    tags: ["Landing", "Invitación digital", "Animación", "RSVP"],
+    descripcion: "Invitación de boda digital: sobre interactivo que se abre con música, galería, itinerario, confirmación de asistencia (RSVP), mesa de regalos y gestión de reservas con IA. Diseño y desarrollo por Satori.",
+    tags: ["Landing", "Invitación digital", "RSVP", "Reservas con IA"],
     video: "assets/showroom/invitacion-boda-famsalasglez-16x9.mp4",
     poster: "assets/showroom/invitacion-boda-famsalasglez-poster.jpg"
   },
@@ -84,11 +84,11 @@ const PROYECTOS_EN = [
     img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=720&q=75&auto=format&fit=crop"
   },
   {
-    titulo: "Wedding invitation — Verónica & Carlos",
+    titulo: "Wedding invitation — V&C",
     cat: "Web",
     year: "2025",
-    descripcion: "Digital wedding invitation: an interactive envelope that opens with music, gallery, itinerary, RSVP and gift registry. Designed and developed by Satori.",
-    tags: ["Landing", "Digital invite", "Animation", "RSVP"],
+    descripcion: "Digital wedding invitation: an interactive envelope that opens with music, gallery, itinerary, RSVP, gift registry and AI-powered booking management. Designed and developed by Satori.",
+    tags: ["Landing", "Digital invite", "RSVP", "AI booking"],
     video: "assets/showroom/invitacion-boda-famsalasglez-16x9.mp4",
     poster: "assets/showroom/invitacion-boda-famsalasglez-poster.jpg"
   },
