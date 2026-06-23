@@ -1180,7 +1180,7 @@ function TypewriterTitle({ text, className }) {
 }
 
 // ---------- BLOQUE CTA + FORMULARIO (transición refinada) ----------
-function CtaBlock({ titulo = "Hablemos.", sub = "30 minutos. Sin compromiso. Salimos con claridad.", calendly = true }) {
+function CtaBlock({ titulo = "Hablemos.", sub = "30 minutos. Salimos con claridad.", calendly = true }) {
   const [lang] = useLang();
   const pick = (v) => (v && typeof v === "object" ? (v[lang] || v.es) : v);
   const [form, setForm] = useState({ nombre: "", empresa: "", sitioWeb: "", email: "", telefono: "", presupuesto: "", mensaje: "" });
@@ -1195,7 +1195,7 @@ function CtaBlock({ titulo = "Hablemos.", sub = "30 minutos. Sin compromiso. Sal
     email: "Email",
     telefono: "Phone (optional)",
     presupuesto_ph: "Approx. budget (optional)",
-    budgets: ["Under $20,000 MXN/mo", "$20,000 – $50,000 MXN/mo", "$50,000 – $120,000 MXN/mo", "Over $120,000 MXN/mo", "Not sure yet"],
+    budgets: ["Up to $20,000 MXN/mo", "$20,000 – $50,000 MXN/mo", "$50,000 – $120,000 MXN/mo", "Over $120,000 MXN/mo", "Not sure yet"],
     mensaje: "Briefly tell us about your business",
     submit: "Send message",
     sending: "Sending…",
@@ -1205,7 +1205,7 @@ function CtaBlock({ titulo = "Hablemos.", sub = "30 minutos. Sin compromiso. Sal
     legalLink: "Privacy Notice",
     or: "or",
     whats: "WhatsApp",
-    microcopy: "Free · 24h reply · No commitment"
+    microcopy: "Free · 24h reply · Clear next steps"
   } : {
     eyebrow: "Siguiente paso",
     nombre: "Nombre",
@@ -1214,7 +1214,7 @@ function CtaBlock({ titulo = "Hablemos.", sub = "30 minutos. Sin compromiso. Sal
     email: "Email",
     telefono: "Teléfono (opcional)",
     presupuesto_ph: "Presupuesto aproximado (opcional)",
-    budgets: ["Menos de $20,000 MXN/mes", "$20,000 – $50,000 MXN/mes", "$50,000 – $120,000 MXN/mes", "Más de $120,000 MXN/mes", "Aún no lo sé"],
+    budgets: ["Hasta $20,000 MXN/mes", "$20,000 – $50,000 MXN/mes", "$50,000 – $120,000 MXN/mes", "Más de $120,000 MXN/mes", "Aún no lo sé"],
     mensaje: "Cuéntanos brevemente sobre tu negocio",
     submit: "Enviar mensaje",
     sending: "Enviando…",
@@ -1224,7 +1224,7 @@ function CtaBlock({ titulo = "Hablemos.", sub = "30 minutos. Sin compromiso. Sal
     legalLink: "Aviso de Privacidad",
     or: "o",
     whats: "WhatsApp",
-    microcopy: "Gratis · respuesta en 24h · sin compromiso"
+    microcopy: "Gratis · respuesta en 24h · con claridad"
   };
 
   const onSubmit = (e) => {

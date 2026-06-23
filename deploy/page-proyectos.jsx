@@ -8,7 +8,7 @@ const PROYECTOS_ES = [
     cat: "Soluciones IA",
     producto: true,
     year: "2025",
-    descripcion: "Bot de finanzas personales con registro y reporting automático por WhatsApp. Categorización por IA y reportes mensuales claros, sin tocar hojas de cálculo.",
+    descripcion: "Bot de finanzas personales con registro y reporting automático por WhatsApp. Categorización por IA y reportes mensuales claros, por chat.",
     tags: ["WhatsApp", "Registro automático", "Reportes IA"],
     img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=720&q=75&auto=format&fit=crop"
   },
@@ -79,7 +79,7 @@ const PROYECTOS_EN = [
     cat: "AI Solutions",
     producto: true,
     year: "2025",
-    descripcion: "Personal-finance bot with automatic logging and reporting over WhatsApp. AI categorization and clear monthly reports — no spreadsheets.",
+    descripcion: "Personal-finance bot with automatic logging and reporting over WhatsApp. AI categorization and clear monthly reports, by chat.",
     tags: ["WhatsApp", "Auto-logging", "AI reports"],
     img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=720&q=75&auto=format&fit=crop"
   },
@@ -445,8 +445,8 @@ function App() {
 
   const ctaTitulo = { es: "¿Tu proyecto es el siguiente?", en: "Is your project next?" };
   const ctaSub = {
-    es: "Si te identificas con lo que ves, conversemos. 30 minutos, sin compromiso.",
-    en: "If you connect with what you see, let's talk. 30 minutes, no commitment."
+    es: "Si te identificas con lo que ves, conversemos 30 minutos y salgamos con claridad.",
+    en: "If you connect with what you see, let's talk for 30 minutes and leave with clarity."
   };
 
   return (

@@ -741,7 +741,7 @@ function ContactForm() {
     contact_form_note: "¿Prefieres el formulario? Baja para el mensaje completo.",
     contact_form_cta: "Ir al formulario",
     budgets: [
-      "Menos de $20,000 MXN/mes",
+      "Hasta $20,000 MXN/mes",
       "$20,000 – $50,000 MXN/mes",
       "$50,000 – $120,000 MXN/mes",
       "Más de $120,000 MXN/mes",

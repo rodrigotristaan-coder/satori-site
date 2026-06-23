@@ -401,8 +401,8 @@ function QueHacemos() {
     items: [
       { t: "Brand & Design", d: "Identity that sets you apart and builds trust." },
       { t: "Web & Positioning", d: "Fast sites that rank and get recommended by AI." },
-      { t: "Marketing & Ads", d: "Campaigns that bring qualified leads, not noise." },
-      { t: "AI Automation", d: "Systems that capture and follow up leads on autopilot." },
+      { t: "Marketing & Ads", d: "Campaigns that bring qualified leads to your business." },
+      { t: "AI Automation & Bots", d: "Bots and systems that attend, capture and follow up on their own." },
       { t: "MyCFO", d: "Your AI CFO: manage your business finances by chat." },
       { t: "Web Invitations", d: "Digital invitations for weddings and events, with RSVP." }
     ]
@@ -415,8 +415,8 @@ function QueHacemos() {
     items: [
       { t: "Marca & Diseño", d: "Identidad que te distingue y genera confianza." },
       { t: "Web & Posicionamiento", d: "Sitios rápidos, que rankean y que la IA recomienda." },
-      { t: "Marketing & Ads", d: "Campañas que traen prospectos calificados, no ruido." },
-      { t: "Automatización con IA", d: "Sistemas que captan y dan seguimiento a leads solos." },
+      { t: "Marketing & Ads", d: "Campañas que traen prospectos calificados a tu negocio." },
+      { t: "Automatización & Bots con IA", d: "Bots y sistemas que atienden, captan y dan seguimiento solos." },
       { t: "MyCFO", d: "Tu CFO con IA: controla las finanzas de tu negocio por chat." },
       { t: "Invitaciones Web", d: "Invitaciones digitales para bodas y eventos, con RSVP." }
     ]
