@@ -1581,11 +1581,12 @@ function CtaParticles() {
 }
 
 // ---------- SECCIÓN HERO REUTILIZABLE ----------
-function PageHero({ eyebrow, title, sub, accent = "", align = "left" }) {
+function PageHero({ eyebrow, title, sub, accent = "", align = "left", id }) {
   const [lang] = useLang();
   const pick = (v) => (v && typeof v === "object" ? (v[lang] || v.es) : v);
   return (
     <section
+      id={id}
       style={{
         padding: "11rem clamp(1.25rem,4vw,2.5rem) 5rem",
         position: "relative",

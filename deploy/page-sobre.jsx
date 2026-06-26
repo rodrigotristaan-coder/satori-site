@@ -35,6 +35,7 @@ function AboutHero() {
 
   return (
     <section
+      id="inicio"
       style={{
         padding: "10rem clamp(1.25rem,4vw,2.5rem) 5rem",
         position: "relative",
@@ -496,6 +497,7 @@ function Recomendacion() {
 
   return (
     <section
+      id="recomendaciones"
       style={{
         padding: "7rem clamp(1.25rem,4vw,2.5rem)",
         background: `linear-gradient(180deg, ${SATORI.CREAM_2} 0%, ${SATORI.CREAM} 100%)`,
@@ -1018,6 +1020,12 @@ function App() {
     <main style={{ position: "relative", minHeight: "100vh", background: SATORI.CREAM }}>
       <MatrixBackground opacity={0.035} color={SATORI.GOLD} />
       <Nav current="sobre" />
+      <SectionRail sections={[
+        { id: "inicio", label: { es: "Inicio", en: "Top" } },
+        { id: "trayectoria", label: { es: "Trayectoria", en: "Journey" } },
+        { id: "recomendaciones", label: { es: "Recomendación", en: "Reference" } },
+        { id: "contacto", label: { es: "Contacto", en: "Contact" } }
+      ]} />
       <AboutHero />
       <Milestones />
       <Recomendacion />

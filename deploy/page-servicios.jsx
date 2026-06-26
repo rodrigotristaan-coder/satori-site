@@ -265,6 +265,7 @@ function ServiciosHero() {
   };
   return (
     <PageHero
+      id="inicio"
       eyebrow={c.eyebrow}
       title={c.title}
       accent={c.accent}
@@ -702,6 +703,7 @@ function Faq() {
   const [open, setOpen] = useState(0);
   return (
     <section
+      id="faq"
       style={{
         padding: "7rem clamp(1.25rem,4vw,2.5rem)",
         background: `linear-gradient(180deg, ${SATORI.CREAM} 0%, ${SATORI.CREAM_2} 100%)`,
@@ -815,6 +817,13 @@ function App() {
     <main style={{ position: "relative", minHeight: "100vh", background: SATORI.CREAM }}>
       <MatrixBackground opacity={0.035} color={SATORI.GOLD} />
       <Nav current="servicios" />
+      <SectionRail sections={[
+        { id: "inicio", label: { es: "Inicio", en: "Top" } },
+        { id: "detalle", label: { es: "Servicios", en: "Services" } },
+        { id: "paquetes", label: { es: "Paquetes", en: "Packages" } },
+        { id: "faq", label: { es: "Preguntas", en: "FAQ" } },
+        { id: "contacto", label: { es: "Contacto", en: "Contact" } }
+      ]} />
       <ServiciosHero />
       <ServiciosDetalle />
       <Paquetes />

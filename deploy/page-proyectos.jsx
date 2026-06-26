@@ -196,6 +196,7 @@ function ProjectsHero() {
   };
   return (
     <PageHero
+      id="inicio"
       eyebrow={c.eyebrow}
       title={c.title}
       accent={c.accent}
@@ -210,6 +211,7 @@ function ProjectsGrid() {
   const items = lang === "en" ? PROYECTOS_EN : PROYECTOS_ES;
   return (
     <section
+      id="proyectos"
       style={{
         padding: "3rem clamp(1.25rem,4vw,2.5rem) 5rem",
         background: `linear-gradient(180deg, ${SATORI.CREAM} 0%, ${SATORI.CREAM_2} 100%)`,
@@ -440,6 +442,7 @@ function Metodologia() {
   };
   return (
     <section
+      id="metodo"
       style={{
         padding: "5rem clamp(1.25rem,4vw,2.5rem) 6rem",
         position: "relative",
@@ -489,6 +492,11 @@ function App() {
     <main style={{ position: "relative", minHeight: "100vh", background: SATORI.CREAM }}>
       <MatrixBackground opacity={0.035} color={SATORI.GOLD} />
       <Nav current="productos" />
+      <SectionRail sections={[
+        { id: "inicio", label: { es: "Inicio", en: "Top" } },
+        { id: "proyectos", label: { es: "Proyectos", en: "Projects" } },
+        { id: "metodo", label: { es: "Metodología", en: "Method" } }
+      ]} />
       <ProjectsHero />
       <ProjectsGrid />
       <Metodologia />
