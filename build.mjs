@@ -15,7 +15,7 @@ const OG_IMAGE = `${SITE}/assets/og-cover.jpg`;
 
 // gtag — se inyecta en TODAS las paginas. Dos destinos:
 //   GADS = Google Ads (conversiones/remarketing)   GA4 = Google Analytics 4 (trafico)
-const GADS_ID = 'AW-18155927624';
+const GADS_ID = 'AW-18264094373';
 const GA4_ID = 'G-884FYJ4300';
 // Carga fuera de la ruta critica pero PRONTO (requestIdleCallback, tope 2-3s) para
 // que GA4 cuente tambien las visitas que rebotan rapido; tambien carga en la 1a
