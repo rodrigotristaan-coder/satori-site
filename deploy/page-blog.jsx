@@ -29,15 +29,15 @@ function BlogHero() {
     eyebrow: "Some of our thoughts",
     title: "Satori.",
     accent: "Blog.",
-    sub: "Strategy, AI and growth — written from the trenches. No hype, no fluff."
+    sub: "Strategy, AI and growth — written from the trenches, all substance."
   } : {
     eyebrow: "Algunos de nuestros pensamientos",
     title: "Satori.",
     accent: "Blog.",
-    sub: "Estrategia, IA y crecimiento — escrito desde la trinchera. Sin hype, sin relleno."
+    sub: "Estrategia, IA y crecimiento — escrito desde la trinchera, con sustancia."
   };
   return (
-    <PageHero eyebrow={c.eyebrow} title={c.title} accent={c.accent} sub={c.sub} />
+    <PageHero id="inicio" eyebrow={c.eyebrow} title={c.title} accent={c.accent} sub={c.sub} />
   );
 }
 
@@ -58,7 +58,7 @@ function ArticleBody() {
         una clínica o un constructor. Y el modelo le da un nombre — o ninguno.
       </p>
 
-      <h2 style={h2Article}>El canal nuevo: la recomendación de una IA.</h2>
+      <h2 id="canal" style={h2Article}>El canal nuevo: la recomendación de una IA.</h2>
       <p style={pStyle}>
         Las landing pages siguen importando. Los ads, también. Pero hay un canal nuevo,
         gratis y casi invisible: ser <strong style={emphasize}>recomendado por un LLM</strong>.
@@ -66,7 +66,7 @@ function ArticleBody() {
         a partir de lo que ha leído de ti en internet — no de tus ads, sino de tu rastro.
       </p>
 
-      <h2 style={h2Article}>¿Cómo te leen los modelos?</h2>
+      <h2 id="modelos" style={h2Article}>¿Cómo te leen los modelos?</h2>
       <ul style={ulStyle}>
         <li><strong style={emphasize}>Contenido propio</strong> — artículos, casos, manifiesto, página de "Acerca de", reseñas en tu sitio.</li>
         <li><strong style={emphasize}>Menciones de terceros</strong> — medios, directorios, podcasts, entrevistas, casos publicados.</li>
@@ -74,7 +74,7 @@ function ArticleBody() {
         <li><strong style={emphasize}>Consistencia</strong> — un mensaje claro repetido en muchos lugares, no diez mensajes distintos.</li>
       </ul>
 
-      <h2 style={h2Article}>Cómo lo trabajamos en SATORI.</h2>
+      <h2 id="metodo" style={h2Article}>Cómo lo trabajamos en SATORI.</h2>
       <p style={pStyle}>
         No es magia. Es estrategia. Construimos identidad clara, generamos contenido editorial
         de fondo, sembramos menciones en medios y directorios, y dejamos el sitio en un formato
@@ -86,10 +86,10 @@ function ArticleBody() {
         El que entendió esto temprano gana los próximos cinco años.
       </blockquote>
 
-      <h2 style={h2Article}>El nuevo embudo, en una línea.</h2>
+      <h2 id="embudo" style={h2Article}>El nuevo embudo, en una línea.</h2>
       <p style={pStyle}>
         Identidad → contenido propio → menciones de terceros → recomendación de un LLM →
-        prospecto calificado en tu WhatsApp. Sin ruido. Con dirección.
+        prospecto calificado en tu WhatsApp. Con claridad y dirección.
       </p>
     </React.Fragment>
   );
@@ -106,7 +106,7 @@ function ArticleBody() {
         or a contractor. The model gives them a name — or none.
       </p>
 
-      <h2 style={h2Article}>The new channel: AI's recommendation.</h2>
+      <h2 id="canal" style={h2Article}>The new channel: AI's recommendation.</h2>
       <p style={pStyle}>
         Landing pages still matter. Ads still matter. But there's a new channel,
         free and almost invisible: being <strong style={emphasize}>recommended by an LLM</strong>.
@@ -114,7 +114,7 @@ function ArticleBody() {
         what it has read about you online — not from your ads, but from your trail.
       </p>
 
-      <h2 style={h2Article}>How do models read you?</h2>
+      <h2 id="modelos" style={h2Article}>How do models read you?</h2>
       <ul style={ulStyle}>
         <li><strong style={emphasize}>Owned content</strong> — articles, case studies, manifesto, "About" page, on-site reviews.</li>
         <li><strong style={emphasize}>Third-party mentions</strong> — press, directories, podcasts, interviews, published cases.</li>
@@ -122,7 +122,7 @@ function ArticleBody() {
         <li><strong style={emphasize}>Consistency</strong> — one clear message repeated across many places, not ten different messages.</li>
       </ul>
 
-      <h2 style={h2Article}>How we work it at SATORI.</h2>
+      <h2 id="metodo" style={h2Article}>How we work it at SATORI.</h2>
       <p style={pStyle}>
         Not magic. Strategy. We build clear identity, generate editorial content with depth,
         seed mentions in press and directories, and leave the site in a format models understand.
@@ -133,10 +133,10 @@ function ArticleBody() {
         Whoever understood this early wins the next five years.
       </blockquote>
 
-      <h2 style={h2Article}>The new funnel, in one line.</h2>
+      <h2 id="embudo" style={h2Article}>The new funnel, in one line.</h2>
       <p style={pStyle}>
         Identity → owned content → third-party mentions → LLM recommendation →
-        qualified prospect in your WhatsApp. No noise. With direction.
+        qualified prospect in your WhatsApp. With clarity and direction.
       </p>
     </React.Fragment>
   );
@@ -422,6 +422,13 @@ function App() {
     <main style={{ position: "relative", minHeight: "100vh", background: SATORI.CREAM }}>
       <MatrixBackground opacity={0.035} color={SATORI.GOLD} />
       <Nav current="blog" />
+      <SectionRail sections={[
+        { id: "inicio", label: { es: "Inicio", en: "Top" } },
+        { id: "canal", label: { es: "El canal nuevo", en: "New channel" } },
+        { id: "modelos", label: { es: "Cómo te leen", en: "How they read you" } },
+        { id: "metodo", label: { es: "Cómo lo hacemos", en: "How we work it" } },
+        { id: "embudo", label: { es: "El embudo", en: "The funnel" } }
+      ]} />
       <BlogHero />
       <ArticleBody />
       <CtaBlock titulo={ctaTitulo} sub={ctaSub} />

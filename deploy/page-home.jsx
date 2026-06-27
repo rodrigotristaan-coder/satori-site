@@ -394,7 +394,7 @@ function QueHacemos() {
   const en = lang === "en";
   const T = en ? {
     eyebrow: "What we do",
-    title: "Six ways we ",
+    title: "Five ways we ",
     titleAccent: "make you grow",
     sub: "Strategy first, then execution. Everything points to one thing: clients arriving with clarity.",
     cta: "See all services",
@@ -403,12 +403,11 @@ function QueHacemos() {
       { t: "Web & Positioning", d: "Fast sites that rank and get recommended by AI." },
       { t: "Marketing & Ads", d: "Campaigns that bring qualified leads to your business." },
       { t: "AI Automation & Bots", d: "Bots and systems that attend, capture and follow up on their own." },
-      { t: "MyCFO", d: "Your AI CFO: manage your business finances by chat." },
-      { t: "Web Invitations", d: "Digital invitations for weddings and events, with RSVP." }
+      { t: "MyCFO", d: "Your AI CFO: manage your business finances by chat." }
     ]
   } : {
     eyebrow: "Qué hacemos",
-    title: "Seis formas de ",
+    title: "Cinco formas de ",
     titleAccent: "hacerte crecer",
     sub: "Primero estrategia, luego ejecución. Todo apunta a lo mismo: clientes llegando con claridad.",
     cta: "Ver todos los servicios",
@@ -417,8 +416,7 @@ function QueHacemos() {
       { t: "Web & Posicionamiento", d: "Sitios rápidos, que rankean y que la IA recomienda." },
       { t: "Marketing & Ads", d: "Campañas que traen prospectos calificados a tu negocio." },
       { t: "Automatización & Bots con IA", d: "Bots y sistemas que atienden, captan y dan seguimiento solos." },
-      { t: "MyCFO", d: "Tu CFO con IA: controla las finanzas de tu negocio por chat." },
-      { t: "Invitaciones Web", d: "Invitaciones digitales para bodas y eventos, con RSVP." }
+      { t: "MyCFO", d: "Tu CFO con IA: controla las finanzas de tu negocio por chat." }
     ]
   };
   return (
