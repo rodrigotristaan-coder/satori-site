@@ -423,13 +423,13 @@ function Metodologia() {
     { key: "01", num: "01", label: "Inmersión", desc: "Sesión de 60 min para entender tu negocio." },
     { key: "02", num: "02", label: "Diagnóstico", desc: "Auditoría honesta de marca, presencia y conversión." },
     { key: "03", num: "03", label: "Plan", desc: "Ruta de 90 días con entregables y métricas claras." },
-    { key: "04", num: "04", label: "Ejecución", desc: "Sprints de dos semanas, sin reuniones de relleno." }
+    { key: "04", num: "04", label: "Ejecución", desc: "Sprints de dos semanas, enfocados y claros." }
   ];
   const pasosEn = [
     { key: "01", num: "01", label: "Immersion", desc: "60-min session to understand your business." },
     { key: "02", num: "02", label: "Diagnosis", desc: "Honest audit of brand, presence and conversion." },
     { key: "03", num: "03", label: "Plan", desc: "90-day roadmap with deliverables and clear metrics." },
-    { key: "04", num: "04", label: "Execution", desc: "Two-week sprints, zero filler meetings." }
+    { key: "04", num: "04", label: "Execution", desc: "Two-week sprints, focused and clear." }
   ];
   const c = lang === "en" ? {
     eyebrow: "How we work",
@@ -461,7 +461,7 @@ function Metodologia() {
             {c.h1} <span style={{ color: SATORI.GOLD }}>{c.h2}</span>
           </h2>
         </div>
-        <HorizontalTimeline items={lang === "en" ? pasosEn : pasosEs} />
+        <GrowthPathTimeline items={lang === "en" ? pasosEn : pasosEs} />
       </div>
     </section>
   );

@@ -2348,6 +2348,143 @@ function ShowcaseVideo({ src, poster, label, style, delay = 1000 }) {
   );
 }
 
+// Timeline vertical con la MISMA animación que los Milestones de Fundador:
+// spine + progreso dorado guiado por scroll; el paso activo (centro del viewport)
+// se ilumina y los demás quedan atenuados. Reusa las clases timeline-* (responsive).
+function GrowthPathTimeline({ items }) {
+  const rootRef = React.useRef(null);
+  const [progress, setProgress] = useState(0);
+  const [hoverIdx, setHoverIdx] = useState(-1);
+  const [activeIdx, setActiveIdx] = useState(0);
+  const rowRefs = React.useRef([]);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const el = rootRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const viewportH = window.innerHeight;
+      const start = viewportH * 0.7;
+      const end = -rect.height + viewportH * 0.3;
+      const total = start - end;
+      const passed = start - rect.top;
+      setProgress(Math.max(0, Math.min(1, passed / total)));
+      const focusY = viewportH * 0.45;
+      let bestIdx = 0, bestDist = Infinity;
+      rowRefs.current.forEach((row, i) => {
+        if (!row) return;
+        const r = row.getBoundingClientRect();
+        const center = r.top + r.height / 2;
+        const dist = Math.abs(center - focusY);
+        if (dist < bestDist) { bestDist = dist; bestIdx = i; }
+      });
+      setActiveIdx(bestIdx);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
+
+  return (
+    <div ref={rootRef} style={{ position: "relative", maxWidth: "760px", margin: "0 auto" }}>
+      <div className="timeline-spine" style={{ position: "absolute", left: "110px", top: 0, bottom: 0, width: "1px", background: `${SATORI.INK}15` }} />
+      <div className="timeline-spine" aria-hidden="true" style={{ position: "absolute", left: "109px", top: 0, height: `${progress * 100}%`, width: "3px", background: `linear-gradient(180deg, ${SATORI.GOLD} 0%, #C9920A 100%)`, boxShadow: `0 0 14px ${SATORI.GOLD}88`, transition: "height .15s linear", borderRadius: "2px" }} />
+      {items.map((it, i) => {
+        const isHover = hoverIdx === i;
+        const isActive = activeIdx === i;
+        return (
+          <div
+            key={it.key}
+            ref={(el) => { rowRefs.current[i] = el; }}
+            className="timeline-row"
+            data-reveal
+            onMouseEnter={() => setHoverIdx(i)}
+            onMouseLeave={() => setHoverIdx(-1)}
+            style={{ display: "grid", gridTemplateColumns: "110px 1fr", gap: "2.5rem", paddingBottom: "2.5rem", position: "relative" }}
+          >
+            <div
+              className="timeline-year-col"
+              style={{
+                fontFamily: TYPE.display,
+                fontSize: "1.55rem",
+                fontWeight: 500,
+                color: isActive ? SATORI.GOLD : `${SATORI.INK}55`,
+                textAlign: "right",
+                paddingTop: "0.1rem",
+                letterSpacing: "-0.01em",
+                transition: "color .35s ease, transform .35s cubic-bezier(.2,.9,.3,1.4)",
+                transform: isHover ? "translateX(-4px)" : "translateX(0)"
+              }}
+            >
+              {it.num}
+            </div>
+            <div
+              className="timeline-content"
+              style={{
+                position: "relative",
+                padding: "0.5rem 1rem 0.5rem 2rem",
+                borderRadius: "14px",
+                background: isActive ? `${SATORI.GOLD}10` : (isHover ? `${SATORI.GOLD}06` : "transparent"),
+                transition: "background .35s ease, transform .35s cubic-bezier(.2,.9,.3,1.4)",
+                transform: isHover ? "translateX(4px)" : "translateX(0)"
+              }}
+            >
+              <div
+                style={{
+                  position: "absolute",
+                  left: "-7px",
+                  top: "0.9rem",
+                  width: isActive || isHover ? "18px" : "14px",
+                  height: isActive || isHover ? "18px" : "14px",
+                  borderRadius: "999px",
+                  background: isActive ? SATORI.GOLD : SATORI.WHITE,
+                  border: `2px solid ${isActive ? SATORI.GOLD : SATORI.INK}`,
+                  boxShadow: isActive
+                    ? `0 0 0 14px ${SATORI.GOLD}30, 0 0 28px ${SATORI.GOLD}60`
+                    : (isHover ? `0 0 0 6px ${SATORI.INK}15` : "none"),
+                  transition: "all .35s cubic-bezier(.2,.9,.3,1.4)",
+                  zIndex: 2
+                }}
+              />
+              <h3
+                style={{
+                  fontFamily: TYPE.display,
+                  fontWeight: 500,
+                  letterSpacing: "-0.015em",
+                  lineHeight: 1.15,
+                  margin: 0,
+                  fontSize: "clamp(1.3rem, 2.2vw, 1.7rem)",
+                  color: isActive ? SATORI.INK : `${SATORI.INK}55`,
+                  filter: isActive ? "none" : "saturate(0.6)",
+                  transition: "color .35s ease, filter .35s ease"
+                }}
+              >
+                {it.label}
+              </h3>
+              <p
+                style={{
+                  fontFamily: TYPE.body,
+                  margin: "0.35rem 0 0",
+                  fontSize: "1.02rem",
+                  lineHeight: 1.5,
+                  color: isActive ? `${SATORI.INK}aa` : `${SATORI.INK}55`,
+                  transition: "color .35s ease"
+                }}
+              >
+                {it.desc}
+              </p>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 // expose
 Object.assign(window, {
   SATORI, TYPE, waInterest, useLang,
@@ -2357,5 +2494,6 @@ Object.assign(window, {
   Nav, Footer, SocialRow, SocialIcon,
   FloatingWhatsApp, CtaBlock, PageHero, CalendlyInline,
   WelcomeAnimation, HorizontalTimeline, MobileMenuFab,
-  ReviewsSection, SectionRail, ShowcaseVideo
+  ReviewsSection, SectionRail, ShowcaseVideo,
+  GrowthPathTimeline
 });
