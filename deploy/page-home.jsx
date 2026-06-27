@@ -110,20 +110,20 @@ function BrandManifesto() {
   const ES = {
     label: "Nuestra misión",
     parts: [
-      { text: "Que el ", gold: false },
-      { text: "avance tecnológico", gold: true },
-      { text: " del mundo, esté a ", gold: false },
-      { text: "tu alcance", gold: true },
+      { text: "Tecnología, estrategia y ", gold: false },
+      { text: "claridad", gold: true },
+      { text: " para que tu empresa crezca con ", gold: false },
+      { text: "dirección", gold: true },
       { text: ".", gold: false }
     ]
   };
   const EN = {
     label: "Our mission",
     parts: [
-      { text: "May the ", gold: false },
-      { text: "technological progress", gold: true },
-      { text: " of the world be within ", gold: false },
-      { text: "your reach", gold: true },
+      { text: "Technology, strategy and ", gold: false },
+      { text: "clarity", gold: true },
+      { text: " so your business grows with ", gold: false },
+      { text: "direction", gold: true },
       { text: ".", gold: false }
     ]
   };
@@ -186,13 +186,13 @@ function BrandManifesto() {
               fontFamily: TYPE.display,
               fontWeight: 400,
               fontStyle: "italic",
-              fontSize: "clamp(1.05rem, 1.7vw, 1.35rem)",
-              lineHeight: 1.5,
-              letterSpacing: "-0.005em",
+              fontSize: "clamp(1.6rem, 3.4vw, 2.6rem)",
+              lineHeight: 1.35,
+              letterSpacing: "-0.015em",
               color: SATORI.INK,
-              opacity: 0.85,
+              opacity: 0.92,
               margin: "0 auto",
-              maxWidth: "min(44ch, 100%)",
+              maxWidth: "min(26ch, 100%)",
               textAlign: "center"
             }}
           >
