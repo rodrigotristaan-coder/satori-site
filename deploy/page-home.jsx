@@ -932,7 +932,7 @@ function ReelStatsScene() {
   const stats = [
     { n: "+40", l: "PROYECTOS" },
     { n: "24/7", l: "AUTOMATIZACIÓN" },
-    { n: "4", l: "CIUDADES" },
+    { n: "+6", l: "CIUDADES" },
     { n: "30", l: "DÍAS" }
   ];
   return (
