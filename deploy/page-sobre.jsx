@@ -214,12 +214,12 @@ function Milestones() {
     eyebrow: "Trajectory",
     title: "Milestones in",
     accent: "my journey.",
-    sub: "From the agency floor to in-house operations to founder. Milestone by milestone — no filler."
+    sub: "From the agency floor to in-house operations to founder. Milestone by milestone."
   } : {
     eyebrow: "Trayectoria",
     title: "Milestones en",
     accent: "mi trayectoria.",
-    sub: "De agencia, in-house y como fundador. Un milestone a la vez, sin relleno."
+    sub: "De agencia, in-house y como fundador. Un milestone a la vez."
   };
 
   return (
