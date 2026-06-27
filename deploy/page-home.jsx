@@ -186,19 +186,19 @@ function BrandManifesto() {
               fontFamily: TYPE.display,
               fontWeight: 400,
               fontStyle: "italic",
-              fontSize: "clamp(2rem, 5vw, 3.6rem)",
-              lineHeight: 1.2,
-              letterSpacing: "-0.02em",
+              fontSize: "clamp(1.5rem, 3vw, 2.4rem)",
+              lineHeight: 1.3,
+              letterSpacing: "-0.015em",
               color: SATORI.INK,
               opacity: 0.95,
               margin: "0 auto",
-              maxWidth: "min(20ch, 100%)",
+              maxWidth: "min(24ch, 100%)",
               textAlign: "center"
             }}
           >
             {c.parts.map((p, i) =>
               p.gold ? (
-                <span key={i} style={{ color: SATORI.GOLD_DEEP, fontWeight: 500 }}>{p.text}</span>
+                <span key={i} style={{ color: SATORI.GOLD, fontWeight: 500 }}>{p.text}</span>
               ) : (
                 <React.Fragment key={i}>{p.text}</React.Fragment>
               )
