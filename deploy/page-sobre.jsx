@@ -188,7 +188,7 @@ function Milestones() {
     { yearShown: "2024", title: "Project Manager · Innovación y Desarrollo", desc: "+40 proyectos simultáneos, MS Project + Kaizen, reporte a Dirección General.", highlight: true, kpi: "+40 PROYECTOS · KAIZEN" },
     { title: "Muay Thai (2024)", desc: "Campeón Nacional Muay Thai, categoría amateur. Foco y carácter aplicados dentro del ring.", highlight: true, kpi: "🥊 Milestone personal" },
     { yearShown: "2025", title: "Graduado del programa Management Skills · ICAMI", desc: "Centro de perfeccionamiento directivo (2025–2026).", highlight: true, kpi: "ICAMI · GRADUADO" },
-    { title: "Fundador SATORI", desc: "Estrategia digital, IA y operaciones para empresarios que valoran su tiempo.", highlight: true, kpi: "Fundador de Satori: Tecnología para empresarios que quieren crecer con claridad." },
+    { title: "Fundador SATORI", desc: "Tecnología para empresarios que quieren crecer con claridad.", highlight: true, kpi: "Fundador de Satori" },
     { yearShown: "Actualidad", title: "Lo que hacemos en SATORI", desc: "Marca, diseño, web, posicionamiento, marketing, ads, automatización con IA y nuestro producto MyCFO — tecnología convertida en crecimiento real para tu negocio.", highlight: true, kpi: "OFERTA DE VALOR" }
   ];
 
@@ -204,7 +204,7 @@ function Milestones() {
     { yearShown: "2024", title: "Project Manager · Innovation & Development", desc: "40+ simultaneous projects, MS Project + Kaizen, reporting to General Management.", highlight: true, kpi: "+40 PROJECTS · KAIZEN" },
     { title: "Muay Thai (2024)", desc: "Muay Thai National Champion, amateur category. Focus and character inside the ring.", highlight: true, kpi: "🥊 Personal milestone" },
     { yearShown: "2025", title: "ICAMI Management Skills · graduate", desc: "Executive development center (2025–2026).", highlight: true, kpi: "ICAMI · GRADUATE" },
-    { title: "Founder of SATORI", desc: "Digital strategy, AI and operations for entrepreneurs who value their time.", highlight: true, kpi: "Founder of Satori: Technology for entrepreneurs who want to grow with clarity." },
+    { title: "Founder of SATORI", desc: "Technology for entrepreneurs who want to grow with clarity.", highlight: true, kpi: "Founder of Satori" },
     { yearShown: "Now", title: "What we do at SATORI", desc: "Brand, design, web, positioning, marketing, ads, AI automation and our product MyCFO — technology turned into real growth for your business.", highlight: true, kpi: "VALUE OFFER" }
   ];
 
