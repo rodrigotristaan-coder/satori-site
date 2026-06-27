@@ -177,35 +177,35 @@ function Milestones() {
   // Visible years column: only show "2018", "2020", "2024", "Actualidad/Now".
   // Highlights in gold via `highlight: true` + optional `kpi` chip.
   const itemsEs = [
-    { yearShown: "2018", title: "Cierre de bachillerato", desc: "Foundation. Primer contacto con mercadotecnia y negocios." },
+    { yearShown: "2018", title: "Cierre de bachillerato", desc: "Primer contacto con mercadotecnia y negocios." },
     { title: "Primer rol en marketing", desc: "E-commerce desde cero en menos de 6 meses, rebranding y social ads." },
-    { title: "Fundamentos del marketing", desc: "Estudios formales. Base técnica del oficio." },
+    { title: "Fundamentos del marketing", desc: "Fundamentos y teoría. Base técnica del oficio." },
     { yearShown: "2020", title: "1° Emprendimiento personal", desc: "Marca de joyería: branding, web, carrito y logística end-to-end.", highlight: true, kpi: "1° EMPRENDIMIENTO" },
     { title: "Sistema Comercial de Alto Impacto (SCAI)", desc: "Implementación de la metodología SCAI en 3+ empresas." },
     { title: "Digitalización con Power BI", desc: "Performance del equipo comercial en dashboards en vivo. De instinto a datos.", highlight: true, kpi: "POWER BI" },
-    { title: "Cinta Negra 1° Dan · Taekwondo (2021)", desc: "Disciplina, control y mentalidad de largo plazo.", highlight: true, kpi: "🥋 1° DAN" },
+    { title: "Taekwondo (2021)", desc: "TKD: cinta negra 1° Dan. Disciplina, control y mentalidad de largo plazo.", highlight: true, kpi: "🥋 Milestone personal" },
     { title: "Entrenamiento estratégico · rotación 360°", desc: "Marketing, RRHH, ventas B2B, operaciones y embarques. Vista integral." },
     { yearShown: "2024", title: "Project Manager · Innovación y Desarrollo", desc: "+40 proyectos simultáneos, MS Project + Kaizen, reporte a Dirección General.", highlight: true, kpi: "+40 PROYECTOS · KAIZEN" },
-    { title: "Campeón Nacional · Muay Thai IBMA (2024)", desc: "Categoría amateur. Foco y carácter aplicados fuera del ring.", highlight: true, kpi: "🥊 CAMPEÓN NACIONAL" },
-    { title: "Graduado del programa Management Skills · ICAMI", desc: "Centro de perfeccionamiento directivo (2025–2026).", highlight: true, kpi: "ICAMI · GRADUADO" },
-    { yearShown: "Actualidad", title: "Fundador SATORI", desc: "Estrategia digital, IA y operaciones para empresarios que valoran su tiempo.", highlight: true, kpi: "FUNDADOR" },
-    { title: "Consultoría a negocios · Innovación e IA", desc: "Acompañamiento ejecutivo para integrar IA, estructurar operaciones y acelerar crecimiento.", highlight: true, kpi: "TU TURNO" }
+    { title: "Muay Thai (2024)", desc: "Campeón Nacional IBMA, categoría amateur. Foco y carácter aplicados fuera del ring.", highlight: true, kpi: "🥊 Milestone personal" },
+    { yearShown: "2025", title: "Graduado del programa Management Skills · ICAMI", desc: "Centro de perfeccionamiento directivo (2025–2026).", highlight: true, kpi: "ICAMI · GRADUADO" },
+    { title: "Fundador SATORI", desc: "Estrategia digital, IA y operaciones para empresarios que valoran su tiempo.", highlight: true, kpi: "FUNDADOR" },
+    { yearShown: "Actualidad", title: "Lo que hacemos en SATORI", desc: "Marca y diseño, web y posicionamiento, marketing y ads, automatización y bots con IA, y MyCFO. Convertimos la tecnología en crecimiento real para tu negocio.", highlight: true, kpi: "OFERTA DE VALOR" }
   ];
 
   const itemsEn = [
-    { yearShown: "2018", title: "High school complete", desc: "Foundation. First contact with marketing and business." },
+    { yearShown: "2018", title: "High school complete", desc: "First contact with marketing and business." },
     { title: "First marketing role", desc: "E-commerce from scratch in under 6 months, rebrand and social ads." },
-    { title: "Marketing fundamentals", desc: "Formal studies. Technical base of the craft." },
+    { title: "Marketing fundamentals", desc: "Fundamentals and theory. Technical base of the craft." },
     { yearShown: "2020", title: "First personal venture", desc: "Jewelry brand: branding, web, cart and end-to-end logistics.", highlight: true, kpi: "FIRST VENTURE" },
     { title: "High-Impact Sales System (SCAI)", desc: "SCAI methodology implemented across 3+ companies." },
     { title: "Digitization with Power BI", desc: "Sales-team performance in live dashboards. Gut to data.", highlight: true, kpi: "POWER BI" },
-    { title: "1st Dan Black Belt · Taekwondo (2021)", desc: "Discipline, control and long-term mindset.", highlight: true, kpi: "🥋 1ST DAN" },
+    { title: "Taekwondo (2021)", desc: "TKD: 1st Dan black belt. Discipline, control and long-term mindset.", highlight: true, kpi: "🥋 Personal milestone" },
     { title: "Strategic training · 360° rotation", desc: "Marketing, HR, B2B sales, operations and shipping. Full-business view." },
     { yearShown: "2024", title: "Project Manager · Innovation & Development", desc: "40+ simultaneous projects, MS Project + Kaizen, reporting to General Management.", highlight: true, kpi: "+40 PROJECTS · KAIZEN" },
-    { title: "National Champion · Muay Thai IBMA (2024)", desc: "Amateur category. Focus and character outside the ring.", highlight: true, kpi: "🥊 NATIONAL CHAMPION" },
-    { title: "ICAMI Management Skills · graduate", desc: "Executive development center (2025–2026).", highlight: true, kpi: "ICAMI · GRADUATE" },
-    { yearShown: "Now", title: "Founder of SATORI", desc: "Digital strategy, AI and operations for entrepreneurs who value their time.", highlight: true, kpi: "FOUNDER" },
-    { title: "Business consulting · Innovation & AI", desc: "Executive accompaniment to integrate AI, structure operations and accelerate growth.", highlight: true, kpi: "YOUR MOVE" }
+    { title: "Muay Thai (2024)", desc: "IBMA National Champion, amateur category. Focus and character outside the ring.", highlight: true, kpi: "🥊 Personal milestone" },
+    { yearShown: "2025", title: "ICAMI Management Skills · graduate", desc: "Executive development center (2025–2026).", highlight: true, kpi: "ICAMI · GRADUATE" },
+    { title: "Founder of SATORI", desc: "Digital strategy, AI and operations for entrepreneurs who value their time.", highlight: true, kpi: "FOUNDER" },
+    { yearShown: "Now", title: "What we do at SATORI", desc: "Brand & design, web & positioning, marketing & ads, automation & AI bots, and MyCFO. We turn technology into real growth for your business.", highlight: true, kpi: "VALUE OFFER" }
   ];
 
   const items = lang === "en" ? itemsEn : itemsEs;
