@@ -179,33 +179,33 @@ function Milestones() {
   const itemsEs = [
     { yearShown: "2018", title: "Cierre de bachillerato", desc: "Primer contacto con mercadotecnia y negocios." },
     { title: "Primer rol en marketing", desc: "E-commerce desde cero en menos de 6 meses, rebranding y social ads." },
-    { title: "Fundamentos del marketing", desc: "Fundamentos y teoría. Base técnica del oficio." },
+    { title: "Fundamentos del marketing", desc: "Estudios formales, fundamentos y teoría. Base técnica del oficio." },
     { yearShown: "2020", title: "1° Emprendimiento personal", desc: "Marca de joyería: branding, web, carrito y logística end-to-end.", highlight: true, kpi: "1° EMPRENDIMIENTO" },
     { title: "Sistema Comercial de Alto Impacto (SCAI)", desc: "Implementación de la metodología SCAI en 3+ empresas." },
     { title: "Digitalización con Power BI", desc: "Performance del equipo comercial en dashboards en vivo. De instinto a datos.", highlight: true, kpi: "POWER BI" },
     { title: "Taekwondo (2021)", desc: "TKD: cinta negra 1° Dan. Disciplina, control y mentalidad de largo plazo.", highlight: true, kpi: "🥋 Milestone personal" },
     { title: "Entrenamiento estratégico · rotación 360°", desc: "Marketing, RRHH, ventas B2B, operaciones y embarques. Vista integral." },
     { yearShown: "2024", title: "Project Manager · Innovación y Desarrollo", desc: "+40 proyectos simultáneos, MS Project + Kaizen, reporte a Dirección General.", highlight: true, kpi: "+40 PROYECTOS · KAIZEN" },
-    { title: "Muay Thai (2024)", desc: "Campeón Nacional IBMA, categoría amateur. Foco y carácter aplicados fuera del ring.", highlight: true, kpi: "🥊 Milestone personal" },
+    { title: "Muay Thai (2024)", desc: "Campeón Nacional Muay Thai, categoría amateur. Foco y carácter aplicados dentro del ring.", highlight: true, kpi: "🥊 Milestone personal" },
     { yearShown: "2025", title: "Graduado del programa Management Skills · ICAMI", desc: "Centro de perfeccionamiento directivo (2025–2026).", highlight: true, kpi: "ICAMI · GRADUADO" },
-    { title: "Fundador SATORI", desc: "Estrategia digital, IA y operaciones para empresarios que valoran su tiempo.", highlight: true, kpi: "FUNDADOR" },
-    { yearShown: "Actualidad", title: "Lo que hacemos en SATORI", desc: "Marca y diseño, web y posicionamiento, marketing y ads, automatización y bots con IA, y MyCFO. Convertimos la tecnología en crecimiento real para tu negocio.", highlight: true, kpi: "OFERTA DE VALOR" }
+    { title: "Fundador SATORI", desc: "Estrategia digital, IA y operaciones para empresarios que valoran su tiempo.", highlight: true, kpi: "Fundador de Satori: Tecnología para empresarios que quieren crecer con claridad." },
+    { yearShown: "Actualidad", title: "Lo que hacemos en SATORI", desc: "Marca, diseño, web, posicionamiento, marketing, ads, automatización con IA y nuestro producto MyCFO — tecnología convertida en crecimiento real para tu negocio.", highlight: true, kpi: "OFERTA DE VALOR" }
   ];
 
   const itemsEn = [
     { yearShown: "2018", title: "High school complete", desc: "First contact with marketing and business." },
     { title: "First marketing role", desc: "E-commerce from scratch in under 6 months, rebrand and social ads." },
-    { title: "Marketing fundamentals", desc: "Fundamentals and theory. Technical base of the craft." },
+    { title: "Marketing fundamentals", desc: "Formal studies, fundamentals and theory. Technical base of the craft." },
     { yearShown: "2020", title: "First personal venture", desc: "Jewelry brand: branding, web, cart and end-to-end logistics.", highlight: true, kpi: "FIRST VENTURE" },
     { title: "High-Impact Sales System (SCAI)", desc: "SCAI methodology implemented across 3+ companies." },
     { title: "Digitization with Power BI", desc: "Sales-team performance in live dashboards. Gut to data.", highlight: true, kpi: "POWER BI" },
     { title: "Taekwondo (2021)", desc: "TKD: 1st Dan black belt. Discipline, control and long-term mindset.", highlight: true, kpi: "🥋 Personal milestone" },
     { title: "Strategic training · 360° rotation", desc: "Marketing, HR, B2B sales, operations and shipping. Full-business view." },
     { yearShown: "2024", title: "Project Manager · Innovation & Development", desc: "40+ simultaneous projects, MS Project + Kaizen, reporting to General Management.", highlight: true, kpi: "+40 PROJECTS · KAIZEN" },
-    { title: "Muay Thai (2024)", desc: "IBMA National Champion, amateur category. Focus and character outside the ring.", highlight: true, kpi: "🥊 Personal milestone" },
+    { title: "Muay Thai (2024)", desc: "Muay Thai National Champion, amateur category. Focus and character inside the ring.", highlight: true, kpi: "🥊 Personal milestone" },
     { yearShown: "2025", title: "ICAMI Management Skills · graduate", desc: "Executive development center (2025–2026).", highlight: true, kpi: "ICAMI · GRADUATE" },
-    { title: "Founder of SATORI", desc: "Digital strategy, AI and operations for entrepreneurs who value their time.", highlight: true, kpi: "FOUNDER" },
-    { yearShown: "Now", title: "What we do at SATORI", desc: "Brand & design, web & positioning, marketing & ads, automation & AI bots, and MyCFO. We turn technology into real growth for your business.", highlight: true, kpi: "VALUE OFFER" }
+    { title: "Founder of SATORI", desc: "Digital strategy, AI and operations for entrepreneurs who value their time.", highlight: true, kpi: "Founder of Satori: Technology for entrepreneurs who want to grow with clarity." },
+    { yearShown: "Now", title: "What we do at SATORI", desc: "Brand, design, web, positioning, marketing, ads, AI automation and our product MyCFO — technology turned into real growth for your business.", highlight: true, kpi: "VALUE OFFER" }
   ];
 
   const items = lang === "en" ? itemsEn : itemsEs;
@@ -422,15 +422,21 @@ function InteractiveTimeline({ items }) {
                 }}
               />
               <div style={{ display: "flex", alignItems: "baseline", gap: "1rem", flexWrap: "wrap" }}>
-                {it.kpi && (
+                {it.kpi && (() => {
+                  const longKpi = it.kpi.includes(":");
+                  return (
                   <span
                     style={{
-                      fontFamily: TYPE.mono,
-                      fontSize: "0.6rem",
-                      letterSpacing: "0.22em",
-                      textTransform: "uppercase",
-                      padding: "0.3rem 0.75rem",
-                      borderRadius: "999px",
+                      fontFamily: longKpi ? TYPE.body : TYPE.mono,
+                      fontSize: longKpi ? "0.8rem" : "0.6rem",
+                      fontWeight: longKpi ? 500 : 400,
+                      lineHeight: longKpi ? 1.4 : 1,
+                      letterSpacing: longKpi ? "0.005em" : "0.22em",
+                      textTransform: longKpi ? "none" : "uppercase",
+                      padding: longKpi ? "0.55rem 0.9rem" : "0.3rem 0.75rem",
+                      borderRadius: longKpi ? "14px" : "999px",
+                      display: "inline-block",
+                      maxWidth: longKpi ? "34ch" : "none",
                       background: SATORI.GOLD,
                       color: SATORI.CREAM,
                       transform: isHover || isActive ? "scale(1.05)" : "scale(1)",
@@ -439,7 +445,8 @@ function InteractiveTimeline({ items }) {
                   >
                     {it.kpi}
                   </span>
-                )}
+                  );
+                })()}
               </div>
               <h3
                 style={{
