@@ -326,3 +326,8 @@ img, video, iframe {
 @media (max-width: 860px) {
   .satori-mobile-fab { bottom: 9rem !important; }
 }
+/* Mini-brief del fundador: foto arriba, texto abajo (centrado) en móvil. */
+@media (max-width: 640px) {
+  .founder-brief { flex-direction: column !important; text-align: center !important; gap: 1.4rem !important; }
+  .founder-brief > img { flex-basis: auto !important; }
+}

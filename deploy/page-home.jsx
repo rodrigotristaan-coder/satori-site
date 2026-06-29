@@ -388,6 +388,38 @@ function HomeHero() {
   );
 }
 
+// ---------- FUNDADOR (mini-brief, formato WHY de Simon Sinek) ----------
+function FounderBrief() {
+  const [lang] = useLang();
+  const en = lang === "en";
+  const T = en ? {
+    eyebrow: "The founder",
+    role: "Founder of Satori",
+    statement: (<>I believe technology only matters when it turns into <span style={{ color: SATORI.GOLD }}>real growth</span>. That's why I founded Satori: I put strategy, web, automation and AI to work as one thing — <span style={{ color: SATORI.GOLD }}>clear direction so you grow without losing your way</span>.</>)
+  } : {
+    eyebrow: "El fundador",
+    role: "Fundador de Satori",
+    statement: (<>Creo que la tecnología solo vale cuando se convierte en <span style={{ color: SATORI.GOLD }}>crecimiento real</span>. Por eso fundé Satori: pongo estrategia, web, automatización e IA a trabajar como una sola cosa — <span style={{ color: SATORI.GOLD }}>dirección clara para que crezcas sin perder el rumbo</span>.</>)
+  };
+  return (
+    <section data-reveal style={{ padding: "5rem clamp(1.25rem,4vw,2.5rem)", background: SATORI.CREAM, position: "relative", zIndex: 1 }}>
+      <div className="founder-brief" style={{ maxWidth: "900px", margin: "0 auto", display: "flex", alignItems: "center", gap: "2.6rem" }}>
+        <img src="assets/rodrigo.webp" alt="Rodrigo Tristán" loading="lazy"
+          style={{ flex: "0 0 150px", width: "150px", height: "150px", objectFit: "cover", borderRadius: "20px", boxShadow: "0 16px 40px rgba(14,14,14,0.16)" }} />
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ fontFamily: TYPE.mono, fontSize: "0.66rem", letterSpacing: "0.28em", textTransform: "uppercase", color: SATORI.INK, opacity: 0.55, marginBottom: "0.9rem" }}>{T.eyebrow}</div>
+          <p style={{ fontFamily: TYPE.display, fontWeight: 500, fontSize: "clamp(1.18rem, 2.3vw, 1.65rem)", lineHeight: 1.38, letterSpacing: "-0.01em", color: SATORI.INK, margin: "0 0 1.1rem" }}>
+            {T.statement}
+          </p>
+          <div style={{ fontFamily: TYPE.mono, fontSize: "0.7rem", letterSpacing: "0.16em", textTransform: "uppercase", color: SATORI.GOLD_DEEP }}>
+            Rodrigo Tristán · {T.role}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 // ---------- QUÉ HACEMOS (5 pilares de servicio — claridad arriba) ----------
 function QueHacemos() {
   const [lang] = useLang();
@@ -438,12 +470,12 @@ function QueHacemos() {
               display: "flex", alignItems: "stretch"
             }}>
               <div style={{
-                flex: "0 0 25%", minWidth: "76px",
-                background: it.logo ? SATORI.CREAM : `${SATORI.INK}07`,
+                flex: "0 0 33.333%", minWidth: "96px",
+                background: it.logo ? "#F4F1EA" : `${SATORI.INK}07`,
                 display: "flex", alignItems: "center", justifyContent: "center"
               }}>
                 <img src={it.img} alt={it.logo ? it.t : ""} loading="lazy"
-                  style={{ width: "100%", height: "100%", objectFit: it.logo ? "contain" : "cover", padding: it.logo ? "0.7rem" : 0, display: "block" }} />
+                  style={{ width: "100%", height: "100%", objectFit: it.logo ? "contain" : "cover", objectPosition: it.objPos || "center", padding: it.logo ? "0.85rem" : 0, display: "block" }} />
               </div>
               <div style={{ flex: 1, minWidth: 0, padding: "1.5rem 1.6rem" }}>
                 <div style={{ fontFamily: TYPE.mono, fontSize: "0.78rem", letterSpacing: "0.1em", color: SATORI.GOLD, opacity: 0.85, marginBottom: "0.5rem" }}>{String(i + 1).padStart(2, "0")}</div>
@@ -1653,6 +1685,7 @@ function App() {
       ]} />
       <BrandManifesto />
       <HomeHero />
+      <FounderBrief />
       <QueHacemos />
       <RutaCrecimiento />
       <ShowroomTeaser />
