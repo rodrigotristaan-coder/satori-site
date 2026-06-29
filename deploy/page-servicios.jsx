@@ -818,7 +818,7 @@ function App() {
       <MatrixBackground opacity={0.035} color={SATORI.GOLD} />
       <Nav current="servicios" />
       <SectionRail sections={[
-        { id: "inicio", label: { es: "Inicio", en: "Top" } },
+        { id: "inicio", label: { es: "Filosofía", en: "Philosophy" } },
         { id: "detalle", label: { es: "Servicios", en: "Services" } },
         { id: "paquetes", label: { es: "Paquetes", en: "Packages" } },
         { id: "faq", label: { es: "Preguntas", en: "FAQ" } },

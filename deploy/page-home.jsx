@@ -389,25 +389,6 @@ function HomeHero() {
 }
 
 // ---------- QUÉ HACEMOS (5 pilares de servicio — claridad arriba) ----------
-// Iconos de línea por pilar (dorado, on-brand; nada de fotos stock).
-function PillarIcon({ name }) {
-  const common = { width: 26, height: 26, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.6, strokeLinecap: "round", strokeLinejoin: "round" };
-  switch (name) {
-    case "marca": // chispa / estrella de 4 puntas
-      return (<svg {...common}><path d="M12 2.5l1.9 7.6L21.5 12l-7.6 1.9L12 21.5l-1.9-7.6L2.5 12l7.6-1.9z" /></svg>);
-    case "web": // ventana de navegador
-      return (<svg {...common}><rect x="3" y="4.5" width="18" height="15" rx="2.5" /><path d="M3 9h18" /><circle cx="6" cy="6.75" r="0.5" fill="currentColor" stroke="none" /><circle cx="8" cy="6.75" r="0.5" fill="currentColor" stroke="none" /></svg>);
-    case "ads": // diana / targeting
-      return (<svg {...common}><circle cx="12" cy="12" r="8.5" /><circle cx="12" cy="12" r="4.5" /><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none" /></svg>);
-    case "bot": // robot
-      return (<svg {...common}><rect x="4.5" y="8" width="15" height="11" rx="3" /><path d="M12 4v4" /><circle cx="12" cy="3.4" r="1.3" /><path d="M9.5 13h0M14.5 13h0" strokeWidth="2.4" /><path d="M9.5 16.2h5" /></svg>);
-    case "cfo": // gráfica de barras
-      return (<svg {...common}><path d="M3.5 20.5h17" /><path d="M7 20.5V13" strokeWidth="2.2" /><path d="M12 20.5V7.5" strokeWidth="2.2" /><path d="M17 20.5v-5.5" strokeWidth="2.2" /></svg>);
-    default:
-      return null;
-  }
-}
-
 function QueHacemos() {
   const [lang] = useLang();
   const en = lang === "en";
@@ -418,11 +399,11 @@ function QueHacemos() {
     sub: "Strategy first, then execution. Everything points to one thing: clients arriving with clarity.",
     cta: "See all services",
     items: [
-      { icon: "marca", t: "Brand & Design", d: "Identity that sets you apart and builds trust." },
-      { icon: "web", t: "Web & Positioning", d: "Fast sites that rank and get recommended by AI." },
-      { icon: "ads", t: "Marketing & Ads", d: "Campaigns that bring qualified leads to your business." },
-      { icon: "bot", t: "AI Automation & Bots", d: "Bots and systems that attend, capture and follow up on their own." },
-      { icon: "cfo", t: "MyCFO", d: "Your AI CFO: manage your business finances by chat." }
+      { img: "assets/showroom/branding-vc.jpg", t: "Brand & Design", d: "Identity that sets you apart and builds trust." },
+      { img: "assets/showroom/laura-humancore.jpg", t: "Web & Positioning", d: "Fast sites that rank and get recommended by AI." },
+      { img: "assets/showroom/money-shop.jpg", t: "Marketing & Ads", d: "Campaigns that bring qualified leads to your business." },
+      { img: "assets/showroom/landing-esmeralda-airbnb-green-poster.jpg", t: "AI Automation & Bots", d: "Bots and systems that attend, capture and follow up on their own." },
+      { img: "assets/marketing-ia.webp", t: "MyCFO", d: "Your AI CFO: manage your business finances by chat." }
     ]
   } : {
     eyebrow: "Qué hacemos",
@@ -431,11 +412,11 @@ function QueHacemos() {
     sub: "Primero estrategia, luego ejecución. Todo apunta a lo mismo: clientes llegando con claridad.",
     cta: "Ver todos los servicios",
     items: [
-      { icon: "marca", t: "Marca & Diseño", d: "Identidad que te distingue y genera confianza." },
-      { icon: "web", t: "Web & Posicionamiento", d: "Sitios rápidos, que rankean y que la IA recomienda." },
-      { icon: "ads", t: "Marketing & Ads", d: "Campañas que traen prospectos calificados a tu negocio." },
-      { icon: "bot", t: "Automatización & Bots con IA", d: "Bots y sistemas que atienden, captan y dan seguimiento solos." },
-      { icon: "cfo", t: "MyCFO", d: "Tu CFO con IA: controla las finanzas de tu negocio por chat." }
+      { img: "assets/showroom/branding-vc.jpg", t: "Marca & Diseño", d: "Identidad que te distingue y genera confianza." },
+      { img: "assets/showroom/laura-humancore.jpg", t: "Web & Posicionamiento", d: "Sitios rápidos, que rankean y que la IA recomienda." },
+      { img: "assets/showroom/money-shop.jpg", t: "Marketing & Ads", d: "Campañas que traen prospectos calificados a tu negocio." },
+      { img: "assets/showroom/landing-esmeralda-airbnb-green-poster.jpg", t: "Automatización & Bots con IA", d: "Bots y sistemas que atienden, captan y dan seguimiento solos." },
+      { img: "assets/marketing-ia.webp", t: "MyCFO", d: "Tu CFO con IA: controla las finanzas de tu negocio por chat." }
     ]
   };
   return (
@@ -456,12 +437,11 @@ function QueHacemos() {
               borderRadius: "18px", padding: "1.8rem", boxShadow: "0 10px 30px rgba(14,14,14,0.04)"
             }}>
               <div style={{
-                width: "52px", height: "52px", borderRadius: "15px",
-                background: `${SATORI.GOLD}12`, border: `1px solid ${SATORI.GOLD}26`,
-                display: "flex", alignItems: "center", justifyContent: "center",
-                color: SATORI.GOLD, marginBottom: "1.15rem"
+                width: "56px", height: "56px", borderRadius: "14px", overflow: "hidden",
+                border: `1px solid ${SATORI.INK}10`, marginBottom: "1.15rem",
+                boxShadow: "0 6px 16px rgba(14,14,14,0.08)"
               }}>
-                <PillarIcon name={it.icon} />
+                <img src={it.img} alt="" loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
               </div>
               <div style={{ fontFamily: TYPE.mono, fontSize: "0.78rem", letterSpacing: "0.1em", color: SATORI.GOLD, opacity: 0.85, marginBottom: "0.5rem" }}>{String(i + 1).padStart(2, "0")}</div>
               <h3 style={{ fontFamily: TYPE.display, fontSize: "1.2rem", fontWeight: 500, color: SATORI.INK, margin: "0 0 0.5rem" }}>{it.t}</h3>
@@ -1661,7 +1641,7 @@ function App() {
       <MatrixBackground opacity={0.045} color={SATORI.GOLD} />
       <Nav current="home" />
       <SectionRail sections={[
-        { id: "inicio", label: { es: "Inicio", en: "Home" } },
+        { id: "inicio", label: { es: "Filosofía", en: "Philosophy" } },
         { id: "que-hacemos", label: { es: "Qué hacemos", en: "What we do" } },
         { id: "metodologia", label: { es: "Metodología", en: "Method" } },
         { id: "showroom", label: { es: "Showroom", en: "Showroom" } },

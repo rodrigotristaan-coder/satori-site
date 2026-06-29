@@ -108,7 +108,7 @@ a[href]:hover, button:hover { transform: translateY(-2px); }
      para que el texto no se encime con los puntos del SectionRail. */
   .timeline-row { grid-template-columns: 1fr !important; gap: 0 !important; }
   .timeline-year-col { display: none !important; }
-  .timeline-content { padding: 0.4rem 1rem 0.2rem 2.6rem !important; }
+  .timeline-content { padding: 0.4rem 1rem 0.2rem 1.25rem !important; }
   .timeline-dot { display: none !important; }
   .timeline-spine { display: none !important; }
 }
@@ -306,26 +306,23 @@ img, video, iframe {
   }
 }
 
-/* Section rail (scrollspy lateral).
-   Móvil/tablet: puntos pegados al borde + la sección ACTIVA muestra su nombre
-   como pill legible (dice "en qué estamos"; los puntos = "qué sigue").
-   Pantallas anchas (>=1200px): punto + etiqueta de todas. */
-.section-rail { left: 0.5rem; }
-.section-rail .rail-label { display: none; }
-.section-rail a[aria-current="true"] .rail-label {
-  display: inline-block;
-  background: #F4F4F2;
-  color: #806000;
-  padding: 0.22rem 0.62rem;
-  border-radius: 999px;
-  box-shadow: 0 3px 14px rgba(14, 14, 14, 0.14);
-  font-size: 0.58rem;
-  white-space: nowrap;
-}
-@media (min-width: 1200px) {
-  .section-rail { left: 1.5rem; }
-  .section-rail .rail-label { display: inline; }
-  .section-rail a[aria-current="true"] .rail-label {
-    background: none; box-shadow: none; padding: 0; border-radius: 0;
+/* Section rail = barra fija ABAJO con todas las secciones por nombre (posición y
+   estilo van inline en el componente). Aquí solo: ocultar scrollbar y compactar
+   en pantallas chicas. */
+.section-rail { scrollbar-width: none; }
+.section-rail::-webkit-scrollbar { display: none; }
+@media (max-width: 480px) {
+  .section-rail { gap: 0.05rem !important; padding: 0.35rem 0.4rem !important; }
+  .section-rail .rail-item {
+    font-size: 0.55rem !important; padding: 0.35rem 0.55rem !important;
+    letter-spacing: 0.1em !important;
   }
+}
+/* Con la barra de secciones abajo, los FABs flotan ENCIMA de ella (<1200px,
+   donde la barra es ancha y chocaría con el botón inferior derecho). */
+@media (max-width: 1199px) {
+  .satori-wa-fab { bottom: 5.2rem !important; }
+}
+@media (max-width: 860px) {
+  .satori-mobile-fab { bottom: 9rem !important; }
 }

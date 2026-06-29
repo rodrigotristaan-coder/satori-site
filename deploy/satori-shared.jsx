@@ -1038,6 +1038,7 @@ function FloatingWhatsApp({ topic }) {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="WhatsApp"
+      className="satori-wa-fab"
       style={{
         position: "fixed",
         bottom: "1.5rem",
@@ -2235,10 +2236,12 @@ function ReviewsSection() {
 
 // ---------- SECTION RAIL (scrollspy lateral izquierdo, por página) ----------
 // sections = [{ id, label: { es, en } }]. Resalta la sección visible al hacer scroll.
-// Oculto en móvil/tablet (CSS: .section-rail solo a partir de 1200px).
+// Barra fija ABAJO (centrada): muestra TODAS las secciones por nombre (sin
+// bullets); la activa se resalta como pill dorado. Scroll horizontal si no caben.
 function SectionRail({ sections = [] }) {
   const [lang] = useLang();
   const [active, setActive] = useState(sections[0] ? sections[0].id : "");
+  const navRef = React.useRef(null);
   useEffect(() => {
     const els = sections.map((s) => document.getElementById(s.id)).filter(Boolean);
     if (!els.length) return;
@@ -2254,55 +2257,62 @@ function SectionRail({ sections = [] }) {
     els.forEach((el) => io.observe(el));
     return () => io.disconnect();
   }, [sections]);
+  // mantener el item activo a la vista en la barra (cuando hace scroll horizontal)
+  useEffect(() => {
+    const nav = navRef.current; if (!nav) return;
+    const on = nav.querySelector('[aria-current="true"]');
+    if (on && on.scrollIntoView) on.scrollIntoView({ inline: "center", block: "nearest" });
+  }, [active]);
   return (
     <nav
+      ref={navRef}
       className="section-rail"
       aria-label="Secciones de la página"
       style={{
         position: "fixed",
-        top: "50%",
-        transform: "translateY(-50%)",
+        bottom: "1rem",
+        left: "50%",
+        transform: "translateX(-50%)",
         zIndex: 70,
+        maxWidth: "min(94vw, 720px)",
         display: "flex",
-        flexDirection: "column",
-        gap: "0.85rem"
+        alignItems: "center",
+        gap: "0.15rem",
+        padding: "0.4rem 0.5rem",
+        background: `${SATORI.CREAM}f2`,
+        backdropFilter: "blur(10px)",
+        WebkitBackdropFilter: "blur(10px)",
+        border: `1px solid ${SATORI.INK}14`,
+        borderRadius: "999px",
+        boxShadow: "0 10px 30px rgba(14,14,14,0.16)",
+        overflowX: "auto"
       }}
     >
       {sections.map((s) => {
         const on = s.id === active;
+        const lbl = (s.label && (s.label[lang] || s.label.es)) || s.id;
         return (
           <a
             key={s.id}
             href={"#" + s.id}
-            aria-label={(s.label && (s.label[lang] || s.label.es)) || s.id}
             aria-current={on ? "true" : undefined}
+            className="rail-item"
             style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "0.7rem",
+              flex: "none",
               textDecoration: "none",
               fontFamily: TYPE.mono,
-              fontSize: "0.62rem",
-              letterSpacing: "0.16em",
+              fontSize: "0.6rem",
+              letterSpacing: "0.13em",
               textTransform: "uppercase",
-              color: on ? SATORI.GOLD_DEEP : `${SATORI.INK}66`,
-              transition: "color .3s ease"
+              whiteSpace: "nowrap",
+              padding: "0.4rem 0.7rem",
+              borderRadius: "999px",
+              color: on ? SATORI.CREAM : `${SATORI.INK}88`,
+              background: on ? SATORI.GOLD : "transparent",
+              transition: "color .3s ease, background .3s ease"
             }}
           >
-            <span
-              aria-hidden="true"
-              style={{
-                width: on ? "11px" : "7px",
-                height: on ? "11px" : "7px",
-                borderRadius: "50%",
-                flex: "none",
-                background: on ? SATORI.GOLD : "transparent",
-                border: on ? "none" : `1.5px solid ${SATORI.INK}40`,
-                boxShadow: on ? `0 0 0 4px ${SATORI.GOLD}22` : "none",
-                transition: "all .3s ease"
-              }}
-            />
-            <span className="rail-label" style={{ opacity: on ? 1 : 0.7 }}>{(s.label && (s.label[lang] || s.label.es)) || s.id}</span>
+            {lbl}
           </a>
         );
       })}
