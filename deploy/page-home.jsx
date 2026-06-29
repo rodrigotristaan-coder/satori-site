@@ -432,7 +432,7 @@ function QueHacemos() {
     cta: "See all services",
     items: [
       { img: "assets/showroom/branding-vc.jpg", t: "Brand & Design", d: "Identity that sets you apart and builds trust." },
-      { img: "assets/showroom/laura-humancore.jpg", t: "Web & Positioning", d: "Fast sites that rank and get recommended by AI." },
+      { img: "assets/showroom/laura-humancore.jpg", t: "Websites & Positioning", d: "Fast sites that rank and get recommended by AI." },
       { img: "assets/showroom/money-shop.jpg", objPos: "left", t: "Marketing & Ads", d: "Campaigns that bring qualified leads to your business." },
       { img: "assets/showroom/landing-esmeralda-airbnb-green-poster.jpg", objPos: "center top", t: "AI Automation & Bots", d: "Bots and systems that attend, capture and follow up on their own." },
       { img: "assets/mycfo-logo.png", logo: true, t: "MyCFO", d: "Your AI CFO: manage your business finances by chat." }
@@ -445,7 +445,7 @@ function QueHacemos() {
     cta: "Ver todos los servicios",
     items: [
       { img: "assets/showroom/branding-vc.jpg", t: "Marca & Diseño", d: "Identidad que te distingue y genera confianza." },
-      { img: "assets/showroom/laura-humancore.jpg", t: "Web & Posicionamiento", d: "Sitios rápidos, que rankean y que la IA recomienda." },
+      { img: "assets/showroom/laura-humancore.jpg", t: "Páginas Web & Posicionamiento", d: "Sitios rápidos, que rankean y que la IA recomienda." },
       { img: "assets/showroom/money-shop.jpg", objPos: "left", t: "Marketing & Ads", d: "Campañas que traen prospectos calificados a tu negocio." },
       { img: "assets/showroom/landing-esmeralda-airbnb-green-poster.jpg", objPos: "center top", t: "Automatización & Bots con IA", d: "Bots y sistemas que atienden, captan y dan seguimiento solos." },
       { img: "assets/mycfo-logo.png", logo: true, t: "MyCFO", d: "Tu CFO con IA: controla las finanzas de tu negocio por chat." }
