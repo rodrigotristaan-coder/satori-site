@@ -2390,7 +2390,7 @@ function GrowthPathTimeline({ items }) {
   }, []);
 
   return (
-    <div ref={rootRef} style={{ position: "relative", maxWidth: "760px", margin: "0 auto" }}>
+    <div ref={rootRef} className="growth-timeline" style={{ position: "relative", maxWidth: "760px", margin: "0 auto" }}>
       <div className="timeline-spine" style={{ position: "absolute", left: "110px", top: 0, bottom: 0, width: "1px", background: `${SATORI.INK}15` }} />
       <div className="timeline-spine" aria-hidden="true" style={{ position: "absolute", left: "109px", top: 0, height: `${progress * 100}%`, width: "3px", background: `linear-gradient(180deg, ${SATORI.GOLD} 0%, #C9920A 100%)`, boxShadow: `0 0 14px ${SATORI.GOLD}88`, transition: "height .15s linear", borderRadius: "2px" }} />
       {items.map((it, i) => {
@@ -2434,6 +2434,7 @@ function GrowthPathTimeline({ items }) {
               }}
             >
               <div
+                className="timeline-dot"
                 style={{
                   position: "absolute",
                   left: "-7px",
