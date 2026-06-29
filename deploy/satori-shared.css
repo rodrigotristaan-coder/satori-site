@@ -331,3 +331,7 @@ img, video, iframe {
   .founder-brief { flex-direction: column !important; text-align: center !important; gap: 1.4rem !important; }
   .founder-brief > img { flex-basis: auto !important; }
 }
+/* BrandManifesto (logo/top): centrar en el viewport REAL en móvil/iPhone.
+   100vh en Safari es más alto que el área visible (barra) -> el logo cae bajo
+   el centro; 100dvh = altura dinámica visible (fallback a 100vh). */
+.manifesto-section { min-height: 100vh; min-height: 100dvh; }

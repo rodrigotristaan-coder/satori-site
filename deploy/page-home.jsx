@@ -132,10 +132,10 @@ function BrandManifesto() {
   return (
     <section
       id="manifesto"
+      className="manifesto-section"
       style={{
         position: "relative",
         zIndex: 1,
-        minHeight: "100vh",
         padding: "5rem clamp(1.25rem,4vw,2.5rem)",
         background: SATORI.WHITE,
         textAlign: "center",
