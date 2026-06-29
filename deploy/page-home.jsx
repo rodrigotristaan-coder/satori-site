@@ -430,25 +430,26 @@ function QueHacemos() {
           <h2 style={h2Style}>{T.title}<span style={{ color: SATORI.GOLD }}>{T.titleAccent}</span></h2>
           <p style={{ ...bodyStyle, maxWidth: "560px", margin: "1rem auto 0" }}>{T.sub}</p>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))", gap: "1.2rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "1.2rem" }}>
           {T.items.map((it, i) => (
             <div key={i} style={{
               background: SATORI.WHITE, border: "1px solid rgba(14,14,14,0.08)",
-              borderRadius: "18px", padding: "1.8rem", boxShadow: "0 10px 30px rgba(14,14,14,0.04)"
+              borderRadius: "18px", overflow: "hidden", boxShadow: "0 10px 30px rgba(14,14,14,0.04)",
+              display: "flex", alignItems: "stretch"
             }}>
               <div style={{
-                width: "56px", height: "56px", borderRadius: "14px", overflow: "hidden",
-                border: `1px solid ${SATORI.INK}10`, marginBottom: "1.15rem",
-                boxShadow: "0 6px 16px rgba(14,14,14,0.08)",
-                background: it.logo ? SATORI.CREAM : undefined,
-                display: it.logo ? "flex" : undefined, alignItems: "center", justifyContent: "center",
-                padding: it.logo ? "7px" : 0
+                flex: "0 0 25%", minWidth: "76px",
+                background: it.logo ? SATORI.CREAM : `${SATORI.INK}07`,
+                display: "flex", alignItems: "center", justifyContent: "center"
               }}>
-                <img src={it.img} alt={it.logo ? it.t : ""} loading="lazy" style={{ width: "100%", height: "100%", objectFit: it.logo ? "contain" : "cover", display: "block" }} />
+                <img src={it.img} alt={it.logo ? it.t : ""} loading="lazy"
+                  style={{ width: "100%", height: "100%", objectFit: it.logo ? "contain" : "cover", padding: it.logo ? "0.7rem" : 0, display: "block" }} />
               </div>
-              <div style={{ fontFamily: TYPE.mono, fontSize: "0.78rem", letterSpacing: "0.1em", color: SATORI.GOLD, opacity: 0.85, marginBottom: "0.5rem" }}>{String(i + 1).padStart(2, "0")}</div>
-              <h3 style={{ fontFamily: TYPE.display, fontSize: "1.2rem", fontWeight: 500, color: SATORI.INK, margin: "0 0 0.5rem" }}>{it.t}</h3>
-              <p style={{ ...bodyStyle, fontSize: "0.96rem", margin: 0 }}>{it.d}</p>
+              <div style={{ flex: 1, minWidth: 0, padding: "1.5rem 1.6rem" }}>
+                <div style={{ fontFamily: TYPE.mono, fontSize: "0.78rem", letterSpacing: "0.1em", color: SATORI.GOLD, opacity: 0.85, marginBottom: "0.5rem" }}>{String(i + 1).padStart(2, "0")}</div>
+                <h3 style={{ fontFamily: TYPE.display, fontSize: "1.2rem", fontWeight: 500, color: SATORI.INK, margin: "0 0 0.5rem" }}>{it.t}</h3>
+                <p style={{ ...bodyStyle, fontSize: "0.96rem", margin: 0 }}>{it.d}</p>
+              </div>
             </div>
           ))}
         </div>
