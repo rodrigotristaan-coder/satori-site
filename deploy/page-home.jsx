@@ -403,7 +403,7 @@ function QueHacemos() {
       { img: "assets/showroom/laura-humancore.jpg", t: "Web & Positioning", d: "Fast sites that rank and get recommended by AI." },
       { img: "assets/showroom/money-shop.jpg", t: "Marketing & Ads", d: "Campaigns that bring qualified leads to your business." },
       { img: "assets/showroom/landing-esmeralda-airbnb-green-poster.jpg", t: "AI Automation & Bots", d: "Bots and systems that attend, capture and follow up on their own." },
-      { img: "assets/marketing-ia.webp", t: "MyCFO", d: "Your AI CFO: manage your business finances by chat." }
+      { img: "assets/mycfo-logo.png", logo: true, t: "MyCFO", d: "Your AI CFO: manage your business finances by chat." }
     ]
   } : {
     eyebrow: "Qué hacemos",
@@ -416,7 +416,7 @@ function QueHacemos() {
       { img: "assets/showroom/laura-humancore.jpg", t: "Web & Posicionamiento", d: "Sitios rápidos, que rankean y que la IA recomienda." },
       { img: "assets/showroom/money-shop.jpg", t: "Marketing & Ads", d: "Campañas que traen prospectos calificados a tu negocio." },
       { img: "assets/showroom/landing-esmeralda-airbnb-green-poster.jpg", t: "Automatización & Bots con IA", d: "Bots y sistemas que atienden, captan y dan seguimiento solos." },
-      { img: "assets/marketing-ia.webp", t: "MyCFO", d: "Tu CFO con IA: controla las finanzas de tu negocio por chat." }
+      { img: "assets/mycfo-logo.png", logo: true, t: "MyCFO", d: "Tu CFO con IA: controla las finanzas de tu negocio por chat." }
     ]
   };
   return (
@@ -439,9 +439,12 @@ function QueHacemos() {
               <div style={{
                 width: "56px", height: "56px", borderRadius: "14px", overflow: "hidden",
                 border: `1px solid ${SATORI.INK}10`, marginBottom: "1.15rem",
-                boxShadow: "0 6px 16px rgba(14,14,14,0.08)"
+                boxShadow: "0 6px 16px rgba(14,14,14,0.08)",
+                background: it.logo ? SATORI.CREAM : undefined,
+                display: it.logo ? "flex" : undefined, alignItems: "center", justifyContent: "center",
+                padding: it.logo ? "7px" : 0
               }}>
-                <img src={it.img} alt="" loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                <img src={it.img} alt={it.logo ? it.t : ""} loading="lazy" style={{ width: "100%", height: "100%", objectFit: it.logo ? "contain" : "cover", display: "block" }} />
               </div>
               <div style={{ fontFamily: TYPE.mono, fontSize: "0.78rem", letterSpacing: "0.1em", color: SATORI.GOLD, opacity: 0.85, marginBottom: "0.5rem" }}>{String(i + 1).padStart(2, "0")}</div>
               <h3 style={{ fontFamily: TYPE.display, fontSize: "1.2rem", fontWeight: 500, color: SATORI.INK, margin: "0 0 0.5rem" }}>{it.t}</h3>
