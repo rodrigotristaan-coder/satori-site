@@ -435,7 +435,7 @@ function QueHacemos() {
       { img: "assets/showroom/laura-hero.jpg", objPos: "left", t: "Websites & Positioning", d: "Fast sites that rank and get recommended by AI." },
       { img: "assets/showroom/moneyshop-hero.jpg", objPos: "left", t: "Marketing & Ads", d: "Campaigns that bring qualified leads to your business." },
       { img: "assets/showroom/esmeralda-cover.jpg", objPos: "center", t: "AI Automation & Bots", d: "Bots and systems that attend, capture and follow up on their own." },
-      { img: "assets/mycfo-logo.png", logo: true, t: "MyCFO", d: "Your AI CFO: manage your business finances by chat." }
+      { video: "assets/showroom/mycfo-laptop.mp4", poster: "assets/showroom/mycfo-laptop-poster.jpg", logo: true, t: "MyCFO", d: "Your AI CFO: manage your business finances by chat." }
     ]
   } : {
     eyebrow: "Qué hacemos",
@@ -448,7 +448,7 @@ function QueHacemos() {
       { img: "assets/showroom/laura-hero.jpg", objPos: "left", t: "Páginas Web & Posicionamiento", d: "Sitios rápidos, que rankean y que la IA recomienda." },
       { img: "assets/showroom/moneyshop-hero.jpg", objPos: "left", t: "Marketing & Ads", d: "Campañas que traen prospectos calificados a tu negocio." },
       { img: "assets/showroom/esmeralda-cover.jpg", objPos: "center", t: "Automatización & Bots con IA", d: "Bots y sistemas que atienden, captan y dan seguimiento solos." },
-      { img: "assets/mycfo-logo.png", logo: true, t: "MyCFO", d: "Tu CFO con IA: controla las finanzas de tu negocio por chat." }
+      { video: "assets/showroom/mycfo-laptop.mp4", poster: "assets/showroom/mycfo-laptop-poster.jpg", logo: true, t: "MyCFO", d: "Tu CFO con IA: controla las finanzas de tu negocio por chat." }
     ]
   };
   return (
@@ -471,11 +471,16 @@ function QueHacemos() {
             }}>
               <div style={{
                 flex: "0 0 33.333%", minWidth: "96px",
-                background: it.logo ? "#F4F1EA" : `${SATORI.INK}07`,
+                background: it.logo ? SATORI.CREAM : `${SATORI.INK}07`,
                 display: "flex", alignItems: "center", justifyContent: "center"
               }}>
-                <img src={it.img} alt={it.logo ? it.t : ""} loading="lazy"
-                  style={{ width: "100%", height: "100%", objectFit: it.logo ? "contain" : "cover", objectPosition: it.objPos || "center", padding: it.logo ? "0.85rem" : 0, display: "block" }} />
+                {it.video ? (
+                  <video src={it.video} poster={it.poster} autoPlay muted loop playsInline preload="metadata"
+                    style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }} />
+                ) : (
+                  <img src={it.img} alt={it.logo ? it.t : ""} loading="lazy"
+                    style={{ width: "100%", height: "100%", objectFit: it.logo ? "contain" : "cover", objectPosition: it.objPos || "center", padding: it.logo ? "0.85rem" : 0, display: "block" }} />
+                )}
               </div>
               <div style={{ flex: 1, minWidth: 0, padding: "1.5rem 1.6rem" }}>
                 <div style={{ fontFamily: TYPE.mono, fontSize: "0.78rem", letterSpacing: "0.1em", color: SATORI.GOLD, opacity: 0.85, marginBottom: "0.5rem" }}>{String(i + 1).padStart(2, "0")}</div>
