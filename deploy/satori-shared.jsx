@@ -481,6 +481,38 @@ function Nav({ current }) {
         </button>
       </nav>
 
+      {/* Toggle de idioma fijo arriba-derecha (solo móvil; en desktop lo tiene el nav-tail) */}
+      <button
+        className="nav-lang-mobile"
+        aria-label="Cambiar idioma"
+        onClick={() => {
+          setLang(lang === "en" ? "es" : "en");
+          setTimeout(() => window.location.reload(), 60);
+        }}
+        style={{
+          position: "fixed",
+          top: "1.15rem",
+          right: "1rem",
+          zIndex: 60,
+          display: "none",
+          fontFamily: TYPE.mono,
+          fontSize: "0.62rem",
+          letterSpacing: "0.2em",
+          padding: "0.5rem 0.8rem",
+          borderRadius: "999px",
+          border: `1px solid ${SATORI.INK}20`,
+          background: "rgba(255,255,255,0.82)",
+          backdropFilter: "blur(12px) saturate(180%)",
+          WebkitBackdropFilter: "blur(12px) saturate(180%)",
+          color: SATORI.INK,
+          fontWeight: 600,
+          cursor: "pointer",
+          boxShadow: "0 6px 18px -8px rgba(14,14,14,0.25)"
+        }}
+      >
+        {lang === "en" ? "ES" : "EN"}
+      </button>
+
       {mobileOpen && (
         <div
           style={{
@@ -937,26 +969,6 @@ function MobileMenuFab({ current }) {
             transition: `opacity .35s ease ${open ? NAV_LINKS.length * 60 : 0}ms, transform .35s ease ${open ? NAV_LINKS.length * 60 : 0}ms`
           }}
         >
-          <button
-            onClick={() => {
-              setLang(lang === "en" ? "es" : "en");
-              setTimeout(() => window.location.reload(), 60);
-            }}
-            style={{
-              padding: "0.5rem 0.85rem",
-              borderRadius: "999px",
-              border: `1px solid ${SATORI.INK}25`,
-              background: "rgba(255,255,255,0.94)",
-              color: SATORI.INK,
-              fontFamily: TYPE.mono,
-              fontSize: "0.6rem",
-              letterSpacing: "0.22em",
-              fontWeight: 600,
-              cursor: "pointer"
-            }}
-          >
-            {lang === "en" ? "ES" : "EN"}
-          </button>
           <a
             href="#contacto"
             style={{
@@ -1206,7 +1218,7 @@ function CtaBlock({ titulo = "Hablemos.", sub = "30 minutos. Salimos con clarida
     legalLink: "Privacy Notice",
     or: "or",
     whats: "WhatsApp",
-    microcopy: "Free · 24h reply · Clear next steps"
+    microcopy: "Free · 24h reply · With clarity"
   } : {
     eyebrow: "Siguiente paso",
     nombre: "Nombre",
@@ -1313,37 +1325,6 @@ function CtaBlock({ titulo = "Hablemos.", sub = "30 minutos. Salimos con clarida
       }} className="cta-grid">
         {/* LEFT: heading + microcopy + alt contact */}
         <div>
-          <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "0.7rem",
-              fontFamily: TYPE.mono,
-              fontSize: "0.7rem",
-              letterSpacing: "0.32em",
-              textTransform: "uppercase",
-              color: SATORI.GOLD,
-              marginBottom: "2rem",
-              padding: "0.55rem 1.1rem",
-              borderRadius: "999px",
-              background: `${SATORI.GOLD}10`,
-              border: `1px solid ${SATORI.GOLD}30`
-            }}
-          >
-            <span
-              aria-hidden="true"
-              style={{
-                width: "8px",
-                height: "8px",
-                borderRadius: "999px",
-                background: SATORI.GOLD,
-                boxShadow: `0 0 0 4px ${SATORI.GOLD}35`,
-                animation: "ctaDotPulse 1.8s ease-in-out infinite"
-              }}
-            />
-            {T.eyebrow}
-          </div>
-
           <TypewriterTitle text={pick(titulo)} className="cta-title" />
 
           <p
@@ -2027,9 +2008,10 @@ function fileToAvatarDataUrl(file, size = 256) {
   });
 }
 
-function ReviewCard({ rv }) {
+function ReviewCard({ rv, en }) {
   const rating = Math.max(1, Math.min(5, rv.rating || 5));
   const initial = (rv.name || "?").trim().slice(0, 1).toUpperCase();
+  const text = en && rv.text_en ? rv.text_en : rv.text;
   return (
     <figure style={{
       background: SATORI.INK, border: "1px solid rgba(255,255,255,0.10)",
@@ -2042,7 +2024,7 @@ function ReviewCard({ rv }) {
       <blockquote style={{
         ...bodyStyle, color: SATORI.CREAM, opacity: 0.94, fontStyle: "italic", flex: 1,
         margin: "0.85rem 0 1.25rem", fontSize: "1rem"
-      }}>“{rv.text}”</blockquote>
+      }}>“{text}”</blockquote>
       <figcaption style={{ display: "flex", alignItems: "center", gap: "0.8rem", marginTop: "auto" }}>
         {rv.photo
           ? <img src={rv.photo} alt={rv.name} width="48" height="48" loading="lazy"
@@ -2150,7 +2132,7 @@ function ReviewsSection() {
             display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(290px, 1fr))",
             gap: "1.4rem"
           }}>
-            {reviews.map((rv, i) => <ReviewCard key={i} rv={rv} />)}
+            {reviews.map((rv, i) => <ReviewCard key={i} rv={rv} en={en} />)}
           </div>
         ) : (
           <p style={{ ...bodyStyle, textAlign: "center", opacity: 0.6 }}>{T.empty}</p>

@@ -71,6 +71,9 @@ a[href]:hover, button:hover { transform: translateY(-2px); }
   vertical-align: middle;
 }
 
+/* Fundador: la mini-foto (al lado del nombre) solo se ve en móvil */
+.founder-mini-photo { display: none; }
+
 /* Mobile */
 @media (max-width: 860px) {
   .nav-links-desktop { display: none !important; }
@@ -95,12 +98,17 @@ a[href]:hover, button:hover { transform: translateY(-2px); }
   .split-2 { flex-direction: column !important; }
   .timeline-row { grid-template-columns: 1fr !important; }
   .about-hero-grid { grid-template-columns: 1fr !important; gap: 2.5rem !important; }
+  /* Fundador móvil: foto chica al lado del nombre, ocultar la grande */
+  .founder-mini-photo { display: block !important; }
+  .founder-id-row { display: flex !important; align-items: center !important; gap: 1.1rem !important; }
+  .founder-big-photo { display: none !important; }
   .home-hero-grid { grid-template-columns: 1fr !important; gap: 2.5rem !important; }
   .hero-enso-wrap { transform: scale(0.78); transform-origin: center; }
   section { padding-left: 1.25rem !important; padding-right: 1.25rem !important; }
 }
 @media (max-width: 860px) {
   .satori-mobile-fab { display: flex !important; }
+  .nav-lang-mobile { display: inline-flex !important; }
 }
 @media (max-width: 640px) {
   /* Timeline (Ruta / Metodología / Milestones): alineado a la izquierda, pero

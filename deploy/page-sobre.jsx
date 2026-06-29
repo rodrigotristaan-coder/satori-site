@@ -55,25 +55,35 @@ function AboutHero() {
       >
         <div className="grid-2-inline" style={{ display: "contents" }}>
           <div className="fade-up">
-            <p style={eyebrowStyle}>
-              <span className="satori-rule" style={{ width: "18px" }} />
-              {c.eyebrow}
-            </p>
-            <h1
-              style={{
-                fontFamily: TYPE.display,
-                fontWeight: 500,
-                fontSize: "clamp(2.6rem,8vw,5.6rem)",
-                lineHeight: 0.98,
-                letterSpacing: "-0.035em",
-                margin: 0,
-                color: SATORI.INK
-              }}
-            >
-              {c.name}
-              <br />
-              <span style={{ color: SATORI.GOLD }}>{c.accent}</span>
-            </h1>
+            <div className="founder-id-row">
+              <img
+                className="founder-mini-photo"
+                src="assets/rodrigo.webp"
+                alt="Rodrigo Tristán"
+                style={{ width: "76px", height: "76px", borderRadius: "50%", objectFit: "cover", flex: "none", filter: "grayscale(1) contrast(1.05)" }}
+              />
+              <div className="founder-id-text">
+                <p style={eyebrowStyle}>
+                  <span className="satori-rule" style={{ width: "18px" }} />
+                  {c.eyebrow}
+                </p>
+                <h1
+                  style={{
+                    fontFamily: TYPE.display,
+                    fontWeight: 500,
+                    fontSize: "clamp(2.6rem,8vw,5.6rem)",
+                    lineHeight: 0.98,
+                    letterSpacing: "-0.035em",
+                    margin: 0,
+                    color: SATORI.INK
+                  }}
+                >
+                  {c.name}
+                  <br />
+                  <span style={{ color: SATORI.GOLD }}>{c.accent}</span>
+                </h1>
+              </div>
+            </div>
             <p
               style={{
                 fontFamily: TYPE.mono,
@@ -120,7 +130,7 @@ function AboutHero() {
             </div>
           </div>
 
-          <div style={{ display: "flex", justifyContent: "center" }}>
+          <div className="founder-big-photo" style={{ display: "flex", justifyContent: "center" }}>
             <div
               style={{
                 width: "100%",

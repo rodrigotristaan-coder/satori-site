@@ -1542,8 +1542,8 @@ function MapaPresencia() {
     : ["Ciudad de México", "Guadalajara", "Estado de México", "Tijuana", "Acapulco", "La Rioja · España", "Monterrey", "Querétaro", "Puebla"];
 
   const c = lang === "en" ? {
-    h1a: "Satori Map",
-    h1b: "Satori",
+    h1a: "Satori",
+    h1b: "Map",
     sub: "Satori isn't a place — it's a philosophy. Remote operation. We work with entrepreneurs across Mexico and Spain."
   } : {
     h1a: "Mapa",
