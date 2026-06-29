@@ -395,11 +395,11 @@ function FounderBrief() {
   const T = en ? {
     eyebrow: "The founder",
     role: "Founder of Satori",
-    statement: (<>I believe technology only matters when it turns into <span style={{ color: SATORI.GOLD }}>real growth</span>. That's why I founded Satori: I put strategy, web, automation and AI to work as one thing — <span style={{ color: SATORI.GOLD }}>clear direction so you grow without losing your way</span>.</>)
+    statement: (<>I believe in putting <span style={{ color: SATORI.GOLD }}>technology at the service of people</span>, not the other way around. That's why I founded Satori: I turn strategy, web, automation and AI into <span style={{ color: SATORI.GOLD }}>real growth and clear direction</span> for your business.</>)
   } : {
     eyebrow: "El fundador",
     role: "Fundador de Satori",
-    statement: (<>Creo que la tecnología solo vale cuando se convierte en <span style={{ color: SATORI.GOLD }}>crecimiento real</span>. Por eso fundé Satori: pongo estrategia, web, automatización e IA a trabajar como una sola cosa — <span style={{ color: SATORI.GOLD }}>dirección clara para que crezcas sin perder el rumbo</span>.</>)
+    statement: (<>Creo en poner la <span style={{ color: SATORI.GOLD }}>tecnología al servicio de lo humano</span>, no al revés. Por eso fundé Satori: convierto estrategia, web, automatización e IA en <span style={{ color: SATORI.GOLD }}>crecimiento real y dirección clara</span> para tu negocio.</>)
   };
   return (
     <section data-reveal style={{ padding: "5rem clamp(1.25rem,4vw,2.5rem)", background: SATORI.CREAM, position: "relative", zIndex: 1 }}>
@@ -433,8 +433,8 @@ function QueHacemos() {
     items: [
       { img: "assets/showroom/branding-vc.jpg", t: "Brand & Design", d: "Identity that sets you apart and builds trust." },
       { img: "assets/showroom/laura-humancore.jpg", t: "Web & Positioning", d: "Fast sites that rank and get recommended by AI." },
-      { img: "assets/showroom/money-shop.jpg", t: "Marketing & Ads", d: "Campaigns that bring qualified leads to your business." },
-      { img: "assets/showroom/landing-esmeralda-airbnb-green-poster.jpg", t: "AI Automation & Bots", d: "Bots and systems that attend, capture and follow up on their own." },
+      { img: "assets/showroom/money-shop.jpg", objPos: "left", t: "Marketing & Ads", d: "Campaigns that bring qualified leads to your business." },
+      { img: "assets/showroom/landing-esmeralda-airbnb-green-poster.jpg", objPos: "center top", t: "AI Automation & Bots", d: "Bots and systems that attend, capture and follow up on their own." },
       { img: "assets/mycfo-logo.png", logo: true, t: "MyCFO", d: "Your AI CFO: manage your business finances by chat." }
     ]
   } : {
@@ -446,8 +446,8 @@ function QueHacemos() {
     items: [
       { img: "assets/showroom/branding-vc.jpg", t: "Marca & Diseño", d: "Identidad que te distingue y genera confianza." },
       { img: "assets/showroom/laura-humancore.jpg", t: "Web & Posicionamiento", d: "Sitios rápidos, que rankean y que la IA recomienda." },
-      { img: "assets/showroom/money-shop.jpg", t: "Marketing & Ads", d: "Campañas que traen prospectos calificados a tu negocio." },
-      { img: "assets/showroom/landing-esmeralda-airbnb-green-poster.jpg", t: "Automatización & Bots con IA", d: "Bots y sistemas que atienden, captan y dan seguimiento solos." },
+      { img: "assets/showroom/money-shop.jpg", objPos: "left", t: "Marketing & Ads", d: "Campañas que traen prospectos calificados a tu negocio." },
+      { img: "assets/showroom/landing-esmeralda-airbnb-green-poster.jpg", objPos: "center top", t: "Automatización & Bots con IA", d: "Bots y sistemas que atienden, captan y dan seguimiento solos." },
       { img: "assets/mycfo-logo.png", logo: true, t: "MyCFO", d: "Tu CFO con IA: controla las finanzas de tu negocio por chat." }
     ]
   };
