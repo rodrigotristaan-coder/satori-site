@@ -681,20 +681,20 @@ function Paquetes() {
 function Faq() {
   const [lang] = useLang();
   const itemsEs = [
-    { q: "¿Cuánto tarda en ver resultados?", a: "Marca & Diseño: primeras semanas. Web & Posicionamiento: 1–3 meses. Automatización & Bots: desde la activación." },
+    { q: "¿Puedo contratar un solo servicio?", a: "Sí. Cada servicio funciona por sí solo —Marca & Diseño, Páginas Web & Posicionamiento, Marketing & Ads, Automatización & Bots o MyCFO—. Empiezas por donde más lo necesitas y sumamos lo demás cuando tenga sentido." },
+    { q: "¿Cómo cobran?", a: "A la medida de cada proyecto, no por paquetes cerrados. En una llamada de 30 minutos entendemos tu negocio y te damos un precio claro, no una cotización vacía." },
+    { q: "¿Cuánto tarda en ver resultados?", a: "Marca & Diseño: primeras semanas. Páginas Web & Posicionamiento: 1–3 meses. Marketing & Ads: desde la primera campaña. Automatización & Bots: desde la activación." },
     { q: "¿Necesito saber de tecnología?", a: "Para nada. Nos encargamos de toda la parte técnica. Tú nos cuentas tu negocio, nosotros hacemos el resto." },
     { q: "¿Firmo contrato largo?", a: "No. Trabajamos mes a mes. Cancela cuando quieras, con 30 días de aviso." },
-    { q: "¿Qué necesito para empezar?", a: "Una llamada de 30 minutos. Entendemos tu negocio, proponemos la ruta, te damos un precio claro." },
-    { q: "¿Con qué tipo de negocios trabajan?", a: "Empresarios y pymes en México — despachos, constructoras, clínicas, consultoras y servicios profesionales." },
-    { q: "¿Ofrecen garantía?", a: "30 días. Si no sientes que el valor supera la inversión, seguimos 20 días más sin costo. Sin preguntas." }
+    { q: "¿Con qué tipo de negocios trabajan?", a: "Empresarios y pymes en México — despachos, constructoras, clínicas, consultoras y servicios profesionales." }
   ];
   const itemsEn = [
-    { q: "How long until I see results?", a: "Brand & Design: first weeks. Web & Positioning: 1–3 months. Automation & Bots: from activation." },
+    { q: "Can I hire just one service?", a: "Yes. Each service stands on its own —Brand & Design, Websites & Positioning, Marketing & Ads, Automation & Bots or MyCFO—. You start where you need it most and we add the rest when it makes sense." },
+    { q: "How do you charge?", a: "Tailored to each project, not closed packages. In a 30-minute call we understand your business and give you a clear price, not an empty quote." },
+    { q: "How long until I see results?", a: "Brand & Design: first weeks. Websites & Positioning: 1–3 months. Marketing & Ads: from the first campaign. Automation & Bots: from activation." },
     { q: "Do I need to know tech?", a: "Not at all. We handle everything technical. You tell us your business, we do the rest." },
     { q: "Do I sign a long contract?", a: "No. Month-to-month. Cancel anytime with 30 days notice." },
-    { q: "What do I need to start?", a: "A 30-minute call. We understand your business, propose the path, give you a clear price." },
-    { q: "What kinds of businesses?", a: "Entrepreneurs and SMEs in Mexico — firms, contractors, clinics, consultancies and professional services." },
-    { q: "Do you offer a guarantee?", a: "30 days. If you don't feel value exceeds the investment, we continue 20 days at no cost. No questions." }
+    { q: "What kinds of businesses?", a: "Entrepreneurs and SMEs in Mexico — firms, contractors, clinics, consultancies and professional services." }
   ];
   const items = lang === "en" ? itemsEn : itemsEs;
   const eyebrowTxt = lang === "en" ? "FAQ" : "Preguntas frecuentes";
@@ -820,13 +820,11 @@ function App() {
       <SectionRail sections={[
         { id: "inicio", label: { es: "Filosofía", en: "Philosophy" } },
         { id: "detalle", label: { es: "Servicios", en: "Services" } },
-        { id: "paquetes", label: { es: "Paquetes", en: "Packages" } },
         { id: "faq", label: { es: "Preguntas", en: "FAQ" } },
         { id: "contacto", label: { es: "Contacto", en: "Contact" } }
       ]} />
       <ServiciosHero />
       <ServiciosDetalle />
-      <Paquetes />
       <Faq />
       <CtaBlock
         titulo={{ es: "¿Listo para tu siguiente etapa?", en: "Ready for your next stage?" }}
