@@ -432,9 +432,9 @@ function QueHacemos() {
     cta: "See all services",
     items: [
       { img: "assets/showroom/branding-vc.jpg", t: "Brand & Design", d: "Identity that sets you apart and builds trust." },
-      { img: "assets/showroom/laura-hero.jpg", objPos: "left", t: "Websites & Positioning", d: "Fast sites that rank and get recommended by AI." },
+      { img: "assets/showroom/esmeralda-zoomout.jpg", objPos: "top", t: "Websites & Positioning", d: "Fast sites that rank and get recommended by AI." },
       { img: "assets/showroom/moneyshop-hero.jpg", objPos: "left", t: "Marketing & Ads", d: "Campaigns that bring qualified leads to your business." },
-      { img: "assets/showroom/esmeralda-cover.jpg", objPos: "center", t: "AI Automation & Bots", d: "Bots and systems that attend, capture and follow up on their own." },
+      { img: "assets/showroom/n8n-system.jpg", fit: "contain", bg: "#171922", t: "AI Automation & Bots", d: "Bots and systems that attend, capture and follow up on their own." },
       { video: "assets/showroom/mycfo-laptop.mp4", poster: "assets/showroom/mycfo-laptop-poster.jpg", logo: true, t: "MyCFO", d: "Your AI CFO: manage your business finances by chat." }
     ]
   } : {
@@ -445,9 +445,9 @@ function QueHacemos() {
     cta: "Ver todos los servicios",
     items: [
       { img: "assets/showroom/branding-vc.jpg", t: "Marca & Diseño", d: "Identidad que te distingue y genera confianza." },
-      { img: "assets/showroom/laura-hero.jpg", objPos: "left", t: "Páginas Web & Posicionamiento", d: "Sitios rápidos, que rankean y que la IA recomienda." },
+      { img: "assets/showroom/esmeralda-zoomout.jpg", objPos: "top", t: "Páginas Web & Posicionamiento", d: "Sitios rápidos, que rankean y que la IA recomienda." },
       { img: "assets/showroom/moneyshop-hero.jpg", objPos: "left", t: "Marketing & Ads", d: "Campañas que traen prospectos calificados a tu negocio." },
-      { img: "assets/showroom/esmeralda-cover.jpg", objPos: "center", t: "Automatización & Bots con IA", d: "Bots y sistemas que atienden, captan y dan seguimiento solos." },
+      { img: "assets/showroom/n8n-system.jpg", fit: "contain", bg: "#171922", t: "Automatización & Bots con IA", d: "Bots y sistemas que atienden, captan y dan seguimiento solos." },
       { video: "assets/showroom/mycfo-laptop.mp4", poster: "assets/showroom/mycfo-laptop-poster.jpg", logo: true, t: "MyCFO", d: "Tu CFO con IA: controla las finanzas de tu negocio por chat." }
     ]
   };
@@ -471,7 +471,7 @@ function QueHacemos() {
             }}>
               <div style={{
                 flex: "0 0 33.333%", minWidth: "96px",
-                background: it.logo ? SATORI.CREAM : `${SATORI.INK}07`,
+                background: it.bg || (it.logo ? SATORI.CREAM : `${SATORI.INK}07`),
                 display: "flex", alignItems: "center", justifyContent: "center"
               }}>
                 {it.video ? (
@@ -479,7 +479,7 @@ function QueHacemos() {
                     style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }} />
                 ) : (
                   <img src={it.img} alt={it.logo ? it.t : ""} loading="lazy"
-                    style={{ width: "100%", height: "100%", objectFit: it.logo ? "contain" : "cover", objectPosition: it.objPos || "center", padding: it.logo ? "0.85rem" : 0, display: "block" }} />
+                    style={{ width: "100%", height: "100%", objectFit: it.fit || (it.logo ? "contain" : "cover"), objectPosition: it.objPos || "center", padding: it.logo ? "0.85rem" : 0, display: "block" }} />
                 )}
               </div>
               <div style={{ flex: 1, minWidth: 0, padding: "1.5rem 1.6rem" }}>
