@@ -10,7 +10,8 @@ const PROYECTOS_ES = [
     year: "2025",
     descripcion: "Bot de finanzas personales con registro y reporting automático por WhatsApp. Categorización por IA y reportes mensuales claros, por chat.",
     tags: ["WhatsApp", "Registro automático", "Reportes IA"],
-    img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=720&q=75&auto=format&fit=crop"
+    video: "assets/showroom/mycfo-chat.mp4",
+    poster: "assets/showroom/mycfo-chat-poster.jpg"
   },
   {
     titulo: "Invitación de boda — V&C",
@@ -99,7 +100,8 @@ const PROYECTOS_EN = [
     year: "2025",
     descripcion: "Personal-finance bot with automatic logging and reporting over WhatsApp. AI categorization and clear monthly reports, by chat.",
     tags: ["WhatsApp", "Auto-logging", "AI reports"],
-    img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=720&q=75&auto=format&fit=crop"
+    video: "assets/showroom/mycfo-chat.mp4",
+    poster: "assets/showroom/mycfo-chat-poster.jpg"
   },
   {
     titulo: "Wedding invitation — V&C",

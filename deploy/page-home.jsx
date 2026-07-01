@@ -435,7 +435,7 @@ function QueHacemos() {
       { img: "assets/showroom/esmeralda-zoomout.jpg", objPos: "top", t: "Websites & Positioning", d: "Fast sites that rank and get recommended by AI." },
       { img: "assets/showroom/moneyshop-hero.jpg", objPos: "left", t: "Marketing & Ads", d: "Campaigns that bring qualified leads to your business." },
       { img: "assets/showroom/n8n-system.jpg", fit: "contain", bg: "#171922", t: "AI Automation & Bots", d: "Bots and systems that attend, capture and follow up on their own." },
-      { video: "assets/showroom/mycfo-laptop.mp4", poster: "assets/showroom/mycfo-laptop-poster.jpg", logo: true, t: "MyCFO", d: "Your AI CFO: manage your business finances by chat." }
+      { video: "assets/showroom/mycfo-chat.mp4", poster: "assets/showroom/mycfo-chat-poster.jpg", bg: SATORI.CREAM, t: "MyCFO", d: "Your AI CFO: manage your business finances by chat." }
     ]
   } : {
     eyebrow: "Qué hacemos",
@@ -448,7 +448,7 @@ function QueHacemos() {
       { img: "assets/showroom/esmeralda-zoomout.jpg", objPos: "top", t: "Páginas Web & Posicionamiento", d: "Sitios rápidos, que rankean y que la IA recomienda." },
       { img: "assets/showroom/moneyshop-hero.jpg", objPos: "left", t: "Marketing & Ads", d: "Campañas que traen prospectos calificados a tu negocio." },
       { img: "assets/showroom/n8n-system.jpg", fit: "contain", bg: "#171922", t: "Automatización & Bots con IA", d: "Bots y sistemas que atienden, captan y dan seguimiento solos." },
-      { video: "assets/showroom/mycfo-laptop.mp4", poster: "assets/showroom/mycfo-laptop-poster.jpg", logo: true, t: "MyCFO", d: "Tu CFO con IA: controla las finanzas de tu negocio por chat." }
+      { video: "assets/showroom/mycfo-chat.mp4", poster: "assets/showroom/mycfo-chat-poster.jpg", bg: SATORI.CREAM, t: "MyCFO", d: "Tu CFO con IA: controla las finanzas de tu negocio por chat." }
     ]
   };
   return (
