@@ -426,7 +426,7 @@ function QueHacemos() {
   const en = lang === "en";
   const T = en ? {
     eyebrow: "What we do",
-    title: "Five ways we ",
+    title: "Six ways we ",
     titleAccent: "make you grow",
     sub: "Strategy first, then execution. Everything points to one thing: clients arriving with clarity.",
     cta: "See all services",
@@ -435,11 +435,12 @@ function QueHacemos() {
       { video: "assets/showroom/web-esmeralda.mp4", poster: "assets/showroom/web-esmeralda-poster.jpg", fit: "cover", objPos: "top", t: "Websites & Positioning", d: "Fast sites that rank and get recommended by AI." },
       { video: "assets/showroom/marketing-moneyshop.mp4", poster: "assets/showroom/marketing-moneyshop-poster.jpg", fit: "cover", objPos: "left", t: "Marketing & Ads", d: "Campaigns that bring qualified leads to your business." },
       { video: "assets/showroom/automatizacion-flow.mp4", poster: "assets/showroom/automatizacion-flow-poster.jpg", fit: "cover", bg: "#0E0E0E", t: "AI Automation & Bots", d: "Bots and systems that attend, capture and follow up on their own." },
-      { video: "assets/showroom/mycfo-chat.mp4", poster: "assets/showroom/mycfo-chat-poster.jpg", bg: SATORI.CREAM, t: "MyCFO", d: "Your AI CFO: manage your business finances by chat." }
+      { video: "assets/showroom/mycfo-chat.mp4", poster: "assets/showroom/mycfo-chat-poster.jpg", bg: SATORI.CREAM, t: "MyCFO", d: "Your AI CFO: manage your business finances by chat." },
+      { video: "assets/showroom/satori-contenido-ia.mp4", poster: "assets/showroom/satori-contenido-ia-poster.jpg", fit: "cover", bg: SATORI.CREAM, t: "AI Content", d: "Cinematic brand video, reels and ads created end-to-end with AI." }
     ]
   } : {
     eyebrow: "Qué hacemos",
-    title: "Cinco formas de ",
+    title: "Seis formas de ",
     titleAccent: "hacerte crecer",
     sub: "Primero estrategia, luego ejecución. Todo apunta a lo mismo: clientes llegando con claridad.",
     cta: "Ver todos los servicios",
@@ -448,7 +449,8 @@ function QueHacemos() {
       { video: "assets/showroom/web-esmeralda.mp4", poster: "assets/showroom/web-esmeralda-poster.jpg", fit: "cover", objPos: "top", t: "Páginas Web & Posicionamiento", d: "Sitios rápidos, que rankean y que la IA recomienda." },
       { video: "assets/showroom/marketing-moneyshop.mp4", poster: "assets/showroom/marketing-moneyshop-poster.jpg", fit: "cover", objPos: "left", t: "Marketing & Ads", d: "Campañas que traen prospectos calificados a tu negocio." },
       { video: "assets/showroom/automatizacion-flow.mp4", poster: "assets/showroom/automatizacion-flow-poster.jpg", fit: "cover", bg: "#0E0E0E", t: "Automatización & Bots con IA", d: "Bots y sistemas que atienden, captan y dan seguimiento solos." },
-      { video: "assets/showroom/mycfo-chat.mp4", poster: "assets/showroom/mycfo-chat-poster.jpg", bg: SATORI.CREAM, t: "MyCFO", d: "Tu CFO con IA: controla las finanzas de tu negocio por chat." }
+      { video: "assets/showroom/mycfo-chat.mp4", poster: "assets/showroom/mycfo-chat-poster.jpg", bg: SATORI.CREAM, t: "MyCFO", d: "Tu CFO con IA: controla las finanzas de tu negocio por chat." },
+      { video: "assets/showroom/satori-contenido-ia.mp4", poster: "assets/showroom/satori-contenido-ia-poster.jpg", fit: "cover", bg: SATORI.CREAM, t: "Contenido con IA", d: "Video de marca, reels y ads cinematográficos hechos con IA de punta a punta." }
     ]
   };
   return (

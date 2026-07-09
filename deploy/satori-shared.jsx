@@ -1208,7 +1208,7 @@ function CtaBlock({ titulo = "Hablemos.", sub = "30 minutos. Salimos con clarida
     email: "Email",
     telefono: "Phone (optional)",
     presupuesto_ph: "Approx. budget (optional)",
-    budgets: ["Up to $20,000 MXN/mo", "$20,000 – $50,000 MXN/mo", "$50,000 – $120,000 MXN/mo", "Over $120,000 MXN/mo", "Not sure yet"],
+    budgets: ["$10,000 MXN/mo", "$15,000 MXN/mo", "$20,000 MXN/mo", "$35,000 MXN/mo", "+$50,000 MXN/mo"],
     mensaje: "Briefly tell us about your business",
     submit: "Send message",
     sending: "Sending…",
@@ -1227,7 +1227,7 @@ function CtaBlock({ titulo = "Hablemos.", sub = "30 minutos. Salimos con clarida
     email: "Email",
     telefono: "Teléfono (opcional)",
     presupuesto_ph: "Presupuesto aproximado (opcional)",
-    budgets: ["Hasta $20,000 MXN/mes", "$20,000 – $50,000 MXN/mes", "$50,000 – $120,000 MXN/mes", "Más de $120,000 MXN/mes", "Aún no lo sé"],
+    budgets: ["$10,000 MXN/mes", "$15,000 MXN/mes", "$20,000 MXN/mes", "$35,000 MXN/mes", "+$50,000 MXN/mes"],
     mensaje: "Cuéntanos brevemente sobre tu negocio",
     submit: "Enviar mensaje",
     sending: "Enviando…",
@@ -2487,7 +2487,6 @@ function ShowcaseVideo({ src, poster, label, style, delay = 1000 }) {
 // se ilumina y los demás quedan atenuados. Reusa las clases timeline-* (responsive).
 function GrowthPathTimeline({ items }) {
   const rootRef = React.useRef(null);
-  const [progress, setProgress] = useState(0);
   const [hoverIdx, setHoverIdx] = useState(-1);
   const [activeIdx, setActiveIdx] = useState(0);
   const rowRefs = React.useRef([]);
@@ -2496,13 +2495,7 @@ function GrowthPathTimeline({ items }) {
     const onScroll = () => {
       const el = rootRef.current;
       if (!el) return;
-      const rect = el.getBoundingClientRect();
       const viewportH = window.innerHeight;
-      const start = viewportH * 0.7;
-      const end = -rect.height + viewportH * 0.3;
-      const total = start - end;
-      const passed = start - rect.top;
-      setProgress(Math.max(0, Math.min(1, passed / total)));
       const focusY = viewportH * 0.45;
       let bestIdx = 0, bestDist = Infinity;
       rowRefs.current.forEach((row, i) => {
@@ -2525,8 +2518,6 @@ function GrowthPathTimeline({ items }) {
 
   return (
     <div ref={rootRef} className="growth-timeline" style={{ position: "relative", maxWidth: "760px", margin: "0 auto" }}>
-      <div className="timeline-spine" style={{ position: "absolute", left: "110px", top: 0, bottom: 0, width: "1px", background: `${SATORI.INK}15` }} />
-      <div className="timeline-spine" aria-hidden="true" style={{ position: "absolute", left: "109px", top: 0, height: `${progress * 100}%`, width: "3px", background: `linear-gradient(180deg, ${SATORI.GOLD} 0%, #C9920A 100%)`, boxShadow: `0 0 14px ${SATORI.GOLD}88`, transition: "height .15s linear", borderRadius: "2px" }} />
       {items.map((it, i) => {
         const isHover = hoverIdx === i;
         const isActive = activeIdx === i;

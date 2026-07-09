@@ -728,11 +728,11 @@ function ContactForm() {
     contact_form_note: "Prefer a form? Scroll down for the full message form below.",
     contact_form_cta: "Open form",
     budgets: [
-      "Less than $20,000 MXN/month",
-      "$20,000 – $50,000 MXN/month",
-      "$50,000 – $120,000 MXN/month",
-      "More than $120,000 MXN/month",
-      "Not sure yet"
+      "$10,000 MXN/mo",
+      "$15,000 MXN/mo",
+      "$20,000 MXN/mo",
+      "$35,000 MXN/mo",
+      "+$50,000 MXN/mo"
     ]
   } : {
     eyebrow: "Platiquemos",
@@ -760,11 +760,11 @@ function ContactForm() {
     contact_form_note: "¿Prefieres el formulario? Baja para el mensaje completo.",
     contact_form_cta: "Ir al formulario",
     budgets: [
-      "Hasta $20,000 MXN/mes",
-      "$20,000 – $50,000 MXN/mes",
-      "$50,000 – $120,000 MXN/mes",
-      "Más de $120,000 MXN/mes",
-      "Aún no lo sé"
+      "$10,000 MXN/mes",
+      "$15,000 MXN/mes",
+      "$20,000 MXN/mes",
+      "$35,000 MXN/mes",
+      "+$50,000 MXN/mes"
     ]
   };
 

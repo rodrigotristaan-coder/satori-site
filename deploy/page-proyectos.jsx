@@ -14,6 +14,16 @@ const PROYECTOS_ES = [
     poster: "assets/showroom/mycfo-chat-poster.jpg"
   },
   {
+    titulo: "Contenido con IA",
+    cat: "Soluciones IA",
+    producto: true,
+    year: "2026",
+    descripcion: "Video de marca generado con IA de punta a punta: imagen, video, voz y música. Estética cinematográfica y narrativa a la medida — como este film de Satori, «Tu operación despierta».",
+    tags: ["Video con IA", "Reels & Ads", "Branding", "Higgsfield"],
+    video: "assets/showroom/satori-contenido-ia.mp4",
+    poster: "assets/showroom/satori-contenido-ia-poster.jpg"
+  },
+  {
     titulo: "Invitación de boda — V&C",
     cat: "Web",
     year: "2025",
@@ -102,6 +112,16 @@ const PROYECTOS_EN = [
     tags: ["WhatsApp", "Auto-logging", "AI reports"],
     video: "assets/showroom/mycfo-chat.mp4",
     poster: "assets/showroom/mycfo-chat-poster.jpg"
+  },
+  {
+    titulo: "AI Content",
+    cat: "AI Solutions",
+    producto: true,
+    year: "2026",
+    descripcion: "Brand video generated end-to-end with AI: image, video, voice and music. Cinematic, custom storytelling — like this Satori film, “Your operation awakens.”",
+    tags: ["AI video", "Reels & Ads", "Branding", "Higgsfield"],
+    video: "assets/showroom/satori-contenido-ia.mp4",
+    poster: "assets/showroom/satori-contenido-ia-poster.jpg"
   },
   {
     titulo: "Wedding invitation — V&C",
