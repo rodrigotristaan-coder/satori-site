@@ -343,3 +343,10 @@ img, video, iframe {
    100vh en Safari es más alto que el área visible (barra) -> el logo cae bajo
    el centro; 100dvh = altura dinámica visible (fallback a 100vh). */
 .manifesto-section { min-height: 100vh; min-height: 100dvh; }
+
+/* Reseñas: carrusel swipe (oculta scrollbar) + mensaje del fundador apilado en móvil */
+.reviews-swipe { scrollbar-width: none; -ms-overflow-style: none; -webkit-overflow-scrolling: touch; }
+.reviews-swipe::-webkit-scrollbar { display: none; }
+@media (max-width: 560px) {
+  .founder-msg { flex-direction: column !important; }
+}

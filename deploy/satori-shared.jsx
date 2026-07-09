@@ -1984,59 +1984,195 @@ function HorizontalTimeline({ items, accent = SATORI.GOLD }) {
 const N8N_REVIEWS_LIST = "https://n8n.satorimkt.com/webhook/satori-reviews";
 const N8N_REVIEWS_NEW = "https://n8n.satorimkt.com/webhook/satori-reviews-new";
 
-// Redimensiona la foto elegida a un cuadrado pequeño -> data URL JPEG ligero.
-// IMPORTANTE: se carga vía FileReader -> data: URL (NO createObjectURL/blob:,
-// que la CSP img-src no permite y haría fallar la lectura -> foto vacía).
-function fileToAvatarDataUrl(file, size = 256) {
-  return new Promise((resolve, reject) => {
+// Selector de foto con AJUSTE (zoom + reposicionar) y recorte circular.
+// El usuario elige un archivo, luego arrastra la imagen dentro del círculo y usa
+// el control de zoom; el recorte final se renderiza a un canvas cuadrado (256px) ->
+// data: URL JPEG (NO blob:, que la CSP img-src bloquea). Emite el resultado por onChange.
+function AvatarPicker({ label, hint, remove, onChange }) {
+  const [src, setSrc] = useState("");        // imagen completa (data URL)
+  const [dims, setDims] = useState(null);    // { nw, nh } tamaño natural
+  const [zoom, setZoom] = useState(1);
+  const [pan, setPan] = useState({ x: 0, y: 0 });
+  const drag = useRef(null);
+  const D = 176;   // diámetro del recuadro de recorte (CSS px)
+  const S = 256;   // tamaño de salida (px)
+
+  // geometría: escala "cover" a zoom=1, luego * zoom; pan acotado para cubrir el círculo
+  const geom = () => {
+    if (!dims) return null;
+    const base = D / Math.min(dims.nw, dims.nh);
+    const scale = base * zoom;
+    const imgW = dims.nw * scale, imgH = dims.nh * scale;
+    const maxX = Math.max(0, (imgW - D) / 2), maxY = Math.max(0, (imgH - D) / 2);
+    const px = Math.max(-maxX, Math.min(maxX, pan.x));
+    const py = Math.max(-maxY, Math.min(maxY, pan.y));
+    return { scale, imgW, imgH, posX: (D - imgW) / 2 + px, posY: (D - imgH) / 2 + py };
+  };
+
+  const pickFile = (e) => {
+    const f = e.target.files && e.target.files[0];
+    if (!f) return;
     const reader = new FileReader();
     reader.onload = () => {
       const img = new Image();
-      img.onload = () => {
-        const s = Math.min(img.width, img.height);
-        const sx = (img.width - s) / 2, sy = (img.height - s) / 2;
-        const c = document.createElement("canvas");
-        c.width = c.height = size;
-        c.getContext("2d").drawImage(img, sx, sy, s, s, 0, 0, size, size);
-        resolve(c.toDataURL("image/jpeg", 0.82));
-      };
-      img.onerror = () => reject(new Error("img"));
+      img.onload = () => { setDims({ nw: img.naturalWidth, nh: img.naturalHeight }); setZoom(1); setPan({ x: 0, y: 0 }); setSrc(reader.result); };
+      img.onerror = () => { setSrc(""); setDims(null); };
       img.src = reader.result; // data: URL — permitido por la CSP
     };
-    reader.onerror = () => reject(new Error("read"));
-    reader.readAsDataURL(file);
-  });
+    reader.onerror = () => { setSrc(""); setDims(null); };
+    reader.readAsDataURL(f);
+  };
+
+  const clear = () => { setSrc(""); setDims(null); setZoom(1); setPan({ x: 0, y: 0 }); onChange(""); };
+
+  // recalcula el recorte cada vez que cambia foto / zoom / posición
+  useEffect(() => {
+    if (!src || !dims) return;
+    const g = geom();
+    const img = new Image();
+    img.onload = () => {
+      const c = document.createElement("canvas");
+      c.width = c.height = S;
+      const ctx = c.getContext("2d");
+      const sSize = D / g.scale;
+      ctx.drawImage(img, (0 - g.posX) / g.scale, (0 - g.posY) / g.scale, sSize, sSize, 0, 0, S, S);
+      onChange(c.toDataURL("image/jpeg", 0.85));
+    };
+    img.src = src;
+  }, [src, zoom, pan.x, pan.y, dims]);
+
+  const onDown = (e) => { drag.current = { x: e.clientX, y: e.clientY, px: pan.x, py: pan.y }; try { e.currentTarget.setPointerCapture(e.pointerId); } catch (_) {} };
+  const onMove = (e) => {
+    if (!drag.current || !dims) return;
+    const base = D / Math.min(dims.nw, dims.nh), scale = base * zoom;
+    const maxX = Math.max(0, (dims.nw * scale - D) / 2), maxY = Math.max(0, (dims.nh * scale - D) / 2);
+    const nx = drag.current.px + (e.clientX - drag.current.x), ny = drag.current.py + (e.clientY - drag.current.y);
+    setPan({ x: Math.max(-maxX, Math.min(maxX, nx)), y: Math.max(-maxY, Math.min(maxY, ny)) });
+  };
+  const onUp = () => { drag.current = null; };
+
+  const g = geom();
+  return (
+    <div>
+      <label htmlFor="rv-photo" style={{ ...eyebrowStyle, marginBottom: "0.5rem", display: "block", opacity: 0.6 }}>{label}</label>
+      {!src ? (
+        <input id="rv-photo" type="file" accept="image/*" onChange={pickFile}
+          style={{ fontFamily: TYPE.body, fontSize: "0.88rem", color: SATORI.INK, maxWidth: "100%", minWidth: 0 }} />
+      ) : (
+        <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "1.1rem", minWidth: 0 }}>
+          <div
+            onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp} onPointerCancel={onUp}
+            style={{
+              width: D, height: D, flex: "none", borderRadius: "50%", overflow: "hidden",
+              position: "relative", cursor: "grab", touchAction: "none",
+              border: "1px solid rgba(14,14,14,0.16)", background: "#f2f2f0",
+              boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.4)"
+            }}>
+            <img src={src} alt="" draggable="false" style={{
+              position: "absolute", left: g.posX, top: g.posY, width: g.imgW, height: g.imgH,
+              maxWidth: "none", userSelect: "none", pointerEvents: "none", display: "block"
+            }} />
+          </div>
+          <div style={{ flex: "1 1 160px", minWidth: 0 }}>
+            <p style={{ ...bodyStyle, fontSize: "0.8rem", margin: "0 0 0.5rem", opacity: 0.7 }}>{hint}</p>
+            <label style={{ ...eyebrowStyle, opacity: 0.6, display: "block", marginBottom: "0.3rem" }}>Zoom</label>
+            <input type="range" min="1" max="3" step="0.01" value={zoom}
+              onChange={(e) => setZoom(parseFloat(e.target.value))}
+              aria-label="Zoom"
+              style={{ width: "100%", accentColor: SATORI.GOLD, cursor: "pointer" }} />
+            <button type="button" onClick={clear} style={{
+              marginTop: "0.6rem", background: "none", border: "1px solid rgba(14,14,14,0.16)",
+              borderRadius: "999px", padding: "0.35rem 0.9rem", cursor: "pointer",
+              fontFamily: TYPE.body, fontSize: "0.82rem", color: SATORI.INK
+            }}>{remove}</button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
+
+// Resalta en dorado los fragmentos marcados con **...** dentro del texto.
+function goldRich(text) {
+  const parts = String(text || "").split(/\*\*([\s\S]+?)\*\*/g);
+  return parts.map((p, i) => i % 2 === 1
+    ? <strong key={i} style={{ color: SATORI.GOLD_DEEP, fontWeight: 600, fontStyle: "normal" }}>{p}</strong>
+    : <React.Fragment key={i}>{p}</React.Fragment>);
+}
+// Si no hay marcas manuales, resalta la ÚLTIMA frase (el remate suele ser lo más importante).
+function emphasizeLast(text) {
+  const t = String(text || "").trim();
+  if (!t || t.indexOf("**") !== -1) return t;
+  const m = t.match(/[^.!?]+[.!?]+["'”’)\s]*$/);
+  if (!m || m[0].trim().length >= t.length) return t; // una sola frase: no resaltar todo
+  return t.slice(0, t.length - m[0].length) + " **" + m[0].trim() + "**";
+}
+
+// Estilo glass reutilizable (translúcido + blur + borde dorado sutil) sobre fondo claro.
+const glassCard = {
+  background: "rgba(255,255,255,0.55)",
+  backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)",
+  border: "1px solid rgba(255,255,255,0.7)",
+  boxShadow: "0 14px 40px rgba(14,14,14,0.10)"
+};
 
 function ReviewCard({ rv, en }) {
   const rating = Math.max(1, Math.min(5, rv.rating || 5));
   const initial = (rv.name || "?").trim().slice(0, 1).toUpperCase();
-  const text = en && rv.text_en ? rv.text_en : rv.text;
+  const text = emphasizeLast(en && rv.text_en ? rv.text_en : rv.text);
   return (
     <figure style={{
-      background: SATORI.INK, border: "1px solid rgba(255,255,255,0.10)",
-      borderRadius: "18px", padding: "1.8rem", margin: 0,
-      display: "flex", flexDirection: "column", boxShadow: "0 12px 34px rgba(14,14,14,0.18)"
+      ...glassCard, borderRadius: "20px", padding: "1.5rem", margin: 0,
+      display: "flex", flexDirection: "column", width: "100%", height: "100%"
     }}>
-      <div aria-label={`${rating} de 5`} style={{ color: SATORI.GOLD, fontSize: "1.1rem", letterSpacing: "2px" }}>
-        {"★".repeat(rating)}<span style={{ color: "rgba(255,255,255,0.22)" }}>{"★".repeat(5 - rating)}</span>
+      <div aria-label={`${rating} de 5`} style={{ color: SATORI.GOLD, fontSize: "1rem", letterSpacing: "2px" }}>
+        {"★".repeat(rating)}<span style={{ color: "rgba(14,14,14,0.16)" }}>{"★".repeat(5 - rating)}</span>
       </div>
       <blockquote style={{
-        ...bodyStyle, color: SATORI.CREAM, opacity: 0.94, fontStyle: "italic", flex: 1,
-        margin: "0.85rem 0 1.25rem", fontSize: "1rem"
-      }}>“{text}”</blockquote>
-      <figcaption style={{ display: "flex", alignItems: "center", gap: "0.8rem", marginTop: "auto" }}>
+        ...bodyStyle, color: SATORI.INK, opacity: 0.92, flex: 1,
+        margin: "0.8rem 0 1.2rem", fontSize: "0.92rem", lineHeight: 1.6
+      }}>“{goldRich(text)}”</blockquote>
+      <figcaption style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginTop: "auto" }}>
         {rv.photo
-          ? <img src={rv.photo} alt={rv.name} width="48" height="48" loading="lazy"
-              style={{ width: 48, height: 48, borderRadius: "50%", objectFit: "cover", flex: "none" }} />
+          ? <img src={rv.photo} alt={rv.name} width="44" height="44" loading="lazy"
+              style={{ width: 44, height: 44, borderRadius: "50%", objectFit: "cover", flex: "none", border: "1px solid rgba(166,124,0,0.35)" }} />
           : <span aria-hidden="true" style={{
-              width: 48, height: 48, borderRadius: "50%", flex: "none",
-              background: SATORI.GOLD, color: SATORI.INK, display: "flex",
+              width: 44, height: 44, borderRadius: "50%", flex: "none",
+              background: SATORI.GOLD, color: SATORI.WHITE, display: "flex",
               alignItems: "center", justifyContent: "center", fontWeight: 600, fontFamily: TYPE.display
             }}>{initial}</span>}
-        <span style={{ fontWeight: 600, color: SATORI.WHITE, fontFamily: TYPE.body }}>{rv.name}</span>
+        <span style={{ fontWeight: 600, color: SATORI.GOLD_DEEP, fontFamily: TYPE.body }}>{rv.name}</span>
       </figcaption>
     </figure>
+  );
+}
+
+// Mensaje del fundador (no es una reseña con estrellas: es una nota/saludo).
+function FounderMessage({ rv, en, tag, role }) {
+  const initial = (rv.name || "?").trim().slice(0, 1).toUpperCase();
+  const text = en && rv.text_en ? rv.text_en : rv.text;
+  return (
+    <div className="founder-msg" style={{
+      ...glassCard, border: "1px solid rgba(166,124,0,0.22)", borderRadius: "22px",
+      padding: "1.7rem clamp(1.3rem,3vw,2rem)", maxWidth: "760px", margin: "0 auto 2.6rem",
+      display: "flex", gap: "1.2rem", alignItems: "flex-start"
+    }}>
+      {rv.photo
+        ? <img src={rv.photo} alt={rv.name} width="60" height="60" loading="lazy"
+            style={{ width: 60, height: 60, borderRadius: "50%", objectFit: "cover", flex: "none", border: "2px solid rgba(166,124,0,0.4)" }} />
+        : <span aria-hidden="true" style={{
+            width: 60, height: 60, borderRadius: "50%", flex: "none",
+            background: SATORI.GOLD, color: SATORI.WHITE, display: "flex",
+            alignItems: "center", justifyContent: "center", fontWeight: 600, fontFamily: TYPE.display, fontSize: "1.3rem"
+          }}>{initial}</span>}
+      <div style={{ minWidth: 0 }}>
+        <div style={{ ...eyebrowStyle, color: SATORI.GOLD_DEEP, marginBottom: "0.5rem" }}>{tag}</div>
+        <p style={{ ...bodyStyle, color: SATORI.INK, margin: 0, fontSize: "1rem", lineHeight: 1.65 }}>{goldRich(text)}</p>
+        <div style={{ marginTop: "0.9rem", fontWeight: 600, color: SATORI.INK, fontFamily: TYPE.body }}>
+          {rv.name} <span style={{ color: SATORI.GOLD_DEEP, fontWeight: 500 }}>· {role}</span>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -2072,6 +2208,8 @@ function ReviewsSection() {
     note: "Published after a quick review by the team.",
     name: "Your name", rating: "Rating", review: "Your review",
     photo: "Profile photo (optional)", submit: "Submit review", sending: "Sending…",
+    photoHint: "Drag the photo to reposition · use the slider to zoom.", remove: "Remove photo",
+    founderTag: "A note from the founder", founderRole: "Founder of Satori", swipe: "Swipe to see more",
     thanks: "Thank you! Your review will appear after a quick check.",
     err: "Couldn't send. Please try again.", needed: "Please add your name and review."
   } : {
@@ -2082,14 +2220,10 @@ function ReviewsSection() {
     note: "Se publica tras una breve revisión del equipo.",
     name: "Tu nombre", rating: "Calificación", review: "Tu reseña",
     photo: "Foto de perfil (opcional)", submit: "Enviar reseña", sending: "Enviando…",
+    photoHint: "Arrastra la foto para reposicionar · usa el control para acercar.", remove: "Quitar foto",
+    founderTag: "Mensaje del fundador", founderRole: "Fundador de Satori", swipe: "Desliza para ver más",
     thanks: "¡Gracias! Tu reseña aparecerá tras una breve revisión.",
     err: "No se pudo enviar. Intenta de nuevo.", needed: "Completa tu nombre y reseña."
-  };
-
-  const onPhoto = async (e) => {
-    const f = e.target.files && e.target.files[0];
-    if (!f) { setPhotoData(""); return; }
-    try { setPhotoData(await fileToAvatarDataUrl(f)); } catch (err) { setPhotoData(""); }
   };
 
   const submit = async (e) => {
@@ -2107,6 +2241,10 @@ function ReviewsSection() {
     } catch (err) { setStatus(T.err); }
     finally { setSending(false); }
   };
+
+  // Separar el mensaje del fundador (Rodrigo) de las reseñas reales de clientes.
+  const founder = reviews.find((r) => /rodrigo/i.test(r.name || ""));
+  const testimonials = reviews.filter((r) => r !== founder);
 
   const inputStyle = {
     width: "100%", padding: "0.85rem 1rem", background: SATORI.WHITE,
@@ -2127,16 +2265,30 @@ function ReviewsSection() {
           <p style={{ ...bodyStyle, maxWidth: "560px", margin: "1rem auto 0" }}>{T.sub}</p>
         </div>
 
-        {reviews.length > 0 ? (
-          <div style={{
-            display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(290px, 1fr))",
-            gap: "1.4rem"
-          }}>
-            {reviews.map((rv, i) => <ReviewCard key={i} rv={rv} en={en} />)}
+        {/* Rodrigo (fundador) sale como MENSAJE, no como reseña con estrellas. */}
+        {founder && <FounderMessage rv={founder} en={en} tag={T.founderTag} role={T.founderRole} />}
+
+        {testimonials.length === 1 ? (
+          <div style={{ maxWidth: "480px", margin: "0 auto" }}>
+            <ReviewCard rv={testimonials[0]} en={en} />
           </div>
-        ) : (
+        ) : testimonials.length > 1 ? (
+          <>
+            <div className="reviews-swipe" style={{
+              display: "flex", gap: "1.3rem", overflowX: "auto",
+              scrollSnapType: "x mandatory", padding: "0.4rem 0.2rem 1.2rem", margin: "0 -0.2rem"
+            }}>
+              {testimonials.map((rv, i) => (
+                <div key={i} style={{ flex: "0 0 min(86%, 360px)", scrollSnapAlign: "center", display: "flex" }}>
+                  <ReviewCard rv={rv} en={en} />
+                </div>
+              ))}
+            </div>
+            <p style={{ ...eyebrowStyle, justifyContent: "center", opacity: 0.5, marginTop: "0.4rem" }}>‹ {T.swipe} ›</p>
+          </>
+        ) : (!founder && (
           <p style={{ ...bodyStyle, textAlign: "center", opacity: 0.6 }}>{T.empty}</p>
-        )}
+        ))}
 
         {/* CTA / formulario */}
         <div style={{ textAlign: "center", marginTop: "2.5rem" }}>
@@ -2162,7 +2314,7 @@ function ReviewsSection() {
           }}>
             <h3 style={{ fontFamily: TYPE.display, fontSize: "1.3rem", fontWeight: 500, color: SATORI.INK, margin: "0 0 0.25rem" }}>{T.formTitle}</h3>
             <p style={{ ...bodyStyle, fontSize: "0.9rem", margin: "0 0 1.4rem" }}>{T.note}</p>
-            <form onSubmit={submit} style={{ display: "grid", gap: "1.1rem" }}>
+            <form onSubmit={submit} style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr)", gap: "1.1rem" }}>
               <div>
                 <label htmlFor="rv-name" style={fieldLabel}>{T.name}</label>
                 <input id="rv-name" type="text" maxLength={60} value={name}
@@ -2187,17 +2339,7 @@ function ReviewsSection() {
                 <textarea id="rv-text" rows={4} maxLength={800} value={text}
                   onChange={(e) => setText(e.target.value)} style={{ ...inputStyle, resize: "vertical" }} required />
               </div>
-              <div>
-                <label htmlFor="rv-photo" style={fieldLabel}>{T.photo}</label>
-                <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-                  <input id="rv-photo" type="file" accept="image/*" onChange={onPhoto}
-                    style={{ fontFamily: TYPE.body, fontSize: "0.88rem", color: SATORI.INK }} />
-                  {photoData && (
-                    <img src={photoData} alt="preview" width="46" height="46"
-                      style={{ width: 46, height: 46, borderRadius: "50%", objectFit: "cover", flex: "none" }} />
-                  )}
-                </div>
-              </div>
+              <AvatarPicker label={T.photo} hint={T.photoHint} remove={T.remove} onChange={setPhotoData} />
               {/* honeypot oculto */}
               <input type="text" tabIndex={-1} autoComplete="off" aria-hidden="true" value={company}
                 onChange={(e) => setCompany(e.target.value)}

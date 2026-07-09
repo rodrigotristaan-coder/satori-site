@@ -431,10 +431,10 @@ function QueHacemos() {
     sub: "Strategy first, then execution. Everything points to one thing: clients arriving with clarity.",
     cta: "See all services",
     items: [
-      { img: "assets/showroom/branding-vc.jpg", t: "Brand & Design", d: "Identity that sets you apart and builds trust." },
-      { img: "assets/showroom/esmeralda-zoomout.jpg", objPos: "top", t: "Websites & Positioning", d: "Fast sites that rank and get recommended by AI." },
-      { img: "assets/showroom/moneyshop-hero.jpg", objPos: "left", t: "Marketing & Ads", d: "Campaigns that bring qualified leads to your business." },
-      { img: "assets/showroom/n8n-system.jpg", fit: "contain", bg: "#171922", t: "AI Automation & Bots", d: "Bots and systems that attend, capture and follow up on their own." },
+      { video: "assets/showroom/marca-branding.mp4", poster: "assets/showroom/marca-branding-poster.jpg", fit: "cover", t: "Brand & Design", d: "Identity that sets you apart and builds trust." },
+      { video: "assets/showroom/web-esmeralda.mp4", poster: "assets/showroom/web-esmeralda-poster.jpg", fit: "cover", objPos: "top", t: "Websites & Positioning", d: "Fast sites that rank and get recommended by AI." },
+      { video: "assets/showroom/marketing-moneyshop.mp4", poster: "assets/showroom/marketing-moneyshop-poster.jpg", fit: "cover", objPos: "left", t: "Marketing & Ads", d: "Campaigns that bring qualified leads to your business." },
+      { video: "assets/showroom/automatizacion-flow.mp4", poster: "assets/showroom/automatizacion-flow-poster.jpg", fit: "cover", bg: "#0E0E0E", t: "AI Automation & Bots", d: "Bots and systems that attend, capture and follow up on their own." },
       { video: "assets/showroom/mycfo-chat.mp4", poster: "assets/showroom/mycfo-chat-poster.jpg", bg: SATORI.CREAM, t: "MyCFO", d: "Your AI CFO: manage your business finances by chat." }
     ]
   } : {
@@ -444,10 +444,10 @@ function QueHacemos() {
     sub: "Primero estrategia, luego ejecución. Todo apunta a lo mismo: clientes llegando con claridad.",
     cta: "Ver todos los servicios",
     items: [
-      { img: "assets/showroom/branding-vc.jpg", t: "Marca & Diseño", d: "Identidad que te distingue y genera confianza." },
-      { img: "assets/showroom/esmeralda-zoomout.jpg", objPos: "top", t: "Páginas Web & Posicionamiento", d: "Sitios rápidos, que rankean y que la IA recomienda." },
-      { img: "assets/showroom/moneyshop-hero.jpg", objPos: "left", t: "Marketing & Ads", d: "Campañas que traen prospectos calificados a tu negocio." },
-      { img: "assets/showroom/n8n-system.jpg", fit: "contain", bg: "#171922", t: "Automatización & Bots con IA", d: "Bots y sistemas que atienden, captan y dan seguimiento solos." },
+      { video: "assets/showroom/marca-branding.mp4", poster: "assets/showroom/marca-branding-poster.jpg", fit: "cover", t: "Marca & Diseño", d: "Identidad que te distingue y genera confianza." },
+      { video: "assets/showroom/web-esmeralda.mp4", poster: "assets/showroom/web-esmeralda-poster.jpg", fit: "cover", objPos: "top", t: "Páginas Web & Posicionamiento", d: "Sitios rápidos, que rankean y que la IA recomienda." },
+      { video: "assets/showroom/marketing-moneyshop.mp4", poster: "assets/showroom/marketing-moneyshop-poster.jpg", fit: "cover", objPos: "left", t: "Marketing & Ads", d: "Campañas que traen prospectos calificados a tu negocio." },
+      { video: "assets/showroom/automatizacion-flow.mp4", poster: "assets/showroom/automatizacion-flow-poster.jpg", fit: "cover", bg: "#0E0E0E", t: "Automatización & Bots con IA", d: "Bots y sistemas que atienden, captan y dan seguimiento solos." },
       { video: "assets/showroom/mycfo-chat.mp4", poster: "assets/showroom/mycfo-chat-poster.jpg", bg: SATORI.CREAM, t: "MyCFO", d: "Tu CFO con IA: controla las finanzas de tu negocio por chat." }
     ]
   };
@@ -476,7 +476,7 @@ function QueHacemos() {
               }}>
                 {it.video ? (
                   <video src={it.video} poster={it.poster} autoPlay muted loop playsInline preload="metadata"
-                    style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }} />
+                    style={{ width: "100%", height: "100%", objectFit: it.fit || "contain", objectPosition: it.objPos || "center", display: "block" }} />
                 ) : (
                   <img src={it.img} alt={it.logo ? it.t : ""} loading="lazy"
                     style={{ width: "100%", height: "100%", objectFit: it.fit || (it.logo ? "contain" : "cover"), objectPosition: it.objPos || "center", padding: it.logo ? "0.85rem" : 0, display: "block" }} />
