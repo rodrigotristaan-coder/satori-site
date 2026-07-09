@@ -78,6 +78,21 @@ const SERVICIOS_EN = [
       "Already used by real clients"
     ],
     img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=720&q=75&auto=format&fit=crop"
+  },
+  {
+    num: "06",
+    tag: "AI Content",
+    titulo: "AI Content",
+    subtitulo: "Video · Reels · Ads · Image",
+    descripcion: "Brand content generated end-to-end with AI: cinematic video, reels and ads with custom storytelling — image, motion, voice and music.",
+    benefits: [
+      "Cinematic brand videos and ads",
+      "Vertical reels for social",
+      "Images and creatives for campaigns",
+      "AI voice and music",
+      "Fast production, on your identity"
+    ],
+    img: "assets/showroom/satori-contenido-ia-poster.jpg"
   }
 ];
 
@@ -201,6 +216,21 @@ const SERVICIOS = [
       "Ya en uso por clientes reales"
     ],
     img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=720&q=75&auto=format&fit=crop"
+  },
+  {
+    num: "06",
+    tag: "Contenido IA",
+    titulo: "Contenido con IA",
+    subtitulo: "Video · Reels · Ads · Imagen",
+    descripcion: "Contenido de marca generado con IA de punta a punta: video cinematográfico, reels y anuncios con narrativa a la medida — imagen, movimiento, voz y música.",
+    benefits: [
+      "Video de marca y anuncios cinematográficos",
+      "Reels verticales para redes",
+      "Imágenes y creatividades para campañas",
+      "Voz y música con IA",
+      "Producción rápida, a tu identidad"
+    ],
+    img: "assets/showroom/satori-contenido-ia-poster.jpg"
   }
 ];
 
@@ -253,12 +283,12 @@ const PAQUETES = [
 function ServiciosHero() {
   const [lang] = useLang();
   const c = lang === "en" ? {
-    eyebrow: "Three solutions. One partner.",
+    eyebrow: "Six solutions. One partner.",
     title: "Services.",
     accent: "With discernment.",
     sub: "Each service is designed for entrepreneurs who grow with strategy. Start with what you need today and we scale when it makes sense."
   } : {
-    eyebrow: "Tres soluciones. Un socio.",
+    eyebrow: "Seis soluciones. Un socio.",
     title: "Servicios.",
     accent: "Con criterio.",
     sub: "Cada servicio está diseñado para empresarios que crecen con estrategia. Empieza por lo que necesitas hoy y escalamos cuando tenga sentido."

@@ -19,7 +19,7 @@ const PROYECTOS_ES = [
     producto: true,
     year: "2026",
     descripcion: "Video de marca generado con IA de punta a punta: imagen, video, voz y música. Estética cinematográfica y narrativa a la medida — como este film de Satori, «Tu operación despierta».",
-    tags: ["Video con IA", "Reels & Ads", "Branding", "Higgsfield"],
+    tags: ["Video con IA", "Reels & Ads", "Branding"],
     video: "assets/showroom/satori-contenido-ia.mp4",
     poster: "assets/showroom/satori-contenido-ia-poster.jpg"
   },
@@ -119,7 +119,7 @@ const PROYECTOS_EN = [
     producto: true,
     year: "2026",
     descripcion: "Brand video generated end-to-end with AI: image, video, voice and music. Cinematic, custom storytelling — like this Satori film, “Your operation awakens.”",
-    tags: ["AI video", "Reels & Ads", "Branding", "Higgsfield"],
+    tags: ["AI video", "Reels & Ads", "Branding"],
     video: "assets/showroom/satori-contenido-ia.mp4",
     poster: "assets/showroom/satori-contenido-ia-poster.jpg"
   },
