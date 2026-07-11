@@ -403,7 +403,7 @@ function FounderBrief() {
     statement: (<>Creo en poner la <span style={{ color: SATORI.GOLD }}>tecnología al servicio de lo humano</span>, no al revés. Por eso fundé Satori: convierto estrategia, páginas web, automatizaciones y aplicación de IA en <span style={{ color: SATORI.GOLD }}>información clara y crecimiento para tu negocio</span>.</>)
   };
   return (
-    <section data-reveal style={{ padding: "5rem clamp(1.25rem,4vw,2.5rem)", background: SATORI.CREAM, position: "relative", zIndex: 1 }}>
+    <section data-reveal style={{ padding: "5rem clamp(1.25rem,4vw,2.5rem)", background: "rgba(244,244,242,0.85)", position: "relative", zIndex: 1 }}>
       <div className="founder-brief" style={{ maxWidth: "900px", margin: "0 auto", display: "flex", alignItems: "center", gap: "2.6rem" }}>
         <img src="assets/rodrigo.webp" alt="Rodrigo Tristán" loading="lazy"
           style={{ flex: "0 0 150px", width: "150px", height: "150px", objectFit: "cover", borderRadius: "20px", boxShadow: "0 16px 40px rgba(14,14,14,0.16)" }} />
@@ -458,7 +458,7 @@ function QueHacemos() {
   };
   return (
     <section id="que-hacemos" data-reveal style={{
-      padding: "7rem clamp(1.25rem,4vw,2.5rem)", background: SATORI.CREAM,
+      padding: "7rem clamp(1.25rem,4vw,2.5rem)", background: "rgba(244,244,242,0.85)",
       position: "relative", zIndex: 1
     }}>
       <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
@@ -587,7 +587,7 @@ function SneakPeeks() {
   return (
     <section
       style={{
-        background: `linear-gradient(180deg, ${SATORI.CREAM_2} 0%, ${SATORI.CREAM} 100%)`,
+        background: "linear-gradient(180deg, rgba(239,239,236,0.85) 0%, rgba(244,244,242,0.85) 100%)",
         padding: "7rem clamp(1.25rem,4vw,2.5rem)",
         borderTop: `1px solid ${SATORI.INK}08`,
         position: "relative",
@@ -1188,7 +1188,7 @@ function RutaCrecimiento() {
         padding: "6rem clamp(1.25rem,4vw,2.5rem) 7rem",
         position: "relative",
         zIndex: 1,
-        background: SATORI.CREAM,
+        background: "rgba(244,244,242,0.85)",
         borderTop: `1px solid ${SATORI.INK}08`
       }}
     >

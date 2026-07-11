@@ -2334,7 +2334,7 @@ function ReviewsSection() {
 
   return (
     <section id="resenas" data-reveal style={{
-      padding: "7rem clamp(1.25rem,4vw,2.5rem)", background: SATORI.CREAM_2,
+      padding: "7rem clamp(1.25rem,4vw,2.5rem)", background: "rgba(239,239,236,0.85)",
       position: "relative", zIndex: 1
     }}>
       <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
