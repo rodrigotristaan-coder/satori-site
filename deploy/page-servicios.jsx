@@ -62,7 +62,7 @@ const SERVICIOS_EN = [
       "Automatic summaries & reports",
       "Custom integrations"
     ],
-    img: "https://images.unsplash.com/photo-1611605698335-8b1569810432?w=720&q=75&auto=format&fit=crop"
+    img: "assets/showroom/n8n-system.jpg"
   },
   {
     num: "05",
@@ -77,7 +77,7 @@ const SERVICIOS_EN = [
       "Daily status",
       "Already used by real clients"
     ],
-    img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=720&q=75&auto=format&fit=crop"
+    img: "assets/showroom/mycfo-laptop-poster.jpg"
   },
   {
     num: "06",
@@ -215,7 +215,7 @@ const SERVICIOS = [
       "Resúmenes y reportes automáticos",
       "Integraciones a tu medida"
     ],
-    img: "https://images.unsplash.com/photo-1611605698335-8b1569810432?w=720&q=75&auto=format&fit=crop"
+    img: "assets/showroom/n8n-system.jpg"
   },
   {
     num: "05",
@@ -230,7 +230,7 @@ const SERVICIOS = [
       "Estatus diario",
       "Ya en uso por clientes reales"
     ],
-    img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=720&q=75&auto=format&fit=crop"
+    img: "assets/showroom/mycfo-laptop-poster.jpg"
   },
   {
     num: "06",

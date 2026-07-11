@@ -436,9 +436,9 @@ function QueHacemos() {
       { video: "assets/showroom/web-esmeralda.mp4", poster: "assets/showroom/web-esmeralda-poster.jpg", fit: "cover", objPos: "top", t: "Websites & Positioning", d: "Fast sites that rank and get recommended by AI." },
       { video: "assets/showroom/marketing-moneyshop.mp4", poster: "assets/showroom/marketing-moneyshop-poster.jpg", fit: "cover", objPos: "left", t: "Marketing & Ads", d: "Campaigns that bring qualified leads to your business." },
       { video: "assets/showroom/automatizacion-flow.mp4", poster: "assets/showroom/automatizacion-flow-poster.jpg", fit: "cover", bg: "#0E0E0E", t: "AI Automation & Bots", d: "Bots and systems that attend, capture and follow up on their own." },
-      { video: "assets/showroom/mycfo-chat.mp4", poster: "assets/showroom/mycfo-chat-poster.jpg", bg: SATORI.CREAM, t: "MyCFO", d: "Your AI CFO: manage your business finances by chat." },
       { video: "assets/showroom/satori-contenido-ia.mp4", poster: "assets/showroom/satori-contenido-ia-poster.jpg", fit: "cover", bg: SATORI.CREAM, t: "AI Content", d: "Cinematic brand video, reels and ads created end-to-end with AI." },
-      { video: "assets/showroom/estudios-mercado.mp4", poster: "assets/showroom/estudios-mercado-poster.jpg", fit: "cover", bg: "#0E0E0E", t: "Market Research", d: "Real data on your market, competitors and pricing to decide with clarity." }
+      { video: "assets/showroom/estudios-mercado.mp4", poster: "assets/showroom/estudios-mercado-poster.jpg", fit: "cover", bg: "#0E0E0E", t: "Market Research", d: "Real data on your market, competitors and pricing to decide with clarity." },
+      { video: "assets/showroom/mycfo-chat.mp4", poster: "assets/showroom/mycfo-chat-poster.jpg", bg: SATORI.CREAM, t: "MyCFO", d: "Your AI CFO: manage your business finances by chat, with clear reports and a daily status.", featured: true, badge: "Satori product" }
     ]
   } : {
     eyebrow: "Qué hacemos",
@@ -451,9 +451,9 @@ function QueHacemos() {
       { video: "assets/showroom/web-esmeralda.mp4", poster: "assets/showroom/web-esmeralda-poster.jpg", fit: "cover", objPos: "top", t: "Páginas Web & Posicionamiento", d: "Sitios rápidos, que rankean y que la IA recomienda." },
       { video: "assets/showroom/marketing-moneyshop.mp4", poster: "assets/showroom/marketing-moneyshop-poster.jpg", fit: "cover", objPos: "left", t: "Marketing & Ads", d: "Campañas que traen prospectos calificados a tu negocio." },
       { video: "assets/showroom/automatizacion-flow.mp4", poster: "assets/showroom/automatizacion-flow-poster.jpg", fit: "cover", bg: "#0E0E0E", t: "Automatización & Bots con IA", d: "Bots y sistemas que atienden, captan y dan seguimiento solos." },
-      { video: "assets/showroom/mycfo-chat.mp4", poster: "assets/showroom/mycfo-chat-poster.jpg", bg: SATORI.CREAM, t: "MyCFO", d: "Tu CFO con IA: controla las finanzas de tu negocio por chat." },
       { video: "assets/showroom/satori-contenido-ia.mp4", poster: "assets/showroom/satori-contenido-ia-poster.jpg", fit: "cover", bg: SATORI.CREAM, t: "Contenido con IA", d: "Video de marca, reels y ads cinematográficos hechos con IA de punta a punta." },
-      { video: "assets/showroom/estudios-mercado.mp4", poster: "assets/showroom/estudios-mercado-poster.jpg", fit: "cover", bg: "#0E0E0E", t: "Estudios de Mercado", d: "Datos reales de tu mercado, competencia y precios para decidir con claridad." }
+      { video: "assets/showroom/estudios-mercado.mp4", poster: "assets/showroom/estudios-mercado-poster.jpg", fit: "cover", bg: "#0E0E0E", t: "Estudios de Mercado", d: "Datos reales de tu mercado, competencia y precios para decidir con claridad." },
+      { video: "assets/showroom/mycfo-chat.mp4", poster: "assets/showroom/mycfo-chat-poster.jpg", bg: SATORI.CREAM, t: "MyCFO", d: "Tu CFO con IA: controla las finanzas de tu negocio por chat, con reportes claros y estatus diario.", featured: true, badge: "Producto Satori" }
     ]
   };
   return (
@@ -469,15 +469,20 @@ function QueHacemos() {
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "1.2rem" }}>
           {T.items.map((it, i) => (
-            <div key={i} style={{
-              background: "rgba(255,255,255,0.55)", border: "1px solid rgba(255,255,255,0.65)",
+            <div key={i} className={it.featured ? "pillar-featured" : undefined} style={{
+              background: "rgba(255,255,255,0.55)",
+              border: it.featured ? `1px solid ${SATORI.GOLD}55` : "1px solid rgba(255,255,255,0.65)",
               backdropFilter: "blur(14px) saturate(160%)", WebkitBackdropFilter: "blur(14px) saturate(160%)",
               borderRadius: "18px", overflow: "hidden",
-              boxShadow: "0 14px 40px -22px rgba(14,14,14,0.18), inset 0 1px 0 rgba(255,255,255,0.55)",
-              display: "flex", alignItems: "stretch"
+              boxShadow: it.featured
+                ? "0 20px 55px -22px rgba(14,14,14,0.22), 0 0 0 1px rgba(166,124,0,0.10), inset 0 1px 0 rgba(255,255,255,0.55)"
+                : "0 14px 40px -22px rgba(14,14,14,0.18), inset 0 1px 0 rgba(255,255,255,0.55)",
+              display: "flex", alignItems: "stretch",
+              ...(it.featured ? { gridColumn: "1 / -1" } : {})
             }}>
               <div style={{
-                flex: "0 0 33.333%", minWidth: "96px",
+                flex: it.featured ? "0 0 42%" : "0 0 33.333%", minWidth: "96px",
+                minHeight: it.featured ? "260px" : undefined,
                 background: it.bg || (it.logo ? SATORI.CREAM : `${SATORI.INK}07`),
                 display: "flex", alignItems: "center", justifyContent: "center"
               }}>
@@ -489,10 +494,19 @@ function QueHacemos() {
                     style={{ width: "100%", height: "100%", objectFit: it.fit || (it.logo ? "contain" : "cover"), objectPosition: it.objPos || "center", padding: it.logo ? "0.85rem" : 0, display: "block" }} />
                 )}
               </div>
-              <div style={{ flex: 1, minWidth: 0, padding: "1.5rem 1.6rem" }}>
-                <div style={{ fontFamily: TYPE.mono, fontSize: "0.78rem", letterSpacing: "0.1em", color: SATORI.GOLD, opacity: 0.85, marginBottom: "0.5rem" }}>{String(i + 1).padStart(2, "0")}</div>
-                <h3 style={{ fontFamily: TYPE.display, fontSize: "1.2rem", fontWeight: 500, color: SATORI.INK, margin: "0 0 0.5rem" }}>{it.t}</h3>
-                <p style={{ ...bodyStyle, fontSize: "0.96rem", margin: 0 }}>{it.d}</p>
+              <div style={{ flex: 1, minWidth: 0, padding: it.featured ? "2.2rem 2.4rem" : "1.5rem 1.6rem", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.7rem", marginBottom: "0.5rem" }}>
+                  <span style={{ fontFamily: TYPE.mono, fontSize: "0.78rem", letterSpacing: "0.1em", color: SATORI.GOLD, opacity: 0.85 }}>{String(i + 1).padStart(2, "0")}</span>
+                  {it.badge && (
+                    <span style={{
+                      fontFamily: TYPE.mono, fontSize: "0.58rem", letterSpacing: "0.22em", textTransform: "uppercase",
+                      color: SATORI.GOLD_DEEP, background: "rgba(166,124,0,0.08)", border: `1px solid ${SATORI.GOLD}44`,
+                      borderRadius: "999px", padding: "0.28rem 0.7rem"
+                    }}>{it.badge}</span>
+                  )}
+                </div>
+                <h3 style={{ fontFamily: TYPE.display, fontSize: it.featured ? "1.55rem" : "1.2rem", fontWeight: 500, color: SATORI.INK, margin: "0 0 0.5rem" }}>{it.t}</h3>
+                <p style={{ ...bodyStyle, fontSize: it.featured ? "1.02rem" : "0.96rem", margin: 0, maxWidth: it.featured ? "48ch" : undefined }}>{it.d}</p>
               </div>
             </div>
           ))}
