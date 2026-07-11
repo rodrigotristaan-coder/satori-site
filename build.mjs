@@ -36,7 +36,6 @@ const PAGES = [
 const STATIC_HTML = [
   { html: 'privacidad.html', path: '/privacidad' },
   { html: 'gracias.html', path: '/gracias', noindex: true }, // thank-you (conversión); fuera del sitemap
-  { html: 'experimento.html', path: '/experimento', noindex: true }, // experimento de diseño "Satori Tech"; fuera del sitemap
 ];
 
 const hash8 = (s) => createHash('sha256').update(s).digest('hex').slice(0, 8);

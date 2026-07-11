@@ -878,7 +878,7 @@ function App() {
 
   return (
     <main style={{ position: "relative", minHeight: "100vh", background: SATORI.CREAM }}>
-      <MatrixBackground opacity={0.035} color={SATORI.GOLD} />
+      <NeuralBackground opacity={0.5} />
       <Nav current="servicios" />
       <SectionRail sections={[
         { id: "inicio", label: { es: "Filosofía", en: "Philosophy" } },

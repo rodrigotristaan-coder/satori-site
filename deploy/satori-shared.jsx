@@ -231,6 +231,85 @@ function MatrixBackground({ opacity = 0.06, color = "#A67C00" }) {
   );
 }
 
+// ---------- NEURAL BACKGROUND ----------
+// Capa de red neuronal en modo claro: nodos dorados que derivan lento, se unen
+// cuando están cerca y reaccionan al cursor (atracción sutil + líneas de acento).
+// Con prefers-reduced-motion dibuja un solo frame estático.
+function NeuralBackground({ opacity = 0.5 }) {
+  const ref = useRef(null);
+  useEffect(() => {
+    const canvas = ref.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let W, H, nodes = [], id;
+    const mouse = { x: -9999, y: -9999 };
+    const mk = () => ({
+      x: Math.random() * W, y: Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.16 * dpr, vy: (Math.random() - 0.5) * 0.16 * dpr,
+      r: (Math.random() * 1.3 + 0.9) * dpr
+    });
+    const resize = () => {
+      W = canvas.width = window.innerWidth * dpr;
+      H = canvas.height = window.innerHeight * dpr;
+      canvas.style.width = window.innerWidth + "px";
+      canvas.style.height = window.innerHeight + "px";
+      const target = Math.min(80, Math.round((window.innerWidth * window.innerHeight) / 18000));
+      while (nodes.length < target) nodes.push(mk());
+      nodes.length = target;
+    };
+    resize();
+    window.addEventListener("resize", resize);
+    const onMove = (e) => { mouse.x = e.clientX * dpr; mouse.y = e.clientY * dpr; };
+    const onLeave = () => { mouse.x = -9999; mouse.y = -9999; };
+    window.addEventListener("pointermove", onMove, { passive: true });
+    window.addEventListener("pointerleave", onLeave);
+    const LINK = 130 * dpr, PULL = 170 * dpr;
+    const frame = () => {
+      ctx.clearRect(0, 0, W, H);
+      for (let i = 0; i < nodes.length; i++) {
+        const n = nodes[i];
+        n.x += n.vx; n.y += n.vy;
+        if (n.x < 0 || n.x > W) n.vx *= -1;
+        if (n.y < 0 || n.y > H) n.vy *= -1;
+        const dxm = mouse.x - n.x, dym = mouse.y - n.y, dm = Math.hypot(dxm, dym);
+        if (dm < PULL && dm > 1) { n.x += (dxm / dm) * 0.3 * dpr; n.y += (dym / dm) * 0.3 * dpr; }
+        for (let j = i + 1; j < nodes.length; j++) {
+          const m = nodes[j], dx = n.x - m.x, dy = n.y - m.y, d = Math.hypot(dx, dy);
+          if (d < LINK) {
+            ctx.strokeStyle = `rgba(166,124,0,${(0.12 * (1 - d / LINK)).toFixed(3)})`;
+            ctx.lineWidth = dpr * 0.7;
+            ctx.beginPath(); ctx.moveTo(n.x, n.y); ctx.lineTo(m.x, m.y); ctx.stroke();
+          }
+        }
+        if (dm < PULL) {
+          ctx.strokeStyle = `rgba(128,96,0,${(0.25 * (1 - dm / PULL)).toFixed(3)})`;
+          ctx.lineWidth = dpr * 0.8;
+          ctx.beginPath(); ctx.moveTo(n.x, n.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
+        }
+        ctx.fillStyle = "rgba(128,96,0,0.38)";
+        ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, 6.2832); ctx.fill();
+      }
+      if (!reduced) id = requestAnimationFrame(frame);
+    };
+    frame();
+    return () => {
+      cancelAnimationFrame(id);
+      window.removeEventListener("resize", resize);
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerleave", onLeave);
+    };
+  }, []);
+  return (
+    <canvas
+      ref={ref}
+      aria-hidden="true"
+      style={{ position: "fixed", inset: 0, opacity, pointerEvents: "none", zIndex: 0 }}
+    />
+  );
+}
+
 // ---------- IMAGE PLACEHOLDER ----------
 function ImagePlaceholder({ label, ratio = "4/3", treatment = "bw", height }) {
   const filter =
@@ -1595,7 +1674,7 @@ function PageHero({ eyebrow, title, sub, accent = "", align = "left", id }) {
         >
           {pick(title)}{" "}
           {accent && (
-            <span style={{ color: SATORI.GOLD, fontWeight: 500 }}>{pick(accent)}</span>
+            <span className="grad-gold" style={{ fontWeight: 500 }}>{pick(accent)}</span>
           )}
         </h1>
         {sub && (
@@ -2616,7 +2695,7 @@ Object.assign(window, {
   SATORI, TYPE, waInterest, useLang,
   eyebrowStyle, h2Style, bodyStyle,
   btnPrimary, btnGhost, btnGold,
-  SatoriMark, Enso, MatrixBackground, ImagePlaceholder,
+  SatoriMark, Enso, MatrixBackground, NeuralBackground, ImagePlaceholder,
   Nav, Footer, SocialRow, SocialIcon,
   FloatingWhatsApp, CtaBlock, PageHero, CalendlyInline,
   WelcomeAnimation, HorizontalTimeline, MobileMenuFab,

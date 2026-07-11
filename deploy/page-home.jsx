@@ -137,7 +137,7 @@ function BrandManifesto() {
         position: "relative",
         zIndex: 1,
         padding: "5rem clamp(1.25rem,4vw,2.5rem)",
-        background: SATORI.WHITE,
+        background: "rgba(255,255,255,0.82)",
         textAlign: "center",
         overflow: "hidden",
         display: "flex",
@@ -311,7 +311,7 @@ function HomeHero() {
         zIndex: 1,
         padding: "10rem clamp(1.25rem,4vw,2.5rem) 6rem",
         overflow: "hidden",
-        background: `linear-gradient(180deg, ${SATORI.WHITE} 0%, ${SATORI.CREAM} 60%, ${SATORI.CREAM_2} 100%)`,
+        background: "linear-gradient(180deg, rgba(255,255,255,0.85) 0%, rgba(244,244,242,0.78) 60%, rgba(239,239,236,0.85) 100%)",
         borderBottom: `1px solid ${SATORI.INK}08`
       }}
     >
@@ -339,7 +339,7 @@ function HomeHero() {
             >
               <span style={{ color: SATORI.INK }}>{c.h1a}</span>
               <br />
-              <span style={{ color: SATORI.GOLD, fontSize: "clamp(3.2rem, 11vw, 8rem)" }}>{c.h1b}</span>
+              <span className="grad-gold" style={{ fontSize: "clamp(3.2rem, 11vw, 8rem)" }}>{c.h1b}</span>
             </h1>
             <p
               style={{
@@ -464,12 +464,12 @@ function QueHacemos() {
       <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: "3rem" }}>
           <div style={{ ...eyebrowStyle, justifyContent: "center" }}>{T.eyebrow}</div>
-          <h2 style={h2Style}>{T.title}<span style={{ color: SATORI.GOLD }}>{T.titleAccent}</span></h2>
+          <h2 style={h2Style}>{T.title}<span className="grad-gold">{T.titleAccent}</span></h2>
           <p style={{ ...bodyStyle, maxWidth: "560px", margin: "1rem auto 0" }}>{T.sub}</p>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "1.2rem" }}>
           {T.items.map((it, i) => (
-            <div key={i} className={it.featured ? "pillar-featured" : undefined} style={{
+            <div key={i} className={it.featured ? "pillar-card pillar-featured" : "pillar-card"} style={{
               background: "rgba(255,255,255,0.55)",
               border: it.featured ? `1px solid ${SATORI.GOLD}55` : "1px solid rgba(255,255,255,0.65)",
               backdropFilter: "blur(14px) saturate(160%)", WebkitBackdropFilter: "blur(14px) saturate(160%)",
@@ -545,7 +545,7 @@ function ShowroomTeaser() {
     }}>
       <div style={{ maxWidth: "860px", margin: "0 auto" }}>
         <div style={{ ...eyebrowStyle, justifyContent: "center", color: SATORI.GOLD, opacity: 1 }}>{T.eyebrow}</div>
-        <h2 style={{ ...h2Style, color: SATORI.CREAM }}>{T.title}<span style={{ color: SATORI.GOLD }}>{T.titleAccent}</span></h2>
+        <h2 style={{ ...h2Style, color: SATORI.CREAM }}>{T.title}<span className="grad-gold-dark">{T.titleAccent}</span></h2>
         <p style={{ ...bodyStyle, color: SATORI.CREAM, opacity: 0.8, maxWidth: "560px", margin: "1rem auto 1.75rem" }}>{T.sub}</p>
         <ShowcaseVideo
           src="assets/showroom/landing-esmeralda-airbnb-green-16x9.mp4"
@@ -1700,7 +1700,7 @@ function App() {
 
   return (
     <main style={{ position: "relative", minHeight: "100vh", background: SATORI.CREAM }}>
-      <MatrixBackground opacity={0.045} color={SATORI.GOLD} />
+      <NeuralBackground opacity={0.55} />
       <Nav current="home" />
       <SectionRail sections={[
         { id: "manifesto", label: { es: "Inicio", en: "Home" } },

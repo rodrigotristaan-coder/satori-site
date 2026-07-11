@@ -350,3 +350,11 @@ img, video, iframe {
 @media (max-width: 560px) {
   .founder-msg { flex-direction: column !important; }
 }
+
+/* ---------- Premium touches (Satori Tech adaptado a modo claro) ---------- */
+/* Degradado dorado para acentos de título (fondo claro / fondo oscuro) */
+.grad-gold { background: linear-gradient(92deg, #806000 0%, #A67C00 55%, #C9920A 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.grad-gold-dark { background: linear-gradient(92deg, #C9920A 0%, #E2B93B 60%, #C9920A 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+/* Micro-lift al hover de las tarjetas-pilar de la home */
+.pillar-card { transition: transform .45s cubic-bezier(.2,.8,.2,1), box-shadow .45s ease; will-change: transform; }
+.pillar-card:hover { transform: translateY(-5px); box-shadow: 0 26px 60px -26px rgba(14,14,14,0.30), 0 0 0 1px rgba(166,124,0,0.16) !important; }
