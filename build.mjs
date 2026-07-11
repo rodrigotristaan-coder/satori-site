@@ -24,16 +24,18 @@ const GTAG_INLINE = `window.dataLayer=window.dataLayer||[];function gtag(){dataL
 const GTAG = `<script>${GTAG_INLINE}</script>\n`;
 
 // HTML React -> archivo de pagina + ruta canonica
+// Rutas canonicas SIN .html (vercel.json cleanUrls: true sirve /servicios desde
+// servicios.html y redirige 308 la version .html a la limpia).
 const PAGES = [
   { html: 'index.html',         jsx: 'page-home.jsx',      path: '/' },
-  { html: 'servicios.html',     jsx: 'page-servicios.jsx', path: '/servicios.html' },
-  { html: 'proyectos.html',     jsx: 'page-proyectos.jsx', path: '/proyectos.html' },
-  { html: 'blog.html',          jsx: 'page-blog.jsx',      path: '/blog.html' },
-  { html: 'sobre-rodrigo.html', jsx: 'page-sobre.jsx',     path: '/sobre-rodrigo.html' },
+  { html: 'servicios.html',     jsx: 'page-servicios.jsx', path: '/servicios' },
+  { html: 'proyectos.html',     jsx: 'page-proyectos.jsx', path: '/proyectos' },
+  { html: 'blog.html',          jsx: 'page-blog.jsx',      path: '/blog' },
+  { html: 'sobre-rodrigo.html', jsx: 'page-sobre.jsx',     path: '/sobre-rodrigo' },
 ];
 const STATIC_HTML = [
-  { html: 'privacidad.html', path: '/privacidad.html' },
-  { html: 'gracias.html', path: '/gracias.html', noindex: true }, // thank-you (conversión); fuera del sitemap
+  { html: 'privacidad.html', path: '/privacidad' },
+  { html: 'gracias.html', path: '/gracias', noindex: true }, // thank-you (conversión); fuera del sitemap
 ];
 
 const hash8 = (s) => createHash('sha256').update(s).digest('hex').slice(0, 8);

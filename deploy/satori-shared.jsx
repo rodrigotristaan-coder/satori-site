@@ -297,11 +297,11 @@ function useLang() {
 // ---------- NAV MULTI-PÁGINA ----------
 // `current` = "home" | "sobre" | "proyectos" | "servicios"
 const NAV_LINKS = [
-  { key: "home", href: "index.html", label: { es: "Inicio", en: "Home" } },
-  { key: "servicios", href: "servicios.html", label: { es: "Servicios", en: "Services" } },
-  { key: "productos", href: "proyectos.html", label: { es: "Proyectos en vivo", en: "Live projects" } },
-  { key: "sobre", href: "sobre-rodrigo.html", label: { es: "Fundador", en: "Founder" } },
-  { key: "blog", href: "blog.html", label: { es: "Blog", en: "Blog" } }
+  { key: "home", href: "/", label: { es: "Inicio", en: "Home" } },
+  { key: "servicios", href: "/servicios", label: { es: "Servicios", en: "Services" } },
+  { key: "productos", href: "/proyectos", label: { es: "Proyectos en vivo", en: "Live projects" } },
+  { key: "sobre", href: "/sobre-rodrigo", label: { es: "Fundador", en: "Founder" } },
+  { key: "blog", href: "/blog", label: { es: "Blog", en: "Blog" } }
 ];
 
 function Nav({ current }) {
@@ -364,7 +364,7 @@ function Nav({ current }) {
         }}
       >
         <a
-          href="index.html"
+          href="/"
           style={{ display: "inline-flex", alignItems: "center", textDecoration: "none", lineHeight: 0 }}
         >
           <SatoriMark height={14} variant="gold" />
@@ -838,7 +838,7 @@ function Footer({ social = "satori" }) {
           <p style={{ ...eyebrowStyle, color: SATORI.CREAM, opacity: 0.45, marginBottom: "1.2rem" }}>{T.legal}</p>
           <div style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}>
             <a
-              href="privacidad.html"
+              href="/privacidad"
               style={{ color: SATORI.CREAM, opacity: 0.92, textDecoration: "none", fontFamily: TYPE.body, fontSize: "1.05rem" }}
             >
               {T.privacy}
@@ -1259,7 +1259,7 @@ function CtaBlock({ titulo = "Hablemos.", sub = "30 minutos. Salimos con clarida
         url: typeof location !== "undefined" ? location.href : ""
       })
     }).catch(() => {});
-    window.location.href = "gracias.html";
+    window.location.href = "/gracias";
   };
 
   const inputStyle = {
@@ -1492,7 +1492,7 @@ function CtaBlock({ titulo = "Hablemos.", sub = "30 minutos. Salimos con clarida
                 fontFamily: TYPE.body
               }}>
                 {T.legal}{" "}
-                <a href="privacidad.html" style={{ color: SATORI.CREAM, opacity: 0.85, textDecoration: "underline", textUnderlineOffset: "3px" }}>{T.legalLink}</a>
+                <a href="/privacidad" style={{ color: SATORI.CREAM, opacity: 0.85, textDecoration: "underline", textUnderlineOffset: "3px" }}>{T.legalLink}</a>
               </p>
             </form>
           )}

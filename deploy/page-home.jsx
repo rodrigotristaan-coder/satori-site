@@ -373,11 +373,11 @@ function HomeHero() {
               style={{ display: "flex", gap: "0.85rem", marginTop: "2.5rem", flexWrap: "wrap", justifyContent: "center" }}
               className="fade-up-d3"
             >
-              <a href="sobre-rodrigo.html" className="cta-btn-gold pulse-gold" style={btnGold}>
+              <a href="/sobre-rodrigo" className="cta-btn-gold pulse-gold" style={btnGold}>
                 <span>{c.cta1}</span>
                 <span className="cta-arrow">→</span>
               </a>
-              <a href="servicios.html" className="cta-btn-ghost" style={btnGhost}>
+              <a href="/servicios" className="cta-btn-ghost" style={btnGhost}>
                 <span>{c.cta2}</span>
               </a>
             </div>
@@ -498,7 +498,7 @@ function QueHacemos() {
           ))}
         </div>
         <div style={{ textAlign: "center", marginTop: "2.5rem" }}>
-          <a href="servicios.html" style={btnGhost}>{T.cta}</a>
+          <a href="/servicios" style={btnGhost}>{T.cta}</a>
         </div>
       </div>
     </section>
@@ -549,7 +549,7 @@ function ShowroomTeaser() {
           }}
         />
         <p style={{ fontFamily: TYPE.mono, fontSize: "0.66rem", letterSpacing: "0.14em", textTransform: "uppercase", color: SATORI.GOLD, opacity: 0.85, margin: "0 0 2rem" }}>{T.caption}</p>
-        <a href="proyectos.html" style={btnGold}>{T.cta}</a>
+        <a href="/proyectos" style={btnGold}>{T.cta}</a>
       </div>
     </section>
   );

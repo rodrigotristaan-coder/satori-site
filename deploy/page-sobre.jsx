@@ -786,7 +786,7 @@ function ContactForm() {
         url: typeof location !== "undefined" ? location.href : ""
       })
     }).catch(() => {});
-    window.location.href = "gracias.html";
+    window.location.href = "/gracias";
   };
 
   return (
@@ -943,7 +943,7 @@ function ContactForm() {
                 {sent ? c.submit_sent : c.submit}
               </button>
               <p style={{ fontFamily: TYPE.mono, fontSize: "0.6rem", letterSpacing: "0.22em", opacity: 0.55, margin: 0 }}>
-                <a href="privacidad.html" style={{ color: SATORI.INK }}>{c.privacy}</a>
+                <a href="/privacidad" style={{ color: SATORI.INK }}>{c.privacy}</a>
               </p>
             </div>
           </form>
