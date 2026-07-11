@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="robots" content="noindex, nofollow"/>
+<title>SATORI — Experimento Satori Tech</title>
+<meta name="description" content="Experimento de diseño Satori Tech: sistema oscuro, glass y capa neuronal con la paleta de SATORI."/>
+<style>
+  /* ============ base ============ */
+  :root{
+    --ink:#070808; --ink2:#0E0E0E; --cream:#F4F4F2; --cream-dim:rgba(244,244,242,.62);
+    --gold:#A67C00; --gold-soft:#C9920A; --gold-hi:#E2B93B; --ok:#34d399;
+    --glass:rgba(24,22,14,.42); --glass-border:rgba(201,146,10,.20);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:
+      radial-gradient(1100px 700px at 82% -12%, rgba(166,124,0,.16), transparent 60%),
+      radial-gradient(900px 620px at -10% 30%, rgba(201,146,10,.10), transparent 55%),
+      radial-gradient(1000px 800px at 55% 115%, rgba(226,185,59,.08), transparent 60%),
+      var(--ink);
+    color:var(--cream);
+    font-family:-apple-system,"SF Pro Text",Inter,system-ui,"Segoe UI",Roboto,sans-serif;
+    font-size:19px; line-height:1.65; overflow-x:hidden;
+  }
+  #neural{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+  main{position:relative;z-index:1}
+  section{min-height:60vh;display:flex;align-items:center;padding:7rem clamp(1.25rem,5vw,3rem)}
+  .wrap{max-width:1080px;margin:0 auto;width:100%}
+  .narrow{max-width:760px}
+  h1,h2{letter-spacing:-.02em;font-weight:740;line-height:1.08}
+  h1{font-size:clamp(2.6rem,7.5vw,5.2rem)}
+  h2{font-size:clamp(1.9rem,4.5vw,3rem);margin-bottom:1rem}
+  p{max-width:66ch}
+  .grad{background:linear-gradient(92deg,var(--cream) 0%,var(--gold-hi) 45%,var(--gold-soft) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .eyebrow{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:.72rem;letter-spacing:.32em;text-transform:uppercase;color:var(--gold-soft);margin-bottom:1.1rem;display:flex;align-items:center;gap:.7rem}
+  .eyebrow::before{content:"";width:22px;height:1px;background:var(--gold-soft);display:inline-block}
+  .sub{color:var(--cream-dim);font-size:clamp(1.05rem,2vw,1.25rem)}
+  /* ============ reveal ============ */
+  .rv{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+  .rv.on{opacity:1;transform:none}
+  /* ============ hero ============ */
+  .hero{min-height:100svh;text-align:center;justify-content:center}
+  .brand{font-family:ui-monospace,monospace;font-size:.8rem;letter-spacing:.5em;text-transform:uppercase;color:var(--cream-dim)}
+  .brand b{color:var(--gold-hi)}
+  .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--gold-hi);margin-left:.35rem;box-shadow:0 0 18px 4px rgba(226,185,59,.55);animation:breath 3.2s ease-in-out infinite}
+  @keyframes breath{50%{box-shadow:0 0 26px 8px rgba(226,185,59,.75)}}
+  .metrics{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:3rem}
+  .metric{background:var(--glass);backdrop-filter:blur(26px) saturate(150%);-webkit-backdrop-filter:blur(26px) saturate(150%);border:1px solid var(--glass-border);border-radius:24px;padding:1.3rem 1.9rem;min-width:150px;box-shadow:0 18px 50px -25px rgba(0,0,0,.7),inset 0 1px 0 rgba(244,244,242,.09)}
+  .metric .n{font-size:2rem;font-weight:740;letter-spacing:-.02em;color:var(--gold-hi)}
+  .metric .l{font-family:ui-monospace,monospace;font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--cream-dim);margin-top:.3rem}
+  .scrollhint{position:absolute;bottom:2.2rem;left:50%;transform:translateX(-50%);font-family:ui-monospace,monospace;font-size:.6rem;letter-spacing:.3em;color:var(--cream-dim);animation:hint 2.4s ease-in-out infinite}
+  @keyframes hint{50%{transform:translateX(-50%) translateY(7px);opacity:.5}}
+  /* ============ cards ============ */
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:1.2rem;margin-top:2.6rem}
+  .card{background:var(--glass);backdrop-filter:blur(26px) saturate(150%);-webkit-backdrop-filter:blur(26px) saturate(150%);border:1px solid var(--glass-border);border-left:3px solid var(--gold);border-radius:24px;padding:1.8rem 1.7rem;box-shadow:0 18px 50px -25px rgba(0,0,0,.7),inset 0 1px 0 rgba(244,244,242,.09);transition:transform .4s cubic-bezier(.2,.8,.2,1),border-color .4s}
+  .card:hover{transform:translateY(-5px);border-color:rgba(226,185,59,.45)}
+  .card .tag{font-family:ui-monospace,monospace;font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;color:var(--gold-hi);display:inline-block;border:1px solid rgba(226,185,59,.3);border-radius:999px;padding:.28rem .75rem;margin-bottom:1rem}
+  .card h3{font-size:1.22rem;font-weight:700;letter-spacing:-.015em;margin-bottom:.5rem}
+  .card p{font-size:.98rem;color:var(--cream-dim)}
+  .card .tag.ok{color:var(--ok);border-color:rgba(52,211,153,.35)}
+  /* ============ pasos ============ */
+  .step{display:grid;grid-template-columns:64px 1fr;gap:1.4rem;align-items:start;padding:1.6rem 0;border-bottom:1px solid rgba(244,244,242,.08)}
+  .step:last-child{border-bottom:none}
+  .step .num{font-family:ui-monospace,monospace;font-size:1.05rem;color:var(--gold-soft);padding-top:.2rem}
+  .step h3{font-size:1.3rem;font-weight:700;letter-spacing:-.015em;margin-bottom:.35rem}
+  .step p{color:var(--cream-dim);font-size:1rem}
+  .bar{height:3px;background:rgba(244,244,242,.09);border-radius:99px;margin-top:.9rem;overflow:hidden}
+  .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--gold-hi));border-radius:99px;transition:width 1.1s cubic-bezier(.2,.7,.2,1)}
+  .rv.on .bar i{width:var(--w)}
+  /* ============ cta ============ */
+  .cta-card{background:var(--glass);backdrop-filter:blur(26px) saturate(150%);-webkit-backdrop-filter:blur(26px) saturate(150%);border:1px solid var(--glass-border);border-radius:28px;padding:3.4rem clamp(1.5rem,5vw,3.5rem);text-align:center;box-shadow:0 30px 80px -35px rgba(0,0,0,.8),inset 0 1px 0 rgba(244,244,242,.1)}
+  .btn{display:inline-block;margin-top:1.8rem;background:linear-gradient(92deg,var(--gold),var(--gold-soft));color:var(--ink2);font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:.78rem;padding:1.05rem 2.3rem;border-radius:999px;text-decoration:none;box-shadow:0 14px 40px -12px rgba(201,146,10,.55);transition:transform .3s,box-shadow .3s}
+  .btn:hover{transform:translateY(-3px);box-shadow:0 22px 55px -12px rgba(201,146,10,.75)}
+  .foot{font-family:ui-monospace,monospace;font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--cream-dim);text-align:center;padding:2.5rem 1rem 3rem}
+  .foot a{color:var(--gold-hi);text-decoration:none}
+  @media (prefers-reduced-motion:reduce){
+    .rv{opacity:1;transform:none;transition:none}
+    .dot,.scrollhint{animation:none}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+<canvas id="neural" aria-hidden="true"></canvas>
+<main>
+
+  <!-- HERO: una idea — claridad -->
+  <section class="hero" style="position:relative">
+    <div class="wrap">
+      <div class="brand rv">SATORI<b> · </b>TECH<span class="dot"></span></div>
+      <div class="eyebrow rv" style="justify-content:center">Experimento de diseño · paleta de marca</div>
+      <h1 class="rv">Más estrategia.<br/><span class="grad">Más claridad.</span></h1>
+      <p class="sub rv" style="margin:1.4rem auto 0">Tecnología para empresarios que quieren crecer con claridad.</p>
+      <div class="metrics">
+        <div class="metric rv"><div class="n" data-count="7">0</div><div class="l">Servicios</div></div>
+        <div class="metric rv"><div class="n" data-count="6" data-prefix="+">0</div><div class="l">Ciudades</div></div>
+        <div class="metric rv"><div class="n" data-count="5">0</div><div class="l">Pasos de método</div></div>
+        <div class="metric rv"><div class="n" data-count="24" data-suffix="h">0</div><div class="l">Respuesta</div></div>
+      </div>
+    </div>
+    <div class="scrollhint">DESLIZA ↓</div>
+  </section>
+
+  <!-- QUÉ HACEMOS: 7 pilares -->
+  <section>
+    <div class="wrap">
+      <div class="eyebrow rv">Qué hacemos</div>
+      <h2 class="rv">Siete formas de <span class="grad">hacerte crecer</span></h2>
+      <p class="sub rv">Primero estrategia, luego ejecución. Todo apunta a lo mismo: clientes llegando con claridad.</p>
+      <div class="grid">
+        <div class="card rv"><span class="tag">01 · Marca</span><h3>Marca &amp; Diseño</h3><p>Identidad que te distingue y genera confianza.</p></div>
+        <div class="card rv"><span class="tag">02 · Web</span><h3>Páginas Web &amp; Posicionamiento</h3><p>Sitios rápidos, que rankean y que la IA recomienda.</p></div>
+        <div class="card rv"><span class="tag">03 · Marketing</span><h3>Marketing &amp; Ads</h3><p>Campañas que traen prospectos calificados a tu negocio.</p></div>
+        <div class="card rv"><span class="tag">04 · IA Bots</span><h3>Automatización &amp; Bots con IA</h3><p>Bots y sistemas que atienden, captan y dan seguimiento solos.</p></div>
+        <div class="card rv"><span class="tag">05 · Contenido</span><h3>Contenido con IA</h3><p>Video de marca, reels y ads cinematográficos de punta a punta.</p></div>
+        <div class="card rv"><span class="tag">06 · Mercado</span><h3>Estudios de Mercado</h3><p>Datos reales de tu mercado, competencia y precios para decidir con dirección.</p></div>
+        <div class="card rv"><span class="tag ok">07 · Producto</span><h3>MyCFO</h3><p>Tu CFO con IA: controla las finanzas de tu negocio por chat, con reportes claros y estatus diario.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- METODOLOGÍA: 5 pasos -->
+  <section>
+    <div class="wrap narrow">
+      <div class="eyebrow rv">Ruta de crecimiento</div>
+      <h2 class="rv">Cinco pasos. <span class="grad">Una dirección.</span></h2>
+      <div style="margin-top:1.6rem">
+        <div class="step rv" style="--w:20%"><div class="num">01</div><div><h3>Identidad</h3><p>Claridad y diferenciación.</p><div class="bar"><i></i></div></div></div>
+        <div class="step rv" style="--w:40%"><div class="num">02</div><div><h3>Presencia</h3><p>Consistencia y confianza.</p><div class="bar"><i></i></div></div></div>
+        <div class="step rv" style="--w:60%"><div class="num">03</div><div><h3>Visibilidad</h3><p>Mensaje y oferta de valor.</p><div class="bar"><i></i></div></div></div>
+        <div class="step rv" style="--w:80%"><div class="num">04</div><div><h3>Automatización</h3><p>Sistemas que generan prospectos.</p><div class="bar"><i></i></div></div></div>
+        <div class="step rv" style="--w:100%"><div class="num">05</div><div><h3>Ventas</h3><p>Clientes llegando con claridad.</p><div class="bar"><i></i></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MEDICIÓN: una idea — datos verificables -->
+  <section>
+    <div class="wrap">
+      <div class="eyebrow rv">Medición</div>
+      <h2 class="rv">Lo que no se mide, <span class="grad">no crece.</span></h2>
+      <p class="sub rv">Cada proyecto sale con analítica y conversión verificadas desde el día uno.</p>
+      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr))">
+        <div class="card rv"><span class="tag ok">Verificado</span><h3>Analítica en vivo</h3><p>GA4 y conversiones probadas end-to-end antes de invertir un peso en pauta.</p></div>
+        <div class="card rv"><span class="tag">Automático</span><h3>Reporte semanal</h3><p>Tus leads, resumidos y entregados cada lunes a las 7am. Sin pedirlo.</p></div>
+        <div class="card rv"><span class="tag">Claro</span><h3>Datos que decides</h3><p>Información accionable en tu idioma — no dashboards que nadie abre.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section>
+    <div class="wrap narrow">
+      <div class="cta-card rv">
+        <div class="eyebrow" style="justify-content:center">Siguiente paso</div>
+        <h2>¿Listo para tu <span class="grad">siguiente etapa?</span></h2>
+        <p class="sub" style="margin:0 auto">Empezamos con 30 minutos. Te digo qué encaja y cómo lo activaríamos.</p>
+        <a class="btn" href="https://wa.me/525625018281?text=Hola,%20vi%20la%20p%C3%A1gina%20de%20SATORI%20y%20me%20gustar%C3%ADa%20conversar." target="_blank" rel="noopener noreferrer">Conversemos →</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="foot">Experimento de diseño · la versión oficial vive en <a href="/">satorimkt.com</a></div>
+</main>
+
+<script>
+/* ===== capa neuronal (nodos dorados que derivan y reaccionan al cursor) ===== */
+(function(){
+  var cv=document.getElementById('neural'),cx=cv.getContext('2d');
+  var W,H,nodes=[],mouse={x:-9999,y:-9999};
+  var reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function size(){
+    W=cv.width=window.innerWidth*devicePixelRatio;
+    H=cv.height=window.innerHeight*devicePixelRatio;
+    cv.style.width=window.innerWidth+'px';cv.style.height=window.innerHeight+'px';
+    var target=Math.min(90,Math.round(window.innerWidth*window.innerHeight/16000));
+    while(nodes.length<target)nodes.push(mk());
+    nodes.length=target;
+  }
+  function mk(){return{x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.18*devicePixelRatio,vy:(Math.random()-.5)*.18*devicePixelRatio,r:(Math.random()*1.6+.9)*devicePixelRatio};}
+  window.addEventListener('resize',size);size();
+  window.addEventListener('pointermove',function(e){mouse.x=e.clientX*devicePixelRatio;mouse.y=e.clientY*devicePixelRatio;},{passive:true});
+  window.addEventListener('pointerleave',function(){mouse.x=-9999;mouse.y=-9999;});
+  var LINK=140*devicePixelRatio,PULL=180*devicePixelRatio;
+  function frame(){
+    cx.clearRect(0,0,W,H);
+    for(var i=0;i<nodes.length;i++){
+      var n=nodes[i];
+      n.x+=n.vx;n.y+=n.vy;
+      if(n.x<0||n.x>W)n.vx*=-1;if(n.y<0||n.y>H)n.vy*=-1;
+      var dxm=mouse.x-n.x,dym=mouse.y-n.y,dm=Math.hypot(dxm,dym);
+      if(dm<PULL&&dm>1){n.x+=dxm/dm*.35*devicePixelRatio;n.y+=dym/dm*.35*devicePixelRatio;}
+      for(var j=i+1;j<nodes.length;j++){
+        var m=nodes[j],dx=n.x-m.x,dy=n.y-m.y,d=Math.hypot(dx,dy);
+        if(d<LINK){
+          cx.strokeStyle='rgba(201,146,10,'+(0.14*(1-d/LINK)).toFixed(3)+')';
+          cx.lineWidth=devicePixelRatio*.7;
+          cx.beginPath();cx.moveTo(n.x,n.y);cx.lineTo(m.x,m.y);cx.stroke();
+        }
+      }
+      if(dm<PULL){
+        cx.strokeStyle='rgba(226,185,59,'+(0.30*(1-dm/PULL)).toFixed(3)+')';
+        cx.lineWidth=devicePixelRatio*.8;
+        cx.beginPath();cx.moveTo(n.x,n.y);cx.lineTo(mouse.x,mouse.y);cx.stroke();
+      }
+      cx.fillStyle='rgba(226,185,59,.55)';
+      cx.beginPath();cx.arc(n.x,n.y,n.r,0,6.2832);cx.fill();
+    }
+    if(!reduced)requestAnimationFrame(frame);
+  }
+  frame();
+})();
+
+/* ===== reveal on scroll + contadores ===== */
+(function(){
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(!e.isIntersecting)return;
+      e.target.classList.add('on');
+      e.target.querySelectorAll('[data-count]').forEach(run);
+      if(e.target.hasAttribute('data-count'))run(e.target);
+      io.unobserve(e.target);
+    });
+  },{threshold:.15});
+  document.querySelectorAll('.rv').forEach(function(el){io.observe(el);});
+  var fmt=new Intl.NumberFormat('es-MX');
+  function run(el){
+    if(el.__done)return;el.__done=1;
+    var end=parseInt(el.getAttribute('data-count'),10),
+        pre=el.getAttribute('data-prefix')||'',suf=el.getAttribute('data-suffix')||'',
+        t0=null,DUR=1300;
+    function tick(t){
+      if(!t0)t0=t;
+      var p=Math.min(1,(t-t0)/DUR);p=1-Math.pow(1-p,3);
+      el.textContent=pre+fmt.format(Math.round(end*p))+suf;
+      if(p<1)requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+})();
+</script>
+</body>
+</html>
