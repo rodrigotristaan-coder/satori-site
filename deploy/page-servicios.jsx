@@ -93,6 +93,21 @@ const SERVICIOS_EN = [
       "Fast production, on your identity"
     ],
     img: "assets/showroom/satori-contenido-ia-poster.jpg"
+  },
+  {
+    num: "07",
+    tag: "Research",
+    titulo: "Market Research",
+    subtitulo: "Research · Data · Decisions",
+    descripcion: "Know your market before you invest: we analyze demand, competitors and pricing, and turn it into clear information so you decide with direction.",
+    benefits: [
+      "Demand & market size analysis",
+      "Competitor & pricing landscape",
+      "Ideal customer profile",
+      "Industry trends & opportunities",
+      "Clear report with actionable recommendations"
+    ],
+    img: "assets/showroom/estudios-mercado-poster.jpg"
   }
 ];
 
@@ -231,6 +246,21 @@ const SERVICIOS = [
       "Producción rápida, a tu identidad"
     ],
     img: "assets/showroom/satori-contenido-ia-poster.jpg"
+  },
+  {
+    num: "07",
+    tag: "Mercado",
+    titulo: "Estudios de Mercado",
+    subtitulo: "Investigación · Datos · Decisiones",
+    descripcion: "Conoce tu mercado antes de invertir: analizamos demanda, competencia y precios, y lo convertimos en información clara para decidir con dirección.",
+    benefits: [
+      "Análisis de demanda y tamaño de mercado",
+      "Radiografía de competencia y precios",
+      "Perfil de tu cliente ideal",
+      "Tendencias y oportunidades del sector",
+      "Reporte claro con recomendaciones accionables"
+    ],
+    img: "assets/showroom/estudios-mercado-poster.jpg"
   }
 ];
 
@@ -283,12 +313,12 @@ const PAQUETES = [
 function ServiciosHero() {
   const [lang] = useLang();
   const c = lang === "en" ? {
-    eyebrow: "Six solutions. One partner.",
+    eyebrow: "Seven solutions. One partner.",
     title: "Services.",
     accent: "With discernment.",
     sub: "Each service is designed for entrepreneurs who grow with strategy. Start with what you need today and we scale when it makes sense."
   } : {
-    eyebrow: "Seis soluciones. Un socio.",
+    eyebrow: "Siete soluciones. Un socio.",
     title: "Servicios.",
     accent: "Con criterio.",
     sub: "Cada servicio está diseñado para empresarios que crecen con estrategia. Empieza por lo que necesitas hoy y escalamos cuando tenga sentido."
@@ -334,9 +364,12 @@ function ServiciosDetalle() {
             data-reveal
             className="service-card"
             style={{
-              background: SATORI.WHITE,
+              background: "rgba(255,255,255,0.55)",
+              backdropFilter: "blur(14px) saturate(160%)",
+              WebkitBackdropFilter: "blur(14px) saturate(160%)",
               borderRadius: "24px",
-              border: `1px solid ${SATORI.INK}10`,
+              border: "1px solid rgba(255,255,255,0.65)",
+              boxShadow: "0 14px 40px -22px rgba(14,14,14,0.18), inset 0 1px 0 rgba(255,255,255,0.55)",
               overflow: "hidden",
               display: "flex",
               flexDirection: "column",
@@ -711,7 +744,7 @@ function Paquetes() {
 function Faq() {
   const [lang] = useLang();
   const itemsEs = [
-    { q: "¿Puedo contratar un solo servicio?", a: "Sí. Cada servicio funciona por sí solo —Marca & Diseño, Páginas Web & Posicionamiento, Marketing & Ads, Automatización & Bots o MyCFO—. Empiezas por donde más lo necesitas y sumamos lo demás cuando tenga sentido." },
+    { q: "¿Puedo contratar un solo servicio?", a: "Sí. Cada servicio funciona por sí solo —Marca & Diseño, Páginas Web & Posicionamiento, Marketing & Ads, Automatización & Bots, MyCFO, Contenido con IA o Estudios de Mercado—. Empiezas por donde más lo necesitas y sumamos lo demás cuando tenga sentido." },
     { q: "¿Cómo cobran?", a: "A la medida de cada proyecto, no por paquetes cerrados. En una llamada de 30 minutos entendemos tu negocio y te damos un precio claro, no una cotización vacía." },
     { q: "¿Cuánto tarda en ver resultados?", a: "Marca & Diseño: primeras semanas. Páginas Web & Posicionamiento: 1–3 meses. Marketing & Ads: desde la primera campaña. Automatización & Bots: desde la activación." },
     { q: "¿Necesito saber de tecnología?", a: "Para nada. Nos encargamos de toda la parte técnica. Tú nos cuentas tu negocio, nosotros hacemos el resto." },
@@ -719,7 +752,7 @@ function Faq() {
     { q: "¿Con qué tipo de negocios trabajan?", a: "Empresarios y pymes en México — despachos, constructoras, clínicas, consultoras y servicios profesionales." }
   ];
   const itemsEn = [
-    { q: "Can I hire just one service?", a: "Yes. Each service stands on its own —Brand & Design, Websites & Positioning, Marketing & Ads, Automation & Bots or MyCFO—. You start where you need it most and we add the rest when it makes sense." },
+    { q: "Can I hire just one service?", a: "Yes. Each service stands on its own —Brand & Design, Websites & Positioning, Marketing & Ads, Automation & Bots, MyCFO, AI Content or Market Research—. You start where you need it most and we add the rest when it makes sense." },
     { q: "How do you charge?", a: "Tailored to each project, not closed packages. In a 30-minute call we understand your business and give you a clear price, not an empty quote." },
     { q: "How long until I see results?", a: "Brand & Design: first weeks. Websites & Positioning: 1–3 months. Marketing & Ads: from the first campaign. Automation & Bots: from activation." },
     { q: "Do I need to know tech?", a: "Not at all. We handle everything technical. You tell us your business, we do the rest." },

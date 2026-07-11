@@ -362,9 +362,10 @@ function HomeHero() {
                 <span key={chip.t} style={{
                   fontFamily: TYPE.mono, fontSize: "0.66rem", letterSpacing: "0.18em",
                   textTransform: "uppercase", borderRadius: "999px", padding: "0.4rem 0.85rem",
+                  backdropFilter: "blur(10px) saturate(160%)", WebkitBackdropFilter: "blur(10px) saturate(160%)",
                   ...(chip.gold
-                    ? { color: SATORI.CREAM, background: SATORI.GOLD, border: `1px solid ${SATORI.GOLD}`, fontWeight: 600 }
-                    : { color: SATORI.GOLD_DEEP, background: `${SATORI.GOLD}0a`, border: `1px solid ${SATORI.GOLD}33` })
+                    ? { color: SATORI.CREAM, background: "rgba(166,124,0,0.78)", border: "1px solid rgba(166,124,0,0.55)", fontWeight: 600, boxShadow: "inset 0 1px 0 rgba(255,255,255,0.25)" }
+                    : { color: SATORI.GOLD_DEEP, background: "rgba(255,255,255,0.4)", border: `1px solid ${SATORI.GOLD}33`, boxShadow: "inset 0 1px 0 rgba(255,255,255,0.5)" })
                 }}>{chip.t}</span>
               ))}
             </div>
@@ -426,7 +427,7 @@ function QueHacemos() {
   const en = lang === "en";
   const T = en ? {
     eyebrow: "What we do",
-    title: "Six ways we ",
+    title: "Seven ways we ",
     titleAccent: "make you grow",
     sub: "Strategy first, then execution. Everything points to one thing: clients arriving with clarity.",
     cta: "See all services",
@@ -436,11 +437,12 @@ function QueHacemos() {
       { video: "assets/showroom/marketing-moneyshop.mp4", poster: "assets/showroom/marketing-moneyshop-poster.jpg", fit: "cover", objPos: "left", t: "Marketing & Ads", d: "Campaigns that bring qualified leads to your business." },
       { video: "assets/showroom/automatizacion-flow.mp4", poster: "assets/showroom/automatizacion-flow-poster.jpg", fit: "cover", bg: "#0E0E0E", t: "AI Automation & Bots", d: "Bots and systems that attend, capture and follow up on their own." },
       { video: "assets/showroom/mycfo-chat.mp4", poster: "assets/showroom/mycfo-chat-poster.jpg", bg: SATORI.CREAM, t: "MyCFO", d: "Your AI CFO: manage your business finances by chat." },
-      { video: "assets/showroom/satori-contenido-ia.mp4", poster: "assets/showroom/satori-contenido-ia-poster.jpg", fit: "cover", bg: SATORI.CREAM, t: "AI Content", d: "Cinematic brand video, reels and ads created end-to-end with AI." }
+      { video: "assets/showroom/satori-contenido-ia.mp4", poster: "assets/showroom/satori-contenido-ia-poster.jpg", fit: "cover", bg: SATORI.CREAM, t: "AI Content", d: "Cinematic brand video, reels and ads created end-to-end with AI." },
+      { video: "assets/showroom/estudios-mercado.mp4", poster: "assets/showroom/estudios-mercado-poster.jpg", fit: "cover", bg: "#0E0E0E", t: "Market Research", d: "Real data on your market, competitors and pricing to decide with clarity." }
     ]
   } : {
     eyebrow: "Qué hacemos",
-    title: "Seis formas de ",
+    title: "Siete formas de ",
     titleAccent: "hacerte crecer",
     sub: "Primero estrategia, luego ejecución. Todo apunta a lo mismo: clientes llegando con claridad.",
     cta: "Ver todos los servicios",
@@ -450,7 +452,8 @@ function QueHacemos() {
       { video: "assets/showroom/marketing-moneyshop.mp4", poster: "assets/showroom/marketing-moneyshop-poster.jpg", fit: "cover", objPos: "left", t: "Marketing & Ads", d: "Campañas que traen prospectos calificados a tu negocio." },
       { video: "assets/showroom/automatizacion-flow.mp4", poster: "assets/showroom/automatizacion-flow-poster.jpg", fit: "cover", bg: "#0E0E0E", t: "Automatización & Bots con IA", d: "Bots y sistemas que atienden, captan y dan seguimiento solos." },
       { video: "assets/showroom/mycfo-chat.mp4", poster: "assets/showroom/mycfo-chat-poster.jpg", bg: SATORI.CREAM, t: "MyCFO", d: "Tu CFO con IA: controla las finanzas de tu negocio por chat." },
-      { video: "assets/showroom/satori-contenido-ia.mp4", poster: "assets/showroom/satori-contenido-ia-poster.jpg", fit: "cover", bg: SATORI.CREAM, t: "Contenido con IA", d: "Video de marca, reels y ads cinematográficos hechos con IA de punta a punta." }
+      { video: "assets/showroom/satori-contenido-ia.mp4", poster: "assets/showroom/satori-contenido-ia-poster.jpg", fit: "cover", bg: SATORI.CREAM, t: "Contenido con IA", d: "Video de marca, reels y ads cinematográficos hechos con IA de punta a punta." },
+      { video: "assets/showroom/estudios-mercado.mp4", poster: "assets/showroom/estudios-mercado-poster.jpg", fit: "cover", bg: "#0E0E0E", t: "Estudios de Mercado", d: "Datos reales de tu mercado, competencia y precios para decidir con claridad." }
     ]
   };
   return (
@@ -467,8 +470,10 @@ function QueHacemos() {
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "1.2rem" }}>
           {T.items.map((it, i) => (
             <div key={i} style={{
-              background: SATORI.WHITE, border: "1px solid rgba(14,14,14,0.08)",
-              borderRadius: "18px", overflow: "hidden", boxShadow: "0 10px 30px rgba(14,14,14,0.04)",
+              background: "rgba(255,255,255,0.55)", border: "1px solid rgba(255,255,255,0.65)",
+              backdropFilter: "blur(14px) saturate(160%)", WebkitBackdropFilter: "blur(14px) saturate(160%)",
+              borderRadius: "18px", overflow: "hidden",
+              boxShadow: "0 14px 40px -22px rgba(14,14,14,0.18), inset 0 1px 0 rgba(255,255,255,0.55)",
               display: "flex", alignItems: "stretch"
             }}>
               <div style={{
