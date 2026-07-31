@@ -1435,14 +1435,59 @@ function SatoriGlobe() {
         }}
       >
         <defs>
-          <radialGradient id="globeAtmosphere" cx="50%" cy="50%" r="50%">
-            <stop offset="80%" stopColor={SATORI.GOLD} stopOpacity="0" />
-            <stop offset="94%" stopColor={SATORI.GOLD} stopOpacity="0.11" />
-            <stop offset="100%" stopColor={SATORI.GOLD} stopOpacity="0" />
+          {/* OJO: los degradados del globo van en userSpaceOnUse, NO en el
+              objectBoundingBox por defecto. El globo gira, y con bounding box
+              el degradado se recalcularia sobre la caja de la tierra en cada
+              frame: los colores bailarian. Anclados al disco, se quedan fijos. */}
+
+          {/* Oceano: luz desde arriba-izquierda -> profundidad de esfera */}
+          <radialGradient
+            id="globeOcean" gradientUnits="userSpaceOnUse"
+            cx={CENTER - RADIUS * 0.32} cy={CENTER - RADIUS * 0.38} r={RADIUS * 1.45}
+          >
+            <stop offset="0%" stopColor="#5FA8D8" />
+            <stop offset="55%" stopColor="#2F7CB4" />
+            <stop offset="100%" stopColor="#12456F" />
           </radialGradient>
+
+          {/* Tierra por bandas de latitud. En ortografica la Y del disco ~ latitud,
+              asi que con un degradado vertical salen solos los polos blancos, el
+              verde boreal, el ocre de los desiertos (~30) y el verde tropical. */}
+          <linearGradient
+            id="globeLand" gradientUnits="userSpaceOnUse"
+            x1="0" y1={CENTER - RADIUS} x2="0" y2={CENTER + RADIUS}
+          >
+            <stop offset="0%" stopColor="#E8EDE8" />
+            <stop offset="10%" stopColor="#4E7A47" />
+            <stop offset="24%" stopColor="#2F6B3C" />
+            <stop offset="36%" stopColor="#C9B063" />
+            <stop offset="46%" stopColor="#D8C070" />
+            <stop offset="56%" stopColor="#3E8149" />
+            <stop offset="68%" stopColor="#2F6B3C" />
+            <stop offset="82%" stopColor="#C0A868" />
+            <stop offset="100%" stopColor="#E8EDE8" />
+          </linearGradient>
+
+          {/* Sombra esferica: lo que hace que se lea como bola y no como calcomania */}
+          <radialGradient
+            id="globeShade" gradientUnits="userSpaceOnUse"
+            cx={CENTER - RADIUS * 0.3} cy={CENTER - RADIUS * 0.34} r={RADIUS * 1.35}
+          >
+            <stop offset="45%" stopColor="#000000" stopOpacity="0" />
+            <stop offset="80%" stopColor="#000000" stopOpacity="0.17" />
+            <stop offset="100%" stopColor="#00121F" stopOpacity="0.34" />
+          </radialGradient>
+
+          <radialGradient id="globeAtmosphere" cx="50%" cy="50%" r="50%">
+            <stop offset="82%" stopColor="#7FB6DC" stopOpacity="0" />
+            <stop offset="95%" stopColor="#7FB6DC" stopOpacity="0.22" />
+            <stop offset="100%" stopColor="#7FB6DC" stopOpacity="0" />
+          </radialGradient>
+          {/* Los puntos siguen dorados (marca): sobre azul y verde resaltan
+              mucho mas que antes sobre crema. */}
           <radialGradient id="dotGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor={SATORI.GOLD} stopOpacity="0.7" />
-            <stop offset="55%" stopColor={SATORI.GOLD} stopOpacity="0.18" />
+            <stop offset="0%" stopColor={SATORI.GOLD} stopOpacity="0.85" />
+            <stop offset="55%" stopColor={SATORI.GOLD} stopOpacity="0.22" />
             <stop offset="100%" stopColor={SATORI.GOLD} stopOpacity="0" />
           </radialGradient>
           <clipPath id="globeClip">
@@ -1450,38 +1495,42 @@ function SatoriGlobe() {
           </clipPath>
         </defs>
 
-        {/* Atmosphere ring (gold halo) */}
+        {/* Halo de atmósfera (azul, como el limbo de la Tierra real) */}
         <circle cx={CENTER} cy={CENTER} r={RADIUS + 30} fill="url(#globeAtmosphere)" />
 
-        {/* Globe disc — transparente, solo borde sutil */}
+        {/* Disco = océano */}
+        <circle cx={CENTER} cy={CENTER} r={RADIUS} fill="url(#globeOcean)" />
+
+        <g clipPath="url(#globeClip)">
+          {/* Land primero: el graticule va encima para que se lea sobre tierra y mar */}
+          {landPath && (
+            <path
+              d={landPath}
+              fill="url(#globeLand)"
+              stroke="#1F4A2C"
+              strokeOpacity="0.45"
+              strokeWidth="0.4"
+            />
+          )}
+
+          {graticulePath && (
+            <path d={graticulePath} fill="none" stroke="#FFFFFF" strokeOpacity="0.30" strokeWidth="0.6" />
+          )}
+
+          {/* Sombreado esférico al final: oscurece el limbo sobre tierra y océano */}
+          <circle cx={CENTER} cy={CENTER} r={RADIUS} fill="url(#globeShade)" />
+        </g>
+
+        {/* Borde del disco, apenas insinuado */}
         <circle
           cx={CENTER}
           cy={CENTER}
           r={RADIUS}
-          fill="transparent"
-          stroke={SATORI.GOLD}
-          strokeOpacity="0.22"
+          fill="none"
+          stroke={SATORI.INK}
+          strokeOpacity="0.12"
           strokeWidth="1"
         />
-
-        <g clipPath="url(#globeClip)">
-          {/* Graticule — más sutil sobre fondo transparente */}
-          {graticulePath && (
-            <path d={graticulePath} fill="none" stroke={SATORI.GOLD} strokeOpacity="0.20" strokeWidth="0.7" />
-          )}
-
-          {/* Land — silueta sutil, transparenta el fondo */}
-          {landPath && (
-            <path
-              d={landPath}
-              fill={SATORI.GOLD}
-              fillOpacity="0.34"
-              stroke={SATORI.GOLD}
-              strokeOpacity="0.55"
-              strokeWidth="0.4"
-            />
-          )}
-        </g>
 
         {/* City dots */}
         {dots.map((d, i) => (
@@ -1494,7 +1543,7 @@ function SatoriGlobe() {
               <animate attributeName="r" values="5;16;5" dur={`${2.4 + i * 0.4}s`} repeatCount="indefinite" />
               <animate attributeName="stroke-opacity" values="0.9;0;0.9" dur={`${2.4 + i * 0.4}s`} repeatCount="indefinite" />
             </circle>
-            <circle cx={d.x} cy={d.y} r="4" fill={SATORI.GOLD} />
+            <circle cx={d.x} cy={d.y} r="4" fill={SATORI.GOLD} stroke="#FFFFFF" strokeWidth="1.1" strokeOpacity="0.8" />
           </g>
         ))}
       </svg>
