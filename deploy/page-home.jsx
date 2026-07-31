@@ -1261,7 +1261,9 @@ function SatoriGlobe() {
         const data = await res.json();
         if (cancelled) return;
         const landFeature = window.topojson.feature(data, data.objects.land);
-        const gra = window.d3.geoGraticule10();
+        // step 20 en vez de geoGraticule10 (que va cada 10): ~1/4 del trazo a
+        // reproyectar por frame. Visualmente casi igual, la mitad de meridianos.
+        const gra = window.d3.geoGraticule().step([20, 20])();
         setLand(landFeature);
         setGraticule(gra);
         setD3Ready(true);
@@ -1292,7 +1294,15 @@ function SatoriGlobe() {
       );
       io.observe(svgRef.current);
     }
+    // ACOTADO A ~30 fps A PROPOSITO. Cada cambio de rotacion reproyecta TODA la
+    // geometria mundial (land ~45KB + graticule ~25KB de texto), React lo difea
+    // y Chrome re-parsea ese SVG. A 60 fps satura el hilo principal y en algunas
+    // Macs tumba el proceso de render (pantalla negra). A 30 fps es la mitad de
+    // trabajo y el giro (6 grados/s) se ve igual de fluido.
+    // Arreglo de fondo pendiente: pasar el globo a <canvas>.
+    const MIN_FRAME_MS = 33;
     const tick = (t) => {
+      if (t - last < MIN_FRAME_MS) { raf = requestAnimationFrame(tick); return; }
       const dt = t - last;
       last = t;
       if (visible) {
