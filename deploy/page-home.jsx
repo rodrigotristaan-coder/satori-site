@@ -1230,7 +1230,12 @@ function SatoriGlobe() {
   });
   const svgRef = useRef(null);
 
-  // Carga d3 + topojson + el land map desde CDN
+  // Carga d3-geo + topojson + el land map — SELF-HOSTED (assets/vendor/).
+  // Antes venian de jsDelivr con tags flotantes (@7/@3): codigo de terceros
+  // ejecutandose junto al formulario de leads, sin control de version. Ahora
+  // son archivos versionados en el repo y la CSP ya no permite ningun CDN
+  // externo en script-src. Solo se usa geoGraticule10/geoOrthographic/geoPath,
+  // asi que basta d3-array + d3-geo (53 KB) en vez del bundle d3 completo (273 KB).
   useEffect(() => {
     let cancelled = false;
     const loadScript = (src) =>
@@ -1244,10 +1249,12 @@ function SatoriGlobe() {
       });
     (async () => {
       try {
-        await loadScript("https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js");
-        await loadScript("https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js");
+        // d3-array primero: d3-geo lo consume desde el global d3.
+        await loadScript("/assets/vendor/d3-array.min.js");
+        await loadScript("/assets/vendor/d3-geo.min.js");
+        await loadScript("/assets/vendor/topojson-client.min.js");
         if (cancelled) return;
-        const res = await fetch("https://cdn.jsdelivr.net/npm/world-atlas@2/land-110m.json");
+        const res = await fetch("/assets/vendor/land-110m.json");
         const data = await res.json();
         if (cancelled) return;
         const landFeature = window.topojson.feature(data, data.objects.land);

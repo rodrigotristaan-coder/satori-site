@@ -4,3 +4,8 @@ dist/
 .vercel
 rt.mjs
 CLAUDE.md
+
+# Secretos — nunca versionar (auditoría 2026-07-09)
+.env
+.env.*
+!.env.example
