@@ -1215,8 +1215,11 @@ function SatoriGlobe() {
   const [d3Ready, setD3Ready] = useState(false);
   const [land, setLand] = useState(null);
   const [graticule, setGraticule] = useState(null);
-  const [rotation, setRotation] = useState(40);
-  const [tilt, setTilt] = useState(-20);
+  // Arranque en 305/-18: con esta vista caen DENTRO del disco las 6 ciudades
+  // (las 5 de Mexico + La Rioja), o sea se lee la cobertura real de un vistazo.
+  // Antes arrancaba en 40/-20, que mostraba Asia y Australia: cero puntos.
+  const [rotation, setRotation] = useState(305);
+  const [tilt, setTilt] = useState(-18);
   const [dragging, setDragging] = useState(false);
   // momentum: vRot / vTilt in deg/ms; idleAt marks when we should resume auto-spin
   const dragState = useRef({
@@ -1456,25 +1459,25 @@ function SatoriGlobe() {
           cy={CENTER}
           r={RADIUS}
           fill="transparent"
-          stroke={SATORI.INK}
-          strokeOpacity="0.18"
+          stroke={SATORI.GOLD}
+          strokeOpacity="0.22"
           strokeWidth="1"
         />
 
         <g clipPath="url(#globeClip)">
           {/* Graticule — más sutil sobre fondo transparente */}
           {graticulePath && (
-            <path d={graticulePath} fill="none" stroke={SATORI.INK} strokeOpacity="0.13" strokeWidth="0.7" />
+            <path d={graticulePath} fill="none" stroke={SATORI.GOLD} strokeOpacity="0.20" strokeWidth="0.7" />
           )}
 
           {/* Land — silueta sutil, transparenta el fondo */}
           {landPath && (
             <path
               d={landPath}
-              fill={SATORI.INK}
-              fillOpacity="0.32"
-              stroke={SATORI.INK}
-              strokeOpacity="0.42"
+              fill={SATORI.GOLD}
+              fillOpacity="0.34"
+              stroke={SATORI.GOLD}
+              strokeOpacity="0.55"
               strokeWidth="0.4"
             />
           )}

@@ -1275,7 +1275,9 @@ function TypewriterTitle({ text, className }) {
 function CtaBlock({ titulo = "Hablemos.", sub = "30 minutos. Salimos con claridad.", calendly = true }) {
   const [lang] = useLang();
   const pick = (v) => (v && typeof v === "object" ? (v[lang] || v.es) : v);
-  const [form, setForm] = useState({ nombre: "", empresa: "", sitioWeb: "", email: "", telefono: "", presupuesto: "", mensaje: "" });
+  // `fax` es honeypot: invisible y fuera del tab order, un humano nunca lo llena.
+  // Si viene con texto es bot -> se simula el envio y no se toca el webhook.
+  const [form, setForm] = useState({ nombre: "", empresa: "", sitioWeb: "", email: "", telefono: "", presupuesto: "", mensaje: "", fax: "" });
   const [sent, setSent] = useState(false);
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
 
@@ -1321,6 +1323,9 @@ function CtaBlock({ titulo = "Hablemos.", sub = "30 minutos. Salimos con clarida
 
   const onSubmit = (e) => {
     e.preventDefault();
+    // Bot detectado (honeypot lleno): mismo comportamiento visible, sin webhook.
+    // Callado a proposito — si le avisas al bot, reintenta sorteando la trampa.
+    if (form.fax) { window.location.href = "/gracias"; return; }
     // keepalive: el lead se envía aunque naveguemos a la página de gracias
     fetch(N8N_FORM_WEBHOOK, {
       method: "POST",
@@ -1510,6 +1515,12 @@ function CtaBlock({ titulo = "Hablemos.", sub = "30 minutos. Salimos con clarida
             </div>
           ) : (
             <form onSubmit={onSubmit} style={{ display: "grid", gap: "0.85rem", fontFamily: TYPE.body }}>
+              {/* Honeypot: invisible, sin tab, sin autocompletar y oculto a lectores de pantalla */}
+              <input
+                type="text" name="fax" tabIndex="-1" autoComplete="off" aria-hidden="true"
+                value={form.fax} onChange={set("fax")}
+                style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px", opacity: 0 }}
+              />
               <div className="cta-form-row" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.85rem" }}>
                 <input required className="cta-input" type="text" placeholder={T.nombre}
                   value={form.nombre} onChange={set("nombre")} style={inputStyle} />
