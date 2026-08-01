@@ -174,7 +174,16 @@ function BrandManifesto() {
           }}
         >
           <div className="manifesto-logo-typewriter" style={{ maxWidth: "100%" }}>
-            <SatoriMark height={107} variant="gold" />
+            {/* Doble transformación: la ventana entra desde la izquierda y el
+                contenido se compensa hacia la derecha con el mismo recorrido y la
+                misma curva, así que el logo se ve quieto y lo que barre es el
+                borde de la ventana. Mismo efecto que el clip-path, pero solo con
+                transform: va por GPU y no repinta. */}
+            <span className="manifesto-logo-mask">
+              <span className="manifesto-logo-inner">
+                <SatoriMark height={107} variant="gold" />
+              </span>
+            </span>
             <span className="manifesto-logo-cursor-track" aria-hidden="true"><span className="manifesto-logo-cursor" /></span>
           </div>
         </div>
@@ -229,23 +238,34 @@ function BrandManifesto() {
         }
 
         /* ----- TYPEWRITER REVEAL del logo ----- */
+        /* NADA de animar clip-path aqui. Animar clip-path no va por GPU: obliga a
+           REPINTAR el logo en cada frame, y en esta pagina eso bastaba para colgar
+           la pestana en Chrome (aislado por biseccion: el bloque con la animacion
+           no cargaba, el mismo bloque sin ella si).
+           En su lugar, la ventana (mask) entra desde la izquierda y el contenido
+           (inner) se compensa a la derecha con el MISMO recorrido, duracion y
+           curva, asi que se cancelan: el logo se ve quieto y lo que barre es el
+           borde de la ventana. Solo transform -> compuesto por GPU, sin repintar. */
         .manifesto-logo-typewriter {
           position: relative;
           display: inline-block;
           line-height: 0;
-          clip-path: inset(0 100% 0 0);
-          will-change: clip-path;
-          animation: manifestoTypewrite 2.4s cubic-bezier(.55,.06,.18,1) .35s forwards;
         }
-        @keyframes manifestoTypewrite {
-          0%   { clip-path: inset(0 100% 0 0); }
-          12%  { clip-path: inset(0 92% 0 0); }
-          26%  { clip-path: inset(0 80% 0 0); }
-          42%  { clip-path: inset(0 60% 0 0); }
-          60%  { clip-path: inset(0 38% 0 0); }
-          78%  { clip-path: inset(0 18% 0 0); }
-          100% { clip-path: inset(0 0 0 0); }
+        .manifesto-logo-mask {
+          display: inline-block;
+          line-height: 0;
+          overflow: hidden;
+          will-change: transform;
+          animation: manifestoMask 2.4s cubic-bezier(.55,.06,.18,1) .35s both;
         }
+        .manifesto-logo-inner {
+          display: inline-block;
+          line-height: 0;
+          will-change: transform;
+          animation: manifestoInner 2.4s cubic-bezier(.55,.06,.18,1) .35s both;
+        }
+        @keyframes manifestoMask  { from { transform: translateX(-100%); } to { transform: translateX(0); } }
+        @keyframes manifestoInner { from { transform: translateX(100%); }  to { transform: translateX(0); } }
 
         /* El cursor se mueve con TRANSFORM, nunca con \`left\`.
            Animar \`left\` obliga al navegador a recalcular el diseno en cada frame
@@ -296,7 +316,7 @@ function BrandManifesto() {
         }
 
         @media (prefers-reduced-motion: reduce) {
-          .manifesto-logo-typewriter { animation: none !important; clip-path: none !important; }
+          .manifesto-logo-mask, .manifesto-logo-inner { animation: none !important; transform: none !important; }
           .manifesto-logo-cursor-track { animation: none !important; opacity: 0 !important; }
         }
       `}</style>
