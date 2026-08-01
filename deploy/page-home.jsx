@@ -1247,16 +1247,6 @@ function RutaCrecimiento() {
   );
 }
 
-// Interruptores de diagnostico por URL. Permiten apagar componentes pesados en el
-// sitio REAL, con el JavaScript intacto, para aislar cual cuelga un navegador:
-//   ?sin=neural   ?sin=globo   ?sin=todo
-// Guardado contra el pre-render, donde no existe `location`.
-function apagado(que) {
-  if (typeof location === "undefined") return false;
-  const v = new URLSearchParams(location.search).get("sin");
-  return v === "todo" || v === que;
-}
-
 // Video que SOLO se reproduce mientras esta en pantalla.
 //
 // Antes los 7 videos del showroom llevaban `autoPlay muted loop`: siete
@@ -1706,7 +1696,7 @@ function MapaPresencia() {
         </p>
 
         <div data-reveal style={{ maxWidth: "640px", margin: "0 auto" }} className="globe-wrap">
-          {!apagado("globo") && <SatoriGlobe />}
+          <SatoriGlobe />
         </div>
       </div>
 
@@ -1805,7 +1795,7 @@ function App() {
 
   return (
     <main style={{ position: "relative", minHeight: "100vh", background: SATORI.CREAM }}>
-      {!apagado("neural") && <NeuralBackground opacity={0.55} />}
+      <NeuralBackground opacity={0.55} />
       <Nav current="home" />
       <SectionRail sections={[
         { id: "manifesto", label: { es: "Inicio", en: "Home" } },
