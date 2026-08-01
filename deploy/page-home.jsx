@@ -1234,7 +1234,8 @@ function SatoriGlobe() {
   const tex = useRef(null); // { data, w, h }
   // La rotacion NO es estado de React: si lo fuera, cada frame re-renderizaria.
   const view = useRef({ rot: 305, tilt: -18 });
-  const dragState = useRef({ active: false, lastX: 0, lastY: 0, lastT: 0, vRot: 0, vTilt: 0, idleAt: 0 });
+  const dragState = useRef({ active: false, lastX: 0, lastY: 0, lastT: 0 });
+  const redibujarRef = useRef(null);   // el drag pide repintado; en reposo no se dibuja nada
 
   const SIZE = 560;
   const CENTER = SIZE / 2;
@@ -1454,49 +1455,29 @@ function SatoriGlobe() {
       });
     };
 
-    let raf, last = performance.now(), visible = true, ultimo = 0;
-    const AUTO_SPIN = 0.006, DECAY = 0.96, MIN_V = 0.0008, MIN_FRAME_MS = 33;
-
-    let io;
-    if (typeof IntersectionObserver !== "undefined") {
-      io = new IntersectionObserver(
-        ([e]) => { visible = e.isIntersecting; if (visible) last = performance.now(); },
-        { threshold: 0 }
-      );
-      io.observe(canvas);
-    }
-
-    const tick = (t) => {
-      raf = requestAnimationFrame(tick);
-      if (!visible || t - ultimo < MIN_FRAME_MS) return;
-      const dt = Math.min(64, t - last);
-      last = t; ultimo = t;
-      const st = dragState.current;
-      if (!st.active) {
-        if (Math.abs(st.vRot) > MIN_V || Math.abs(st.vTilt) > MIN_V) {
-          view.current.rot = (view.current.rot + st.vRot * dt) % 360;
-          view.current.tilt = Math.max(-80, Math.min(80, view.current.tilt + st.vTilt * dt));
-          const k = Math.pow(DECAY, dt / 16.67);
-          st.vRot *= k; st.vTilt *= k; st.idleAt = t;
-        } else {
-          st.vRot = 0; st.vTilt = 0;
-          if (t - st.idleAt > 1200) view.current.rot = (view.current.rot + dt * AUTO_SPIN) % 360;
-        }
-      }
-      draw(t);
+    // SIN BUCLE DE ANIMACION — a proposito.
+    // El globo giraba solo, lo que obliga a redibujar 30-60 veces por segundo de
+    // forma permanente mientras la seccion este en pantalla. En equipos con la
+    // aceleracion por hardware apagada o GPU modesta eso satura el hilo principal
+    // hasta que el navegador mata la pestana (pantalla en negro). Era caro en las
+    // TRES versiones: SVG original, canvas vectorial y canvas con textura.
+    // Ahora se pinta UNA vez y solo se repinta cuando el usuario arrastra: en
+    // reposo el costo es exactamente cero.
+    let raf = 0;
+    const repintar = () => {
+      if (raf) return;                       // como mucho un repintado por frame
+      raf = requestAnimationFrame((t) => { raf = 0; draw(t); });
     };
-    raf = requestAnimationFrame(tick);
-    return () => { cancelAnimationFrame(raf); if (io) io.disconnect(); };
+    redibujarRef.current = repintar;
+    repintar();
+    return () => { if (raf) cancelAnimationFrame(raf); redibujarRef.current = null; };
   }, [ready, lang]);
 
   // Drag sobre un hit-target circular que cubre EXACTAMENTE el disco.
   // Mueve refs, no estado: el dibujo lo recoge en el siguiente frame.
   const onPointerDown = (e) => {
     try { e.currentTarget.setPointerCapture?.(e.pointerId); } catch (_) {}
-    dragState.current = {
-      active: true, lastX: e.clientX, lastY: e.clientY,
-      lastT: performance.now(), vRot: 0, vTilt: 0, idleAt: performance.now()
-    };
+    dragState.current = { active: true, lastX: e.clientX, lastY: e.clientY, lastT: performance.now() };
     setDragging(true);
   };
   const onPointerMove = (e) => {
@@ -1504,19 +1485,14 @@ function SatoriGlobe() {
     if (!st.active) return;
     const now = performance.now();
     const dx = e.clientX - st.lastX, dy = e.clientY - st.lastY;
-    const dt = Math.max(1, now - st.lastT);
     st.lastX = e.clientX; st.lastY = e.clientY; st.lastT = now;
-    const dRot = dx * -0.45, dTilt = dy * -0.35;
-    const blend = 0.25;
-    st.vRot = st.vRot * (1 - blend) + (dRot / dt) * blend;
-    st.vTilt = st.vTilt * (1 - blend) + (dTilt / dt) * blend;
-    view.current.rot = (view.current.rot + dRot) % 360;
-    view.current.tilt = Math.max(-80, Math.min(80, view.current.tilt + dTilt));
+    view.current.rot = (view.current.rot + dx * -0.45) % 360;
+    view.current.tilt = Math.max(-80, Math.min(80, view.current.tilt + dy * -0.35));
+    if (redibujarRef.current) redibujarRef.current();   // repinta solo mientras arrastras
   };
   const endDrag = (e) => {
     if (!dragState.current.active) return;
     dragState.current.active = false;
-    dragState.current.idleAt = performance.now();
     setDragging(false);
     try { e.currentTarget?.releasePointerCapture?.(e.pointerId); } catch (_) {}
   };
