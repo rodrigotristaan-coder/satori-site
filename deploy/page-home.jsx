@@ -175,7 +175,7 @@ function BrandManifesto() {
         >
           <div className="manifesto-logo-typewriter" style={{ maxWidth: "100%" }}>
             <SatoriMark height={107} variant="gold" />
-            <span className="manifesto-logo-cursor" aria-hidden="true" />
+            <span className="manifesto-logo-cursor-track" aria-hidden="true"><span className="manifesto-logo-cursor" /></span>
           </div>
         </div>
 
@@ -234,6 +234,7 @@ function BrandManifesto() {
           display: inline-block;
           line-height: 0;
           clip-path: inset(0 100% 0 0);
+          will-change: clip-path;
           animation: manifestoTypewrite 2.4s cubic-bezier(.55,.06,.18,1) .35s forwards;
         }
         @keyframes manifestoTypewrite {
@@ -246,30 +247,48 @@ function BrandManifesto() {
           100% { clip-path: inset(0 0 0 0); }
         }
 
-        .manifesto-logo-cursor {
+        /* El cursor se mueve con TRANSFORM, nunca con \`left\`.
+           Animar \`left\` obliga al navegador a recalcular el diseno en cada frame
+           (reflow); en una pagina con cientos de elementos eso recorre el
+           documento entero 60 veces por segundo y puede colgar la pestana.
+           \`transform\` va por GPU y no toca el diseno.
+           El truco del carril: translateX en porcentaje se mide sobre el ancho
+           del PROPIO elemento, asi que el carril ocupa todo el ancho del logo y
+           el cursor viaja pegado a su borde izquierdo. Visualmente identico. */
+        .manifesto-logo-cursor-track {
           position: absolute;
           top: 6%;
           bottom: 6%;
+          left: 0;
+          right: 0;
+          pointer-events: none;
+          opacity: 0;
+          will-change: transform;
+          animation: manifestoCursorMove 2.4s cubic-bezier(.55,.06,.18,1) .35s forwards;
+        }
+        .manifesto-logo-cursor {
+          position: absolute;
+          top: 0;
+          bottom: 0;
           left: 0;
           width: 4px;
           background: ${SATORI.GOLD};
           box-shadow: 0 0 18px ${SATORI.GOLD}AA;
           border-radius: 2px;
-          opacity: 0;
-          animation:
-            manifestoCursorMove 2.4s cubic-bezier(.55,.06,.18,1) .35s forwards,
-            manifestoCursorBlink .65s steps(1) 3s infinite;
+          /* 12 parpadeos y para. Antes era \`infinite\`: una animacion corriendo
+             para siempre, aunque el logo ya estuviera escrito. */
+          animation: manifestoCursorBlink .65s steps(1) 3s 12 forwards;
         }
         @keyframes manifestoCursorMove {
-          0%   { left: 0;     opacity: 0; }
+          0%   { transform: translateX(0);    opacity: 0; }
           6%   { opacity: 1; }
-          12%  { left: 8%; }
-          26%  { left: 20%; }
-          42%  { left: 40%; }
-          60%  { left: 62%; }
-          78%  { left: 82%; }
-          98%  { left: 100%; opacity: 1; }
-          100% { left: 100%; opacity: 1; }
+          12%  { transform: translateX(8%); }
+          26%  { transform: translateX(20%); }
+          42%  { transform: translateX(40%); }
+          60%  { transform: translateX(62%); }
+          78%  { transform: translateX(82%); }
+          98%  { transform: translateX(100%); opacity: 1; }
+          100% { transform: translateX(100%); opacity: 0; }
         }
         @keyframes manifestoCursorBlink {
           0%, 49%   { opacity: 1; }
@@ -278,7 +297,7 @@ function BrandManifesto() {
 
         @media (prefers-reduced-motion: reduce) {
           .manifesto-logo-typewriter { animation: none !important; clip-path: none !important; }
-          .manifesto-logo-cursor { animation: none !important; opacity: 0 !important; }
+          .manifesto-logo-cursor-track { animation: none !important; opacity: 0 !important; }
         }
       `}</style>
     </section>
