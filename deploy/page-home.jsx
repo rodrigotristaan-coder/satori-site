@@ -487,8 +487,7 @@ function QueHacemos() {
                 display: "flex", alignItems: "center", justifyContent: "center"
               }}>
                 {it.video ? (
-                  <video src={it.video} poster={it.poster} autoPlay muted loop playsInline preload="metadata"
-                    style={{ width: "100%", height: "100%", objectFit: it.fit || "contain", objectPosition: it.objPos || "center", display: "block" }} />
+                  <VideoEnPantalla src={it.video} poster={it.poster} fit={it.fit} objPos={it.objPos} />
                 ) : (
                   <img src={it.img} alt={it.logo ? it.t : ""} loading="lazy"
                     style={{ width: "100%", height: "100%", objectFit: it.fit || (it.logo ? "contain" : "cover"), objectPosition: it.objPos || "center", padding: it.logo ? "0.85rem" : 0, display: "block" }} />
@@ -1206,6 +1205,46 @@ function RutaCrecimiento() {
         <GrowthPathTimeline items={lang === "en" ? stepsEn : stepsEs} />
       </div>
     </section>
+  );
+}
+
+// Video que SOLO se reproduce mientras esta en pantalla.
+//
+// Antes los 7 videos del showroom llevaban `autoPlay muted loop`: siete
+// decodificadores de video corriendo en bucle a la vez, para siempre, aunque
+// estuvieran fuera del viewport. Cada uno reserva sus buferes y consume CPU/GPU
+// de forma permanente. En equipos con poca RAM eso agota el proceso de la
+// pestana y Chrome acaba matandola ("la pagina no responde" / pantalla en negro),
+// mientras que el resto de pestanas del navegador siguen tan tranquilas: ninguna
+// otra pagina normal mantiene 7 videos en bucle.
+//
+// Safari y los navegadores moviles ya hacian esto por su cuenta (pausan lo que no
+// se ve); Chrome de escritorio no. Por eso el sitio abria en el movil y en Safari
+// pero no en Chrome.
+//
+// Con preload="none" ademas no se descarga nada hasta que hace falta.
+function VideoEnPantalla({ src, poster, fit, objPos }) {
+  const ref = useRef(null);
+  useEffect(() => {
+    const v = ref.current;
+    if (!v || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) {
+        if (!v.src) v.src = src;              // se carga la primera vez que se ve
+        const p = v.play();
+        if (p && p.catch) p.catch(() => {});  // autoplay bloqueado: se queda el poster
+      } else {
+        v.pause();
+      }
+    }, { threshold: 0.1 });
+    io.observe(v);
+    return () => io.disconnect();
+  }, [src]);
+  return (
+    <video
+      ref={ref} poster={poster} muted loop playsInline preload="none"
+      style={{ width: "100%", height: "100%", objectFit: fit || "contain", objectPosition: objPos || "center", display: "block" }}
+    />
   );
 }
 
