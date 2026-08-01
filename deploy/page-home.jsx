@@ -1209,36 +1209,46 @@ function RutaCrecimiento() {
   );
 }
 
-// ---------- SATORI GLOBE (orthographic, interactivo + transparente) ----------
+// ---------- SATORI GLOBE (ortografico, interactivo) ----------
+// EN CANVAS, NO EN SVG — y el porque importa:
+// La version en SVG reproyectaba toda la geometria mundial en cada frame y le
+// entregaba a React dos strings gigantes (land ~45KB + graticule ~14KB) que
+// Chrome tenia que re-parsear y re-rasterizar. Ademas la rotacion vivia en
+// useState, asi que cada grado disparaba un render de React completo. En algunas
+// Macs eso saturaba el hilo principal hasta que Chrome mataba la pestana:
+// "Aw, Snap — RESULT_CODE_HUNG", pantalla en negro.
+//
+// Aqui la rotacion vive en un ref y se dibuja directo al contexto 2D: React no
+// participa en la animacion, no se genera texto, no hay DOM que reconciliar.
+// d3.geoPath acepta un contexto de canvas y traza directo sobre el.
 function SatoriGlobe() {
   const [lang] = useLang();
-  const [d3Ready, setD3Ready] = useState(false);
-  const [land, setLand] = useState(null);
-  const [graticule, setGraticule] = useState(null);
-  // Arranque en 305/-18: con esta vista caen DENTRO del disco las 6 ciudades
-  // (las 5 de Mexico + La Rioja), o sea se lee la cobertura real de un vistazo.
-  // Antes arrancaba en 40/-20, que mostraba Asia y Australia: cero puntos.
-  const [rotation, setRotation] = useState(305);
-  const [tilt, setTilt] = useState(-18);
+  const [ready, setReady] = useState(false);
   const [dragging, setDragging] = useState(false);
-  // momentum: vRot / vTilt in deg/ms; idleAt marks when we should resume auto-spin
-  const dragState = useRef({
-    active: false,
-    lastX: 0,
-    lastY: 0,
-    lastT: 0,
-    vRot: 0,
-    vTilt: 0,
-    idleAt: 0
-  });
-  const svgRef = useRef(null);
 
-  // Carga d3-geo + topojson + el land map — SELF-HOSTED (assets/vendor/).
-  // Antes venian de jsDelivr con tags flotantes (@7/@3): codigo de terceros
-  // ejecutandose junto al formulario de leads, sin control de version. Ahora
-  // son archivos versionados en el repo y la CSP ya no permite ningun CDN
-  // externo en script-src. Solo se usa geoGraticule10/geoOrthographic/geoPath,
-  // asi que basta d3-array + d3-geo (53 KB) en vez del bundle d3 completo (273 KB).
+  const canvasRef = useRef(null);
+  const geo = useRef({ land: null, graticule: null });
+  // La rotacion NO es estado de React: si lo fuera, cada frame re-renderizaria.
+  const view = useRef({ rot: 305, tilt: -18 });
+  const dragState = useRef({ active: false, lastX: 0, lastY: 0, lastT: 0, vRot: 0, vTilt: 0, idleAt: 0 });
+
+  const SIZE = 560;
+  const CENTER = SIZE / 2;
+  const RADIUS = SIZE * 0.4;
+
+  // Ciudades — coordenadas reales (lng, lat)
+  const cities = [
+    { name: "CDMX", lng: -99.1332, lat: 19.4326 },
+    { name: "Guadalajara", lng: -103.3496, lat: 20.6597 },
+    { name: "Tijuana", lng: -117.0382, lat: 32.5149 },
+    { name: "Acapulco", lng: -99.8237, lat: 16.8531 },
+    { name: lang === "en" ? "Mexico State" : "Edo. de México", lng: -99.7233, lat: 19.4969 },
+    { name: lang === "en" ? "La Rioja · Spain" : "La Rioja · España", lng: -2.4449, lat: 42.4627 }
+  ];
+
+  // Carga d3-geo + topojson + el mapa — SELF-HOSTED (assets/vendor/, version fija).
+  // Solo se usan geoOrthographic / geoPath / geoGraticule, asi que basta
+  // d3-array + d3-geo (53 KB) en vez del bundle d3 completo (273 KB).
   useEffect(() => {
     let cancelled = false;
     const loadScript = (src) =>
@@ -1260,59 +1270,177 @@ function SatoriGlobe() {
         const res = await fetch("/assets/vendor/land-110m.json");
         const data = await res.json();
         if (cancelled) return;
-        const landFeature = window.topojson.feature(data, data.objects.land);
-        // step 20 en vez de geoGraticule10 (que va cada 10): ~1/4 del trazo a
-        // reproyectar por frame. Visualmente casi igual, la mitad de meridianos.
-        const gra = window.d3.geoGraticule().step([20, 20])();
-        setLand(landFeature);
-        setGraticule(gra);
-        setD3Ready(true);
+        geo.current.land = window.topojson.feature(data, data.objects.land);
+        geo.current.graticule = window.d3.geoGraticule().step([20, 20])();
+        setReady(true);
       } catch (e) {
         console.warn("[SATORI globe] load failed, using fallback", e);
       }
     })();
-    return () => {
-      cancelled = true;
-    };
+    return () => { cancelled = true; };
   }, []);
 
-  // Rotación automática lenta + momentum tras swipe (pausa cuando se arrastra)
+  // Bucle de dibujo. Corre una sola vez montado; no depende del estado de React.
   useEffect(() => {
-    if (!d3Ready) return;
+    if (!ready || !canvasRef.current || !window.d3) return;
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d", { alpha: true });
+    if (!ctx) return;
+
+    // Nitidez en pantallas retina, con tope en 2x: por encima el costo sube al
+    // cuadrado y no se nota la diferencia a 560 px.
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    canvas.width = SIZE * dpr;
+    canvas.height = SIZE * dpr;
+    ctx.scale(dpr, dpr);
+
+    const proj = window.d3.geoOrthographic()
+      .scale(RADIUS).translate([CENTER, CENTER]).clipAngle(90);
+    const pathGen = window.d3.geoPath(proj, ctx);
+
+    // Degradados creados UNA vez: van en coordenadas del disco, no de la tierra,
+    // asi que no cambian al girar (si dependieran de la geometria, bailarian).
+    const oceano = ctx.createRadialGradient(
+      CENTER - RADIUS * 0.32, CENTER - RADIUS * 0.38, RADIUS * 0.05,
+      CENTER - RADIUS * 0.32, CENTER - RADIUS * 0.38, RADIUS * 1.45
+    );
+    oceano.addColorStop(0, "#5FA8D8");
+    oceano.addColorStop(0.55, "#2F7CB4");
+    oceano.addColorStop(1, "#12456F");
+
+    // Tierra por bandas de latitud: en ortografica la Y del disco equivale mas o
+    // menos a la latitud, asi que salen solos los polos claros, el verde boreal,
+    // el ocre de los desiertos (~30 N/S) y el verde tropical.
+    const tierra = ctx.createLinearGradient(0, CENTER - RADIUS, 0, CENTER + RADIUS);
+    [[0, "#E8EDE8"], [0.10, "#4E7A47"], [0.24, "#2F6B3C"], [0.36, "#C9B063"], [0.46, "#D8C070"],
+     [0.56, "#3E8149"], [0.68, "#2F6B3C"], [0.82, "#C0A868"], [1, "#E8EDE8"]]
+      .forEach(([o, c]) => tierra.addColorStop(o, c));
+
+    // Sombra esferica: lo que hace que se lea como bola y no como calcomania.
+    const sombra = ctx.createRadialGradient(
+      CENTER - RADIUS * 0.3, CENTER - RADIUS * 0.34, RADIUS * 0.4,
+      CENTER - RADIUS * 0.3, CENTER - RADIUS * 0.34, RADIUS * 1.35
+    );
+    sombra.addColorStop(0, "rgba(0,0,0,0)");
+    sombra.addColorStop(0.62, "rgba(0,0,0,0.17)");
+    sombra.addColorStop(1, "rgba(0,18,31,0.34)");
+
+    const atmosfera = ctx.createRadialGradient(CENTER, CENTER, RADIUS, CENTER, CENTER, RADIUS + 30);
+    atmosfera.addColorStop(0, "rgba(127,182,220,0)");
+    atmosfera.addColorStop(0.55, "rgba(127,182,220,0.22)");
+    atmosfera.addColorStop(1, "rgba(127,182,220,0)");
+
+    const discoPath = () => { ctx.beginPath(); ctx.arc(CENTER, CENTER, RADIUS, 0, Math.PI * 2); };
+
+    const draw = (t) => {
+      const { rot, tilt } = view.current;
+      proj.rotate([-rot, tilt, 0]);
+      ctx.clearRect(0, 0, SIZE, SIZE);
+
+      // Halo de atmosfera
+      ctx.beginPath();
+      ctx.arc(CENTER, CENTER, RADIUS + 30, 0, Math.PI * 2);
+      ctx.fillStyle = atmosfera;
+      ctx.fill();
+
+      ctx.save();
+      discoPath();
+      ctx.clip();
+
+      discoPath();
+      ctx.fillStyle = oceano;
+      ctx.fill();
+
+      ctx.beginPath();
+      pathGen(geo.current.land);
+      ctx.fillStyle = tierra;
+      ctx.fill();
+      ctx.lineWidth = 0.4;
+      ctx.strokeStyle = "rgba(31,74,44,0.45)";
+      ctx.stroke();
+
+      ctx.beginPath();
+      pathGen(geo.current.graticule);
+      ctx.lineWidth = 0.6;
+      ctx.strokeStyle = "rgba(255,255,255,0.30)";
+      ctx.stroke();
+
+      discoPath();
+      ctx.fillStyle = sombra;
+      ctx.fill();
+      ctx.restore();
+
+      // Borde apenas insinuado
+      discoPath();
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = "rgba(14,14,14,0.12)";
+      ctx.stroke();
+
+      // Puntos de ciudad (dorado de marca). El pulso sale del reloj, no de <animate>.
+      const c0 = proj.rotate();
+      const lambda0 = (-c0[0] * Math.PI) / 180;
+      const phi0 = (-c0[1] * Math.PI) / 180;
+      cities.forEach((c, i) => {
+        const phi = (c.lat * Math.PI) / 180;
+        const lambda = (c.lng * Math.PI) / 180;
+        const cosC = Math.sin(phi0) * Math.sin(phi) + Math.cos(phi0) * Math.cos(phi) * Math.cos(lambda - lambda0);
+        if (cosC < 0) return; // cara oculta del globo
+        const p = proj([c.lng, c.lat]);
+        if (!p) return;
+        const fade = Math.min(1, cosC * 3.2);
+        const pulso = (Math.sin(t / (1200 + i * 150)) + 1) / 2;
+
+        const glow = ctx.createRadialGradient(p[0], p[1], 0, p[0], p[1], 18 + pulso * 12);
+        glow.addColorStop(0, `rgba(166,124,0,${0.85 * fade})`);
+        glow.addColorStop(0.55, `rgba(166,124,0,${0.22 * fade})`);
+        glow.addColorStop(1, "rgba(166,124,0,0)");
+        ctx.beginPath();
+        ctx.arc(p[0], p[1], 18 + pulso * 12, 0, Math.PI * 2);
+        ctx.fillStyle = glow;
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(p[0], p[1], 5 + pulso * 11, 0, Math.PI * 2);
+        ctx.lineWidth = 1.6;
+        ctx.strokeStyle = `rgba(166,124,0,${(1 - pulso) * 0.9 * fade})`;
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(p[0], p[1], 4, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(166,124,0,${fade})`;
+        ctx.fill();
+        ctx.lineWidth = 1.1;
+        ctx.strokeStyle = `rgba(255,255,255,${0.8 * fade})`;
+        ctx.stroke();
+      });
+    };
+
     let raf;
     let last = performance.now();
     let visible = true;
-    const AUTO_SPIN = 0.006; // deg/ms ≈ 6°/s
-    const DECAY = 0.96; // multiplicador por frame (~16ms)
-    const MIN_V = 0.0008; // umbral debajo del cual paramos el momentum
-    // Pausa el globo cuando NO está en pantalla (ahorra CPU y batería en móvil)
+    const AUTO_SPIN = 0.006; // deg/ms ~ 6 grados/s
+    const DECAY = 0.96;
+    const MIN_V = 0.0008;
+
+    // Pausa cuando el globo no esta en pantalla (CPU y bateria)
     let io;
-    if (svgRef.current && typeof IntersectionObserver !== "undefined") {
+    if (typeof IntersectionObserver !== "undefined") {
       io = new IntersectionObserver(
         ([e]) => { visible = e.isIntersecting; if (visible) last = performance.now(); },
         { threshold: 0 }
       );
-      io.observe(svgRef.current);
+      io.observe(canvas);
     }
-    // ACOTADO A ~30 fps A PROPOSITO. Cada cambio de rotacion reproyecta TODA la
-    // geometria mundial (land ~45KB + graticule ~25KB de texto), React lo difea
-    // y Chrome re-parsea ese SVG. A 60 fps satura el hilo principal y en algunas
-    // Macs tumba el proceso de render (pantalla negra). A 30 fps es la mitad de
-    // trabajo y el giro (6 grados/s) se ve igual de fluido.
-    // Arreglo de fondo pendiente: pasar el globo a <canvas>.
-    const MIN_FRAME_MS = 33;
+
     const tick = (t) => {
-      if (t - last < MIN_FRAME_MS) { raf = requestAnimationFrame(tick); return; }
-      const dt = t - last;
+      const dt = Math.min(64, t - last); // clamp: tras una pausa larga no da un salto
       last = t;
       if (visible) {
         const st = dragState.current;
         if (!st.active) {
-          // ¿Aún hay momentum?
           if (Math.abs(st.vRot) > MIN_V || Math.abs(st.vTilt) > MIN_V) {
-            setRotation((r) => (r + st.vRot * dt) % 360);
-            setTilt((tt) => Math.max(-80, Math.min(80, tt + st.vTilt * dt)));
-            // decaimiento normalizado por frame
+            view.current.rot = (view.current.rot + st.vRot * dt) % 360;
+            view.current.tilt = Math.max(-80, Math.min(80, view.current.tilt + st.vTilt * dt));
             const k = Math.pow(DECAY, dt / 16.67);
             st.vRot *= k;
             st.vTilt *= k;
@@ -1320,31 +1448,24 @@ function SatoriGlobe() {
           } else {
             st.vRot = 0;
             st.vTilt = 0;
-            const idleFor = t - st.idleAt;
-            if (idleFor > 1200) {
-              setRotation((r) => (r + dt * AUTO_SPIN) % 360);
-            }
+            if (t - st.idleAt > 1200) view.current.rot = (view.current.rot + dt * AUTO_SPIN) % 360;
           }
         }
+        draw(t);
       }
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
     return () => { cancelAnimationFrame(raf); if (io) io.disconnect(); };
-  }, [d3Ready]);
+  }, [ready, lang]);
 
-  // Drag handlers (se montan en un hit-target circular que cubre EXACTAMENTE el disco)
+  // Drag sobre un hit-target circular que cubre EXACTAMENTE el disco.
+  // Mueve refs, no estado: el dibujo lo recoge en el siguiente frame.
   const onPointerDown = (e) => {
-    const target = e.currentTarget;
-    try { target.setPointerCapture?.(e.pointerId); } catch (_) {}
+    try { e.currentTarget.setPointerCapture?.(e.pointerId); } catch (_) {}
     dragState.current = {
-      active: true,
-      lastX: e.clientX,
-      lastY: e.clientY,
-      lastT: performance.now(),
-      vRot: 0,
-      vTilt: 0,
-      idleAt: performance.now()
+      active: true, lastX: e.clientX, lastY: e.clientY,
+      lastT: performance.now(), vRot: 0, vTilt: 0, idleAt: performance.now()
     };
     setDragging(true);
   };
@@ -1355,20 +1476,15 @@ function SatoriGlobe() {
     const dx = e.clientX - st.lastX;
     const dy = e.clientY - st.lastY;
     const dt = Math.max(1, now - st.lastT);
-    st.lastX = e.clientX;
-    st.lastY = e.clientY;
-    st.lastT = now;
-    // dirección INVERTIDA (giro hacia donde apunta el dedo en sentido contrario)
-    const ROT_GAIN = -0.45;
-    const TILT_GAIN = -0.35;
-    const dRot = dx * ROT_GAIN;
-    const dTilt = dy * TILT_GAIN;
-    // Velocidades instantáneas (deg/ms), suavizadas
+    st.lastX = e.clientX; st.lastY = e.clientY; st.lastT = now;
+    // direccion INVERTIDA (el globo gira en contra del dedo, como una bola real)
+    const dRot = dx * -0.45;
+    const dTilt = dy * -0.35;
     const blend = 0.25;
     st.vRot = st.vRot * (1 - blend) + (dRot / dt) * blend;
     st.vTilt = st.vTilt * (1 - blend) + (dTilt / dt) * blend;
-    setRotation((r) => (r + dRot) % 360);
-    setTilt((t) => Math.max(-80, Math.min(80, t + dTilt)));
+    view.current.rot = (view.current.rot + dRot) % 360;
+    view.current.tilt = Math.max(-80, Math.min(80, view.current.tilt + dTilt));
   };
   const endDrag = (e) => {
     if (!dragState.current.active) return;
@@ -1377,51 +1493,6 @@ function SatoriGlobe() {
     setDragging(false);
     try { e.currentTarget?.releasePointerCapture?.(e.pointerId); } catch (_) {}
   };
-
-  // Ciudades — coordenadas reales (lng, lat)
-  const cities = [
-    { name: "CDMX", lng: -99.1332, lat: 19.4326 },
-    { name: "Guadalajara", lng: -103.3496, lat: 20.6597 },
-    { name: "Tijuana", lng: -117.0382, lat: 32.5149 },
-    { name: "Acapulco", lng: -99.8237, lat: 16.8531 },
-    { name: lang === "en" ? "Mexico State" : "Edo. de México", lng: -99.7233, lat: 19.4969 },
-    { name: lang === "en" ? "La Rioja · Spain" : "La Rioja · España", lng: -2.4449, lat: 42.4627 }
-  ];
-
-  const SIZE = 560;
-  const CENTER = SIZE / 2;
-  const RADIUS = SIZE * 0.4;
-
-  let landPath = null;
-  let graticulePath = null;
-  let dots = [];
-
-  if (d3Ready && window.d3 && land) {
-    const proj = window.d3
-      .geoOrthographic()
-      .scale(RADIUS)
-      .translate([CENTER, CENTER])
-      .rotate([-rotation, tilt, 0])
-      .clipAngle(90);
-    const pathGen = window.d3.geoPath(proj);
-    landPath = pathGen(land);
-    graticulePath = graticule ? pathGen(graticule) : null;
-
-    const center = proj.rotate();
-    const lambda0 = (-center[0] * Math.PI) / 180;
-    const phi0 = (-center[1] * Math.PI) / 180;
-    cities.forEach((c) => {
-      const phi = (c.lat * Math.PI) / 180;
-      const lambda = (c.lng * Math.PI) / 180;
-      const cosC = Math.sin(phi0) * Math.sin(phi) + Math.cos(phi0) * Math.cos(phi) * Math.cos(lambda - lambda0);
-      if (cosC < 0) return;
-      const projected = proj([c.lng, c.lat]);
-      if (projected) {
-        const edgeFade = Math.min(1, cosC * 3.2);
-        dots.push({ x: projected[0], y: projected[1], name: c.name, opacity: edgeFade });
-      }
-    });
-  }
 
   return (
     <div
@@ -1433,130 +1504,12 @@ function SatoriGlobe() {
         aspectRatio: "1"
       }}
     >
-      <svg
-        ref={svgRef}
-        viewBox={`0 0 ${SIZE} ${SIZE}`}
-        style={{
-          width: "100%",
-          height: "100%",
-          display: "block",
-          pointerEvents: "none",
-          userSelect: "none"
-        }}
-      >
-        <defs>
-          {/* OJO: los degradados del globo van en userSpaceOnUse, NO en el
-              objectBoundingBox por defecto. El globo gira, y con bounding box
-              el degradado se recalcularia sobre la caja de la tierra en cada
-              frame: los colores bailarian. Anclados al disco, se quedan fijos. */}
-
-          {/* Oceano: luz desde arriba-izquierda -> profundidad de esfera */}
-          <radialGradient
-            id="globeOcean" gradientUnits="userSpaceOnUse"
-            cx={CENTER - RADIUS * 0.32} cy={CENTER - RADIUS * 0.38} r={RADIUS * 1.45}
-          >
-            <stop offset="0%" stopColor="#5FA8D8" />
-            <stop offset="55%" stopColor="#2F7CB4" />
-            <stop offset="100%" stopColor="#12456F" />
-          </radialGradient>
-
-          {/* Tierra por bandas de latitud. En ortografica la Y del disco ~ latitud,
-              asi que con un degradado vertical salen solos los polos blancos, el
-              verde boreal, el ocre de los desiertos (~30) y el verde tropical. */}
-          <linearGradient
-            id="globeLand" gradientUnits="userSpaceOnUse"
-            x1="0" y1={CENTER - RADIUS} x2="0" y2={CENTER + RADIUS}
-          >
-            <stop offset="0%" stopColor="#E8EDE8" />
-            <stop offset="10%" stopColor="#4E7A47" />
-            <stop offset="24%" stopColor="#2F6B3C" />
-            <stop offset="36%" stopColor="#C9B063" />
-            <stop offset="46%" stopColor="#D8C070" />
-            <stop offset="56%" stopColor="#3E8149" />
-            <stop offset="68%" stopColor="#2F6B3C" />
-            <stop offset="82%" stopColor="#C0A868" />
-            <stop offset="100%" stopColor="#E8EDE8" />
-          </linearGradient>
-
-          {/* Sombra esferica: lo que hace que se lea como bola y no como calcomania */}
-          <radialGradient
-            id="globeShade" gradientUnits="userSpaceOnUse"
-            cx={CENTER - RADIUS * 0.3} cy={CENTER - RADIUS * 0.34} r={RADIUS * 1.35}
-          >
-            <stop offset="45%" stopColor="#000000" stopOpacity="0" />
-            <stop offset="80%" stopColor="#000000" stopOpacity="0.17" />
-            <stop offset="100%" stopColor="#00121F" stopOpacity="0.34" />
-          </radialGradient>
-
-          <radialGradient id="globeAtmosphere" cx="50%" cy="50%" r="50%">
-            <stop offset="82%" stopColor="#7FB6DC" stopOpacity="0" />
-            <stop offset="95%" stopColor="#7FB6DC" stopOpacity="0.22" />
-            <stop offset="100%" stopColor="#7FB6DC" stopOpacity="0" />
-          </radialGradient>
-          {/* Los puntos siguen dorados (marca): sobre azul y verde resaltan
-              mucho mas que antes sobre crema. */}
-          <radialGradient id="dotGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor={SATORI.GOLD} stopOpacity="0.85" />
-            <stop offset="55%" stopColor={SATORI.GOLD} stopOpacity="0.22" />
-            <stop offset="100%" stopColor={SATORI.GOLD} stopOpacity="0" />
-          </radialGradient>
-          <clipPath id="globeClip">
-            <circle cx={CENTER} cy={CENTER} r={RADIUS} />
-          </clipPath>
-        </defs>
-
-        {/* Halo de atmósfera (azul, como el limbo de la Tierra real) */}
-        <circle cx={CENTER} cy={CENTER} r={RADIUS + 30} fill="url(#globeAtmosphere)" />
-
-        {/* Disco = océano */}
-        <circle cx={CENTER} cy={CENTER} r={RADIUS} fill="url(#globeOcean)" />
-
-        <g clipPath="url(#globeClip)">
-          {/* Land primero: el graticule va encima para que se lea sobre tierra y mar */}
-          {landPath && (
-            <path
-              d={landPath}
-              fill="url(#globeLand)"
-              stroke="#1F4A2C"
-              strokeOpacity="0.45"
-              strokeWidth="0.4"
-            />
-          )}
-
-          {graticulePath && (
-            <path d={graticulePath} fill="none" stroke="#FFFFFF" strokeOpacity="0.30" strokeWidth="0.6" />
-          )}
-
-          {/* Sombreado esférico al final: oscurece el limbo sobre tierra y océano */}
-          <circle cx={CENTER} cy={CENTER} r={RADIUS} fill="url(#globeShade)" />
-        </g>
-
-        {/* Borde del disco, apenas insinuado */}
-        <circle
-          cx={CENTER}
-          cy={CENTER}
-          r={RADIUS}
-          fill="none"
-          stroke={SATORI.INK}
-          strokeOpacity="0.12"
-          strokeWidth="1"
-        />
-
-        {/* City dots */}
-        {dots.map((d, i) => (
-          <g key={`${d.name}-${i}`} style={{ opacity: d.opacity }}>
-            <circle cx={d.x} cy={d.y} r="22" fill="url(#dotGlow)">
-              <animate attributeName="r" values="18;30;18" dur={`${3.2 + i * 0.3}s`} repeatCount="indefinite" />
-              <animate attributeName="opacity" values="0.7;1;0.7" dur={`${3.2 + i * 0.3}s`} repeatCount="indefinite" />
-            </circle>
-            <circle cx={d.x} cy={d.y} r="9" fill="none" stroke={SATORI.GOLD} strokeWidth="1.6">
-              <animate attributeName="r" values="5;16;5" dur={`${2.4 + i * 0.4}s`} repeatCount="indefinite" />
-              <animate attributeName="stroke-opacity" values="0.9;0;0.9" dur={`${2.4 + i * 0.4}s`} repeatCount="indefinite" />
-            </circle>
-            <circle cx={d.x} cy={d.y} r="4" fill={SATORI.GOLD} stroke="#FFFFFF" strokeWidth="1.1" strokeOpacity="0.8" />
-          </g>
-        ))}
-      </svg>
+      <canvas
+        ref={canvasRef}
+        aria-label={lang === "en" ? "Interactive globe with Satori presence" : "Globo interactivo con la presencia de Satori"}
+        role="img"
+        style={{ width: "100%", height: "100%", display: "block", pointerEvents: "none" }}
+      />
 
       {/* Hit target circular: SOLO captura toques dentro del disco real del globo */}
       <div
@@ -1601,7 +1554,7 @@ function SatoriGlobe() {
           : (lang === "en" ? "drag to explore" : "arrastra para girar")}
       </div>
 
-      {!d3Ready && (
+      {!ready && (
         <div
           style={{
             position: "absolute",

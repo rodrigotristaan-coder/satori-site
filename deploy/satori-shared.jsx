@@ -242,7 +242,11 @@ function NeuralBackground({ opacity = 0.5 }) {
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    // DPR 1 A PROPOSITO (antes 2): esta capa son puntos difusos al 55% de opacidad
+    // detras del contenido; a 2x son 4 veces mas pixeles que rasterizar por frame
+    // (3840x1814 = 7 megapixeles) sin diferencia visible. Con la aceleracion por
+    // hardware apagada eso se rasteriza en CPU y tumba la pestana.
+    const dpr = 1;
     let W, H, nodes = [], id;
     const mouse = { x: -9999, y: -9999 };
     const mk = () => ({
@@ -266,8 +270,23 @@ function NeuralBackground({ opacity = 0.5 }) {
     window.addEventListener("pointermove", onMove, { passive: true });
     window.addEventListener("pointerleave", onLeave);
     const LINK = 130 * dpr, PULL = 170 * dpr;
-    const frame = () => {
+    // Antes cada enlace era su propio beginPath/stroke: con 80 nodos son hasta
+    // ~3.000 trazos sueltos por frame, y cada stroke() sobre un canvas grande es
+    // caro. Ahora se agrupan en 4 cubetas de opacidad -> 4 stroke() por frame,
+    // conservando el degradado de cercania. Mismo aspecto, dos ordenes de
+    // magnitud menos de llamadas al rasterizador.
+    const CUBETAS = 4;
+    const buckets = Array.from({ length: CUBETAS }, () => new Path2D());
+    let ultimo = 0;
+    const MIN_FRAME_MS = 33; // ~30 fps: es una capa ambiental, no necesita 60
+    const frame = (t) => {
+      if (!reduced) id = requestAnimationFrame(frame);
+      if (t - ultimo < MIN_FRAME_MS) return;
+      ultimo = t;
       ctx.clearRect(0, 0, W, H);
+      for (let k = 0; k < CUBETAS; k++) buckets[k] = new Path2D();
+      const puntos = new Path2D();
+      const alRaton = new Path2D();
       for (let i = 0; i < nodes.length; i++) {
         const n = nodes[i];
         n.x += n.vx; n.y += n.vy;
@@ -276,24 +295,29 @@ function NeuralBackground({ opacity = 0.5 }) {
         const dxm = mouse.x - n.x, dym = mouse.y - n.y, dm = Math.hypot(dxm, dym);
         if (dm < PULL && dm > 1) { n.x += (dxm / dm) * 0.3 * dpr; n.y += (dym / dm) * 0.3 * dpr; }
         for (let j = i + 1; j < nodes.length; j++) {
-          const m = nodes[j], dx = n.x - m.x, dy = n.y - m.y, d = Math.hypot(dx, dy);
-          if (d < LINK) {
-            ctx.strokeStyle = `rgba(166,124,0,${(0.12 * (1 - d / LINK)).toFixed(3)})`;
-            ctx.lineWidth = dpr * 0.7;
-            ctx.beginPath(); ctx.moveTo(n.x, n.y); ctx.lineTo(m.x, m.y); ctx.stroke();
+          const m = nodes[j], dx = n.x - m.x, dy = n.y - m.y;
+          const d2 = dx * dx + dy * dy;              // sin sqrt: comparamos cuadrados
+          if (d2 < LINK * LINK) {
+            const k = Math.min(CUBETAS - 1, Math.floor((Math.sqrt(d2) / LINK) * CUBETAS));
+            buckets[k].moveTo(n.x, n.y); buckets[k].lineTo(m.x, m.y);
           }
         }
-        if (dm < PULL) {
-          ctx.strokeStyle = `rgba(128,96,0,${(0.25 * (1 - dm / PULL)).toFixed(3)})`;
-          ctx.lineWidth = dpr * 0.8;
-          ctx.beginPath(); ctx.moveTo(n.x, n.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
-        }
-        ctx.fillStyle = "rgba(128,96,0,0.38)";
-        ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, 6.2832); ctx.fill();
+        if (dm < PULL) { alRaton.moveTo(n.x, n.y); alRaton.lineTo(mouse.x, mouse.y); }
+        puntos.moveTo(n.x + n.r, n.y);
+        puntos.arc(n.x, n.y, n.r, 0, 6.2832);
       }
-      if (!reduced) id = requestAnimationFrame(frame);
+      ctx.lineWidth = dpr * 0.7;
+      for (let k = 0; k < CUBETAS; k++) {
+        ctx.strokeStyle = `rgba(166,124,0,${(0.12 * (1 - (k + 0.5) / CUBETAS)).toFixed(3)})`;
+        ctx.stroke(buckets[k]);
+      }
+      ctx.lineWidth = dpr * 0.8;
+      ctx.strokeStyle = "rgba(128,96,0,0.16)";
+      ctx.stroke(alRaton);
+      ctx.fillStyle = "rgba(128,96,0,0.38)";
+      ctx.fill(puntos);
     };
-    frame();
+    id = requestAnimationFrame(frame);
     return () => {
       cancelAnimationFrame(id);
       window.removeEventListener("resize", resize);
