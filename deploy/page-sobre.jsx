@@ -772,7 +772,7 @@ function ContactForm() {
     e.preventDefault();
     const data = new FormData(e.target);
     // Honeypot (mismo criterio que el form principal): si viene lleno es bot.
-    if (data.get("fax")) { window.location.href = "/gracias"; return; }
+    if (data.get("company")) { window.location.href = "/gracias"; return; }
     const nombre = data.get("nombre") || "";
     const empresa = data.get("empresa") || "";
     const mensaje = data.get("mensaje") || "";
@@ -905,7 +905,7 @@ function ContactForm() {
           >
             {/* Honeypot: invisible, sin tab, sin autocompletar y oculto a lectores de pantalla */}
             <input
-              type="text" name="fax" tabIndex="-1" autoComplete="off" aria-hidden="true"
+              type="text" name="company" tabIndex="-1" autoComplete="off" aria-hidden="true"
               style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px", opacity: 0 }}
             />
             <div className="grid-2-tight" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.85rem" }}>

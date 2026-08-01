@@ -1299,9 +1299,10 @@ function TypewriterTitle({ text, className }) {
 function CtaBlock({ titulo = "Hablemos.", sub = "30 minutos. Salimos con claridad.", calendly = true }) {
   const [lang] = useLang();
   const pick = (v) => (v && typeof v === "object" ? (v[lang] || v.es) : v);
-  // `fax` es honeypot: invisible y fuera del tab order, un humano nunca lo llena.
+  // `company` es honeypot (MISMO NOMBRE que valida el nodo Guard de n8n:
+  // asi un bot que reenvie el form crudo tambien cae del lado servidor): invisible y fuera del tab order, un humano nunca lo llena.
   // Si viene con texto es bot -> se simula el envio y no se toca el webhook.
-  const [form, setForm] = useState({ nombre: "", empresa: "", sitioWeb: "", email: "", telefono: "", presupuesto: "", mensaje: "", fax: "" });
+  const [form, setForm] = useState({ nombre: "", empresa: "", sitioWeb: "", email: "", telefono: "", presupuesto: "", mensaje: "", company: "" });
   const [sent, setSent] = useState(false);
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
 
@@ -1349,7 +1350,7 @@ function CtaBlock({ titulo = "Hablemos.", sub = "30 minutos. Salimos con clarida
     e.preventDefault();
     // Bot detectado (honeypot lleno): mismo comportamiento visible, sin webhook.
     // Callado a proposito — si le avisas al bot, reintenta sorteando la trampa.
-    if (form.fax) { window.location.href = "/gracias"; return; }
+    if (form.company) { window.location.href = "/gracias"; return; }
     // keepalive: el lead se envía aunque naveguemos a la página de gracias
     fetch(N8N_FORM_WEBHOOK, {
       method: "POST",
@@ -1541,8 +1542,8 @@ function CtaBlock({ titulo = "Hablemos.", sub = "30 minutos. Salimos con clarida
             <form onSubmit={onSubmit} style={{ display: "grid", gap: "0.85rem", fontFamily: TYPE.body }}>
               {/* Honeypot: invisible, sin tab, sin autocompletar y oculto a lectores de pantalla */}
               <input
-                type="text" name="fax" tabIndex="-1" autoComplete="off" aria-hidden="true"
-                value={form.fax} onChange={set("fax")}
+                type="text" name="company" tabIndex="-1" autoComplete="off" aria-hidden="true"
+                value={form.company} onChange={set("company")}
                 style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px", opacity: 0 }}
               />
               <div className="cta-form-row" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.85rem" }}>

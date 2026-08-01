@@ -1209,25 +1209,29 @@ function RutaCrecimiento() {
   );
 }
 
-// ---------- SATORI GLOBE (ortografico, interactivo) ----------
-// EN CANVAS, NO EN SVG — y el porque importa:
-// La version en SVG reproyectaba toda la geometria mundial en cada frame y le
-// entregaba a React dos strings gigantes (land ~45KB + graticule ~14KB) que
-// Chrome tenia que re-parsear y re-rasterizar. Ademas la rotacion vivia en
-// useState, asi que cada grado disparaba un render de React completo. En algunas
-// Macs eso saturaba el hilo principal hasta que Chrome mataba la pestana:
-// "Aw, Snap — RESULT_CODE_HUNG", pantalla en negro.
+// ---------- SATORI GLOBE (ortografico, interactivo, textura satelital) ----------
+// Textura: NASA Blue Marble Next Generation (topografia + batimetria), dominio
+// publico. Trae el relieve sombreado incorporado, asi que las montanas, los
+// desiertos, el hielo y el fondo marino son los reales, no colores inventados.
 //
-// Aqui la rotacion vive en un ref y se dibuja directo al contexto 2D: React no
-// participa en la animacion, no se genera texto, no hay DOM que reconciliar.
-// d3.geoPath acepta un contexto de canvas y traza directo sobre el.
+// COMO FUNCIONA: para cada pixel del disco se invierte la proyeccion ortografica
+// a (lat, lon) y se muestrea la imagen equirectangular. Hacer eso entero en cada
+// frame seria carisimo; el truco es que AL GIRAR SOLO CAMBIA LA LONGITUD, asi que
+// la tabla pixel -> (lat, lon base) se calcula una vez y cada frame solo suma el
+// desfase de rotacion y muestrea. La tabla se recalcula unicamente cuando cambia
+// la inclinacion (arrastre vertical), cuantizada a 1 grado para no rehacerla en
+// cada frame del drag.
+//
+// Ya NO usa d3 ni topojson: con la textura no hace falta geometria vectorial, y
+// la ortografica directa/inversa son unas pocas lineas de trigonometria. Eso quita
+// 120 KB de JS de terceros del globo.
 function SatoriGlobe() {
   const [lang] = useLang();
   const [ready, setReady] = useState(false);
   const [dragging, setDragging] = useState(false);
 
   const canvasRef = useRef(null);
-  const geo = useRef({ land: null, graticule: null });
+  const tex = useRef(null); // { data, w, h }
   // La rotacion NO es estado de React: si lo fuera, cada frame re-renderizaria.
   const view = useRef({ rot: 305, tilt: -18 });
   const dragState = useRef({ active: false, lastX: 0, lastY: 0, lastT: 0, vRot: 0, vTilt: 0, idleAt: 0 });
@@ -1246,183 +1250,213 @@ function SatoriGlobe() {
     { name: lang === "en" ? "La Rioja · Spain" : "La Rioja · España", lng: -2.4449, lat: 42.4627 }
   ];
 
-  // Carga d3-geo + topojson + el mapa — SELF-HOSTED (assets/vendor/, version fija).
-  // Solo se usan geoOrthographic / geoPath / geoGraticule, asi que basta
-  // d3-array + d3-geo (53 KB) en vez del bundle d3 completo (273 KB).
+  // Carga la textura y extrae sus pixeles (mismo origen -> el canvas no se marca
+  // como contaminado y getImageData funciona).
   useEffect(() => {
     let cancelled = false;
-    const loadScript = (src) =>
-      new Promise((res, rej) => {
-        if (document.querySelector(`script[src="${src}"]`)) return res();
-        const s = document.createElement("script");
-        s.src = src;
-        s.onload = res;
-        s.onerror = rej;
-        document.head.appendChild(s);
-      });
-    (async () => {
+    const img = new Image();
+    img.onload = () => {
+      if (cancelled) return;
+      const c = document.createElement("canvas");
+      c.width = img.naturalWidth;
+      c.height = img.naturalHeight;
+      const cx = c.getContext("2d", { willReadFrequently: true });
+      cx.drawImage(img, 0, 0);
       try {
-        // d3-array primero: d3-geo lo consume desde el global d3.
-        await loadScript("/assets/vendor/d3-array.min.js");
-        await loadScript("/assets/vendor/d3-geo.min.js");
-        await loadScript("/assets/vendor/topojson-client.min.js");
-        if (cancelled) return;
-        const res = await fetch("/assets/vendor/land-110m.json");
-        const data = await res.json();
-        if (cancelled) return;
-        geo.current.land = window.topojson.feature(data, data.objects.land);
-        geo.current.graticule = window.d3.geoGraticule().step([20, 20])();
-        setReady(true);
+        const d = cx.getImageData(0, 0, c.width, c.height);
+        tex.current = { data: d.data, w: c.width, h: c.height };
       } catch (e) {
-        console.warn("[SATORI globe] load failed, using fallback", e);
+        tex.current = null; // sin textura -> se dibuja la esfera degradada de respaldo
       }
-    })();
+      setReady(true);
+    };
+    img.onerror = () => { if (!cancelled) setReady(true); }; // respaldo sin textura
+    img.src = "/assets/vendor/tierra.jpg";
     return () => { cancelled = true; };
   }, []);
 
-  // Bucle de dibujo. Corre una sola vez montado; no depende del estado de React.
   useEffect(() => {
-    if (!ready || !canvasRef.current || !window.d3) return;
+    if (!ready || !canvasRef.current) return;
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
 
-    // Nitidez en pantallas retina, con tope en 2x: por encima el costo sube al
-    // cuadrado y no se nota la diferencia a 560 px.
     const dpr = Math.min(2, window.devicePixelRatio || 1);
     canvas.width = SIZE * dpr;
     canvas.height = SIZE * dpr;
     ctx.scale(dpr, dpr);
 
-    const proj = window.d3.geoOrthographic()
-      .scale(RADIUS).translate([CENTER, CENTER]).clipAngle(90);
-    const pathGen = window.d3.geoPath(proj, ctx);
+    // Capa de textura a 1x: son ~157k pixeles del disco. A 2x serian 630k por
+    // frame, cuatro veces el costo, y luego se escala suavizado igual. Los
+    // vectores de encima (puntos, halo) si van a 2x y quedan nitidos.
+    const D = Math.ceil(RADIUS * 2) + 2;
+    const buf = document.createElement("canvas");
+    buf.width = D; buf.height = D;
+    const bctx = buf.getContext("2d");
+    const imgData = bctx.createImageData(D, D);
+    const out = imgData.data;
+    const OFF = CENTER - RADIUS - 1; // esquina del recuadro dentro del disco
 
-    // Degradados creados UNA vez: van en coordenadas del disco, no de la tierra,
-    // asi que no cambian al girar (si dependieran de la geometria, bailarian).
-    const oceano = ctx.createRadialGradient(
-      CENTER - RADIUS * 0.32, CENTER - RADIUS * 0.38, RADIUS * 0.05,
-      CENTER - RADIUS * 0.32, CENTER - RADIUS * 0.38, RADIUS * 1.45
-    );
-    oceano.addColorStop(0, "#5FA8D8");
-    oceano.addColorStop(0.55, "#2F7CB4");
-    oceano.addColorStop(1, "#12456F");
+    // Tablas por pixel del disco (se rehacen solo al cambiar la inclinacion)
+    let idx = null, latT = null, lonT = null, shadeT = null, tiltTabla = null;
+    const construirTablas = (phi0) => {
+      const dentro = [];
+      const sinP = Math.sin(phi0), cosP = Math.cos(phi0);
+      // luz desde arriba-izquierda, ligeramente al frente
+      const LX = -0.42, LY = -0.52, LZ = 0.74;
+      for (let py = 0; py < D; py++) {
+        for (let px = 0; px < D; px++) {
+          const x = px + OFF - CENTER;
+          const y = py + OFF - CENTER;
+          const rho2 = x * x + y * y;
+          if (rho2 > RADIUS * RADIUS) continue;
+          const rho = Math.sqrt(rho2);
+          const sinC = rho / RADIUS;
+          const cosC = Math.sqrt(Math.max(0, 1 - sinC * sinC));
+          let lat, lon;
+          if (rho < 1e-6) { lat = phi0; lon = 0; }
+          else {
+            lat = Math.asin(cosC * sinP + (-y * sinC * cosP) / rho);
+            lon = Math.atan2(x * sinC, rho * cosC * cosP + y * sinC * sinP);
+          }
+          // normal de la esfera en ese pixel -> sombreado difuso
+          const nx = x / RADIUS, ny = y / RADIUS, nz = cosC;
+          let lum = nx * LX + ny * LY + nz * LZ;
+          lum = Math.max(0, lum) * 0.85 + 0.30;
+          dentro.push(py * D + px, lat, lon, Math.min(1.25, lum));
+        }
+      }
+      const n = dentro.length / 4;
+      idx = new Int32Array(n); latT = new Float32Array(n);
+      lonT = new Float32Array(n); shadeT = new Float32Array(n);
+      for (let i = 0; i < n; i++) {
+        idx[i] = dentro[i * 4] * 4;
+        latT[i] = dentro[i * 4 + 1];
+        lonT[i] = dentro[i * 4 + 2];
+        shadeT[i] = dentro[i * 4 + 3];
+      }
+      tiltTabla = phi0;
+    };
 
-    // Tierra por bandas de latitud: en ortografica la Y del disco equivale mas o
-    // menos a la latitud, asi que salen solos los polos claros, el verde boreal,
-    // el ocre de los desiertos (~30 N/S) y el verde tropical.
-    const tierra = ctx.createLinearGradient(0, CENTER - RADIUS, 0, CENTER + RADIUS);
-    [[0, "#E8EDE8"], [0.10, "#4E7A47"], [0.24, "#2F6B3C"], [0.36, "#C9B063"], [0.46, "#D8C070"],
-     [0.56, "#3E8149"], [0.68, "#2F6B3C"], [0.82, "#C0A868"], [1, "#E8EDE8"]]
-      .forEach(([o, c]) => tierra.addColorStop(o, c));
+    const TAU = Math.PI * 2;
+    const pintarTextura = (lambda0) => {
+      const t = tex.current;
+      if (!t) return false;
+      const { data: td, w: tw, h: th } = t;
+      for (let i = 0; i < idx.length; i++) {
+        let lon = lonT[i] + lambda0;
+        lon -= TAU * Math.floor((lon + Math.PI) / TAU);      // normaliza a [-PI, PI)
+        let u = ((lon + Math.PI) / TAU) * tw;
+        let v = ((Math.PI / 2 - latT[i]) / Math.PI) * th;
+        u = u < 0 ? 0 : (u >= tw ? tw - 1 : u | 0);
+        v = v < 0 ? 0 : (v >= th ? th - 1 : v | 0);
+        const s = (v * tw + u) * 4;
+        const k = shadeT[i], o = idx[i];
+        out[o] = td[s] * k;
+        out[o + 1] = td[s + 1] * k;
+        out[o + 2] = td[s + 2] * k;
+        out[o + 3] = 255;
+      }
+      return true;
+    };
 
-    // Sombra esferica: lo que hace que se lea como bola y no como calcomania.
-    const sombra = ctx.createRadialGradient(
-      CENTER - RADIUS * 0.3, CENTER - RADIUS * 0.34, RADIUS * 0.4,
-      CENTER - RADIUS * 0.3, CENTER - RADIUS * 0.34, RADIUS * 1.35
-    );
-    sombra.addColorStop(0, "rgba(0,0,0,0)");
-    sombra.addColorStop(0.62, "rgba(0,0,0,0.17)");
-    sombra.addColorStop(1, "rgba(0,18,31,0.34)");
+    // Proyeccion ortografica DIRECTA (para meridianos y puntos de ciudad)
+    const proyectar = (lonDeg, latDeg, rotDeg, tiltDeg) => {
+      const lat = (latDeg * Math.PI) / 180;
+      const dl = ((lonDeg - rotDeg) * Math.PI) / 180;
+      const p0 = (tiltDeg * Math.PI) / 180;
+      const cosc = Math.sin(p0) * Math.sin(lat) + Math.cos(p0) * Math.cos(lat) * Math.cos(dl);
+      if (cosc < 0) return null; // cara oculta
+      const x = RADIUS * Math.cos(lat) * Math.sin(dl);
+      const y = -RADIUS * (Math.cos(p0) * Math.sin(lat) - Math.sin(p0) * Math.cos(lat) * Math.cos(dl));
+      return [CENTER + x, CENTER + y, cosc];
+    };
 
-    const atmosfera = ctx.createRadialGradient(CENTER, CENTER, RADIUS, CENTER, CENTER, RADIUS + 30);
-    atmosfera.addColorStop(0, "rgba(127,182,220,0)");
-    atmosfera.addColorStop(0.55, "rgba(127,182,220,0.22)");
-    atmosfera.addColorStop(1, "rgba(127,182,220,0)");
-
-    const discoPath = () => { ctx.beginPath(); ctx.arc(CENTER, CENTER, RADIUS, 0, Math.PI * 2); };
+    const esferaRespaldo = () => { // si la textura no cargo
+      const g = ctx.createRadialGradient(
+        CENTER - RADIUS * 0.32, CENTER - RADIUS * 0.38, RADIUS * 0.05,
+        CENTER - RADIUS * 0.32, CENTER - RADIUS * 0.38, RADIUS * 1.45);
+      g.addColorStop(0, "#5FA8D8"); g.addColorStop(0.55, "#2F7CB4"); g.addColorStop(1, "#12456F");
+      ctx.beginPath(); ctx.arc(CENTER, CENTER, RADIUS, 0, TAU); ctx.fillStyle = g; ctx.fill();
+    };
 
     const draw = (t) => {
       const { rot, tilt } = view.current;
-      proj.rotate([-rot, tilt, 0]);
+      const phi0 = (tilt * Math.PI) / 180;
+      if (tiltTabla === null || Math.abs(phi0 - tiltTabla) > 0.0175) construirTablas(phi0); // ~1 grado
       ctx.clearRect(0, 0, SIZE, SIZE);
 
       // Halo de atmosfera
-      ctx.beginPath();
-      ctx.arc(CENTER, CENTER, RADIUS + 30, 0, Math.PI * 2);
-      ctx.fillStyle = atmosfera;
-      ctx.fill();
+      const atm = ctx.createRadialGradient(CENTER, CENTER, RADIUS, CENTER, CENTER, RADIUS + 30);
+      atm.addColorStop(0, "rgba(127,182,220,0)");
+      atm.addColorStop(0.5, "rgba(127,182,220,0.20)");
+      atm.addColorStop(1, "rgba(127,182,220,0)");
+      ctx.beginPath(); ctx.arc(CENTER, CENTER, RADIUS + 30, 0, TAU); ctx.fillStyle = atm; ctx.fill();
 
       ctx.save();
-      discoPath();
-      ctx.clip();
+      ctx.beginPath(); ctx.arc(CENTER, CENTER, RADIUS, 0, TAU); ctx.clip();
+      // +rot, no -rot: la proyeccion DIRECTA (puntos y meridianos) centra el disco
+      // en lon = rot, asi que la INVERSA debe sumar +rot para caer en el mismo
+      // hemisferio. Con el signo invertido la textura mostraba Africa mientras los
+      // puntos de Mexico se dibujaban sobre el Sahara.
+      if (pintarTextura((rot * Math.PI) / 180)) {
+        bctx.putImageData(imgData, 0, 0);
+        ctx.drawImage(buf, OFF, OFF);
+      } else {
+        esferaRespaldo();
+      }
 
-      discoPath();
-      ctx.fillStyle = oceano;
-      ctx.fill();
-
+      // Meridianos y paralelos, muy tenues: dan la lectura de "globo terraqueo"
       ctx.beginPath();
-      pathGen(geo.current.land);
-      ctx.fillStyle = tierra;
-      ctx.fill();
-      ctx.lineWidth = 0.4;
-      ctx.strokeStyle = "rgba(31,74,44,0.45)";
+      for (let lo = -180; lo < 180; lo += 30) {
+        let mover = true;
+        for (let la = -80; la <= 80; la += 5) {
+          const p = proyectar(lo, la, rot, tilt);
+          if (!p) { mover = true; continue; }
+          mover ? ctx.moveTo(p[0], p[1]) : ctx.lineTo(p[0], p[1]);
+          mover = false;
+        }
+      }
+      for (let la = -60; la <= 60; la += 30) {
+        let mover = true;
+        for (let lo = -180; lo <= 180; lo += 5) {
+          const p = proyectar(lo, la, rot, tilt);
+          if (!p) { mover = true; continue; }
+          mover ? ctx.moveTo(p[0], p[1]) : ctx.lineTo(p[0], p[1]);
+          mover = false;
+        }
+      }
+      ctx.lineWidth = 0.5;
+      ctx.strokeStyle = "rgba(255,255,255,0.16)";
       ctx.stroke();
-
-      ctx.beginPath();
-      pathGen(geo.current.graticule);
-      ctx.lineWidth = 0.6;
-      ctx.strokeStyle = "rgba(255,255,255,0.30)";
-      ctx.stroke();
-
-      discoPath();
-      ctx.fillStyle = sombra;
-      ctx.fill();
       ctx.restore();
 
-      // Borde apenas insinuado
-      discoPath();
-      ctx.lineWidth = 1;
-      ctx.strokeStyle = "rgba(14,14,14,0.12)";
-      ctx.stroke();
+      // Borde del disco
+      ctx.beginPath(); ctx.arc(CENTER, CENTER, RADIUS, 0, TAU);
+      ctx.lineWidth = 1; ctx.strokeStyle = "rgba(14,14,14,0.14)"; ctx.stroke();
 
-      // Puntos de ciudad (dorado de marca). El pulso sale del reloj, no de <animate>.
-      const c0 = proj.rotate();
-      const lambda0 = (-c0[0] * Math.PI) / 180;
-      const phi0 = (-c0[1] * Math.PI) / 180;
+      // Puntos de ciudad en dorado de marca. El pulso sale del reloj.
       cities.forEach((c, i) => {
-        const phi = (c.lat * Math.PI) / 180;
-        const lambda = (c.lng * Math.PI) / 180;
-        const cosC = Math.sin(phi0) * Math.sin(phi) + Math.cos(phi0) * Math.cos(phi) * Math.cos(lambda - lambda0);
-        if (cosC < 0) return; // cara oculta del globo
-        const p = proj([c.lng, c.lat]);
+        const p = proyectar(c.lng, c.lat, rot, tilt);
         if (!p) return;
-        const fade = Math.min(1, cosC * 3.2);
+        const fade = Math.min(1, p[2] * 3.2);
         const pulso = (Math.sin(t / (1200 + i * 150)) + 1) / 2;
-
-        const glow = ctx.createRadialGradient(p[0], p[1], 0, p[0], p[1], 18 + pulso * 12);
-        glow.addColorStop(0, `rgba(166,124,0,${0.85 * fade})`);
-        glow.addColorStop(0.55, `rgba(166,124,0,${0.22 * fade})`);
-        glow.addColorStop(1, "rgba(166,124,0,0)");
-        ctx.beginPath();
-        ctx.arc(p[0], p[1], 18 + pulso * 12, 0, Math.PI * 2);
-        ctx.fillStyle = glow;
-        ctx.fill();
-
-        ctx.beginPath();
-        ctx.arc(p[0], p[1], 5 + pulso * 11, 0, Math.PI * 2);
-        ctx.lineWidth = 1.6;
-        ctx.strokeStyle = `rgba(166,124,0,${(1 - pulso) * 0.9 * fade})`;
-        ctx.stroke();
-
-        ctx.beginPath();
-        ctx.arc(p[0], p[1], 4, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(166,124,0,${fade})`;
-        ctx.fill();
-        ctx.lineWidth = 1.1;
-        ctx.strokeStyle = `rgba(255,255,255,${0.8 * fade})`;
-        ctx.stroke();
+        const g = ctx.createRadialGradient(p[0], p[1], 0, p[0], p[1], 18 + pulso * 12);
+        g.addColorStop(0, `rgba(166,124,0,${0.9 * fade})`);
+        g.addColorStop(0.55, `rgba(166,124,0,${0.25 * fade})`);
+        g.addColorStop(1, "rgba(166,124,0,0)");
+        ctx.beginPath(); ctx.arc(p[0], p[1], 18 + pulso * 12, 0, TAU); ctx.fillStyle = g; ctx.fill();
+        ctx.beginPath(); ctx.arc(p[0], p[1], 5 + pulso * 11, 0, TAU);
+        ctx.lineWidth = 1.6; ctx.strokeStyle = `rgba(255,255,255,${(1 - pulso) * 0.75 * fade})`; ctx.stroke();
+        ctx.beginPath(); ctx.arc(p[0], p[1], 4, 0, TAU);
+        ctx.fillStyle = `rgba(166,124,0,${fade})`; ctx.fill();
+        ctx.lineWidth = 1.2; ctx.strokeStyle = `rgba(255,255,255,${0.85 * fade})`; ctx.stroke();
       });
     };
 
-    let raf;
-    let last = performance.now();
-    let visible = true;
-    const AUTO_SPIN = 0.006; // deg/ms ~ 6 grados/s
-    const DECAY = 0.96;
-    const MIN_V = 0.0008;
+    let raf, last = performance.now(), visible = true, ultimo = 0;
+    const AUTO_SPIN = 0.006, DECAY = 0.96, MIN_V = 0.0008, MIN_FRAME_MS = 33;
 
-    // Pausa cuando el globo no esta en pantalla (CPU y bateria)
     let io;
     if (typeof IntersectionObserver !== "undefined") {
       io = new IntersectionObserver(
@@ -1433,27 +1467,23 @@ function SatoriGlobe() {
     }
 
     const tick = (t) => {
-      const dt = Math.min(64, t - last); // clamp: tras una pausa larga no da un salto
-      last = t;
-      if (visible) {
-        const st = dragState.current;
-        if (!st.active) {
-          if (Math.abs(st.vRot) > MIN_V || Math.abs(st.vTilt) > MIN_V) {
-            view.current.rot = (view.current.rot + st.vRot * dt) % 360;
-            view.current.tilt = Math.max(-80, Math.min(80, view.current.tilt + st.vTilt * dt));
-            const k = Math.pow(DECAY, dt / 16.67);
-            st.vRot *= k;
-            st.vTilt *= k;
-            st.idleAt = t;
-          } else {
-            st.vRot = 0;
-            st.vTilt = 0;
-            if (t - st.idleAt > 1200) view.current.rot = (view.current.rot + dt * AUTO_SPIN) % 360;
-          }
-        }
-        draw(t);
-      }
       raf = requestAnimationFrame(tick);
+      if (!visible || t - ultimo < MIN_FRAME_MS) return;
+      const dt = Math.min(64, t - last);
+      last = t; ultimo = t;
+      const st = dragState.current;
+      if (!st.active) {
+        if (Math.abs(st.vRot) > MIN_V || Math.abs(st.vTilt) > MIN_V) {
+          view.current.rot = (view.current.rot + st.vRot * dt) % 360;
+          view.current.tilt = Math.max(-80, Math.min(80, view.current.tilt + st.vTilt * dt));
+          const k = Math.pow(DECAY, dt / 16.67);
+          st.vRot *= k; st.vTilt *= k; st.idleAt = t;
+        } else {
+          st.vRot = 0; st.vTilt = 0;
+          if (t - st.idleAt > 1200) view.current.rot = (view.current.rot + dt * AUTO_SPIN) % 360;
+        }
+      }
+      draw(t);
     };
     raf = requestAnimationFrame(tick);
     return () => { cancelAnimationFrame(raf); if (io) io.disconnect(); };
@@ -1473,13 +1503,10 @@ function SatoriGlobe() {
     const st = dragState.current;
     if (!st.active) return;
     const now = performance.now();
-    const dx = e.clientX - st.lastX;
-    const dy = e.clientY - st.lastY;
+    const dx = e.clientX - st.lastX, dy = e.clientY - st.lastY;
     const dt = Math.max(1, now - st.lastT);
     st.lastX = e.clientX; st.lastY = e.clientY; st.lastT = now;
-    // direccion INVERTIDA (el globo gira en contra del dedo, como una bola real)
-    const dRot = dx * -0.45;
-    const dTilt = dy * -0.35;
+    const dRot = dx * -0.45, dTilt = dy * -0.35;
     const blend = 0.25;
     st.vRot = st.vRot * (1 - blend) + (dRot / dt) * blend;
     st.vTilt = st.vTilt * (1 - blend) + (dTilt / dt) * blend;
@@ -1495,19 +1522,11 @@ function SatoriGlobe() {
   };
 
   return (
-    <div
-      style={{
-        position: "relative",
-        width: "100%",
-        maxWidth: `${SIZE}px`,
-        margin: "0 auto",
-        aspectRatio: "1"
-      }}
-    >
+    <div style={{ position: "relative", width: "100%", maxWidth: `${SIZE}px`, margin: "0 auto", aspectRatio: "1" }}>
       <canvas
         ref={canvasRef}
-        aria-label={lang === "en" ? "Interactive globe with Satori presence" : "Globo interactivo con la presencia de Satori"}
         role="img"
+        aria-label={lang === "en" ? "Interactive globe with Satori presence" : "Globo interactivo con la presencia de Satori"}
         style={{ width: "100%", height: "100%", display: "block", pointerEvents: "none" }}
       />
 
