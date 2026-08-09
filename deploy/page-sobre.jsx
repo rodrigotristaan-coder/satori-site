@@ -1022,6 +1022,8 @@ function ContactForm() {
 function App() {
   const [lang] = useLang();
   useEffect(() => {
+    // js-reveal: desactiva el fallback CSS (revelado sin JS) y activa el reveal por scroll
+    document.documentElement.classList.add("js-reveal");
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {

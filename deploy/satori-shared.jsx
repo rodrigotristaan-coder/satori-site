@@ -2568,14 +2568,25 @@ function ShowcaseVideo({ src, poster, label, style, delay = 1000 }) {
     const v = ref.current;
     if (!v) return;
     let timer = null;
-    const start = () => { if (v.play) { const p = v.play(); if (p && p.catch) p.catch(() => {}); } };
+    // No llamar play() hasta tener frames decodificables: WebKit descarta el
+    // poster al arrancar el playback y deja el area en blanco mientras bufferea
+    // (en movil, con videos de varios MB, eran segundos de "no se ven imagenes").
+    const start = () => {
+      if (!v.play) return;
+      const doPlay = () => { const p = v.play(); if (p && p.catch) p.catch(() => {}); };
+      if (v.readyState >= 3) doPlay();
+      else {
+        v.preload = "auto";                    // empieza a bufferear sin soltar el poster
+        v.addEventListener("canplay", doPlay, { once: true });
+      }
+    };
     if (typeof IntersectionObserver === "undefined") {
       timer = setTimeout(start, delay);
       return () => { if (timer) clearTimeout(timer); };
     }
     const io = new IntersectionObserver((entries) => {
       if (entries[0] && entries[0].isIntersecting && timer === null) {
-        timer = setTimeout(start, delay); // portada visible -> espera 1s -> reproduce
+        timer = setTimeout(start, delay); // portada visible -> espera 1s -> buferea/reproduce
         io.disconnect();
       }
     }, { threshold: 0.3 });

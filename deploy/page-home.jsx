@@ -83,7 +83,7 @@ function VideoIntro() {
           src="assets/intro.mp4"
           muted
           playsInline
-          preload="auto"
+          preload="metadata"
           tabIndex={-1}
           style={{
             position: "absolute",
@@ -435,11 +435,13 @@ function FounderBrief() {
   const T = en ? {
     eyebrow: "The founder",
     role: "Founder of Satori",
-    statement: (<>I believe in putting <span style={{ color: SATORI.GOLD }}>technology at the service of people</span>, not the other way around. That's why I founded Satori: I turn strategy, websites, automation and applied AI into <span style={{ color: SATORI.GOLD }}>clear information and growth for your business</span>.</>)
+    statement: (<>I founded <span style={{ color: SATORI.GOLD }}>Satori</span> to bring clarity and drive growth for freelancers, entrepreneurs and business owners in Mexico.<br /><br />We make artificial intelligence and automation feel close, understandable and applicable for any business. Technology at the service of what's <span style={{ color: SATORI.GOLD }}>human</span>.</>),
+    tagline: (<><span style={{ color: SATORI.GOLD }}>Satori</span>: a moment of deep understanding. (Insight)</>)
   } : {
     eyebrow: "El fundador",
     role: "Fundador de Satori",
-    statement: (<>Creo en poner la <span style={{ color: SATORI.GOLD }}>tecnología al servicio de lo humano</span>, no al revés. Por eso fundé Satori: convierto estrategia, páginas web, automatizaciones y aplicación de IA en <span style={{ color: SATORI.GOLD }}>información clara y crecimiento para tu negocio</span>.</>)
+    statement: (<>Fundé <span style={{ color: SATORI.GOLD }}>Satori</span> para dar claridad e impulsar el crecimiento de freelancers, emprendedores y empresarios de México.<br /><br />Volvemos la inteligencia artificial y la automatización algo cercano, entendible y aplicable para cualquier negocio. Tecnología al servicio de lo <span style={{ color: SATORI.GOLD }}>humano</span>.</>),
+    tagline: (<><span style={{ color: SATORI.GOLD }}>Satori</span>: momento de comprensión profunda. (Insight)</>)
   };
   return (
     <section data-reveal style={{ padding: "5rem clamp(1.25rem,4vw,2.5rem)", background: "rgba(244,244,242,0.85)", position: "relative", zIndex: 1 }}>
@@ -450,6 +452,9 @@ function FounderBrief() {
           <div style={{ fontFamily: TYPE.mono, fontSize: "0.66rem", letterSpacing: "0.28em", textTransform: "uppercase", color: SATORI.INK, opacity: 0.55, marginBottom: "0.9rem" }}>{T.eyebrow}</div>
           <p style={{ fontFamily: TYPE.display, fontWeight: 500, fontSize: "clamp(1.18rem, 2.3vw, 1.65rem)", lineHeight: 1.38, letterSpacing: "-0.01em", color: SATORI.INK, margin: "0 0 1.1rem" }}>
             {T.statement}
+          </p>
+          <p style={{ fontFamily: TYPE.display, fontStyle: "italic", fontWeight: 400, fontSize: "clamp(0.98rem, 1.6vw, 1.15rem)", lineHeight: 1.5, color: SATORI.INK, opacity: 0.85, margin: "0 0 1.1rem" }}>
+            {T.tagline}
           </p>
           <div style={{ fontFamily: TYPE.mono, fontSize: "0.7rem", letterSpacing: "0.16em", textTransform: "uppercase", color: SATORI.GOLD_DEEP }}>
             Rodrigo Tristán · {T.role}
@@ -1269,10 +1274,20 @@ function VideoEnPantalla({ src, poster, fit, objPos }) {
     if (!v || typeof IntersectionObserver === "undefined") return;
     const io = new IntersectionObserver(([e]) => {
       if (e.isIntersecting) {
-        if (!v.src) v.src = src;              // se carga la primera vez que se ve
-        const p = v.play();
-        if (p && p.catch) p.catch(() => {});  // autoplay bloqueado: se queda el poster
+        v.dataset.vis = "1";
+        if (!v.src) { v.src = src; v.preload = "auto"; }  // se carga la primera vez que se ve
+        // No llamar play() hasta tener frames decodificables: WebKit descarta el
+        // poster en cuanto arranca el playback y deja la caja vacia mientras
+        // bufferea (en movil eran segundos de tarjetas en blanco).
+        const tryPlay = () => {
+          if (v.dataset.vis !== "1") return;              // ya salio de pantalla
+          const p = v.play();
+          if (p && p.catch) p.catch(() => {});            // autoplay bloqueado: se queda el poster
+        };
+        if (v.readyState >= 3) tryPlay();
+        else v.addEventListener("canplay", tryPlay, { once: true });
       } else {
+        v.dataset.vis = "0";
         v.pause();
       }
     }, { threshold: 0.1 });
@@ -1781,6 +1796,8 @@ function MapaPresencia() {
 function App() {
   // reveal observer
   useEffect(() => {
+    // js-reveal: desactiva el fallback CSS (revelado sin JS) y activa el reveal por scroll
+    document.documentElement.classList.add("js-reveal");
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {

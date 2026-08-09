@@ -32,9 +32,14 @@ h1, h2, h3, h4, h5, h6 {
 .fade-up-d3 { animation: satoriFadeUp .9s cubic-bezier(.2,.7,.2,1) .4s both; }
 .fade-up-d4 { animation: satoriFadeUp .9s cubic-bezier(.2,.7,.2,1) .55s both; }
 
-/* Reveal on scroll */
-[data-reveal] { opacity: 0; transform: translateY(14px); transition: opacity .45s cubic-bezier(.2,.7,.2,1), transform .45s cubic-bezier(.2,.7,.2,1); }
-[data-reveal][data-revealed="1"] { opacity: 1; transform: translateY(0); }
+/* Reveal on scroll.
+   Fallback sin JS: si el bundle no ha llegado (red lenta) o nunca llega, la
+   animación CSS revela el contenido sola a los 2.2s; el bundle, al arrancar,
+   pone html.js-reveal y desactiva el fallback para animar por scroll. */
+[data-reveal] { opacity: 0; transform: translateY(14px); animation: dataRevealFallback .9s cubic-bezier(.2,.7,.2,1) 2.2s forwards; }
+@keyframes dataRevealFallback { to { opacity: 1; transform: translateY(0); } }
+html.js-reveal [data-reveal] { animation: none; transition: opacity .45s cubic-bezier(.2,.7,.2,1), transform .45s cubic-bezier(.2,.7,.2,1); }
+html.js-reveal [data-reveal][data-revealed="1"] { opacity: 1; transform: translateY(0); }
 
 /* Hover lift on buttons / links */
 a[href], button {
