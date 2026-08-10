@@ -30,7 +30,7 @@ const PROYECTOS_ES = [
     descripcion: "Invitación de boda digital: sobre interactivo que se abre con música, galería, itinerario, confirmación de asistencia (RSVP), mesa de regalos y gestión de reservas con IA. Diseño y desarrollo por Satori.",
     tags: ["Landing", "Invitación digital", "RSVP", "Reservas con IA"],
     video: "assets/showroom/invitacion-boda-famsalasglez-16x9.mp4",
-    poster: "assets/showroom/invitacion-boda-famsalasglez-poster.jpg"
+    poster: "assets/showroom/famsalasglez-live.jpg"
   },
   {
     titulo: "Esmeralda Lakes — Landing & Reservas",
@@ -39,8 +39,8 @@ const PROYECTOS_ES = [
     descripcion: "Landing bilingüe con reservas directas y sincronización con el calendario de Airbnb.",
     tags: ["Landing", "Reservas", "Airbnb", "Bilingüe"],
     url: "https://esmeraldalakes.com",
-    video: "assets/showroom/landing-esmeralda-airbnb-green-16x9.mp4",
-    poster: "assets/showroom/landing-esmeralda-airbnb-green-poster.jpg"
+    video: "assets/showroom/esmeralda-live.mp4",
+    poster: "assets/showroom/esmeralda-live-poster.jpg"
   },
   {
     titulo: "Laura — HUMAN-CORE",
@@ -49,7 +49,7 @@ const PROYECTOS_ES = [
     descripcion: "Landing del HUMAN-CORE System (consultoría de talento y liderazgo): web + automatización de leads, medición y SEO. Diseño y desarrollo por Satori.",
     tags: ["Landing", "Automatización", "Captura de leads", "Consultoría"],
     url: "https://laurahumancore.com",
-    img: "assets/showroom/laura-humancore.jpg"
+    img: "assets/showroom/laura-humancore-live.jpg"
   },
   {
     titulo: "Money Shop Polanco — CDMX",
@@ -66,7 +66,8 @@ const PROYECTOS_ES = [
     year: "2025",
     descripcion: "Sistema de landings de alta conversión para campañas, eventos e invitaciones: copy, diseño, formularios conectados a CRM y experimentación A/B continua.",
     tags: ["Eventos", "Invitaciones", "Campañas"],
-    img: "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=720&q=75&auto=format&fit=crop"
+    url: "https://linadelapena.com",
+    img: "assets/showroom/lina-cristinedae.jpg"
   },
   {
     titulo: "Bots de Ventas",
@@ -130,7 +131,7 @@ const PROYECTOS_EN = [
     descripcion: "Digital wedding invitation: an interactive envelope that opens with music, gallery, itinerary, RSVP, gift registry and AI-powered booking management. Designed and developed by Satori.",
     tags: ["Landing", "Digital invite", "RSVP", "AI booking"],
     video: "assets/showroom/invitacion-boda-famsalasglez-16x9.mp4",
-    poster: "assets/showroom/invitacion-boda-famsalasglez-poster.jpg"
+    poster: "assets/showroom/famsalasglez-live.jpg"
   },
   {
     titulo: "Esmeralda Lakes — Landing & Booking",
@@ -139,8 +140,8 @@ const PROYECTOS_EN = [
     descripcion: "Bilingual landing with direct booking and Airbnb calendar sync.",
     tags: ["Landing", "Booking", "Airbnb", "Bilingual"],
     url: "https://esmeraldalakes.com",
-    video: "assets/showroom/landing-esmeralda-airbnb-green-16x9.mp4",
-    poster: "assets/showroom/landing-esmeralda-airbnb-green-poster.jpg"
+    video: "assets/showroom/esmeralda-live.mp4",
+    poster: "assets/showroom/esmeralda-live-poster.jpg"
   },
   {
     titulo: "Laura — HUMAN-CORE",
@@ -149,7 +150,7 @@ const PROYECTOS_EN = [
     descripcion: "Landing for the HUMAN-CORE System (talent & leadership consulting): web + lead automation, measurement and SEO. Designed and built by Satori.",
     tags: ["Landing", "Automation", "Lead capture", "Consulting"],
     url: "https://laurahumancore.com",
-    img: "assets/showroom/laura-humancore.jpg"
+    img: "assets/showroom/laura-humancore-live.jpg"
   },
   {
     titulo: "Money Shop Polanco — CDMX",
@@ -166,7 +167,8 @@ const PROYECTOS_EN = [
     year: "2025",
     descripcion: "High-conversion landing-page system for campaigns, events and invitations: copy, design, CRM-wired forms and continuous A/B testing.",
     tags: ["Events", "Invitations", "Campaigns"],
-    img: "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=720&q=75&auto=format&fit=crop"
+    url: "https://linadelapena.com",
+    img: "assets/showroom/lina-cristinedae.jpg"
   },
   {
     titulo: "Sales Bots",

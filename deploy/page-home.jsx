@@ -449,16 +449,15 @@ function FounderBrief() {
         <img src="assets/rodrigo.webp" alt="Rodrigo Tristán" loading="lazy"
           style={{ flex: "0 0 150px", width: "150px", height: "150px", objectFit: "cover", borderRadius: "20px", boxShadow: "0 16px 40px rgba(14,14,14,0.16)" }} />
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontFamily: TYPE.mono, fontSize: "0.66rem", letterSpacing: "0.28em", textTransform: "uppercase", color: SATORI.INK, opacity: 0.55, marginBottom: "0.9rem" }}>{T.eyebrow}</div>
-          <p style={{ fontFamily: TYPE.display, fontWeight: 500, fontSize: "clamp(1.18rem, 2.3vw, 1.65rem)", lineHeight: 1.38, letterSpacing: "-0.01em", color: SATORI.INK, margin: "0 0 1.1rem" }}>
-            {T.statement}
-          </p>
-          <p style={{ fontFamily: TYPE.display, fontStyle: "italic", fontWeight: 400, fontSize: "clamp(0.98rem, 1.6vw, 1.15rem)", lineHeight: 1.5, color: SATORI.INK, opacity: 0.85, margin: "0 0 1.1rem" }}>
-            {T.tagline}
-          </p>
-          <div style={{ fontFamily: TYPE.mono, fontSize: "0.7rem", letterSpacing: "0.16em", textTransform: "uppercase", color: SATORI.GOLD_DEEP }}>
+          <div style={{ fontFamily: TYPE.mono, fontSize: "0.7rem", letterSpacing: "0.16em", textTransform: "uppercase", color: SATORI.GOLD_DEEP, marginBottom: "0.9rem" }}>
             Rodrigo Tristán · {T.role}
           </div>
+          <p style={{ fontFamily: TYPE.display, fontWeight: 500, fontSize: "clamp(1.18rem, 2.3vw, 1.65rem)", lineHeight: 1.38, letterSpacing: "-0.01em", color: SATORI.INK, margin: "0 0 2.2rem" }}>
+            {T.statement}
+          </p>
+          <p style={{ fontFamily: TYPE.display, fontStyle: "italic", fontWeight: 400, fontSize: "clamp(1.1rem, 1.9vw, 1.35rem)", lineHeight: 1.5, color: SATORI.INK, opacity: 0.88, margin: 0 }}>
+            {T.tagline}
+          </p>
         </div>
       </div>
     </section>
@@ -476,11 +475,12 @@ function QueHacemos() {
     sub: "Strategy first, then execution. Everything points to one thing: clients arriving with clarity.",
     cta: "See all services",
     items: [
-      { video: "assets/showroom/marca-branding.mp4", poster: "assets/showroom/marca-branding-poster.jpg", fit: "cover", t: "Brand & Design", d: "Identity that sets you apart and builds trust." },
-      { video: "assets/showroom/web-esmeralda.mp4", poster: "assets/showroom/web-esmeralda-poster.jpg", fit: "cover", objPos: "top", t: "Websites & Positioning", d: "Fast sites that rank and get recommended by AI." },
-      { video: "assets/showroom/marketing-moneyshop.mp4", poster: "assets/showroom/marketing-moneyshop-poster.jpg", fit: "cover", objPos: "left", t: "Marketing & Ads", d: "Campaigns that bring qualified leads to your business." },
+      // Orden por rentabilidad para Satori (Rodrigo, 2026-08-10)
+      { img: "assets/showroom/lina-cristinedae.jpg", fit: "cover", objPos: "top", t: "Websites & Positioning", d: "Fast sites that rank and get recommended by AI." },
       { video: "assets/showroom/automatizacion-flow.mp4", poster: "assets/showroom/automatizacion-flow-poster.jpg", fit: "cover", bg: "#0E0E0E", t: "AI Automation & Bots", d: "Bots and systems that attend, capture and follow up on their own." },
+      { video: "assets/showroom/marketing-moneyshop.mp4", poster: "assets/showroom/marketing-moneyshop-poster.jpg", fit: "cover", objPos: "left", t: "Marketing & Ads", d: "Campaigns that bring qualified leads to your business." },
       { video: "assets/showroom/satori-contenido-ia.mp4", poster: "assets/showroom/satori-contenido-ia-poster.jpg", fit: "cover", bg: SATORI.CREAM, t: "AI Content", d: "Cinematic brand video, reels and ads created end-to-end with AI." },
+      { video: "assets/showroom/marca-branding.mp4", poster: "assets/showroom/marca-branding-poster.jpg", fit: "cover", t: "Brand & Design", d: "Identity that sets you apart and builds trust." },
       { video: "assets/showroom/estudios-mercado.mp4", poster: "assets/showroom/estudios-mercado-poster.jpg", fit: "cover", bg: "#0E0E0E", t: "Market Research", d: "Real data on your market, competitors and pricing to decide with clarity." },
       { video: "assets/showroom/mycfo-chat.mp4", poster: "assets/showroom/mycfo-chat-poster.jpg", bg: SATORI.CREAM, t: "MyCFO", d: "Your AI CFO: manage your business finances by chat, with clear reports and a daily status.", featured: true, badge: "Satori product" }
     ]
@@ -491,11 +491,12 @@ function QueHacemos() {
     sub: "Primero estrategia, luego ejecución. Todo apunta a lo mismo: clientes llegando con claridad.",
     cta: "Ver todos los servicios",
     items: [
-      { video: "assets/showroom/marca-branding.mp4", poster: "assets/showroom/marca-branding-poster.jpg", fit: "cover", t: "Marca & Diseño", d: "Identidad que te distingue y genera confianza." },
-      { video: "assets/showroom/web-esmeralda.mp4", poster: "assets/showroom/web-esmeralda-poster.jpg", fit: "cover", objPos: "top", t: "Páginas Web & Posicionamiento", d: "Sitios rápidos, que rankean y que la IA recomienda." },
-      { video: "assets/showroom/marketing-moneyshop.mp4", poster: "assets/showroom/marketing-moneyshop-poster.jpg", fit: "cover", objPos: "left", t: "Marketing & Ads", d: "Campañas que traen prospectos calificados a tu negocio." },
+      // Orden por rentabilidad para Satori (Rodrigo, 2026-08-10)
+      { img: "assets/showroom/lina-cristinedae.jpg", fit: "cover", objPos: "top", t: "Páginas Web & Posicionamiento", d: "Sitios rápidos, que rankean y que la IA recomienda." },
       { video: "assets/showroom/automatizacion-flow.mp4", poster: "assets/showroom/automatizacion-flow-poster.jpg", fit: "cover", bg: "#0E0E0E", t: "Automatización & Bots con IA", d: "Bots y sistemas que atienden, captan y dan seguimiento solos." },
+      { video: "assets/showroom/marketing-moneyshop.mp4", poster: "assets/showroom/marketing-moneyshop-poster.jpg", fit: "cover", objPos: "left", t: "Marketing & Ads", d: "Campañas que traen prospectos calificados a tu negocio." },
       { video: "assets/showroom/satori-contenido-ia.mp4", poster: "assets/showroom/satori-contenido-ia-poster.jpg", fit: "cover", bg: SATORI.CREAM, t: "Contenido con IA", d: "Video de marca, reels y ads cinematográficos hechos con IA de punta a punta." },
+      { video: "assets/showroom/marca-branding.mp4", poster: "assets/showroom/marca-branding-poster.jpg", fit: "cover", t: "Marca & Diseño", d: "Identidad que te distingue y genera confianza." },
       { video: "assets/showroom/estudios-mercado.mp4", poster: "assets/showroom/estudios-mercado-poster.jpg", fit: "cover", bg: "#0E0E0E", t: "Estudios de Mercado", d: "Datos reales de tu mercado, competencia y precios para decidir con claridad." },
       { video: "assets/showroom/mycfo-chat.mp4", poster: "assets/showroom/mycfo-chat-poster.jpg", bg: SATORI.CREAM, t: "MyCFO", d: "Tu CFO con IA: controla las finanzas de tu negocio por chat, con reportes claros y estatus diario.", featured: true, badge: "Producto Satori" }
     ]
@@ -1570,7 +1571,7 @@ function SatoriGlobe() {
       animRaf = 0;
       if (!visible) return;
       if (!dragState.current.active && t - lastT >= 66) {   // ~15fps
-        view.current.rot = (view.current.rot + (t - lastT) * 0.004) % 360;  // ~4°/s
+        view.current.rot = (view.current.rot + (t - lastT) * 0.012) % 360;  // ~12°/s
         lastT = t;
         draw(t);
       } else if (dragState.current.active) {
@@ -1607,10 +1608,10 @@ function SatoriGlobe() {
     const now = performance.now();
     const dx = e.clientX - st.lastX, dy = e.clientY - st.lastY;
     st.lastX = e.clientX; st.lastY = e.clientY; st.lastT = now;
-    // dx positivo (arrastrar a la derecha) debe traer lo que esta a la izquierda:
-    // el swipe se sentia invertido con el signo negativo.
-    view.current.rot = (view.current.rot + dx * 0.45) % 360;
-    view.current.tilt = Math.max(-80, Math.min(80, view.current.tilt + dy * -0.35));
+    // Sentido de arrastre validado a mano por Rodrigo (2026-08-10): el globo
+    // sigue al cursor en ambos ejes con estos signos.
+    view.current.rot = (view.current.rot + dx * -0.45) % 360;
+    view.current.tilt = Math.max(-80, Math.min(80, view.current.tilt + dy * 0.35));
     if (redibujarRef.current) redibujarRef.current();   // repinta solo mientras arrastras
   };
   const endDrag = (e) => {
