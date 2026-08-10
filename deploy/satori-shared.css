@@ -363,3 +363,7 @@ img, video, iframe {
 /* Micro-lift al hover de las tarjetas-pilar de la home */
 .pillar-card { transition: transform .45s cubic-bezier(.2,.8,.2,1), box-shadow .45s ease; will-change: transform; }
 .pillar-card:hover { transform: translateY(-5px); box-shadow: 0 26px 60px -26px rgba(14,14,14,0.30), 0 0 0 1px rgba(166,124,0,0.16) !important; }
+/* Tarjetas de servicio (home): media horizontal arriba, texto abajo (todas las vistas). */
+@media (max-width: 640px) {
+  .pillar-card .pillar-media { height: auto !important; aspect-ratio: 16 / 9 !important; }
+}

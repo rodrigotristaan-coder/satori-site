@@ -2269,24 +2269,27 @@ function FounderMessage({ rv, en, tag, role }) {
   return (
     <div className="founder-msg" style={{
       ...glassCard, border: "1px solid rgba(166,124,0,0.22)", borderRadius: "22px",
-      padding: "1.7rem clamp(1.3rem,3vw,2rem)", maxWidth: "760px", margin: "0 auto 2.6rem",
-      display: "flex", gap: "1.2rem", alignItems: "flex-start"
+      padding: "1.7rem clamp(1.3rem,3vw,2.2rem)", maxWidth: "860px", margin: "0 auto 2.6rem"
     }}>
-      {rv.photo
-        ? <img src={rv.photo} alt={rv.name} width="60" height="60" loading="lazy"
-            style={{ width: 60, height: 60, borderRadius: "50%", objectFit: "cover", flex: "none", border: "2px solid rgba(166,124,0,0.4)" }} />
-        : <span aria-hidden="true" style={{
-            width: 60, height: 60, borderRadius: "50%", flex: "none",
-            background: SATORI.GOLD, color: SATORI.WHITE, display: "flex",
-            alignItems: "center", justifyContent: "center", fontWeight: 600, fontFamily: TYPE.display, fontSize: "1.3rem"
-          }}>{initial}</span>}
-      <div style={{ minWidth: 0 }}>
-        <div style={{ ...eyebrowStyle, color: SATORI.GOLD_DEEP, marginBottom: "0.5rem" }}>{tag}</div>
-        <p style={{ ...bodyStyle, color: SATORI.INK, margin: 0, fontSize: "1rem", lineHeight: 1.65 }}>{goldRich(text)}</p>
-        <div style={{ marginTop: "0.9rem", fontWeight: 600, color: SATORI.INK, fontFamily: TYPE.body }}>
-          {rv.name} <span style={{ color: SATORI.GOLD_DEEP, fontWeight: 500 }}>· {role}</span>
+      {/* La foto va integrada al encabezado (no como columna): el texto ocupa
+          todo el ancho de la tarjeta y no queda banda muerta bajo el avatar. */}
+      <div style={{ display: "flex", alignItems: "center", gap: "0.9rem", marginBottom: "1rem" }}>
+        {rv.photo
+          ? <img src={rv.photo} alt={rv.name} width="48" height="48" loading="lazy"
+              style={{ width: 48, height: 48, borderRadius: "50%", objectFit: "cover", flex: "none", border: "2px solid rgba(166,124,0,0.4)" }} />
+          : <span aria-hidden="true" style={{
+              width: 48, height: 48, borderRadius: "50%", flex: "none",
+              background: SATORI.GOLD, color: SATORI.WHITE, display: "flex",
+              alignItems: "center", justifyContent: "center", fontWeight: 600, fontFamily: TYPE.display, fontSize: "1.1rem"
+            }}>{initial}</span>}
+        <div style={{ minWidth: 0 }}>
+          <div style={{ ...eyebrowStyle, color: SATORI.GOLD_DEEP, marginBottom: "0.15rem" }}>{tag}</div>
+          <div style={{ fontWeight: 600, color: SATORI.INK, fontFamily: TYPE.body, fontSize: "0.92rem" }}>
+            {rv.name} <span style={{ color: SATORI.GOLD_DEEP, fontWeight: 500 }}>· {role}</span>
+          </div>
         </div>
       </div>
+      <p style={{ ...bodyStyle, color: SATORI.INK, margin: 0, fontSize: "1.02rem", lineHeight: 1.7 }}>{goldRich(text)}</p>
     </div>
   );
 }
@@ -2389,10 +2392,36 @@ function ReviewsSection() {
           </div>
         ) : testimonials.length > 1 ? (
           <>
-            <div className="reviews-swipe" style={{
-              display: "flex", gap: "1.3rem", overflowX: "auto",
-              scrollSnapType: "x mandatory", padding: "0.4rem 0.2rem 1.2rem", margin: "0 -0.2rem"
-            }}>
+            <div
+              className="reviews-swipe"
+              // Swipe tambien con mouse: en desktop la rueda no scrollea en X,
+              // asi que el carrusel se puede agarrar y arrastrar.
+              onPointerDown={(e) => {
+                if (e.pointerType !== "mouse") return;
+                const el = e.currentTarget;
+                el.dataset.dragX = e.clientX; el.dataset.dragSL = el.scrollLeft;
+                el.style.scrollSnapType = "none"; el.style.cursor = "grabbing";
+                try { el.setPointerCapture(e.pointerId); } catch (_) {}
+              }}
+              onPointerMove={(e) => {
+                const el = e.currentTarget;
+                if (el.dataset.dragX === undefined || el.dataset.dragX === "") return;
+                el.scrollLeft = Number(el.dataset.dragSL) - (e.clientX - Number(el.dataset.dragX));
+              }}
+              onPointerUp={(e) => {
+                const el = e.currentTarget;
+                el.dataset.dragX = ""; el.style.scrollSnapType = ""; el.style.cursor = "";
+                try { el.releasePointerCapture(e.pointerId); } catch (_) {}
+              }}
+              onPointerCancel={(e) => {
+                const el = e.currentTarget;
+                el.dataset.dragX = ""; el.style.scrollSnapType = ""; el.style.cursor = "";
+              }}
+              style={{
+                display: "flex", gap: "1.3rem", overflowX: "auto",
+                scrollSnapType: "x mandatory", padding: "0.4rem 0.2rem 1.2rem", margin: "0 -0.2rem",
+                cursor: "grab"
+              }}>
               {testimonials.map((rv, i) => (
                 <div key={i} style={{ flex: "0 0 min(86%, 360px)", scrollSnapAlign: "center", display: "flex" }}>
                   <ReviewCard rv={rv} en={en} />

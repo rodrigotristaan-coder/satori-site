@@ -521,14 +521,18 @@ function QueHacemos() {
               boxShadow: it.featured
                 ? "0 20px 55px -22px rgba(14,14,14,0.22), 0 0 0 1px rgba(166,124,0,0.10), inset 0 1px 0 rgba(255,255,255,0.55)"
                 : "0 14px 40px -22px rgba(14,14,14,0.18), inset 0 1px 0 rgba(255,255,255,0.55)",
-              display: "flex", alignItems: "stretch",
+              display: "flex", flexDirection: "column", alignItems: "stretch",
               ...(it.featured ? { gridColumn: "1 / -1" } : {})
             }}>
-              <div style={{
-                flex: it.featured ? "0 0 42%" : "0 0 33.333%", minWidth: "96px",
-                minHeight: it.featured ? "260px" : undefined,
+              {/* Media arriba en formato horizontal: los assets apaisados (dashboards,
+                  webs) se aprecian completos; el texto va abajo a todo lo ancho. */}
+              <div className="pillar-media" style={{
+                flex: "none", width: "100%",
+                aspectRatio: it.featured ? undefined : "16 / 9",
+                height: it.featured ? "420px" : undefined,
                 background: it.bg || (it.logo ? SATORI.CREAM : `${SATORI.INK}07`),
-                display: "flex", alignItems: "center", justifyContent: "center"
+                display: "flex", alignItems: "center", justifyContent: "center",
+                overflow: "hidden"
               }}>
                 {it.video ? (
                   <VideoEnPantalla src={it.video} poster={it.poster} fit={it.fit} objPos={it.objPos} />
@@ -1548,14 +1552,11 @@ function SatoriGlobe() {
       });
     };
 
-    // SIN BUCLE DE ANIMACION — a proposito.
-    // El globo giraba solo, lo que obliga a redibujar 30-60 veces por segundo de
-    // forma permanente mientras la seccion este en pantalla. En equipos con la
-    // aceleracion por hardware apagada o GPU modesta eso satura el hilo principal
-    // hasta que el navegador mata la pestana (pantalla en negro). Era caro en las
-    // TRES versiones: SVG original, canvas vectorial y canvas con textura.
-    // Ahora se pinta UNA vez y solo se repinta cuando el usuario arrastra: en
-    // reposo el costo es exactamente cero.
+    // Giro automatico CONTENIDO. El bucle a 30-60fps permanente tumbaba equipos
+    // modestos (historico: pantalla en negro), asi que el auto-giro respeta tres
+    // limites: (1) SOLO corre con el globo en viewport (IntersectionObserver),
+    // (2) va a ~15fps (el repintado de textura cuesta lo mismo que un drag),
+    // (3) se pausa mientras el usuario arrastra. Fuera de pantalla: costo cero.
     let raf = 0;
     const repintar = () => {
       if (raf) return;                       // como mucho un repintado por frame
@@ -1563,7 +1564,34 @@ function SatoriGlobe() {
     };
     redibujarRef.current = repintar;
     repintar();
-    return () => { if (raf) cancelAnimationFrame(raf); redibujarRef.current = null; };
+
+    let animRaf = 0, lastT = 0, visible = false;
+    const paso = (t) => {
+      animRaf = 0;
+      if (!visible) return;
+      if (!dragState.current.active && t - lastT >= 66) {   // ~15fps
+        view.current.rot = (view.current.rot + (t - lastT) * 0.004) % 360;  // ~4°/s
+        lastT = t;
+        draw(t);
+      } else if (dragState.current.active) {
+        lastT = t;
+      }
+      animRaf = requestAnimationFrame(paso);
+    };
+    const ioGiro = typeof IntersectionObserver !== "undefined"
+      ? new IntersectionObserver(([e]) => {
+          visible = e.isIntersecting;
+          if (visible && !animRaf) { lastT = performance.now(); animRaf = requestAnimationFrame(paso); }
+        }, { threshold: 0.15 })
+      : null;
+    if (ioGiro) ioGiro.observe(canvas);
+
+    return () => {
+      if (raf) cancelAnimationFrame(raf);
+      if (animRaf) cancelAnimationFrame(animRaf);
+      if (ioGiro) ioGiro.disconnect();
+      redibujarRef.current = null;
+    };
   }, [ready, lang]);
 
   // Drag sobre un hit-target circular que cubre EXACTAMENTE el disco.
@@ -1579,7 +1607,9 @@ function SatoriGlobe() {
     const now = performance.now();
     const dx = e.clientX - st.lastX, dy = e.clientY - st.lastY;
     st.lastX = e.clientX; st.lastY = e.clientY; st.lastT = now;
-    view.current.rot = (view.current.rot + dx * -0.45) % 360;
+    // dx positivo (arrastrar a la derecha) debe traer lo que esta a la izquierda:
+    // el swipe se sentia invertido con el signo negativo.
+    view.current.rot = (view.current.rot + dx * 0.45) % 360;
     view.current.tilt = Math.max(-80, Math.min(80, view.current.tilt + dy * -0.35));
     if (redibujarRef.current) redibujarRef.current();   // repinta solo mientras arrastras
   };
@@ -1819,7 +1849,6 @@ function App() {
         { id: "inicio", label: { es: "Filosofía", en: "Philosophy" } },
         { id: "que-hacemos", label: { es: "Qué hacemos", en: "What we do" } },
         { id: "metodologia", label: { es: "Metodología", en: "Method" } },
-        { id: "showroom", label: { es: "Showroom", en: "Showroom" } },
         { id: "resenas", label: { es: "Reseñas", en: "Reviews" } }
       ]} />
       <BrandManifesto />
@@ -1827,7 +1856,6 @@ function App() {
       <FounderBrief />
       <QueHacemos />
       <RutaCrecimiento />
-      <ShowroomTeaser />
       <MapaPresencia />
       <ReviewsSection />
       <CtaBlock
