@@ -33,23 +33,22 @@ const PROYECTOS_ES = [
     poster: "assets/showroom/famsalasglez-live.jpg"
   },
   {
-    titulo: "Esmeralda Lakes — Landing & Reservas",
+    titulo: "Página de Reservas",
     cat: "Web",
     year: "2025",
     descripcion: "Landing bilingüe con reservas directas y sincronización con el calendario de Airbnb.",
     tags: ["Landing", "Reservas", "Airbnb", "Bilingüe"],
     url: "https://esmeraldalakes.com",
-    video: "assets/showroom/esmeralda-live.mp4",
-    poster: "assets/showroom/esmeralda-live-poster.jpg"
+    img: "assets/showroom/esmeralda-reservas.jpg"
   },
   {
-    titulo: "Laura — HUMAN-CORE",
+    titulo: "HUMAN-CORE",
     cat: "Web",
     year: "2025",
     descripcion: "Landing del HUMAN-CORE System (consultoría de talento y liderazgo): web + automatización de leads, medición y SEO. Diseño y desarrollo por Satori.",
     tags: ["Landing", "Automatización", "Captura de leads", "Consultoría"],
     url: "https://laurahumancore.com",
-    img: "assets/showroom/laura-humancore-live.jpg"
+    img: "assets/showroom/humancore-hero.jpg"
   },
   {
     titulo: "Money Shop Polanco — CDMX",
@@ -134,23 +133,22 @@ const PROYECTOS_EN = [
     poster: "assets/showroom/famsalasglez-live.jpg"
   },
   {
-    titulo: "Esmeralda Lakes — Landing & Booking",
+    titulo: "Booking Page",
     cat: "Web",
     year: "2025",
     descripcion: "Bilingual landing with direct booking and Airbnb calendar sync.",
     tags: ["Landing", "Booking", "Airbnb", "Bilingual"],
     url: "https://esmeraldalakes.com",
-    video: "assets/showroom/esmeralda-live.mp4",
-    poster: "assets/showroom/esmeralda-live-poster.jpg"
+    img: "assets/showroom/esmeralda-reservas.jpg"
   },
   {
-    titulo: "Laura — HUMAN-CORE",
+    titulo: "HUMAN-CORE",
     cat: "Web",
     year: "2025",
     descripcion: "Landing for the HUMAN-CORE System (talent & leadership consulting): web + lead automation, measurement and SEO. Designed and built by Satori.",
     tags: ["Landing", "Automation", "Lead capture", "Consulting"],
     url: "https://laurahumancore.com",
-    img: "assets/showroom/laura-humancore-live.jpg"
+    img: "assets/showroom/humancore-hero.jpg"
   },
   {
     titulo: "Money Shop Polanco — CDMX",
