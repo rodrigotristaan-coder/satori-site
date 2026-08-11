@@ -17,7 +17,8 @@ const SERVICIOS_EN = [
       "Your CV as a website",
       "Templates for the whole team"
     ],
-    img: "assets/marca-propia.webp"
+    slug: "marca",
+    img: "assets/showroom/marca-branding-poster.jpg"
   },
   {
     num: "02",
@@ -32,7 +33,8 @@ const SERVICIOS_EN = [
       "Recommendations in ChatGPT / Claude / Gemini",
       "Measurement & analytics"
     ],
-    img: "assets/posicionamiento.webp"
+    slug: "web",
+    img: "assets/showroom/lina-cristinedae.jpg"
   },
   {
     num: "03",
@@ -47,7 +49,8 @@ const SERVICIOS_EN = [
       "Funnels & lead capture",
       "Clear reports"
     ],
-    img: "assets/marketing-ia.webp"
+    slug: "ads",
+    img: "assets/showroom/marketing-moneyshop-poster.jpg"
   },
   {
     num: "04",
@@ -62,7 +65,8 @@ const SERVICIOS_EN = [
       "Automatic summaries & reports",
       "Custom integrations"
     ],
-    img: "assets/showroom/n8n-system.jpg"
+    slug: "bots",
+    img: "assets/showroom/automatizacion-flow-poster.jpg"
   },
   {
     num: "05",
@@ -77,7 +81,8 @@ const SERVICIOS_EN = [
       "Daily status",
       "Already used by real clients"
     ],
-    img: "assets/showroom/mycfo-laptop-poster.jpg"
+    slug: "mycfo",
+    img: "assets/showroom/mycfo-chat-poster.jpg"
   },
   {
     num: "06",
@@ -92,6 +97,7 @@ const SERVICIOS_EN = [
       "AI voice and music",
       "Fast production, on your identity"
     ],
+    slug: "contenido",
     img: "assets/showroom/satori-contenido-ia-poster.jpg"
   },
   {
@@ -107,6 +113,7 @@ const SERVICIOS_EN = [
       "Industry trends & opportunities",
       "Clear report with actionable recommendations"
     ],
+    slug: "estudios",
     img: "assets/showroom/estudios-mercado-poster.jpg"
   }
 ];
@@ -170,7 +177,8 @@ const SERVICIOS = [
       "Tu CV en página web",
       "Plantillas para todo el equipo"
     ],
-    img: "assets/marca-propia.webp"
+    slug: "marca",
+    img: "assets/showroom/marca-branding-poster.jpg"
   },
   {
     num: "02",
@@ -185,7 +193,8 @@ const SERVICIOS = [
       "Recomendaciones en ChatGPT / Claude / Gemini",
       "Medición y analítica"
     ],
-    img: "assets/posicionamiento.webp"
+    slug: "web",
+    img: "assets/showroom/lina-cristinedae.jpg"
   },
   {
     num: "03",
@@ -200,7 +209,8 @@ const SERVICIOS = [
       "Embudos y captura de leads",
       "Reportes claros"
     ],
-    img: "assets/marketing-ia.webp"
+    slug: "ads",
+    img: "assets/showroom/marketing-moneyshop-poster.jpg"
   },
   {
     num: "04",
@@ -215,7 +225,8 @@ const SERVICIOS = [
       "Resúmenes y reportes automáticos",
       "Integraciones a tu medida"
     ],
-    img: "assets/showroom/n8n-system.jpg"
+    slug: "bots",
+    img: "assets/showroom/automatizacion-flow-poster.jpg"
   },
   {
     num: "05",
@@ -230,7 +241,8 @@ const SERVICIOS = [
       "Estatus diario",
       "Ya en uso por clientes reales"
     ],
-    img: "assets/showroom/mycfo-laptop-poster.jpg"
+    slug: "mycfo",
+    img: "assets/showroom/mycfo-chat-poster.jpg"
   },
   {
     num: "06",
@@ -245,6 +257,7 @@ const SERVICIOS = [
       "Voz y música con IA",
       "Producción rápida, a tu identidad"
     ],
+    slug: "contenido",
     img: "assets/showroom/satori-contenido-ia-poster.jpg"
   },
   {
@@ -260,6 +273,7 @@ const SERVICIOS = [
       "Tendencias y oportunidades del sector",
       "Reporte claro con recomendaciones accionables"
     ],
+    slug: "estudios",
     img: "assets/showroom/estudios-mercado-poster.jpg"
   }
 ];
@@ -337,7 +351,10 @@ function ServiciosHero() {
 // ---------- SERVICIOS DETALLE (más compactos, animados) ----------
 function ServiciosDetalle() {
   const [lang] = useLang();
-  const list = lang === "en" ? SERVICIOS_EN : SERVICIOS;
+  const base = lang === "en" ? SERVICIOS_EN : SERVICIOS;
+  // Mismo orden por rentabilidad que las tarjetas del inicio (SLUGS de las anclas)
+  const ORDEN = ["web", "bots", "ads", "contenido", "marca", "estudios", "mycfo"];
+  const list = ORDEN.map((k) => base.find((s) => s.slug === k)).filter(Boolean);
   const ctaInteresa = lang === "en" ? "I'm interested" : "Me interesa";
   return (
     <section
@@ -360,10 +377,12 @@ function ServiciosDetalle() {
       >
         {list.map((s, i) => (
           <article
-            key={s.num}
+            key={s.slug}
+            id={s.slug}
             data-reveal
             className="service-card"
             style={{
+              scrollMarginTop: "110px",
               background: "rgba(255,255,255,0.55)",
               backdropFilter: "blur(14px) saturate(160%)",
               WebkitBackdropFilter: "blur(14px) saturate(160%)",
@@ -376,7 +395,7 @@ function ServiciosDetalle() {
               animationDelay: `${i * 0.1}s`
             }}
           >
-            <div className="service-image" style={{ position: "relative", overflow: "hidden", aspectRatio: "16/10" }}>
+            <div className="service-image" style={{ position: "relative", overflow: "hidden", aspectRatio: "16/9" }}>
               <img
                 src={s.img}
                 alt={s.titulo}
@@ -384,8 +403,7 @@ function ServiciosDetalle() {
                   width: "100%",
                   height: "100%",
                   objectFit: "cover",
-                  filter: "grayscale(1) contrast(1.05)",
-                  transition: "transform 1s cubic-bezier(.2,.7,.2,1), filter .8s ease"
+                  transition: "transform 1s cubic-bezier(.2,.7,.2,1)"
                 }}
               />
               <div
@@ -412,7 +430,7 @@ function ServiciosDetalle() {
                   backdropFilter: "blur(10px)"
                 }}
               >
-                {s.num} · {s.tag.toUpperCase()}
+                {String(i + 1).padStart(2, "0")} · {s.tag.toUpperCase()}
               </div>
               <div
                 aria-hidden="true"
@@ -529,7 +547,7 @@ function ServiciosDetalle() {
       <style>{`
         .service-card { transition: transform .45s cubic-bezier(.2,.9,.3,1.2), box-shadow .45s ease; will-change: transform; }
         .service-card:hover { transform: translateY(-6px); box-shadow: 0 30px 60px -25px rgba(14,14,14,0.25), 0 0 0 1px rgba(166,124,0,0.18); }
-        .service-card:hover .service-image img { transform: scale(1.06); filter: grayscale(0.4) contrast(1.05); }
+        .service-card:hover .service-image img { transform: scale(1.06); }
         .service-card:hover .service-accent { transform: scaleX(1) !important; }
         .service-benefit { transition: transform .4s ease, opacity .4s ease; }
         .service-card:hover .service-benefit { transform: translateX(3px); }

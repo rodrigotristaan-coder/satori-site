@@ -465,6 +465,8 @@ function FounderBrief() {
 }
 
 // ---------- QUÉ HACEMOS (5 pilares de servicio — claridad arriba) ----------
+// Anclas de /servicios en el MISMO orden (por rentabilidad) que T.items.
+const SLUGS_SERVICIOS = ["web", "bots", "ads", "contenido", "marca", "estudios", "mycfo"];
 function QueHacemos() {
   const [lang] = useLang();
   const en = lang === "en";
@@ -478,9 +480,9 @@ function QueHacemos() {
       // Orden por rentabilidad para Satori (Rodrigo, 2026-08-10)
       { img: "assets/showroom/lina-cristinedae.jpg", fit: "cover", objPos: "top", t: "Websites & Positioning", d: "Fast sites that rank and get recommended by AI." },
       { video: "assets/showroom/automatizacion-flow.mp4", poster: "assets/showroom/automatizacion-flow-poster.jpg", fit: "cover", bg: "#0E0E0E", t: "AI Automation & Bots", d: "Bots and systems that attend, capture and follow up on their own." },
-      { video: "assets/showroom/marketing-moneyshop.mp4", poster: "assets/showroom/marketing-moneyshop-poster.jpg", fit: "cover", objPos: "left", t: "Marketing & Ads", d: "Campaigns that bring qualified leads to your business." },
+      { img: "assets/showroom/marketing-moneyshop-poster.jpg", fit: "cover", objPos: "left", t: "Marketing & Ads", d: "Campaigns that bring qualified leads to your business." },
       { video: "assets/showroom/satori-contenido-ia.mp4", poster: "assets/showroom/satori-contenido-ia-poster.jpg", fit: "cover", bg: SATORI.CREAM, t: "AI Content", d: "Cinematic brand video, reels and ads created end-to-end with AI." },
-      { video: "assets/showroom/marca-branding.mp4", poster: "assets/showroom/marca-branding-poster.jpg", fit: "cover", t: "Brand & Design", d: "Identity that sets you apart and builds trust." },
+      { img: "assets/showroom/marca-branding-poster.jpg", fit: "cover", t: "Brand & Design", d: "Identity that sets you apart and builds trust." },
       { video: "assets/showroom/estudios-mercado.mp4", poster: "assets/showroom/estudios-mercado-poster.jpg", fit: "cover", bg: "#0E0E0E", t: "Market Research", d: "Real data on your market, competitors and pricing to decide with clarity." },
       { video: "assets/showroom/mycfo-chat.mp4", poster: "assets/showroom/mycfo-chat-poster.jpg", bg: SATORI.CREAM, t: "MyCFO", d: "Your AI CFO: manage your business finances by chat, with clear reports and a daily status.", featured: true, badge: "Satori product" }
     ]
@@ -494,9 +496,9 @@ function QueHacemos() {
       // Orden por rentabilidad para Satori (Rodrigo, 2026-08-10)
       { img: "assets/showroom/lina-cristinedae.jpg", fit: "cover", objPos: "top", t: "Páginas Web & Posicionamiento", d: "Sitios rápidos, que rankean y que la IA recomienda." },
       { video: "assets/showroom/automatizacion-flow.mp4", poster: "assets/showroom/automatizacion-flow-poster.jpg", fit: "cover", bg: "#0E0E0E", t: "Automatización & Bots con IA", d: "Bots y sistemas que atienden, captan y dan seguimiento solos." },
-      { video: "assets/showroom/marketing-moneyshop.mp4", poster: "assets/showroom/marketing-moneyshop-poster.jpg", fit: "cover", objPos: "left", t: "Marketing & Ads", d: "Campañas que traen prospectos calificados a tu negocio." },
+      { img: "assets/showroom/marketing-moneyshop-poster.jpg", fit: "cover", objPos: "left", t: "Marketing & Ads", d: "Campañas que traen prospectos calificados a tu negocio." },
       { video: "assets/showroom/satori-contenido-ia.mp4", poster: "assets/showroom/satori-contenido-ia-poster.jpg", fit: "cover", bg: SATORI.CREAM, t: "Contenido con IA", d: "Video de marca, reels y ads cinematográficos hechos con IA de punta a punta." },
-      { video: "assets/showroom/marca-branding.mp4", poster: "assets/showroom/marca-branding-poster.jpg", fit: "cover", t: "Marca & Diseño", d: "Identidad que te distingue y genera confianza." },
+      { img: "assets/showroom/marca-branding-poster.jpg", fit: "cover", t: "Marca & Diseño", d: "Identidad que te distingue y genera confianza." },
       { video: "assets/showroom/estudios-mercado.mp4", poster: "assets/showroom/estudios-mercado-poster.jpg", fit: "cover", bg: "#0E0E0E", t: "Estudios de Mercado", d: "Datos reales de tu mercado, competencia y precios para decidir con claridad." },
       { video: "assets/showroom/mycfo-chat.mp4", poster: "assets/showroom/mycfo-chat-poster.jpg", bg: SATORI.CREAM, t: "MyCFO", d: "Tu CFO con IA: controla las finanzas de tu negocio por chat, con reportes claros y estatus diario.", featured: true, badge: "Producto Satori" }
     ]
@@ -514,7 +516,8 @@ function QueHacemos() {
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "1.2rem" }}>
           {T.items.map((it, i) => (
-            <div key={i} className={it.featured ? "pillar-card pillar-featured" : "pillar-card"} style={{
+            // Cada tarjeta enlaza a su detalle en /servicios (mismo orden que SLUGS_SERVICIOS)
+            <a key={i} href={`/servicios#${SLUGS_SERVICIOS[i]}`} className={it.featured ? "pillar-card pillar-featured" : "pillar-card"} style={{
               background: "rgba(255,255,255,0.55)",
               border: it.featured ? `1px solid ${SATORI.GOLD}55` : "1px solid rgba(255,255,255,0.65)",
               backdropFilter: "blur(14px) saturate(160%)", WebkitBackdropFilter: "blur(14px) saturate(160%)",
@@ -523,6 +526,7 @@ function QueHacemos() {
                 ? "0 20px 55px -22px rgba(14,14,14,0.22), 0 0 0 1px rgba(166,124,0,0.10), inset 0 1px 0 rgba(255,255,255,0.55)"
                 : "0 14px 40px -22px rgba(14,14,14,0.18), inset 0 1px 0 rgba(255,255,255,0.55)",
               display: "flex", flexDirection: "column", alignItems: "stretch",
+              textDecoration: "none", color: "inherit",
               ...(it.featured ? { gridColumn: "1 / -1" } : {})
             }}>
               {/* Media arriba en formato horizontal: los assets apaisados (dashboards,
@@ -556,7 +560,7 @@ function QueHacemos() {
                 <h3 style={{ fontFamily: TYPE.display, fontSize: it.featured ? "1.55rem" : "1.2rem", fontWeight: 500, color: SATORI.INK, margin: "0 0 0.5rem" }}>{it.t}</h3>
                 <p style={{ ...bodyStyle, fontSize: it.featured ? "1.02rem" : "0.96rem", margin: 0, maxWidth: it.featured ? "48ch" : undefined }}>{it.d}</p>
               </div>
-            </div>
+            </a>
           ))}
         </div>
         <div style={{ textAlign: "center", marginTop: "2.5rem" }}>
@@ -1389,10 +1393,15 @@ function SatoriGlobe() {
     // frame, cuatro veces el costo, y luego se escala suavizado igual. Los
     // vectores de encima (puntos, halo) si van a 2x y quedan nitidos.
     const D = Math.ceil(RADIUS * 2) + 2;
+    // Textura a MEDIA resolucion: 4x menos pixeles por frame. Se escala
+    // suavizada al tamano real; en un globo girando la diferencia no se ve,
+    // y es lo que permite girar a 60fps sin saturar el hilo principal.
+    const RES = 0.5;
+    const DT = Math.ceil(D * RES);
     const buf = document.createElement("canvas");
-    buf.width = D; buf.height = D;
+    buf.width = DT; buf.height = DT;
     const bctx = buf.getContext("2d");
-    const imgData = bctx.createImageData(D, D);
+    const imgData = bctx.createImageData(DT, DT);
     const out = imgData.data;
     const OFF = CENTER - RADIUS - 1; // esquina del recuadro dentro del disco
 
@@ -1403,10 +1412,10 @@ function SatoriGlobe() {
       const sinP = Math.sin(phi0), cosP = Math.cos(phi0);
       // luz desde arriba-izquierda, ligeramente al frente
       const LX = -0.42, LY = -0.52, LZ = 0.74;
-      for (let py = 0; py < D; py++) {
-        for (let px = 0; px < D; px++) {
-          const x = px + OFF - CENTER;
-          const y = py + OFF - CENTER;
+      for (let py = 0; py < DT; py++) {
+        for (let px = 0; px < DT; px++) {
+          const x = px / RES + OFF - CENTER;
+          const y = py / RES + OFF - CENTER;
           const rho2 = x * x + y * y;
           if (rho2 > RADIUS * RADIUS) continue;
           const rho = Math.sqrt(rho2);
@@ -1422,7 +1431,7 @@ function SatoriGlobe() {
           const nx = x / RADIUS, ny = y / RADIUS, nz = cosC;
           let lum = nx * LX + ny * LY + nz * LZ;
           lum = Math.max(0, lum) * 0.85 + 0.30;
-          dentro.push(py * D + px, lat, lon, Math.min(1.25, lum));
+          dentro.push(py * DT + px, lat, lon, Math.min(1.25, lum));
         }
       }
       const n = dentro.length / 4;
@@ -1500,7 +1509,7 @@ function SatoriGlobe() {
       // puntos de Mexico se dibujaban sobre el Sahara.
       if (pintarTextura((rot * Math.PI) / 180)) {
         bctx.putImageData(imgData, 0, 0);
-        ctx.drawImage(buf, OFF, OFF);
+        ctx.drawImage(buf, 0, 0, DT, DT, OFF, OFF, D, D);
       } else {
         esferaRespaldo();
       }
@@ -1570,13 +1579,12 @@ function SatoriGlobe() {
     const paso = (t) => {
       animRaf = 0;
       if (!visible) return;
-      if (!dragState.current.active && t - lastT >= 66) {   // ~15fps
-        view.current.rot = (view.current.rot + (t - lastT) * 0.012) % 360;  // ~12°/s
-        lastT = t;
+      if (!dragState.current.active) {
+        const dt = Math.min(50, lastT ? t - lastT : 16);    // fluido: cada frame (~60fps)
+        view.current.rot = (view.current.rot + dt * 0.012) % 360;  // ~12°/s
         draw(t);
-      } else if (dragState.current.active) {
-        lastT = t;
       }
+      lastT = t;
       animRaf = requestAnimationFrame(paso);
     };
     const ioGiro = typeof IntersectionObserver !== "undefined"
