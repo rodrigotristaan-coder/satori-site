@@ -24,7 +24,7 @@ const PROYECTOS_ES = [
     poster: "assets/showroom/satori-contenido-ia-poster.jpg"
   },
   {
-    titulo: "Invitación de boda — V&C",
+    titulo: "Invitación de boda",
     cat: "Web",
     year: "2025",
     descripcion: "Invitación de boda digital: sobre interactivo que se abre con música, galería, itinerario, confirmación de asistencia (RSVP), mesa de regalos y gestión de reservas con IA. Diseño y desarrollo por Satori.",
@@ -124,7 +124,7 @@ const PROYECTOS_EN = [
     poster: "assets/showroom/satori-contenido-ia-poster.jpg"
   },
   {
-    titulo: "Wedding invitation — V&C",
+    titulo: "Wedding invitation",
     cat: "Web",
     year: "2025",
     descripcion: "Digital wedding invitation: an interactive envelope that opens with music, gallery, itinerary, RSVP, gift registry and AI-powered booking management. Designed and developed by Satori.",

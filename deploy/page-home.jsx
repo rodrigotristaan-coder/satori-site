@@ -479,7 +479,7 @@ function QueHacemos() {
     items: [
       // Orden por rentabilidad para Satori (Rodrigo, 2026-08-10)
       { img: "assets/showroom/lina-cristinedae.jpg", fit: "cover", objPos: "top", t: "Websites & Positioning", d: "Fast sites that rank and get recommended by AI." },
-      { video: "assets/showroom/automatizacion-flow.mp4", poster: "assets/showroom/automatizacion-flow-poster.jpg", fit: "cover", bg: "#0E0E0E", t: "AI Automation & Bots", d: "Bots and systems that attend, capture and follow up on their own." },
+      { img: "assets/showroom/automatizacion-flow-horizontal.jpg", fit: "cover", bg: "#0E0E0E", t: "AI Automation & Bots", d: "Bots and systems that attend, capture and follow up on their own." },
       { img: "assets/showroom/marketing-moneyshop-poster.jpg", fit: "cover", objPos: "left", t: "Marketing & Ads", d: "Campaigns that bring qualified leads to your business." },
       { video: "assets/showroom/satori-contenido-ia.mp4", poster: "assets/showroom/satori-contenido-ia-poster.jpg", fit: "cover", bg: SATORI.CREAM, t: "AI Content", d: "Cinematic brand video, reels and ads created end-to-end with AI." },
       { img: "assets/showroom/marca-branding-poster.jpg", fit: "cover", t: "Brand & Design", d: "Identity that sets you apart and builds trust." },
@@ -495,7 +495,7 @@ function QueHacemos() {
     items: [
       // Orden por rentabilidad para Satori (Rodrigo, 2026-08-10)
       { img: "assets/showroom/lina-cristinedae.jpg", fit: "cover", objPos: "top", t: "Páginas Web & Posicionamiento", d: "Sitios rápidos, que rankean y que la IA recomienda." },
-      { video: "assets/showroom/automatizacion-flow.mp4", poster: "assets/showroom/automatizacion-flow-poster.jpg", fit: "cover", bg: "#0E0E0E", t: "Automatización & Bots con IA", d: "Bots y sistemas que atienden, captan y dan seguimiento solos." },
+      { img: "assets/showroom/automatizacion-flow-horizontal.jpg", fit: "cover", bg: "#0E0E0E", t: "Automatización & Bots con IA", d: "Bots y sistemas que atienden, captan y dan seguimiento solos." },
       { img: "assets/showroom/marketing-moneyshop-poster.jpg", fit: "cover", objPos: "left", t: "Marketing & Ads", d: "Campañas que traen prospectos calificados a tu negocio." },
       { video: "assets/showroom/satori-contenido-ia.mp4", poster: "assets/showroom/satori-contenido-ia-poster.jpg", fit: "cover", bg: SATORI.CREAM, t: "Contenido con IA", d: "Video de marca, reels y ads cinematográficos hechos con IA de punta a punta." },
       { img: "assets/showroom/marca-branding-poster.jpg", fit: "cover", t: "Marca & Diseño", d: "Identidad que te distingue y genera confianza." },
@@ -1393,29 +1393,31 @@ function SatoriGlobe() {
     // frame, cuatro veces el costo, y luego se escala suavizado igual. Los
     // vectores de encima (puntos, halo) si van a 2x y quedan nitidos.
     const D = Math.ceil(RADIUS * 2) + 2;
-    // Textura a MEDIA resolucion: 4x menos pixeles por frame. Se escala
-    // suavizada al tamano real; en un globo girando la diferencia no se ve,
-    // y es lo que permite girar a 60fps sin saturar el hilo principal.
-    const RES = 0.5;
-    const DT = Math.ceil(D * RES);
     const buf = document.createElement("canvas");
-    buf.width = DT; buf.height = DT;
+    buf.width = D; buf.height = D;
     const bctx = buf.getContext("2d");
-    const imgData = bctx.createImageData(DT, DT);
+    const imgData = bctx.createImageData(D, D);
     const out = imgData.data;
     const OFF = CENTER - RADIUS - 1; // esquina del recuadro dentro del disco
 
-    // Tablas por pixel del disco (se rehacen solo al cambiar la inclinacion)
-    let idx = null, latT = null, lonT = null, shadeT = null, tiltTabla = null;
+    const TAU = Math.PI * 2;
+    // Tablas por pixel del disco (se rehacen solo al cambiar la inclinacion).
+    // CLAVE para girar fluido a resolucion COMPLETA: aqui se precalcula, por
+    // pixel, la columna base (uT) y la fila (rowT) de la textura. Rotar el
+    // globo es entonces solo sumar un desplazamiento constante a las columnas
+    // (sin trigonometria ni normalizacion por pixel en cada frame).
+    let idx = null, uT = null, rowT = null, shadeT = null, tiltTabla = null;
     const construirTablas = (phi0) => {
+      const t = tex.current;
+      const tw = t ? t.w : 1, th = t ? t.h : 1;
       const dentro = [];
       const sinP = Math.sin(phi0), cosP = Math.cos(phi0);
       // luz desde arriba-izquierda, ligeramente al frente
       const LX = -0.42, LY = -0.52, LZ = 0.74;
-      for (let py = 0; py < DT; py++) {
-        for (let px = 0; px < DT; px++) {
-          const x = px / RES + OFF - CENTER;
-          const y = py / RES + OFF - CENTER;
+      for (let py = 0; py < D; py++) {
+        for (let px = 0; px < D; px++) {
+          const x = px + OFF - CENTER;
+          const y = py + OFF - CENTER;
           const rho2 = x * x + y * y;
           if (rho2 > RADIUS * RADIUS) continue;
           const rho = Math.sqrt(rho2);
@@ -1427,38 +1429,40 @@ function SatoriGlobe() {
             lat = Math.asin(cosC * sinP + (-y * sinC * cosP) / rho);
             lon = Math.atan2(x * sinC, rho * cosC * cosP + y * sinC * sinP);
           }
+          let u = ((lon + Math.PI) / TAU) * tw;          // columna base en [0, tw)
+          if (u >= tw) u -= tw; else if (u < 0) u += tw;
+          let v = (((Math.PI / 2 - lat) / Math.PI) * th) | 0;
+          v = v < 0 ? 0 : (v >= th ? th - 1 : v);
           // normal de la esfera en ese pixel -> sombreado difuso
           const nx = x / RADIUS, ny = y / RADIUS, nz = cosC;
           let lum = nx * LX + ny * LY + nz * LZ;
           lum = Math.max(0, lum) * 0.85 + 0.30;
-          dentro.push(py * DT + px, lat, lon, Math.min(1.25, lum));
+          dentro.push(py * D + px, u, v * tw, Math.min(1.25, lum));
         }
       }
       const n = dentro.length / 4;
-      idx = new Int32Array(n); latT = new Float32Array(n);
-      lonT = new Float32Array(n); shadeT = new Float32Array(n);
+      idx = new Int32Array(n); uT = new Float32Array(n);
+      rowT = new Int32Array(n); shadeT = new Float32Array(n);
       for (let i = 0; i < n; i++) {
         idx[i] = dentro[i * 4] * 4;
-        latT[i] = dentro[i * 4 + 1];
-        lonT[i] = dentro[i * 4 + 2];
+        uT[i] = dentro[i * 4 + 1];
+        rowT[i] = dentro[i * 4 + 2];
         shadeT[i] = dentro[i * 4 + 3];
       }
       tiltTabla = phi0;
     };
 
-    const TAU = Math.PI * 2;
     const pintarTextura = (lambda0) => {
       const t = tex.current;
-      if (!t) return false;
-      const { data: td, w: tw, h: th } = t;
+      if (!t || !uT) return false;
+      const { data: td, w: tw } = t;
+      // rotar = correr todas las columnas el mismo desplazamiento en texels
+      let shift = ((lambda0 / TAU) * tw) % tw;
+      if (shift < 0) shift += tw;
       for (let i = 0; i < idx.length; i++) {
-        let lon = lonT[i] + lambda0;
-        lon -= TAU * Math.floor((lon + Math.PI) / TAU);      // normaliza a [-PI, PI)
-        let u = ((lon + Math.PI) / TAU) * tw;
-        let v = ((Math.PI / 2 - latT[i]) / Math.PI) * th;
-        u = u < 0 ? 0 : (u >= tw ? tw - 1 : u | 0);
-        v = v < 0 ? 0 : (v >= th ? th - 1 : v | 0);
-        const s = (v * tw + u) * 4;
+        let u = uT[i] + shift;
+        if (u >= tw) u -= tw;
+        const s = (rowT[i] + u | 0) * 4;
         const k = shadeT[i], o = idx[i];
         out[o] = td[s] * k;
         out[o + 1] = td[s + 1] * k;
@@ -1509,7 +1513,7 @@ function SatoriGlobe() {
       // puntos de Mexico se dibujaban sobre el Sahara.
       if (pintarTextura((rot * Math.PI) / 180)) {
         bctx.putImageData(imgData, 0, 0);
-        ctx.drawImage(buf, 0, 0, DT, DT, OFF, OFF, D, D);
+        ctx.drawImage(buf, OFF, OFF);
       } else {
         esferaRespaldo();
       }

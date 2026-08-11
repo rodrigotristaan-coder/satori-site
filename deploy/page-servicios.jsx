@@ -66,7 +66,7 @@ const SERVICIOS_EN = [
       "Custom integrations"
     ],
     slug: "bots",
-    img: "assets/showroom/automatizacion-flow-poster.jpg"
+    img: "assets/showroom/automatizacion-flow-horizontal.jpg"
   },
   {
     num: "05",
@@ -226,7 +226,7 @@ const SERVICIOS = [
       "Integraciones a tu medida"
     ],
     slug: "bots",
-    img: "assets/showroom/automatizacion-flow-poster.jpg"
+    img: "assets/showroom/automatizacion-flow-horizontal.jpg"
   },
   {
     num: "05",
