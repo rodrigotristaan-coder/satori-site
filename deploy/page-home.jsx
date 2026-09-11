@@ -428,42 +428,6 @@ function HomeHero() {
   );
 }
 
-// ---------- FUNDADOR (mini-brief, formato WHY de Simon Sinek) ----------
-function FounderBrief() {
-  const [lang] = useLang();
-  const en = lang === "en";
-  const T = en ? {
-    eyebrow: "The founder",
-    role: "Founder of Satori",
-    statement: (<>I founded <span style={{ color: SATORI.GOLD }}>Satori</span> to bring clarity and drive growth for freelancers, entrepreneurs and business owners in Mexico.<br /><br />We make artificial intelligence and automation feel close, understandable and applicable for any business. Technology at the service of what's <span style={{ color: SATORI.GOLD }}>human</span>.</>),
-    tagline: (<><span style={{ color: SATORI.GOLD }}>Satori</span>: a moment of deep understanding. (Insight)</>)
-  } : {
-    eyebrow: "El fundador",
-    role: "Fundador de Satori",
-    statement: (<>Fundé <span style={{ color: SATORI.GOLD }}>Satori</span> para dar claridad e impulsar el crecimiento de freelancers, emprendedores y empresarios de México.<br /><br />Volvemos la inteligencia artificial y la automatización algo cercano, entendible y aplicable para cualquier negocio. Tecnología al servicio de lo <span style={{ color: SATORI.GOLD }}>humano</span>.</>),
-    tagline: (<><span style={{ color: SATORI.GOLD }}>Satori</span>: momento de comprensión profunda. (Insight)</>)
-  };
-  return (
-    <section data-reveal style={{ padding: "5rem clamp(1.25rem,4vw,2.5rem)", background: "rgba(244,244,242,0.85)", position: "relative", zIndex: 1 }}>
-      <div className="founder-brief" style={{ maxWidth: "900px", margin: "0 auto", display: "flex", alignItems: "center", gap: "2.6rem" }}>
-        <img src="assets/rodrigo.webp" alt="Rodrigo Tristán" loading="lazy"
-          style={{ flex: "0 0 150px", width: "150px", height: "150px", objectFit: "cover", borderRadius: "20px", boxShadow: "0 16px 40px rgba(14,14,14,0.16)" }} />
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontFamily: TYPE.mono, fontSize: "0.7rem", letterSpacing: "0.16em", textTransform: "uppercase", color: SATORI.GOLD_DEEP, marginBottom: "0.9rem" }}>
-            Rodrigo Tristán · {T.role}
-          </div>
-          <p style={{ fontFamily: TYPE.display, fontWeight: 500, fontSize: "clamp(1.18rem, 2.3vw, 1.65rem)", lineHeight: 1.38, letterSpacing: "-0.01em", color: SATORI.INK, margin: "0 0 2.2rem" }}>
-            {T.statement}
-          </p>
-          <p style={{ fontFamily: TYPE.display, fontStyle: "italic", fontWeight: 400, fontSize: "clamp(1.1rem, 1.9vw, 1.35rem)", lineHeight: 1.5, color: SATORI.INK, opacity: 0.88, margin: 0 }}>
-            {T.tagline}
-          </p>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 // ---------- QUÉ HACEMOS (5 pilares de servicio — claridad arriba) ----------
 // Anclas de /servicios en el MISMO orden (por rentabilidad) que T.items.
 const SLUGS_SERVICIOS = ["web", "bots", "ads", "contenido", "marca", "estudios", "mycfo"];
@@ -1311,29 +1275,27 @@ function VideoEnPantalla({ src, poster, fit, objPos }) {
   );
 }
 
-// ---------- SATORI GLOBE (ortografico, interactivo, textura satelital) ----------
-// Textura: NASA Blue Marble Next Generation (topografia + batimetria), dominio
-// publico. Trae el relieve sombreado incorporado, asi que las montanas, los
-// desiertos, el hielo y el fondo marino son los reales, no colores inventados.
+// ---------- SATORI GLOBE (ortografico, interactivo, dorado translucido) ----------
+// Look: esfera transparente con la tierra en dorado de marca (el "globo dorado"
+// del 31-jul que Rodrigo prefirio sobre la textura satelital; recuperado el
+// 11-sep-2026). La geometria sale de world-atlas land-110m (Natural Earth,
+// dominio publico, 55 KB) que se decodifica aqui mismo sin topojson-client ni
+// d3 y se rasteriza UNA vez a una mascara equirectangular de tierra/mar.
 //
 // COMO FUNCIONA: para cada pixel del disco se invierte la proyeccion ortografica
-// a (lat, lon) y se muestrea la imagen equirectangular. Hacer eso entero en cada
-// frame seria carisimo; el truco es que AL GIRAR SOLO CAMBIA LA LONGITUD, asi que
-// la tabla pixel -> (lat, lon base) se calcula una vez y cada frame solo suma el
-// desfase de rotacion y muestrea. La tabla se recalcula unicamente cuando cambia
-// la inclinacion (arrastre vertical), cuantizada a 1 grado para no rehacerla en
+// a (lat, lon) y se muestrea la mascara. Hacer eso entero en cada frame seria
+// carisimo; el truco es que AL GIRAR SOLO CAMBIA LA LONGITUD, asi que la tabla
+// pixel -> (lat, lon base) se calcula una vez y cada frame solo suma el desfase
+// de rotacion y muestrea. La tabla se recalcula unicamente cuando cambia la
+// inclinacion (arrastre vertical), cuantizada a 1 grado para no rehacerla en
 // cada frame del drag.
-//
-// Ya NO usa d3 ni topojson: con la textura no hace falta geometria vectorial, y
-// la ortografica directa/inversa son unas pocas lineas de trigonometria. Eso quita
-// 120 KB de JS de terceros del globo.
 function SatoriGlobe() {
   const [lang] = useLang();
   const [ready, setReady] = useState(false);
   const [dragging, setDragging] = useState(false);
 
   const canvasRef = useRef(null);
-  const tex = useRef(null); // { data, w, h }
+  const tex = useRef(null); // mascara de tierra { data (RGBA, alpha = tierra), w, h }
   // La rotacion NO es estado de React: si lo fuera, cada frame re-renderizaria.
   const view = useRef({ rot: 305, tilt: -18 });
   const dragState = useRef({ active: false, lastX: 0, lastY: 0, lastT: 0 });
@@ -1353,28 +1315,61 @@ function SatoriGlobe() {
     { name: lang === "en" ? "La Rioja · Spain" : "La Rioja · España", lng: -2.4449, lat: 42.4627 }
   ];
 
-  // Carga la textura y extrae sus pixeles (mismo origen -> el canvas no se marca
-  // como contaminado y getImageData funciona).
+  // Carga la geometria de tierra (topojson) y la rasteriza a una mascara
+  // equirectangular: alpha 255 = tierra, 0 = mar. Decodificar topojson es
+  // trivial (arcos con deltas cuantizados), asi que no hace falta libreria.
   useEffect(() => {
     let cancelled = false;
-    const img = new Image();
-    img.onload = () => {
-      if (cancelled) return;
-      const c = document.createElement("canvas");
-      c.width = img.naturalWidth;
-      c.height = img.naturalHeight;
-      const cx = c.getContext("2d", { willReadFrequently: true });
-      cx.drawImage(img, 0, 0);
-      try {
-        const d = cx.getImageData(0, 0, c.width, c.height);
-        tex.current = { data: d.data, w: c.width, h: c.height };
-      } catch (e) {
-        tex.current = null; // sin textura -> se dibuja la esfera degradada de respaldo
-      }
-      setReady(true);
+    const decodificarTopo = (topo) => {
+      const { scale, translate } = topo.transform;
+      const arcs = topo.arcs.map((arc) => {
+        let x = 0, y = 0;
+        return arc.map(([dx, dy]) => { x += dx; y += dy; return [x * scale[0] + translate[0], y * scale[1] + translate[1]]; });
+      });
+      const anillo = (idxs) => {
+        const pts = [];
+        idxs.forEach((i) => {
+          const a = i < 0 ? arcs[~i].slice().reverse() : arcs[i];
+          a.forEach((p, k) => { if (k === 0 && pts.length) return; pts.push(p); });
+        });
+        return pts;
+      };
+      const geom = topo.objects.land.geometries[0];
+      const polys = geom.type === "MultiPolygon" ? geom.arcs : [geom.arcs];
+      return polys.map((poly) => poly.map(anillo));
     };
-    img.onerror = () => { if (!cancelled) setReady(true); }; // respaldo sin textura
-    img.src = "/assets/vendor/tierra.jpg";
+    fetch("/assets/vendor/land-110m.json")
+      .then((r) => r.json())
+      .then((topo) => {
+        if (cancelled) return;
+        const W = 2048, H = 1024;
+        const c = document.createElement("canvas");
+        c.width = W; c.height = H;
+        const cx = c.getContext("2d", { willReadFrequently: true });
+        cx.fillStyle = "#fff";
+        decodificarTopo(topo).forEach((poly) => {
+          cx.beginPath();
+          poly.forEach((ring) => {
+            ring.forEach(([lon, lat], k) => {
+              const x = ((lon + 180) / 360) * W;
+              const y = ((90 - lat) / 180) * H;
+              k === 0 ? cx.moveTo(x, y) : cx.lineTo(x, y);
+            });
+            cx.closePath();
+          });
+          cx.fill("evenodd");
+        });
+        // Los arcos terminan en translate.y (~85.6 S, el bbox dice -90 pero esta
+        // sin cuantizar); de ahi al polo es Antartida.
+        const yPolo = ((90 - topo.transform.translate[1]) / 180) * H;
+        // Se pisa 4 filas del interior del poligono para que no quede una costura
+        // antialiasada (se veia como un anillo claro alrededor del polo).
+        cx.fillRect(0, Math.floor(yPolo) - 4, W, H);
+        const d = cx.getImageData(0, 0, W, H);
+        tex.current = { data: d.data, w: W, h: H };
+        setReady(true);
+      })
+      .catch(() => { if (!cancelled) { tex.current = null; setReady(true); } }); // respaldo: solo el contorno
     return () => { cancelled = true; };
   }, []);
 
@@ -1389,7 +1384,7 @@ function SatoriGlobe() {
     canvas.height = SIZE * dpr;
     ctx.scale(dpr, dpr);
 
-    // Capa de textura a 1x: son ~157k pixeles del disco. A 2x serian 630k por
+    // Capa de tierra a 1x: son ~157k pixeles del disco. A 2x serian 630k por
     // frame, cuatro veces el costo, y luego se escala suavizado igual. Los
     // vectores de encima (puntos, halo) si van a 2x y quedan nitidos.
     const D = Math.ceil(RADIUS * 2) + 2;
@@ -1403,17 +1398,15 @@ function SatoriGlobe() {
     const TAU = Math.PI * 2;
     // Tablas por pixel del disco (se rehacen solo al cambiar la inclinacion).
     // CLAVE para girar fluido a resolucion COMPLETA: aqui se precalcula, por
-    // pixel, la columna base (uT) y la fila (rowT) de la textura. Rotar el
+    // pixel, la columna base (uT) y la fila (rowT) de la mascara. Rotar el
     // globo es entonces solo sumar un desplazamiento constante a las columnas
     // (sin trigonometria ni normalizacion por pixel en cada frame).
-    let idx = null, uT = null, rowT = null, shadeT = null, tiltTabla = null;
+    let idx = null, uT = null, rowT = null, tiltTabla = null;
     const construirTablas = (phi0) => {
       const t = tex.current;
       const tw = t ? t.w : 1, th = t ? t.h : 1;
       const dentro = [];
       const sinP = Math.sin(phi0), cosP = Math.cos(phi0);
-      // luz desde arriba-izquierda, ligeramente al frente
-      const LX = -0.42, LY = -0.52, LZ = 0.74;
       for (let py = 0; py < D; py++) {
         for (let px = 0; px < D; px++) {
           const x = px + OFF - CENTER;
@@ -1433,26 +1426,25 @@ function SatoriGlobe() {
           if (u >= tw) u -= tw; else if (u < 0) u += tw;
           let v = (((Math.PI / 2 - lat) / Math.PI) * th) | 0;
           v = v < 0 ? 0 : (v >= th ? th - 1 : v);
-          // normal de la esfera en ese pixel -> sombreado difuso
-          const nx = x / RADIUS, ny = y / RADIUS, nz = cosC;
-          let lum = nx * LX + ny * LY + nz * LZ;
-          lum = Math.max(0, lum) * 0.85 + 0.30;
-          dentro.push(py * D + px, u, v * tw, Math.min(1.25, lum));
+          dentro.push(py * D + px, u, v * tw);
         }
       }
-      const n = dentro.length / 4;
-      idx = new Int32Array(n); uT = new Float32Array(n);
-      rowT = new Int32Array(n); shadeT = new Float32Array(n);
+      const n = dentro.length / 3;
+      idx = new Int32Array(n); uT = new Float32Array(n); rowT = new Int32Array(n);
       for (let i = 0; i < n; i++) {
-        idx[i] = dentro[i * 4] * 4;
-        uT[i] = dentro[i * 4 + 1];
-        rowT[i] = dentro[i * 4 + 2];
-        shadeT[i] = dentro[i * 4 + 3];
+        idx[i] = dentro[i * 3] * 4;
+        uT[i] = dentro[i * 3 + 1];
+        rowT[i] = dentro[i * 3 + 2];
       }
       tiltTabla = phi0;
     };
 
-    const pintarTextura = (lambda0) => {
+    // Dorado de marca #A67C00 = (166,124,0). ImageData va sin premultiplicar,
+    // asi que el color es fijo y solo cambia el alpha: tierra 0.34, mar 0.05.
+    // El alpha de la mascara ya viene antialiasado del rasterizado, y se usa
+    // lineal (no umbral) para que las costas no salgan dentadas.
+    const A_TIERRA = 87, A_MAR = 13, A_RANGO = (A_TIERRA - A_MAR) / 255;
+    const pintarTierra = (lambda0) => {
       const t = tex.current;
       if (!t || !uT) return false;
       const { data: td, w: tw } = t;
@@ -1463,11 +1455,9 @@ function SatoriGlobe() {
         let u = uT[i] + shift;
         if (u >= tw) u -= tw;
         const s = (rowT[i] + u | 0) * 4;
-        const k = shadeT[i], o = idx[i];
-        out[o] = td[s] * k;
-        out[o + 1] = td[s + 1] * k;
-        out[o + 2] = td[s + 2] * k;
-        out[o + 3] = 255;
+        const o = idx[i];
+        out[o] = 166; out[o + 1] = 124; out[o + 2] = 0;
+        out[o + 3] = A_MAR + td[s + 3] * A_RANGO;
       }
       return true;
     };
@@ -1484,12 +1474,9 @@ function SatoriGlobe() {
       return [CENTER + x, CENTER + y, cosc];
     };
 
-    const esferaRespaldo = () => { // si la textura no cargo
-      const g = ctx.createRadialGradient(
-        CENTER - RADIUS * 0.32, CENTER - RADIUS * 0.38, RADIUS * 0.05,
-        CENTER - RADIUS * 0.32, CENTER - RADIUS * 0.38, RADIUS * 1.45);
-      g.addColorStop(0, "#5FA8D8"); g.addColorStop(0.55, "#2F7CB4"); g.addColorStop(1, "#12456F");
-      ctx.beginPath(); ctx.arc(CENTER, CENTER, RADIUS, 0, TAU); ctx.fillStyle = g; ctx.fill();
+    const esferaRespaldo = () => { // si la geometria no cargo: disco dorado tenue
+      ctx.beginPath(); ctx.arc(CENTER, CENTER, RADIUS, 0, TAU);
+      ctx.fillStyle = "rgba(166,124,0,0.06)"; ctx.fill();
     };
 
     const draw = (t) => {
@@ -1498,20 +1485,20 @@ function SatoriGlobe() {
       if (tiltTabla === null || Math.abs(phi0 - tiltTabla) > 0.0175) construirTablas(phi0); // ~1 grado
       ctx.clearRect(0, 0, SIZE, SIZE);
 
-      // Halo de atmosfera
+      // Halo de atmosfera (dorado)
       const atm = ctx.createRadialGradient(CENTER, CENTER, RADIUS, CENTER, CENTER, RADIUS + 30);
-      atm.addColorStop(0, "rgba(127,182,220,0)");
-      atm.addColorStop(0.5, "rgba(127,182,220,0.20)");
-      atm.addColorStop(1, "rgba(127,182,220,0)");
+      atm.addColorStop(0, "rgba(166,124,0,0)");
+      atm.addColorStop(0.5, "rgba(166,124,0,0.11)");
+      atm.addColorStop(1, "rgba(166,124,0,0)");
       ctx.beginPath(); ctx.arc(CENTER, CENTER, RADIUS + 30, 0, TAU); ctx.fillStyle = atm; ctx.fill();
 
       ctx.save();
       ctx.beginPath(); ctx.arc(CENTER, CENTER, RADIUS, 0, TAU); ctx.clip();
       // +rot, no -rot: la proyeccion DIRECTA (puntos y meridianos) centra el disco
       // en lon = rot, asi que la INVERSA debe sumar +rot para caer en el mismo
-      // hemisferio. Con el signo invertido la textura mostraba Africa mientras los
+      // hemisferio. Con el signo invertido la tierra mostraba Africa mientras los
       // puntos de Mexico se dibujaban sobre el Sahara.
-      if (pintarTextura((rot * Math.PI) / 180)) {
+      if (pintarTierra((rot * Math.PI) / 180)) {
         bctx.putImageData(imgData, 0, 0);
         ctx.drawImage(buf, OFF, OFF);
       } else {
@@ -1520,9 +1507,11 @@ function SatoriGlobe() {
 
       // Meridianos y paralelos, muy tenues: dan la lectura de "globo terraqueo"
       ctx.beginPath();
+      // Los meridianos llegan hasta los polos: si se cortan en 80 grados, sus
+      // colas vistas de canto parecen un anillo de guiones alrededor del polo.
       for (let lo = -180; lo < 180; lo += 30) {
         let mover = true;
-        for (let la = -80; la <= 80; la += 5) {
+        for (let la = -90; la <= 90; la += 5) {
           const p = proyectar(lo, la, rot, tilt);
           if (!p) { mover = true; continue; }
           mover ? ctx.moveTo(p[0], p[1]) : ctx.lineTo(p[0], p[1]);
@@ -1538,14 +1527,14 @@ function SatoriGlobe() {
           mover = false;
         }
       }
-      ctx.lineWidth = 0.5;
-      ctx.strokeStyle = "rgba(255,255,255,0.16)";
+      ctx.lineWidth = 0.7;
+      ctx.strokeStyle = "rgba(166,124,0,0.20)";
       ctx.stroke();
       ctx.restore();
 
       // Borde del disco
       ctx.beginPath(); ctx.arc(CENTER, CENTER, RADIUS, 0, TAU);
-      ctx.lineWidth = 1; ctx.strokeStyle = "rgba(14,14,14,0.14)"; ctx.stroke();
+      ctx.lineWidth = 1; ctx.strokeStyle = "rgba(166,124,0,0.22)"; ctx.stroke();
 
       // Puntos de ciudad en dorado de marca. El pulso sale del reloj.
       cities.forEach((c, i) => {
@@ -1559,10 +1548,9 @@ function SatoriGlobe() {
         g.addColorStop(1, "rgba(166,124,0,0)");
         ctx.beginPath(); ctx.arc(p[0], p[1], 18 + pulso * 12, 0, TAU); ctx.fillStyle = g; ctx.fill();
         ctx.beginPath(); ctx.arc(p[0], p[1], 5 + pulso * 11, 0, TAU);
-        ctx.lineWidth = 1.6; ctx.strokeStyle = `rgba(255,255,255,${(1 - pulso) * 0.75 * fade})`; ctx.stroke();
+        ctx.lineWidth = 1.6; ctx.strokeStyle = `rgba(166,124,0,${(1 - pulso) * 0.9 * fade})`; ctx.stroke();
         ctx.beginPath(); ctx.arc(p[0], p[1], 4, 0, TAU);
         ctx.fillStyle = `rgba(166,124,0,${fade})`; ctx.fill();
-        ctx.lineWidth = 1.2; ctx.strokeStyle = `rgba(255,255,255,${0.85 * fade})`; ctx.stroke();
       });
     };
 
@@ -1866,7 +1854,6 @@ function App() {
       ]} />
       <BrandManifesto />
       <HomeHero />
-      <FounderBrief />
       <QueHacemos />
       <RutaCrecimiento />
       <MapaPresencia />
