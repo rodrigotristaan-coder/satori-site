@@ -11,7 +11,7 @@ import { pathToFileURL } from 'node:url';
 const SRC = 'deploy';
 const OUT = 'dist';
 const SITE = 'https://satorimkt.com';
-const OG_IMAGE = `${SITE}/assets/og-cover.jpg`;
+const OG_IMAGE = `${SITE}/assets/og-cover-cream.jpg`;
 
 // gtag — se inyecta en TODAS las paginas. Dos destinos:
 //   GADS = Google Ads (conversiones/remarketing)   GA4 = Google Analytics 4 (trafico)
