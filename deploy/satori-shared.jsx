@@ -2262,37 +2262,6 @@ function ReviewCard({ rv, en }) {
   );
 }
 
-// Mensaje del fundador (no es una reseña con estrellas: es una nota/saludo).
-function FounderMessage({ rv, en, tag, role }) {
-  const initial = (rv.name || "?").trim().slice(0, 1).toUpperCase();
-  const text = en && rv.text_en ? rv.text_en : rv.text;
-  return (
-    <div className="founder-msg" style={{
-      ...glassCard, border: "1px solid rgba(166,124,0,0.22)", borderRadius: "22px",
-      padding: "1.7rem clamp(1.3rem,3vw,2.2rem)", maxWidth: "860px", margin: "0 auto 2.6rem"
-    }}>
-      {/* La foto va integrada al encabezado (no como columna): el texto ocupa
-          todo el ancho de la tarjeta y no queda banda muerta bajo el avatar. */}
-      <div style={{ display: "flex", alignItems: "center", gap: "0.9rem", marginBottom: "1rem" }}>
-        {rv.photo
-          ? <img src={rv.photo} alt={rv.name} width="48" height="48" loading="lazy"
-              style={{ width: 48, height: 48, borderRadius: "50%", objectFit: "cover", flex: "none", border: "2px solid rgba(166,124,0,0.4)" }} />
-          : <span aria-hidden="true" style={{
-              width: 48, height: 48, borderRadius: "50%", flex: "none",
-              background: SATORI.GOLD, color: SATORI.WHITE, display: "flex",
-              alignItems: "center", justifyContent: "center", fontWeight: 600, fontFamily: TYPE.display, fontSize: "1.1rem"
-            }}>{initial}</span>}
-        <div style={{ minWidth: 0 }}>
-          <div style={{ ...eyebrowStyle, color: SATORI.GOLD_DEEP, marginBottom: "0.15rem" }}>{tag}</div>
-          <div style={{ fontWeight: 600, color: SATORI.INK, fontFamily: TYPE.body, fontSize: "0.92rem" }}>
-            {rv.name} <span style={{ color: SATORI.GOLD_DEEP, fontWeight: 500 }}>· {role}</span>
-          </div>
-        </div>
-      </div>
-      <p style={{ ...bodyStyle, color: SATORI.INK, margin: 0, fontSize: "1.02rem", lineHeight: 1.7 }}>{goldRich(text)}</p>
-    </div>
-  );
-}
 
 function ReviewsSection() {
   const [lang] = useLang();
@@ -2327,7 +2296,7 @@ function ReviewsSection() {
     name: "Your name", rating: "Rating", review: "Your review",
     photo: "Profile photo (optional)", submit: "Submit review", sending: "Sending…",
     photoHint: "Drag the photo to reposition · use the slider to zoom.", remove: "Remove photo",
-    founderTag: "A note from the founder", founderRole: "Founder of Satori", swipe: "Swipe to see more",
+    swipe: "Swipe to see more",
     thanks: "Thank you! Your review will appear after a quick check.",
     err: "Couldn't send. Please try again.", needed: "Please add your name and review."
   } : {
@@ -2339,7 +2308,7 @@ function ReviewsSection() {
     name: "Tu nombre", rating: "Calificación", review: "Tu reseña",
     photo: "Foto de perfil (opcional)", submit: "Enviar reseña", sending: "Enviando…",
     photoHint: "Arrastra la foto para reposicionar · usa el control para acercar.", remove: "Quitar foto",
-    founderTag: "Mensaje del fundador", founderRole: "Fundador de Satori", swipe: "Desliza para ver más",
+    swipe: "Desliza para ver más",
     thanks: "¡Gracias! Tu reseña aparecerá tras una breve revisión.",
     err: "No se pudo enviar. Intenta de nuevo.", needed: "Completa tu nombre y reseña."
   };
@@ -2383,8 +2352,8 @@ function ReviewsSection() {
           <p style={{ ...bodyStyle, maxWidth: "560px", margin: "1rem auto 0" }}>{T.sub}</p>
         </div>
 
-        {/* Rodrigo (fundador) sale como MENSAJE, no como reseña con estrellas. */}
-        {founder && <FounderMessage rv={founder} en={en} tag={T.founderTag} role={T.founderRole} />}
+        {/* La fila del fundador (rid fundador01 en la Data Table) se filtra y NO se
+            muestra: Rodrigo pidió quitar su mensaje de Reseñas (2026-09-12). */}
 
         {testimonials.length === 1 ? (
           <div style={{ maxWidth: "480px", margin: "0 auto" }}>
@@ -2430,9 +2399,9 @@ function ReviewsSection() {
             </div>
             <p style={{ ...eyebrowStyle, justifyContent: "center", opacity: 0.5, marginTop: "0.4rem" }}>‹ {T.swipe} ›</p>
           </>
-        ) : (!founder && (
+        ) : (
           <p style={{ ...bodyStyle, textAlign: "center", opacity: 0.6 }}>{T.empty}</p>
-        ))}
+        )}
 
         {/* CTA / formulario */}
         <div style={{ textAlign: "center", marginTop: "2.5rem" }}>
