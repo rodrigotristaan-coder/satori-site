@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>María Akal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Jost:wght@300;400;500&display=swap">
+<style>
+  /* Ejemplo de diseño para María Akal. Satori, septiembre 2026.
+     Paleta: la habitación de una ceremonia. Madera oscura, humo, luz de vela y un toque de vino. */
+  :root {
+    --cacao: #2A1E18;
+    --cacao-2: #35271F;
+    --copal: #EFE6DA;
+    --copal-2: #CDBFAE;
+    --ocre: #C9A06A;
+    --vino: #7D2638;
+    --vino-2: #93304A;
+    --cal: #E9E0D4;
+    --tierra: #5B4033;
+    --display: 'Marcellus', 'Trajan Pro', Georgia, serif;
+    --text: 'Jost', 'Avenir Next', system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--cacao); color: var(--copal); font-family: var(--text); font-weight: 300; font-size: 17px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  img { display: block; max-width: 100%; }
+  [hidden] { display: none !important; }
+  a { color: inherit; }
+  h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; letter-spacing: .01em; }
+  p { margin: 0 0 14px; }
+  :focus-visible { outline: 2px solid var(--ocre); outline-offset: 3px; }
+  html[data-lang="en"] [lang="es"], html[data-lang="es"] [lang="en"] { display: none !important; }
+
+  .wrap { width: min(1200px, 100% - 48px); margin-inline: auto; }
+  .nota { display: block; border: 1px dashed currentColor; opacity: .75; font-size: 13px; padding: 8px 12px; border-radius: 2px; }
+
+  /* Aviso de ejemplo */
+  .demo-bar { background: var(--cacao-2); color: var(--copal-2); font-size: 13px; text-align: center; padding: 8px 16px; }
+
+  /* Encabezado */
+  header { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 18px 24px; }
+  .logo { font-family: var(--display); font-size: 26px; text-decoration: none; letter-spacing: .02em; }
+  nav { display: flex; gap: 26px; font-size: 15px; }
+  nav a { text-decoration: none; color: var(--copal-2); }
+  nav a:hover { color: var(--copal); }
+  .head-right { display: flex; align-items: center; gap: 14px; }
+  .lang { display: inline-flex; border: 1px solid rgba(239,230,218,.35); border-radius: 999px; overflow: hidden; }
+  .lang button { background: none; border: 0; color: var(--copal-2); font: 500 13px var(--text); padding: 6px 12px; cursor: pointer; }
+  .lang button[aria-pressed="true"] { background: var(--copal); color: var(--cacao); }
+  .btn { display: inline-block; font: 400 15px var(--text); text-decoration: none; padding: 11px 20px; border-radius: 999px; border: 1px solid transparent; cursor: pointer; }
+  .btn-vino { background: var(--vino); color: var(--copal); }
+  .btn-vino:hover { background: var(--vino-2); }
+  .btn-line { border-color: rgba(239,230,218,.55); color: var(--copal); background: none; }
+  .btn-line:hover { border-color: var(--copal); }
+
+  /* Los caminos: cinco páginas en una */
+  .paths { display: flex; gap: 6px; height: min(82vh, 760px); min-height: 560px; padding: 0 24px; }
+  .path { position: relative; flex: 1 1 0; min-width: 0; overflow: hidden; border-radius: 3px; transition: flex-grow .6s cubic-bezier(.3,.7,.2,1); background: var(--cacao-2); }
+  .path.open { flex-grow: 6; }
+  .path > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .path::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(42,30,24,.05) 30%, rgba(42,30,24,.88) 100%); pointer-events: none; }
+  .path:not(.open)::after { background: rgba(42,30,24,.45); transition: background .3s; }
+  .path:not(.open):hover::after { background: rgba(42,30,24,.25); }
+  .path-tab { position: absolute; inset: 0; z-index: 2; width: 100%; background: none; border: 0; padding: 0; cursor: pointer; color: var(--copal); }
+  .path.open .path-tab { pointer-events: none; }
+  .path-label { position: absolute; left: 50%; bottom: 28px; transform: translateX(-50%) rotate(180deg); writing-mode: vertical-rl; font-family: var(--display); font-size: 21px; white-space: nowrap; }
+  .path.open .path-label { display: none; }
+  .panel { position: absolute; z-index: 3; left: 0; right: 0; bottom: 0; padding: 40px; max-width: 640px; opacity: 0; visibility: hidden; transform: translateY(8px); transition: opacity .4s .25s, transform .4s .25s, visibility 0s .6s; }
+  .path.open .panel { opacity: 1; visibility: visible; transform: none; transition: opacity .5s .3s, transform .5s .3s, visibility 0s; }
+  .panel h1 { font-size: clamp(52px, 7vw, 96px); line-height: .95; margin-bottom: 18px; }
+  .panel h2 { font-size: clamp(34px, 4vw, 52px); line-height: 1; margin-bottom: 14px; }
+  .panel p { font-size: 18px; max-width: 46ch; color: var(--copal); }
+  .panel .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+  .panel .nota { margin-top: 16px; max-width: 46ch; }
+
+  /* Secciones tranquilas */
+  section.block { padding: 110px 0; }
+  .light { background: var(--cal); color: var(--cacao); }
+  .light .btn-line { color: var(--cacao); border-color: rgba(42,30,24,.4); }
+  .sec-head { max-width: 640px; margin-bottom: 48px; }
+  .sec-head h2 { font-size: clamp(38px, 4.6vw, 58px); line-height: 1.02; margin-bottom: 14px; }
+  .sec-head p { font-size: 19px; color: inherit; opacity: .85; }
+
+  /* Academia */
+  .courses { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px 32px; }
+  .course img { aspect-ratio: 4 / 5; width: 100%; object-fit: cover; border-radius: 200px 200px 3px 3px; }
+  .course h3 { font-size: 26px; line-height: 1.1; margin: 20px 0 8px; }
+  .course p { font-size: 16px; color: var(--tierra); margin-bottom: 10px; }
+  .course .meta { display: flex; justify-content: space-between; border-top: 1px solid rgba(42,30,24,.2); padding-top: 10px; font-size: 15px; }
+  .course .meta b { font-weight: 500; }
+  .academy-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px; margin-top: 56px; padding-top: 28px; border-top: 1px solid rgba(42,30,24,.2); }
+  .academy-foot p { margin: 0; color: var(--tierra); }
+
+  /* Retiros */
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  .split > img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 3px; }
+  .retreat { border-top: 1px solid rgba(239,230,218,.25); padding: 22px 0; }
+  .retreat h3 { font-size: 26px; line-height: 1.15; margin-bottom: 6px; }
+  .retreat p { color: var(--copal-2); margin-bottom: 10px; }
+  .retreat a { color: var(--ocre); text-underline-offset: 4px; }
+
+  /* NOMMOfest */
+  .nommo { position: relative; min-height: 520px; display: grid; align-items: end; overflow: hidden; }
+  .nommo > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; filter: sepia(.25); }
+  .nommo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(42,30,24,.92) 0%, rgba(42,30,24,.55) 55%, rgba(42,30,24,.2) 100%); }
+  .nommo .wrap { position: relative; z-index: 1; padding: 90px 0; }
+  .nommo h2 { font-size: clamp(44px, 6vw, 80px); margin-bottom: 14px; }
+  .nommo p { max-width: 44ch; font-size: 19px; }
+
+  /* Sobre mí */
+  .about .split > img { aspect-ratio: 3 / 4; }
+  .about p { font-size: 18px; max-width: 52ch; }
+
+  /* Únete al círculo */
+  .circle { background: var(--vino); }
+  .circle .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; padding: 90px 0; }
+  .circle h2 { font-size: clamp(38px, 4.6vw, 58px); line-height: 1.02; margin-bottom: 12px; }
+  .circle form { display: grid; gap: 12px; }
+  .circle .row { display: flex; gap: 10px; }
+  .circle input[type=email] { flex: 1; min-width: 0; font: 400 16px var(--text); padding: 13px 18px; border-radius: 999px; border: 1px solid rgba(239,230,218,.5); background: rgba(42,30,24,.25); color: var(--copal); }
+  .circle input[type=email]::placeholder { color: var(--copal-2); }
+  .circle label.consent { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; color: var(--copal-2); }
+  .circle .btn-copal { background: var(--copal); color: var(--vino); font-weight: 500; }
+  .circle .done { font-size: 17px; }
+
+  footer { padding: 56px 0 40px; color: var(--copal-2); font-size: 15px; }
+  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 24px; }
+  footer .logo { color: var(--copal); display: block; margin-bottom: 6px; }
+  footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  footer a { text-decoration: none; }
+  footer a:hover { color: var(--copal); }
+
+  @media (max-width: 900px) {
+    nav { display: none; }
+    .courses { grid-template-columns: 1fr; max-width: 440px; }
+    .split, .circle .wrap { grid-template-columns: 1fr; gap: 36px; }
+  }
+  @media (max-width: 760px) {
+    body { font-size: 16px; }
+    header { padding: 14px 16px; }
+    .head-right .btn { display: none; }
+    .wrap { width: calc(100% - 32px); }
+    .paths { flex-direction: column; height: auto; min-height: 0; padding: 0 16px; }
+    .path { flex: none; height: 64px; transition: height .5s cubic-bezier(.3,.7,.2,1); }
+    .path.open { height: min(78vh, 640px); min-height: 480px; }
+    .path-label { writing-mode: horizontal-tb; transform: translateY(-50%); left: 18px; top: 50%; bottom: auto; }
+    .panel { padding: 24px; }
+    section.block { padding: 72px 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="demo-bar">Ejemplo de diseño preparado por Satori para María Akal. Fotos de @maria.akal y textos provisionales.</div>
+
+<header>
+  <a class="logo" href="#top">María Akal</a>
+  <nav aria-label="Main">
+    <a href="#academy"><span lang="en">Academy</span><span lang="es">Academia</span></a>
+    <a href="#retreats"><span lang="en">Retreats</span><span lang="es">Retiros</span></a>
+    <a href="#nommofest">NOMMOfest</a>
+    <a href="#about"><span lang="en">About</span><span lang="es">Sobre mí</span></a>
+  </nav>
+  <div class="head-right">
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" data-set-lang="en" aria-pressed="true">EN</button>
+      <button type="button" data-set-lang="es" aria-pressed="false">ES</button>
+    </div>
+    <a class="btn btn-vino" href="#circle"><span lang="en">Join the circle</span><span lang="es">Únete al círculo</span></a>
+  </div>
+</header>
+
+<main id="top">
+  <!-- Los caminos -->
+  <div class="paths" id="paths">
+    <section class="path open" data-path="maria">
+      <img src="/propuesta-akal/img/maria-flores.jpg" alt="María Akal con flores blancas">
+      <button class="path-tab" type="button" aria-expanded="true" aria-controls="p-maria"><span class="path-label">María</span></button>
+      <div class="panel" id="p-maria">
+        <h1>María Akal</h1>
+        <p lang="en">Midwife, ceremony holder, Kundalini Yoga teacher and dancer. I accompany women and communities through birth, ritual and movement, in Tulum and online.</p>
+        <p lang="es">Partera, guardiana de ceremonias, maestra de Kundalini Yoga y bailarina. Acompaño a mujeres y comunidades en el parto, el ritual y el movimiento, en Tulum y en línea.</p>
+        <div class="actions">
+          <a class="btn btn-vino" href="#academy"><span lang="en">Explore the academy</span><span lang="es">Explora la academia</span></a>
+          <a class="btn btn-line" href="#circle"><span lang="en">Book a session</span><span lang="es">Agenda una sesión</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="path" data-path="birth">
+      <img src="/propuesta-akal/img/parteria.jpg" alt="María abrazando a una mujer en la playa">
+      <button class="path-tab" type="button" aria-expanded="false" aria-controls="p-birth"><span class="path-label"><span lang="en">Birthwork</span><span lang="es">Partería</span></span></button>
+      <div class="panel" id="p-birth">
+        <h2><span lang="en">Birthwork</span><span lang="es">Partería</span></h2>
+        <p lang="en">I accompany pregnancy, birth and the first months after, with traditional midwifery and deep listening. Prenatal circles, blessingways and one to one care.</p>
+        <p lang="es">Acompaño el embarazo, el parto y los primeros meses después, con partería tradicional y escucha profunda. Círculos prenatales, blessingways y acompañamiento uno a uno.</p>
+        <div class="actions">
+          <a class="btn btn-vino" href="#circle"><span lang="en">Book a session</span><span lang="es">Agenda una sesión</span></a>
+          <a class="btn btn-line" href="#academy"><span lang="en">Preparing for birth course</span><span lang="es">Curso de preparación para el parto</span></a>
+        </div>
+        <span class="nota">Aquí va un testimonio de esta faceta.</span>
+      </div>
+    </section>
+
+    <section class="path" data-path="ceremonies">
+      <img src="/propuesta-akal/img/ceremonia.jpg" alt="María encendiendo velas en una ceremonia">
+      <button class="path-tab" type="button" aria-expanded="false" aria-controls="p-cer"><span class="path-label"><span lang="en">Ceremonies</span><span lang="es">Ceremonias</span></span></button>
+      <div class="panel" id="p-cer">
+        <h2><span lang="en">Ceremonies</span><span lang="es">Ceremonias</span></h2>
+        <p lang="en">New and full moon ceremonies, cacao, blessingways and union ceremonies. Spaces to pause, pray and come back to the body.</p>
+        <p lang="es">Ceremonias de luna nueva y luna llena, cacao, blessingways y ceremonias de unión. Espacios para detenerse, orar y volver al cuerpo.</p>
+        <div class="actions">
+          <a class="btn btn-vino" href="#circle"><span lang="en">Upcoming ceremonies</span><span lang="es">Próximas ceremonias</span></a>
+          <a class="btn btn-line" href="#circle"><span lang="en">Ask for a private ceremony</span><span lang="es">Pide una ceremonia privada</span></a>
+        </div>
+        <span class="nota">Aquí va un testimonio de esta faceta.</span>
+      </div>
+    </section>
+
+    <section class="path" data-path="kundalini">
+      <img src="/propuesta-akal/img/glaciar.jpg" alt="María con los brazos al cielo en un lago glaciar">
+      <button class="path-tab" type="button" aria-expanded="false" aria-controls="p-kun"><span class="path-label">Kundalini Yoga</span></button>
+      <div class="panel" id="p-kun">
+        <h2>Kundalini Yoga</h2>
+        <p lang="en">Breath, movement and mantra to come back to every day. My short practices stay open for you forever in the academy.</p>
+        <p lang="es">Respiración, movimiento y mantra para volver cada día. Mis prácticas cortas quedan abiertas para ti para siempre en la academia.</p>
+        <div class="actions">
+          <a class="btn btn-vino" href="#academy"><span lang="en">Start practicing</span><span lang="es">Empieza a practicar</span></a>
+        </div>
+        <span class="nota">Aquí va un testimonio de esta faceta.</span>
+      </div>
+    </section>
+
+    <section class="path" data-path="dance">
+      <img src="/propuesta-akal/img/danza-luz.jpg" alt="María bailando con una tela entre rayos de luz">
+      <button class="path-tab" type="button" aria-expanded="false" aria-controls="p-dan"><span class="path-label"><span lang="en">Dance</span><span lang="es">Danza</span></span></button>
+      <div class="panel" id="p-dan">
+        <h2>Sanadanza</h2>
+        <p lang="en">Sanadanza brings together dance, Kundalini Yoga, somatic work and ceremony. An invitation to dance your truth and honor what you feel.</p>
+        <p lang="es">Sanadanza une danza, Kundalini Yoga, trabajo somático y ceremonia. Una invitación a bailar tu verdad y honrar lo que sientes.</p>
+        <div class="actions">
+          <a class="btn btn-vino" href="#academy"><span lang="en">Dance with me</span><span lang="es">Baila conmigo</span></a>
+        </div>
+        <span class="nota">Aquí va un testimonio de esta faceta.</span>
+      </div>
+    </section>
+
+    <section class="path" data-path="medicine">
+      <img src="/propuesta-akal/img/sahumerio.jpg" alt="María de rojo en una ceremonia con humo de copal">
+      <button class="path-tab" type="button" aria-expanded="false" aria-controls="p-med"><span class="path-label"><span lang="en">Traditional medicine</span><span lang="es">Medicina tradicional</span></span></button>
+      <div class="panel" id="p-med">
+        <h2><span lang="en">Traditional medicine</span><span lang="es">Medicina tradicional</span></h2>
+        <p lang="en">Plants, smoke and the wisdom of the grandmothers, woven into every ceremony and every birth.</p>
+        <p lang="es">Plantas, humo y la sabiduría de las abuelas, tejidas en cada ceremonia y en cada parto.</p>
+        <div class="actions">
+          <a class="btn btn-vino" href="#circle"><span lang="en">Learn with me</span><span lang="es">Aprende conmigo</span></a>
+        </div>
+        <span class="nota">Aquí va un testimonio de esta faceta.</span>
+      </div>
+    </section>
+  </div>
+
+  <!-- Academia -->
+  <section class="block light" id="academy">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2><span lang="en">The academy</span><span lang="es">La academia</span></h2>
+        <p lang="en">Courses and practices to take at your own pace, from anywhere in the world. Watch each class as many times as you like.</p>
+        <p lang="es">Cursos y prácticas para tomar a tu ritmo, desde cualquier parte del mundo. Ve cada clase las veces que quieras.</p>
+      </div>
+      <div class="courses">
+        <article class="course">
+          <img src="/propuesta-akal/img/danza-humo.jpg" alt="María bailando entre humo">
+          <h3><span lang="en">Sanadanza at home</span><span lang="es">Sanadanza en casa</span></h3>
+          <p lang="en">Eight classes of dance, breath and ceremony to move what you carry.</p>
+          <p lang="es">Ocho clases de danza, respiración y ceremonia para mover lo que cargas.</p>
+          <div class="meta"><b>60 €</b><span lang="en">Access for 6 months</span><span lang="es">Acceso por 6 meses</span></div>
+        </article>
+        <article class="course">
+          <img src="/propuesta-akal/img/cascada.jpg" alt="María frente a una cascada">
+          <h3><span lang="en">Morning Kundalini practice</span><span lang="es">Kundalini para la mañana</span></h3>
+          <p lang="en">Twenty minutes of breath, movement and mantra to begin your day.</p>
+          <p lang="es">Veinte minutos de respiración, movimiento y mantra para empezar tu día.</p>
+          <div class="meta"><b>25 €</b><span lang="en">Yours forever</span><span lang="es">Tuya para siempre</span></div>
+        </article>
+        <article class="course">
+          <img src="/propuesta-akal/img/montanas.jpg" alt="Montañas de colores tierra">
+          <h3><span lang="en">Preparing for birth</span><span lang="es">Preparación para el parto</span></h3>
+          <p lang="en">A course for the last months of pregnancy, with practices for body and mind.</p>
+          <p lang="es">Un curso para los últimos meses del embarazo, con prácticas para el cuerpo y la mente.</p>
+          <div class="meta"><b>90 €</b><span lang="en">Access for 12 months</span><span lang="es">Acceso por 12 meses</span></div>
+        </article>
+      </div>
+      <span class="nota" style="margin-top:28px;display:inline-block">Cursos y precios de ejemplo.</span>
+      <div class="academy-foot">
+        <p lang="en">Pay in one click with Apple Pay, Google Pay, card or PayPal.</p>
+        <p lang="es">Paga con un clic con Apple Pay, Google Pay, tarjeta o PayPal.</p>
+        <a class="btn btn-line" href="#academy"><span lang="en">See all courses</span><span lang="es">Ver todos los cursos</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Retiros -->
+  <section class="block" id="retreats">
+    <div class="wrap split">
+      <img src="/propuesta-akal/img/cascada-roca.jpg" alt="María sentada frente a un cañón con cascada">
+      <div>
+        <div class="sec-head" style="margin-bottom:28px">
+          <h2><span lang="en">Retreats</span><span lang="es">Retiros</span></h2>
+          <p lang="en">Twice a year I co-facilitate retreats with teachers I love. You book directly with each retreat.</p>
+          <p lang="es">Dos veces al año co-facilito retiros con maestras y maestros que admiro. Reservas directo con cada retiro.</p>
+        </div>
+        <div class="retreat">
+          <h3>Many Moons Women's Retreat, with Ajeet</h3>
+          <p lang="en">Mahahual, Mexico. 17 to 23 January 2027.</p>
+          <p lang="es">Mahahual, México. Del 17 al 23 de enero de 2027.</p>
+          <a href="https://linktr.ee/maria.akal"><span lang="en">Book on the retreat site</span><span lang="es">Reserva en el sitio del retiro</span></a>
+        </div>
+        <div class="retreat">
+          <h3>Radiant Power of Women, with Gurmukh</h3>
+          <p lang="en">New dates coming soon.</p>
+          <p lang="es">Próximas fechas muy pronto.</p>
+          <a href="https://linktr.ee/maria.akal"><span lang="en">See the retreat</span><span lang="es">Ver el retiro</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOMMOfest -->
+  <section class="nommo" id="nommofest">
+    <img src="/propuesta-akal/img/nommo.jpg" alt="Figura con velo blanco en NOMMOfest">
+    <div class="wrap">
+      <h2>NOMMOfest</h2>
+      <p lang="en">A festival with a cause that I co-created and direct in Tulum. The next edition runs from 1 to 22 March 2027.</p>
+      <p lang="es">Un festival con causa que cocreé y dirijo en Tulum. La próxima edición es del 1 al 22 de marzo de 2027.</p>
+      <a class="btn btn-line" href="https://www.instagram.com/nommofest/"><span lang="en">Visit NOMMOfest</span><span lang="es">Visita NOMMOfest</span></a>
+    </div>
+  </section>
+
+  <!-- Sobre mí -->
+  <section class="block light about" id="about">
+    <div class="wrap split">
+      <div>
+        <div class="sec-head" style="margin-bottom:22px"><h2><span lang="en">About me</span><span lang="es">Sobre mí</span></h2></div>
+        <p lang="en">I am María. For years I have accompanied births, held ceremonies and taught Kundalini Yoga and dance. I live between Tulum and the road.</p>
+        <p lang="es">Soy María. Llevo años acompañando partos, sosteniendo ceremonias y enseñando Kundalini Yoga y danza. Vivo entre Tulum y el camino.</p>
+        <p lang="en">My work brings together what I have learned from the grandmothers, from the body and from the earth, so that each woman can return to her own wisdom.</p>
+        <p lang="es">Mi trabajo reúne lo que he aprendido de las abuelas, del cuerpo y de la tierra, para que cada mujer vuelva a su propia sabiduría.</p>
+        <span class="nota" style="margin-top:18px;display:inline-block">Texto provisional; lo escribimos contigo.</span>
+      </div>
+      <img src="/propuesta-akal/img/sobre-mi.jpg" alt="María sonriendo entre pastos altos">
+    </div>
+  </section>
+
+  <!-- Únete al círculo -->
+  <section class="circle" id="circle">
+    <div class="wrap">
+      <div>
+        <h2><span lang="en">Join the circle</span><span lang="es">Únete al círculo</span></h2>
+        <p lang="en">One letter each new moon with practices, ceremonies and new courses.</p>
+        <p lang="es">Una carta cada luna nueva con prácticas, ceremonias y cursos nuevos.</p>
+      </div>
+      <form id="join" novalidate>
+        <div class="row">
+          <label for="email" class="sr" style="position:absolute;left:-9999px"><span lang="en">Email</span><span lang="es">Correo</span></label>
+          <input id="email" type="email" required autocomplete="email" data-ph-en="Your email" data-ph-es="Tu correo" placeholder="Your email">
+          <button class="btn btn-copal" type="submit"><span lang="en">Join</span><span lang="es">Unirme</span></button>
+        </div>
+        <label class="consent"><input type="checkbox" required> <span><span lang="en">I agree to receive emails and accept the privacy notice.</span><span lang="es">Acepto recibir correos y el aviso de privacidad.</span></span></label>
+        <p class="done" hidden><span lang="en">You are in the circle. Check your inbox to confirm.</span><span lang="es">Ya estás en el círculo. Revisa tu correo para confirmar.</span></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <span class="logo">María Akal</span>
+      <span lang="en">Tulum, Mexico</span><span lang="es">Tulum, México</span>
+    </div>
+    <ul>
+      <li><a href="https://www.instagram.com/maria.akal/">Instagram @maria.akal</a></li>
+      <li><a href="https://www.instagram.com/nommofest/">Instagram @nommofest</a></li>
+    </ul>
+    <ul>
+      <li><a href="#top"><span lang="en">Privacy notice</span><span lang="es">Aviso de privacidad</span></a></li>
+      <li><a href="#top"><span lang="en">Terms</span><span lang="es">Términos</span></a></li>
+      <li><span lang="en">Site by Satori</span><span lang="es">Sitio hecho por Satori</span></li>
+    </ul>
+  </div>
+</footer>
+
+<script src="/propuesta-akal/app.js" defer></script>
+</body>
+</html>

@@ -46,6 +46,8 @@ rmSync(OUT, { recursive: true, force: true });
 mkdirSync(join(OUT, 'js'), { recursive: true });
 cpSync(join(SRC, 'assets'), join(OUT, 'assets'), { recursive: true });
 cpSync(join(SRC, 'favicon.ico'), join(OUT, 'favicon.ico'));
+// Propuesta para clienta (pagina estatica, noindex, fuera del sitemap)
+cpSync(join(SRC, 'propuesta-akal'), join(OUT, 'propuesta-akal'), { recursive: true });
 
 // --- CSS con hash (cache inmutable) ---
 const cssRaw = readFileSync(join(SRC, 'satori-shared.css'), 'utf8');
