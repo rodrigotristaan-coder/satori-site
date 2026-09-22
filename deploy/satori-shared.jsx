@@ -31,6 +31,19 @@ const SATORI = {
 const waInterest = (topic) =>
   `https://wa.me/525625018281?text=Hola%20Rodrigo,%20me%20interesa%20${encodeURIComponent(topic)}`;
 
+// ---------- MARCA POR DOMINIO ----------
+// El mismo código se publica en dos dominios con el 100% del contenido; solo
+// cambia el énfasis (orden de servicios y mensaje principal). build.mjs define
+// SATORI_BRAND según la variable de entorno SATORI_BRAND del proyecto de Vercel:
+//   "mkt"    → satorimkt.com       (marketing, marca, web y publicidad al frente)
+//   "agency" → satoriagency.com.mx (automatización, portales e IA al frente)
+const BRAND = typeof SATORI_BRAND !== "undefined" ? SATORI_BRAND : "mkt";
+const IS_AGENCY = BRAND === "agency";
+// Orden de los servicios (home y /servicios). MyCFO va al final: es la tarjeta destacada a todo lo ancho.
+const ORDEN_SERVICIOS = IS_AGENCY
+  ? ["bots", "portales", "reservas", "forense", "web", "contenido", "ads", "marca", "estudios", "eventos", "mycfo"]
+  : ["web", "ads", "contenido", "marca", "estudios", "eventos", "reservas", "bots", "portales", "forense", "mycfo"];
+
 // Webhook de n8n -> grupo de Telegram (los leads del formulario caen ahí)
 const N8N_FORM_WEBHOOK = "https://n8n.satorimkt.com/webhook/53c20586-fc46-4646-a88f-d349c8267233";
 

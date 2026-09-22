@@ -16,6 +16,7 @@ function AboutHero() {
     p2: "I have led 40+ simultaneous projects, implemented continuous improvement methodologies, and operated every functional area of a business — marketing, sales, operations, HR and finance. SATORI is where all that learning lands at the service of entrepreneurs who value their time.",
     cta1: "Contact me",
     cta2: "Call me",
+    ctaWa: "WhatsApp · 56 2501 8281",
     find: "Find me",
     photoCaption: <React.Fragment>Satori. <span style={{ color: SATORI.GOLD }}>Sensei</span></React.Fragment>,
     photoYear: "ACTIVE"
@@ -28,6 +29,7 @@ function AboutHero() {
     p2: "He liderado +40 proyectos simultáneos, implementado metodologías de mejora continua y operado cada área funcional de un negocio — marketing, ventas, operaciones, RRHH y finanzas. SATORI es donde todo ese aprendizaje aterriza al servicio de empresarios que valoran su tiempo.",
     cta1: "Contactarme",
     cta2: "Llamar",
+    ctaWa: "WhatsApp · 56 2501 8281",
     find: "Encuéntrame",
     photoCaption: <React.Fragment>Satori. <span style={{ color: SATORI.GOLD }}>Sensei</span></React.Fragment>,
     photoYear: "EN OPERACIÓN"
@@ -107,6 +109,9 @@ function AboutHero() {
               <a href="#contacto" className="cta-btn-gold pulse-gold" style={btnGold}>
                 <span>{c.cta1}</span>
                 <span className="cta-arrow">→</span>
+              </a>
+              <a href="https://wa.me/525625018281?text=Hola%20Rodrigo,%20vi%20tu%20perfil%20en%20la%20p%C3%A1gina%20de%20SATORI." target="_blank" rel="noopener noreferrer" className="cta-btn-ghost" style={btnGhost}>
+                <span>{c.ctaWa}</span>
               </a>
               <a href="tel:+525625018281" className="cta-btn-ghost" style={btnGhost}>
                 <span>{c.cta2}</span>

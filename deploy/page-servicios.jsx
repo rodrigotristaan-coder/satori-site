@@ -73,12 +73,12 @@ const SERVICIOS_EN = [
     tag: "Product",
     titulo: "MyCFO",
     subtitulo: "Satori product · Finance with AI",
-    descripcion: "Your AI CFO by chat: log and check your business finances, with clear reports and a daily status.",
+    descripcion: "Your AI CFO: log by chat on Telegram and see your finances in a secure web portal, with clear reports and alerts before problems hit.",
     benefits: [
-      "Log & query by chat (Telegram / WhatsApp)",
-      "AI categorization",
-      "Clear monthly reports",
-      "Daily status",
+      "Log & query by chat on Telegram",
+      "Web portal with Face ID",
+      "Reads your bank emails automatically",
+      "16 currencies · 11-rule alert engine",
       "Already used by real clients"
     ],
     slug: "mycfo",
@@ -95,7 +95,7 @@ const SERVICIOS_EN = [
       "Vertical reels for social",
       "Images and creatives for campaigns",
       "AI voice and music",
-      "Fast production, on your identity"
+      "Educational and explainer videos"
     ],
     slug: "contenido",
     img: "assets/showroom/satori-contenido-ia-poster.jpg"
@@ -115,6 +115,70 @@ const SERVICIOS_EN = [
     ],
     slug: "estudios",
     img: "assets/showroom/estudios-mercado-poster.jpg"
+  },
+  {
+    num: "08",
+    tag: "Portals",
+    titulo: "Business Portals & Dashboards",
+    subtitulo: "Finance · Projects · Operations",
+    descripcion: "A private portal for your business: your numbers, your projects and your operation on one screen, with secure access for you and your team.",
+    benefits: [
+      "Custom finance and portfolio dashboards",
+      "Project tracking with statuses and history",
+      "Admin panels for your team",
+      "Secure sign-in with email link and Face ID",
+      "Connected to your data: banks, sheets and systems"
+    ],
+    slug: "portales",
+    img: "assets/showroom/portales-tablero.jpg"
+  },
+  {
+    num: "09",
+    tag: "Bookings",
+    titulo: "Direct Bookings",
+    subtitulo: "Hospitality · Payments · Guests",
+    descripcion: "Your property with its own booking site: no platform commissions, a synced calendar and a panel to manage everything.",
+    benefits: [
+      "Bilingual site with direct bookings",
+      "Calendar synced with Airbnb",
+      "Panel to manage bookings and rates",
+      "Automatic guest messages before and during the stay",
+      "Tracking of every booking and where it came from"
+    ],
+    slug: "reservas",
+    img: "assets/showroom/casaluna-live.jpg"
+  },
+  {
+    num: "10",
+    tag: "Events",
+    titulo: "Weddings & Events",
+    subtitulo: "Invitation · RSVP · Host panel",
+    descripcion: "Digital invitations that feel special, with RSVP and a private panel where the hosts see everything in real time.",
+    benefits: [
+      "Interactive digital invitation with music",
+      "Guest RSVP",
+      "Private panel for the hosts",
+      "Itinerary, gallery and gift registry",
+      "Automatic guest reminders"
+    ],
+    slug: "eventos",
+    img: "assets/showroom/famsalasglez-live.jpg"
+  },
+  {
+    num: "11",
+    tag: "Forensics",
+    titulo: "Email Forensics",
+    subtitulo: "Evidence · Analysis · Report",
+    descripcion: "When an email is the evidence: we analyze headers, routes and authenticity to reconstruct what happened and document it clearly.",
+    benefits: [
+      "Header and delivery-route analysis",
+      "Authenticity checks (SPF, DKIM, DMARC)",
+      "Spoofing and fraud detection",
+      "Timeline of events",
+      "Clear technical report, ready for your lawyers"
+    ],
+    slug: "forense",
+    img: "assets/showroom/forense-candados.jpg"
   }
 ];
 
@@ -233,12 +297,12 @@ const SERVICIOS = [
     tag: "Producto",
     titulo: "MyCFO",
     subtitulo: "Producto Satori · Finanzas con IA",
-    descripcion: "Tu CFO con IA por chat: registra y consulta las finanzas de tu negocio, con reportes claros y estatus diario.",
+    descripcion: "Tu CFO con IA: registras por chat en Telegram y ves tus finanzas en un portal web seguro, con reportes claros y avisos antes de que haya problemas.",
     benefits: [
-      "Registro y consulta por chat (Telegram / WhatsApp)",
-      "Categorización con IA",
-      "Reportes mensuales claros",
-      "Estatus diario",
+      "Registro y consulta por chat en Telegram",
+      "Portal web con Face ID",
+      "Lee solo los correos de tu banco",
+      "16 monedas · motor de 11 reglas de alerta",
       "Ya en uso por clientes reales"
     ],
     slug: "mycfo",
@@ -255,7 +319,7 @@ const SERVICIOS = [
       "Reels verticales para redes",
       "Imágenes y creatividades para campañas",
       "Voz y música con IA",
-      "Producción rápida, a tu identidad"
+      "Videos educativos y explicativos"
     ],
     slug: "contenido",
     img: "assets/showroom/satori-contenido-ia-poster.jpg"
@@ -275,6 +339,70 @@ const SERVICIOS = [
     ],
     slug: "estudios",
     img: "assets/showroom/estudios-mercado-poster.jpg"
+  },
+  {
+    num: "08",
+    tag: "Portales",
+    titulo: "Portales & Tableros de negocio",
+    subtitulo: "Finanzas · Proyectos · Operación",
+    descripcion: "Un portal privado para tu negocio: tus números, tus proyectos y tu operación en una sola pantalla, con acceso seguro para ti y tu equipo.",
+    benefits: [
+      "Tableros de finanzas y cartera a tu medida",
+      "Seguimiento de proyectos con estados e historial",
+      "Paneles de administración para tu equipo",
+      "Acceso seguro con enlace por correo y Face ID",
+      "Conectado a tus datos: bancos, hojas y sistemas"
+    ],
+    slug: "portales",
+    img: "assets/showroom/portales-tablero.jpg"
+  },
+  {
+    num: "09",
+    tag: "Reservas",
+    titulo: "Reservas Directas",
+    subtitulo: "Hospedaje · Pagos · Huéspedes",
+    descripcion: "Tu propiedad con su propio sitio de reservas: sin comisiones de plataforma, con calendario sincronizado y un panel para administrarlo todo.",
+    benefits: [
+      "Sitio bilingüe con reservas directas",
+      "Calendario sincronizado con Airbnb",
+      "Panel para administrar reservas y tarifas",
+      "Mensajes automáticos al huésped antes y durante la estancia",
+      "Medición de cada reserva y de dónde vino"
+    ],
+    slug: "reservas",
+    img: "assets/showroom/casaluna-live.jpg"
+  },
+  {
+    num: "10",
+    tag: "Eventos",
+    titulo: "Bodas & Eventos",
+    subtitulo: "Invitación · RSVP · Panel de anfitriones",
+    descripcion: "Invitaciones digitales que se sienten especiales, con confirmación de asistencia y un panel privado donde los anfitriones ven todo en tiempo real.",
+    benefits: [
+      "Invitación digital interactiva con música",
+      "Confirmación de asistencia (RSVP)",
+      "Panel privado para los anfitriones",
+      "Itinerario, galería y mesa de regalos",
+      "Recordatorios automáticos a invitados"
+    ],
+    slug: "eventos",
+    img: "assets/showroom/famsalasglez-live.jpg"
+  },
+  {
+    num: "11",
+    tag: "Forense",
+    titulo: "Forense Digital de Correo",
+    subtitulo: "Evidencia · Análisis · Reporte",
+    descripcion: "Cuando un correo es la prueba: analizamos cabeceras, rutas y autenticidad para reconstruir qué pasó y documentarlo con claridad.",
+    benefits: [
+      "Análisis de cabeceras y rutas de envío",
+      "Verificación de autenticidad (SPF, DKIM, DMARC)",
+      "Detección de suplantación y fraude",
+      "Línea de tiempo de los hechos",
+      "Reporte técnico claro, listo para tus abogados"
+    ],
+    slug: "forense",
+    img: "assets/showroom/forense-candados.jpg"
   }
 ];
 
@@ -327,12 +455,12 @@ const PAQUETES = [
 function ServiciosHero() {
   const [lang] = useLang();
   const c = lang === "en" ? {
-    eyebrow: "Seven solutions. One partner.",
+    eyebrow: "Eleven solutions. One partner.",
     title: "Services.",
     accent: "With discernment.",
     sub: "Each service is designed for entrepreneurs who grow with strategy. Start with what you need today and we scale when it makes sense."
   } : {
-    eyebrow: "Siete soluciones. Un socio.",
+    eyebrow: "Once soluciones. Un socio.",
     title: "Servicios.",
     accent: "Con criterio.",
     sub: "Cada servicio está diseñado para empresarios que crecen con estrategia. Empieza por lo que necesitas hoy y escalamos cuando tenga sentido."
@@ -352,9 +480,8 @@ function ServiciosHero() {
 function ServiciosDetalle() {
   const [lang] = useLang();
   const base = lang === "en" ? SERVICIOS_EN : SERVICIOS;
-  // Mismo orden por rentabilidad que las tarjetas del inicio (SLUGS de las anclas)
-  const ORDEN = ["web", "bots", "ads", "contenido", "marca", "estudios", "mycfo"];
-  const list = ORDEN.map((k) => base.find((s) => s.slug === k)).filter(Boolean);
+  // Mismo orden que las tarjetas del inicio; depende del dominio (ORDEN_SERVICIOS en satori-shared)
+  const list = ORDEN_SERVICIOS.map((k) => base.find((s) => s.slug === k)).filter(Boolean);
   const ctaInteresa = lang === "en" ? "I'm interested" : "Me interesa";
   return (
     <section
@@ -762,7 +889,7 @@ function Paquetes() {
 function Faq() {
   const [lang] = useLang();
   const itemsEs = [
-    { q: "¿Puedo contratar un solo servicio?", a: "Sí. Cada servicio funciona por sí solo —Marca & Diseño, Páginas Web & Posicionamiento, Marketing & Ads, Automatización & Bots, MyCFO, Contenido con IA o Estudios de Mercado—. Empiezas por donde más lo necesitas y sumamos lo demás cuando tenga sentido." },
+    { q: "¿Puedo contratar un solo servicio?", a: "Sí. Cada servicio funciona por sí solo —Marca & Diseño, Páginas Web & Posicionamiento, Marketing & Ads, Automatización & Bots, MyCFO, Contenido con IA, Estudios de Mercado, Portales, Reservas Directas, Bodas & Eventos o Forense Digital—. Empiezas por donde más lo necesitas y sumamos lo demás cuando tenga sentido." },
     { q: "¿Cómo cobran?", a: "A la medida de cada proyecto, no por paquetes cerrados. En una llamada de 30 minutos entendemos tu negocio y te damos un precio claro, no una cotización vacía." },
     { q: "¿Cuánto tarda en ver resultados?", a: "Marca & Diseño: primeras semanas. Páginas Web & Posicionamiento: 1–3 meses. Marketing & Ads: desde la primera campaña. Automatización & Bots: desde la activación." },
     { q: "¿Necesito saber de tecnología?", a: "Para nada. Nos encargamos de toda la parte técnica. Tú nos cuentas tu negocio, nosotros hacemos el resto." },
@@ -770,7 +897,7 @@ function Faq() {
     { q: "¿Con qué tipo de negocios trabajan?", a: "Empresarios y pymes en México — despachos, constructoras, clínicas, consultoras y servicios profesionales." }
   ];
   const itemsEn = [
-    { q: "Can I hire just one service?", a: "Yes. Each service stands on its own —Brand & Design, Websites & Positioning, Marketing & Ads, Automation & Bots, MyCFO, AI Content or Market Research—. You start where you need it most and we add the rest when it makes sense." },
+    { q: "Can I hire just one service?", a: "Yes. Each service stands on its own —Brand & Design, Websites & Positioning, Marketing & Ads, Automation & Bots, MyCFO, AI Content, Market Research, Portals, Direct Bookings, Weddings & Events or Email Forensics—. You start where you need it most and we add the rest when it makes sense." },
     { q: "How do you charge?", a: "Tailored to each project, not closed packages. In a 30-minute call we understand your business and give you a clear price, not an empty quote." },
     { q: "How long until I see results?", a: "Brand & Design: first weeks. Websites & Positioning: 1–3 months. Marketing & Ads: from the first campaign. Automation & Bots: from activation." },
     { q: "Do I need to know tech?", a: "Not at all. We handle everything technical. You tell us your business, we do the rest." },

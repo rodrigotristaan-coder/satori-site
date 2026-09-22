@@ -10,7 +10,16 @@ import { pathToFileURL } from 'node:url';
 
 const SRC = 'deploy';
 const OUT = 'dist';
-const SITE = 'https://satorimkt.com';
+// Dos dominios, un solo código: SATORI_BRAND=agency (proyecto de Vercel de
+// satoriagency.com.mx) cambia el énfasis y el dominio canónico; sin variable = satorimkt.com.
+const BRAND = process.env.SATORI_BRAND === 'agency' ? 'agency' : 'mkt';
+const SITE = BRAND === 'agency' ? 'https://satoriagency.com.mx' : 'https://satorimkt.com';
+// Título y descripción por página en satoriagency.com.mx (en satorimkt.com mandan los del HTML)
+const AGENCY_META = {
+  'index.html': { title: 'SATORI Agency — Automatización, IA y sistemas a la medida', desc: 'Automatización, bots con IA, portales de negocio y reservas directas para empresarios que quieren que su negocio funcione solo. También marca, web y marketing.' },
+  'servicios.html': { title: 'Servicios — SATORI Agency', desc: 'Once servicios: automatización y bots con IA, portales y tableros, reservas directas, forense de correo, MyCFO, web, contenido con IA, marketing, marca, estudios de mercado y eventos.' },
+  'proyectos.html': { title: 'Proyectos en vivo — SATORI Agency', desc: 'Proyectos en vivo de SATORI: sistemas de reservas, automatización, contenido con IA, sitios web y MyCFO.' },
+};
 const OG_IMAGE = `${SITE}/assets/og-cover-cream.jpg`;
 
 // gtag — se inyecta en TODAS las paginas. Dos destinos:
@@ -46,8 +55,9 @@ rmSync(OUT, { recursive: true, force: true });
 mkdirSync(join(OUT, 'js'), { recursive: true });
 cpSync(join(SRC, 'assets'), join(OUT, 'assets'), { recursive: true });
 cpSync(join(SRC, 'favicon.ico'), join(OUT, 'favicon.ico'));
-// Propuesta para clienta (pagina estatica, noindex, fuera del sitemap)
-cpSync(join(SRC, 'propuesta-akal'), join(OUT, 'propuesta-akal'), { recursive: true });
+// Propuesta para clienta (pagina estatica, noindex, fuera del sitemap). Solo en
+// satorimkt.com: es el enlace que ya tiene la clienta.
+if (BRAND === 'mkt') cpSync(join(SRC, 'propuesta-akal'), join(OUT, 'propuesta-akal'), { recursive: true });
 
 // --- CSS con hash (cache inmutable) ---
 const cssRaw = readFileSync(join(SRC, 'satori-shared.css'), 'utf8');
@@ -55,7 +65,17 @@ const cssName = `satori-shared.${hash8(cssRaw)}.css`;
 writeFileSync(join(OUT, cssName), cssRaw);
 
 const stripReactHooks = (code) => code.replace(/const\s*\{[^}]*\}\s*=\s*React\s*;?/g, '');
-const shared = stripReactHooks(readFileSync(join(SRC, 'satori-shared.jsx'), 'utf8'));
+const shared = `const SATORI_BRAND = ${JSON.stringify(BRAND)};\n` +
+  stripReactHooks(readFileSync(join(SRC, 'satori-shared.jsx'), 'utf8'));
+
+// En satoriagency.com.mx cambia <title> y description del shell por los de AGENCY_META
+function brandMeta(html, file) {
+  const m = BRAND === 'agency' && AGENCY_META[file];
+  if (!m) return html;
+  return html
+    .replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(m.title)}</title>`)
+    .replace(/<meta name="description" content="[^"]*"/, `<meta name="description" content="${esc(m.desc)}"`);
+}
 
 // ---- PRE-RENDER (SSG) ----
 // Shims minimos del navegador para que renderToStaticMarkup no truene al leer
@@ -184,7 +204,7 @@ for (const p of PAGES) {
   const jsName = `${p.jsx.replace(/\.jsx$/, '')}.${hash8(jsCode)}.js`;
   writeFileSync(join(OUT, 'js', jsName), jsCode);
 
-  let html = readFileSync(join(SRC, p.html), 'utf8');
+  let html = brandMeta(readFileSync(join(SRC, p.html), 'utf8'), p.html);
   html = html
     .replace(/<script[^>]*unpkg\.com[^>]*><\/script>\s*/g, '')
     .replace(/<script type="text\/babel"[^>]*><\/script>\s*/g, '')

@@ -327,7 +327,22 @@ function BrandManifesto() {
 // ---------- HERO BANNER ----------
 function HomeHero() {
   const [lang] = useLang();
-  const c = lang === "en" ? {
+  // satoriagency.com.mx abre con automatización; satorimkt.com con marketing (ver BRAND en satori-shared)
+  const c = IS_AGENCY ? (lang === "en" ? {
+    h1a: "Less operation.",
+    h1b: "More clarity.",
+    lead: "Automation, AI and custom systems for business owners who want their company to run on its own.",
+    chips: [{ t: "Automation" }, { t: "Portals" }, { t: "Bots" }, { t: "Bookings" }, { t: "Web" }, { t: "AI", gold: true }],
+    cta1: "Founder",
+    cta2: "See services"
+  } : {
+    h1a: "Menos operación.",
+    h1b: "Más claridad.",
+    lead: "Automatización, IA y sistemas a la medida para empresarios que quieren que su negocio funcione solo.",
+    chips: [{ t: "Automatización" }, { t: "Portales" }, { t: "Bots" }, { t: "Reservas" }, { t: "Web" }, { t: "IA", gold: true }],
+    cta1: "Fundador",
+    cta2: "Ver servicios"
+  }) : lang === "en" ? {
     h1a: "More strategy.",
     h1b: "More clarity.",
     lead: "Technology for business owners who want to grow with clarity.",
@@ -428,45 +443,52 @@ function HomeHero() {
   );
 }
 
-// ---------- QUÉ HACEMOS (5 pilares de servicio — claridad arriba) ----------
-// Anclas de /servicios en el MISMO orden (por rentabilidad) que T.items.
-const SLUGS_SERVICIOS = ["web", "bots", "ads", "contenido", "marca", "estudios", "mycfo"];
+// ---------- QUÉ HACEMOS (los 11 servicios — claridad arriba) ----------
+// Cada tarjeta enlaza a su ancla en /servicios; el orden sale de ORDEN_SERVICIOS
+// (satori-shared), distinto en satorimkt.com y en satoriagency.com.mx.
 function QueHacemos() {
   const [lang] = useLang();
   const en = lang === "en";
   const T = en ? {
     eyebrow: "What we do",
-    title: "Seven ways we ",
+    title: "Eleven ways we ",
     titleAccent: "make you grow",
     sub: "Strategy first, then execution. Everything points to one thing: clients arriving with clarity.",
     cta: "See all services",
     items: [
-      // Orden por rentabilidad para Satori (Rodrigo, 2026-08-10)
-      { img: "assets/showroom/lina-cristinedae.jpg", fit: "cover", objPos: "top", t: "Websites & Positioning", d: "Fast sites that rank and get recommended by AI." },
-      { img: "assets/showroom/automatizacion-flow-horizontal.jpg", fit: "cover", bg: "#0E0E0E", t: "AI Automation & Bots", d: "Bots and systems that attend, capture and follow up on their own." },
-      { img: "assets/showroom/marketing-moneyshop-poster.jpg", fit: "cover", objPos: "left", t: "Marketing & Ads", d: "Campaigns that bring qualified leads to your business." },
-      { video: "assets/showroom/satori-contenido-ia.mp4", poster: "assets/showroom/satori-contenido-ia-poster.jpg", fit: "cover", bg: SATORI.CREAM, t: "AI Content", d: "Cinematic brand video, reels and ads created end-to-end with AI." },
-      { img: "assets/showroom/marca-branding-poster.jpg", fit: "cover", t: "Brand & Design", d: "Identity that sets you apart and builds trust." },
-      { video: "assets/showroom/estudios-mercado.mp4", poster: "assets/showroom/estudios-mercado-poster.jpg", fit: "cover", bg: "#0E0E0E", t: "Market Research", d: "Real data on your market, competitors and pricing to decide with clarity." },
-      { video: "assets/showroom/mycfo-chat.mp4", poster: "assets/showroom/mycfo-chat-poster.jpg", bg: SATORI.CREAM, t: "MyCFO", d: "Your AI CFO: manage your business finances by chat, with clear reports and a daily status.", featured: true, badge: "Satori product" }
+      { slug: "web", img: "assets/showroom/lina-cristinedae.jpg", fit: "cover", objPos: "top", t: "Websites & Positioning", d: "Fast sites that rank and get recommended by AI." },
+      { slug: "bots", img: "assets/showroom/automatizacion-flow-horizontal.jpg", fit: "cover", bg: "#0E0E0E", t: "AI Automation & Bots", d: "Bots and systems that attend, capture and follow up on their own." },
+      { slug: "ads", img: "assets/showroom/marketing-moneyshop-poster.jpg", fit: "cover", objPos: "left", t: "Marketing & Ads", d: "Campaigns that bring qualified leads to your business." },
+      { slug: "contenido", video: "assets/showroom/satori-contenido-ia.mp4", poster: "assets/showroom/satori-contenido-ia-poster.jpg", fit: "cover", bg: SATORI.CREAM, t: "AI Content", d: "Cinematic brand video, reels, ads and explainer videos created end-to-end with AI." },
+      { slug: "marca", img: "assets/showroom/marca-branding-poster.jpg", fit: "cover", t: "Brand & Design", d: "Identity that sets you apart and builds trust." },
+      { slug: "estudios", video: "assets/showroom/estudios-mercado.mp4", poster: "assets/showroom/estudios-mercado-poster.jpg", fit: "cover", bg: "#0E0E0E", t: "Market Research", d: "Real data on your market, competitors and pricing to decide with clarity." },
+      { slug: "portales", img: "assets/showroom/portales-tablero.jpg", fit: "cover", t: "Business Portals & Dashboards", d: "Your numbers, projects and operation on one private screen, with secure access." },
+      { slug: "reservas", img: "assets/showroom/casaluna-live.jpg", fit: "cover", t: "Direct Bookings", d: "Your property's own booking site: no commissions, synced calendar and a management panel." },
+      { slug: "eventos", img: "assets/showroom/famsalasglez-live.jpg", fit: "cover", t: "Weddings & Events", d: "Digital invitations with RSVP and a private panel for the hosts." },
+      { slug: "forense", img: "assets/showroom/forense-candados.jpg", fit: "cover", t: "Email Forensics", d: "When an email is the evidence: headers, routes and authenticity, documented clearly." },
+      { slug: "mycfo", video: "assets/showroom/mycfo-chat.mp4", poster: "assets/showroom/mycfo-chat-poster.jpg", bg: SATORI.CREAM, t: "MyCFO", d: "Your AI CFO: log by chat on Telegram and see everything in a secure web portal, with alerts before problems hit.", featured: true, badge: "Satori product" }
     ]
   } : {
     eyebrow: "Qué hacemos",
-    title: "Siete formas de ",
+    title: "Once formas de ",
     titleAccent: "hacerte crecer",
     sub: "Primero estrategia, luego ejecución. Todo apunta a lo mismo: clientes llegando con claridad.",
     cta: "Ver todos los servicios",
     items: [
-      // Orden por rentabilidad para Satori (Rodrigo, 2026-08-10)
-      { img: "assets/showroom/lina-cristinedae.jpg", fit: "cover", objPos: "top", t: "Páginas Web & Posicionamiento", d: "Sitios rápidos, que rankean y que la IA recomienda." },
-      { img: "assets/showroom/automatizacion-flow-horizontal.jpg", fit: "cover", bg: "#0E0E0E", t: "Automatización & Bots con IA", d: "Bots y sistemas que atienden, captan y dan seguimiento solos." },
-      { img: "assets/showroom/marketing-moneyshop-poster.jpg", fit: "cover", objPos: "left", t: "Marketing & Ads", d: "Campañas que traen prospectos calificados a tu negocio." },
-      { video: "assets/showroom/satori-contenido-ia.mp4", poster: "assets/showroom/satori-contenido-ia-poster.jpg", fit: "cover", bg: SATORI.CREAM, t: "Contenido con IA", d: "Video de marca, reels y ads cinematográficos hechos con IA de punta a punta." },
-      { img: "assets/showroom/marca-branding-poster.jpg", fit: "cover", t: "Marca & Diseño", d: "Identidad que te distingue y genera confianza." },
-      { video: "assets/showroom/estudios-mercado.mp4", poster: "assets/showroom/estudios-mercado-poster.jpg", fit: "cover", bg: "#0E0E0E", t: "Estudios de Mercado", d: "Datos reales de tu mercado, competencia y precios para decidir con claridad." },
-      { video: "assets/showroom/mycfo-chat.mp4", poster: "assets/showroom/mycfo-chat-poster.jpg", bg: SATORI.CREAM, t: "MyCFO", d: "Tu CFO con IA: controla las finanzas de tu negocio por chat, con reportes claros y estatus diario.", featured: true, badge: "Producto Satori" }
+      { slug: "web", img: "assets/showroom/lina-cristinedae.jpg", fit: "cover", objPos: "top", t: "Páginas Web & Posicionamiento", d: "Sitios rápidos, que rankean y que la IA recomienda." },
+      { slug: "bots", img: "assets/showroom/automatizacion-flow-horizontal.jpg", fit: "cover", bg: "#0E0E0E", t: "Automatización & Bots con IA", d: "Bots y sistemas que atienden, captan y dan seguimiento solos." },
+      { slug: "ads", img: "assets/showroom/marketing-moneyshop-poster.jpg", fit: "cover", objPos: "left", t: "Marketing & Ads", d: "Campañas que traen prospectos calificados a tu negocio." },
+      { slug: "contenido", video: "assets/showroom/satori-contenido-ia.mp4", poster: "assets/showroom/satori-contenido-ia-poster.jpg", fit: "cover", bg: SATORI.CREAM, t: "Contenido con IA", d: "Video de marca, reels, ads y videos educativos hechos con IA de punta a punta." },
+      { slug: "marca", img: "assets/showroom/marca-branding-poster.jpg", fit: "cover", t: "Marca & Diseño", d: "Identidad que te distingue y genera confianza." },
+      { slug: "estudios", video: "assets/showroom/estudios-mercado.mp4", poster: "assets/showroom/estudios-mercado-poster.jpg", fit: "cover", bg: "#0E0E0E", t: "Estudios de Mercado", d: "Datos reales de tu mercado, competencia y precios para decidir con claridad." },
+      { slug: "portales", img: "assets/showroom/portales-tablero.jpg", fit: "cover", t: "Portales & Tableros de negocio", d: "Tus números, proyectos y operación en una pantalla privada, con acceso seguro." },
+      { slug: "reservas", img: "assets/showroom/casaluna-live.jpg", fit: "cover", t: "Reservas Directas", d: "El sitio de reservas de tu propiedad: sin comisiones, calendario sincronizado y panel de administración." },
+      { slug: "eventos", img: "assets/showroom/famsalasglez-live.jpg", fit: "cover", t: "Bodas & Eventos", d: "Invitaciones digitales con confirmación de asistencia y un panel privado para los anfitriones." },
+      { slug: "forense", img: "assets/showroom/forense-candados.jpg", fit: "cover", t: "Forense Digital de Correo", d: "Cuando un correo es la prueba: cabeceras, rutas y autenticidad, documentadas con claridad." },
+      { slug: "mycfo", video: "assets/showroom/mycfo-chat.mp4", poster: "assets/showroom/mycfo-chat-poster.jpg", bg: SATORI.CREAM, t: "MyCFO", d: "Tu CFO con IA: registras por chat en Telegram y lo ves todo en un portal web seguro, con avisos antes de que haya problemas.", featured: true, badge: "Producto Satori" }
     ]
   };
+  const items = ORDEN_SERVICIOS.map((k) => T.items.find((it) => it.slug === k)).filter(Boolean);
   return (
     <section id="que-hacemos" data-reveal style={{
       padding: "7rem clamp(1.25rem,4vw,2.5rem)", background: "rgba(244,244,242,0.85)",
@@ -479,9 +501,9 @@ function QueHacemos() {
           <p style={{ ...bodyStyle, maxWidth: "560px", margin: "1rem auto 0" }}>{T.sub}</p>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "1.2rem" }}>
-          {T.items.map((it, i) => (
-            // Cada tarjeta enlaza a su detalle en /servicios (mismo orden que SLUGS_SERVICIOS)
-            <a key={i} href={`/servicios#${SLUGS_SERVICIOS[i]}`} className={it.featured ? "pillar-card pillar-featured" : "pillar-card"} style={{
+          {items.map((it, i) => (
+            // Cada tarjeta enlaza a su detalle en /servicios
+            <a key={i} href={`/servicios#${it.slug}`} className={it.featured ? "pillar-card pillar-featured" : "pillar-card"} style={{
               background: "rgba(255,255,255,0.55)",
               border: it.featured ? `1px solid ${SATORI.GOLD}55` : "1px solid rgba(255,255,255,0.65)",
               backdropFilter: "blur(14px) saturate(160%)", WebkitBackdropFilter: "blur(14px) saturate(160%)",
@@ -1017,7 +1039,7 @@ function ReelStatsScene() {
   const stats = [
     { n: "+40", l: "PROYECTOS" },
     { n: "24/7", l: "AUTOMATIZACIÓN" },
-    { n: "+6", l: "CIUDADES" },
+    { n: "9", l: "CIUDADES" },
     { n: "30", l: "DÍAS" }
   ];
   return (

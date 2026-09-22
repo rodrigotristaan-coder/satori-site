@@ -8,8 +8,8 @@ const PROYECTOS_ES = [
     cat: "Soluciones IA",
     producto: true,
     year: "2025",
-    descripcion: "Bot de finanzas personales con registro y reporting automático por WhatsApp. Categorización por IA y reportes mensuales claros, por chat.",
-    tags: ["WhatsApp", "Registro automático", "Reportes IA"],
+    descripcion: "Tu CFO con IA: registras por chat en Telegram y lo ves todo en un portal web con Face ID. Lee solo los correos de tu banco, maneja 16 monedas y un motor de 11 reglas te avisa antes de que algo se salga de control.",
+    tags: ["Telegram", "Portal web", "Face ID", "16 monedas"],
     video: "assets/showroom/mycfo-chat.mp4",
     poster: "assets/showroom/mycfo-chat-poster.jpg"
   },
@@ -22,6 +22,15 @@ const PROYECTOS_ES = [
     tags: ["Video con IA", "Reels & Ads", "Branding"],
     video: "assets/showroom/satori-contenido-ia.mp4",
     poster: "assets/showroom/satori-contenido-ia-poster.jpg"
+  },
+  {
+    titulo: "Skinner Operant Adventures",
+    cat: "Soluciones IA",
+    year: "2026",
+    descripcion: "Video educativo hecho con IA sobre condicionamiento operante: el guion se narra tal cual, con ilustraciones, animación, voz y música generadas a la medida y sincronizadas a la narración. Listo para YouTube.",
+    tags: ["Video educativo", "Contenido con IA", "YouTube"],
+    video: "assets/showroom/skinner-explainer.mp4",
+    poster: "assets/showroom/skinner-explainer-poster.jpg"
   },
   {
     titulo: "Invitación de boda",
@@ -42,6 +51,15 @@ const PROYECTOS_ES = [
     img: "assets/showroom/esmeralda-reservas.jpg"
   },
   {
+    titulo: "Casa Luna — Valle de Bravo",
+    cat: "Web",
+    year: "2026",
+    descripcion: "Sitio de reservas directas para una casa de descanso en Valle de Bravo: fechas y tarifas en línea, panel de administración para el anfitrión y mensajes automáticos al huésped.",
+    tags: ["Reservas directas", "Panel", "Automatización"],
+    url: "https://casalunavalle.com",
+    img: "assets/showroom/casaluna-live.jpg"
+  },
+  {
     titulo: "HUMAN-CORE",
     cat: "Web",
     year: "2025",
@@ -60,11 +78,11 @@ const PROYECTOS_ES = [
     img: "assets/showroom/money-shop.jpg"
   },
   {
-    titulo: "Landing Pages",
-    cat: "Identidad",
-    year: "2025",
-    descripcion: "Sistema de landings de alta conversión para campañas, eventos e invitaciones: copy, diseño, formularios conectados a CRM y experimentación A/B continua.",
-    tags: ["Eventos", "Invitaciones", "Campañas"],
+    titulo: "Lina de la Peña",
+    cat: "Web",
+    year: "2026",
+    descripcion: "Sitio bilingüe de una artista: trayectoria, obra y convocatorias con formulario propio. 16 páginas y calificación perfecta de velocidad (Lighthouse 100/100/100). Diseño y desarrollo por Satori.",
+    tags: ["Sitio de artista", "Bilingüe", "Formulario propio", "SEO"],
     url: "https://linadelapena.com",
     img: "assets/showroom/lina-cristinedae.jpg"
   },
@@ -108,8 +126,8 @@ const PROYECTOS_EN = [
     cat: "AI Solutions",
     producto: true,
     year: "2025",
-    descripcion: "Personal-finance bot with automatic logging and reporting over WhatsApp. AI categorization and clear monthly reports, by chat.",
-    tags: ["WhatsApp", "Auto-logging", "AI reports"],
+    descripcion: "Your AI CFO: log by chat on Telegram and see everything in a web portal with Face ID. It reads your bank emails on its own, handles 16 currencies, and an 11-rule engine warns you before anything gets out of hand.",
+    tags: ["Telegram", "Web portal", "Face ID", "16 currencies"],
     video: "assets/showroom/mycfo-chat.mp4",
     poster: "assets/showroom/mycfo-chat-poster.jpg"
   },
@@ -122,6 +140,15 @@ const PROYECTOS_EN = [
     tags: ["AI video", "Reels & Ads", "Branding"],
     video: "assets/showroom/satori-contenido-ia.mp4",
     poster: "assets/showroom/satori-contenido-ia-poster.jpg"
+  },
+  {
+    titulo: "Skinner Operant Adventures",
+    cat: "AI Solutions",
+    year: "2026",
+    descripcion: "AI-made educational video on operant conditioning: the script is narrated word for word, with illustrations, animation, voice and music generated to measure and synced to the narration. Ready for YouTube.",
+    tags: ["Educational video", "AI content", "YouTube"],
+    video: "assets/showroom/skinner-explainer.mp4",
+    poster: "assets/showroom/skinner-explainer-poster.jpg"
   },
   {
     titulo: "Wedding invitation",
@@ -142,6 +169,15 @@ const PROYECTOS_EN = [
     img: "assets/showroom/esmeralda-reservas.jpg"
   },
   {
+    titulo: "Casa Luna — Valle de Bravo",
+    cat: "Web",
+    year: "2026",
+    descripcion: "Direct-booking site for a vacation home in Valle de Bravo: dates and rates online, an admin panel for the host and automatic guest messages.",
+    tags: ["Direct bookings", "Panel", "Automation"],
+    url: "https://casalunavalle.com",
+    img: "assets/showroom/casaluna-live.jpg"
+  },
+  {
     titulo: "HUMAN-CORE",
     cat: "Web",
     year: "2025",
@@ -160,11 +196,11 @@ const PROYECTOS_EN = [
     img: "assets/showroom/money-shop.jpg"
   },
   {
-    titulo: "Landing Pages",
-    cat: "Identity",
-    year: "2025",
-    descripcion: "High-conversion landing-page system for campaigns, events and invitations: copy, design, CRM-wired forms and continuous A/B testing.",
-    tags: ["Events", "Invitations", "Campaigns"],
+    titulo: "Lina de la Peña",
+    cat: "Web",
+    year: "2026",
+    descripcion: "Bilingual site for an artist: career, work and open calls with a custom form. 16 pages and a perfect speed score (Lighthouse 100/100/100). Designed and built by Satori.",
+    tags: ["Artist website", "Bilingual", "Custom form", "SEO"],
     url: "https://linadelapena.com",
     img: "assets/showroom/lina-cristinedae.jpg"
   },
