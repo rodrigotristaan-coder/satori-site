@@ -5,7 +5,7 @@
 import esbuild from 'esbuild';
 import { readFileSync, writeFileSync, mkdirSync, cpSync, rmSync } from 'node:fs';
 import { createHash } from 'node:crypto';
-import { join } from 'node:path';
+import { join, dirname } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 const SRC = 'deploy';
@@ -39,9 +39,25 @@ const PAGES = [
   { html: 'index.html',         jsx: 'page-home.jsx',      path: '/' },
   { html: 'servicios.html',     jsx: 'page-servicios.jsx', path: '/servicios' },
   { html: 'proyectos.html',     jsx: 'page-proyectos.jsx', path: '/proyectos' },
-  { html: 'blog.html',          jsx: 'page-blog.jsx',      path: '/blog' },
+  { html: 'blog.html',          jsx: 'page-blog.jsx',      path: '/blog', pre: 'const BLOG_SLUG = "";' },
   { html: 'sobre-rodrigo.html', jsx: 'page-sobre.jsx',     path: '/sobre-rodrigo' },
 ];
+// Notas del blog: /blog es el índice y cada nota tiene su propia página /blog/<slug>
+// (mismo page-blog.jsx; el build inyecta BLOG_SLUG). Cada slug debe existir en ARTICULOS.
+const BLOG_POSTS = [
+  { slug: 'marketing-llm-recomienda', title: 'El nuevo marketing: que los LLMs te recomienden — SATORI', desc: 'Por qué ChatGPT, Claude y Gemini son el nuevo canal donde tu marca se recomienda, y cómo aparecer ahí.' },
+  { slug: 'automatizacion-bots-ia', title: 'Automatización con IA: tu negocio trabajando mientras duermes — SATORI', desc: 'Qué procesos automatizar primero, qué hace un bot con IA en la vida real y cómo empezar sin romper tu operación.' },
+  { slug: 'portales-de-negocio', title: 'Portales de negocio: tus números en una sola pantalla — SATORI', desc: 'Por qué un portal privado a tu medida sustituye a diez hojas de cálculo, y qué debe tener para que tu equipo lo use.' },
+  { slug: 'reservas-directas', title: 'Reservas directas: tu propiedad sin depender de las plataformas — SATORI', desc: 'Cómo un sitio de reservas propio te quita comisiones, te deja los datos de tus huéspedes y automatiza la estancia.' },
+  { slug: 'mycfo-finanzas-con-ia', title: 'MyCFO: tus finanzas claras sin hojas de cálculo — SATORI', desc: 'Registrar gastos por chat, ver tu patrimonio en un portal y recibir avisos antes de que algo se salga de control.' },
+  { slug: 'contenido-con-ia', title: 'Contenido con IA: video de marca sin set de filmación — SATORI', desc: 'Cómo producimos video de marca, reels y videos educativos con IA, y qué sigue necesitando criterio humano.' },
+];
+for (const b of BLOG_POSTS) {
+  PAGES.push({ html: `blog/${b.slug}.html`, shell: 'blog.html', jsx: 'page-blog.jsx', path: `/blog/${b.slug}`,
+    pre: `const BLOG_SLUG = ${JSON.stringify(b.slug)};`, meta: b });
+}
+// Rutas de assets absolutas: las notas viven en /blog/<slug>, donde "assets/x" relativo se rompería.
+const absolutize = (s) => s.replace(/(["'`(=]\s*)(assets\/|js\/|favicon)/g, (m, pre, dir) => `${pre}/${dir}`);
 const STATIC_HTML = [
   { html: 'privacidad.html', path: '/privacidad' },
   { html: 'gracias.html', path: '/gracias', noindex: true }, // thank-you (conversión); fuera del sitemap
@@ -109,7 +125,7 @@ const SSR_DIR = join(OUT, '.ssr');
 mkdirSync(SSR_DIR, { recursive: true });
 
 // Renderiza una pagina a HTML estatico. Devuelve '' si algo falla (fallback seguro).
-async function prerender(pageCode, jsxName) {
+async function prerender(pageCode, jsxName, key = jsxName) {
   try {
     const serverCode = pageCode.replace(/ReactDOM\.createRoot\([\s\S]*?\)\.render\([\s\S]*?\);?/, '');
     const entry = [
@@ -126,7 +142,7 @@ async function prerender(pageCode, jsxName) {
       jsx: 'transform', jsxFactory: 'React.createElement', jsxFragment: 'React.Fragment',
       write: false, logLevel: 'silent',
     });
-    const tmp = join(SSR_DIR, jsxName.replace(/\.jsx$/, '.mjs'));
+    const tmp = join(SSR_DIR, key.replace(/[\/.]/g, '_') + '.mjs'); // un archivo por página: import() cachea por URL
     writeFileSync(tmp, built.outputFiles[0].text);
     globalThis.__SSR_HTML__ = '';
     await import(pathToFileURL(tmp).href);
@@ -178,7 +194,7 @@ function injectSeo(html, info) {
     .replace(/\s*<meta property="og:[^>]*>/g, '')
     .replace(/\s*<meta name="twitter:[^>]*>/g, '')
     .replace(/\s*<link rel="canonical"[^>]*>/g, '')
-    .replace(/\s*<link rel="stylesheet" href="satori-shared\.css"\/?>/g, `\n<link rel="stylesheet" href="${cssName}"/>`)
+    .replace(/\s*<link rel="stylesheet" href="satori-shared\.css"\/?>/g, `\n<link rel="stylesheet" href="/${cssName}"/>`)
     // Fuentes de Google: carga NO bloqueante (no retrasa el primer render)
     .replace(/<link href="(https:\/\/fonts\.googleapis\.com[^"]*)" rel="stylesheet"\/?>/,
       (m, url) => `<link rel="stylesheet" href="${url}" media="print" onload="this.media='all'"/><noscript><link rel="stylesheet" href="${url}"/></noscript>`);
@@ -186,7 +202,7 @@ function injectSeo(html, info) {
 }
 
 for (const p of PAGES) {
-  const pageCode = stripReactHooks(readFileSync(join(SRC, p.jsx), 'utf8'));
+  const pageCode = (p.pre ? p.pre + '\n' : '') + stripReactHooks(readFileSync(join(SRC, p.jsx), 'utf8'));
   const entry = [
     `import * as React from 'react';`,
     `import * as ReactDOM from 'react-dom/client';`,
@@ -200,21 +216,26 @@ for (const p of PAGES) {
     jsx: 'transform', jsxFactory: 'React.createElement', jsxFragment: 'React.Fragment',
     write: false, logLevel: 'silent',
   });
-  const jsCode = built.outputFiles[0].text;
+  const jsCode = absolutize(built.outputFiles[0].text);
   const jsName = `${p.jsx.replace(/\.jsx$/, '')}.${hash8(jsCode)}.js`;
   writeFileSync(join(OUT, 'js', jsName), jsCode);
 
-  let html = brandMeta(readFileSync(join(SRC, p.html), 'utf8'), p.html);
+  let html = brandMeta(readFileSync(join(SRC, p.shell || p.html), 'utf8'), p.html);
+  if (p.meta) html = html
+    .replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(p.meta.title)}</title>`)
+    .replace(/<meta name="description" content="[^"]*"/, `<meta name="description" content="${esc(p.meta.desc)}"`);
   html = html
     .replace(/<script[^>]*unpkg\.com[^>]*><\/script>\s*/g, '')
     .replace(/<script type="text\/babel"[^>]*><\/script>\s*/g, '')
-    .replace('</body>', `<script src="js/${jsName}"></script>\n</body>`);
+    .replace('</body>', `<script src="/js/${jsName}"></script>\n</body>`);
   html = injectSeo(html, { title: meta(html).title, desc: meta(html).desc, url: SITE + p.path, isHome: p.path === '/' });
   html = html.replace('</head>', `${GTAG}</head>`); // Google Ads en todas las paginas
 
   // Pre-render: inyecta el HTML real en #root (el cliente luego re-monta)
-  const ssr = await prerender(pageCode, p.jsx);
+  const ssr = await prerender(pageCode, p.jsx, p.html);
   if (ssr) html = html.replace('<div id="root"></div>', () => `<div id="root">${ssr}</div>`);
+  html = absolutize(html);
+  mkdirSync(dirname(join(OUT, p.html)), { recursive: true });
   writeFileSync(join(OUT, p.html), html);
   console.log(`  ✓ ${p.html}  ->  js/${jsName}${ssr ? `  (pre-render ${(ssr.length / 1024).toFixed(0)}KB)` : ''}`);
 }
@@ -223,7 +244,7 @@ for (const p of PAGES) {
 for (const s of STATIC_HTML) {
   let html = readFileSync(join(SRC, s.html), 'utf8');
   html = injectSeo(html, { title: meta(html).title, desc: meta(html).desc, url: SITE + s.path, isHome: false });
-  writeFileSync(join(OUT, s.html), html);
+  writeFileSync(join(OUT, s.html), absolutize(html));
   console.log(`  ✓ ${s.html} (estatico)`);
 }
 

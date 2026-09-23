@@ -18,7 +18,7 @@ function AboutHero() {
     cta2: "Call me",
     ctaWa: "WhatsApp · 56 2501 8281",
     find: "Find me",
-    photoCaption: <React.Fragment>Satori. <span style={{ color: SATORI.GOLD }}>Sensei</span></React.Fragment>,
+    photoCaption: <React.Fragment>Satori. <span style={{ color: SATORI.GOLD }}>Founder</span></React.Fragment>,
     photoYear: "ACTIVE"
   } : {
     eyebrow: "Sobre mí",
@@ -31,7 +31,7 @@ function AboutHero() {
     cta2: "Llamar",
     ctaWa: "WhatsApp · 56 2501 8281",
     find: "Encuéntrame",
-    photoCaption: <React.Fragment>Satori. <span style={{ color: SATORI.GOLD }}>Sensei</span></React.Fragment>,
+    photoCaption: <React.Fragment>Satori. <span style={{ color: SATORI.GOLD }}>Fundador</span></React.Fragment>,
     photoYear: "EN OPERACIÓN"
   };
 

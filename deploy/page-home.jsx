@@ -466,7 +466,7 @@ function QueHacemos() {
       { slug: "reservas", img: "assets/showroom/casaluna-live.jpg", fit: "cover", t: "Direct Bookings", d: "Your property's own booking site: no commissions, synced calendar and a management panel." },
       { slug: "eventos", img: "assets/showroom/famsalasglez-live.jpg", fit: "cover", t: "Weddings & Events", d: "Digital invitations with RSVP and a private panel for the hosts." },
       { slug: "forense", img: "assets/showroom/forense-candados.jpg", fit: "cover", t: "Email Forensics", d: "When an email is the evidence: headers, routes and authenticity, documented clearly." },
-      { slug: "mycfo", video: "assets/showroom/mycfo-chat.mp4", poster: "assets/showroom/mycfo-chat-poster.jpg", bg: SATORI.CREAM, t: "MyCFO", d: "Your AI CFO: log by chat on Telegram and see everything in a secure web portal, with alerts before problems hit.", featured: true, badge: "Satori product" }
+      { slug: "mycfo", video: "assets/showroom/mycfo-chat-v2.mp4", poster: "assets/showroom/mycfo-chat-poster.jpg", bg: SATORI.CREAM, t: "MyCFO", d: "Your AI CFO: log by chat on Telegram and see everything in a secure web portal, with alerts before problems hit.", featured: true, badge: "Satori product" }
     ]
   } : {
     eyebrow: "Qué hacemos",
@@ -485,7 +485,7 @@ function QueHacemos() {
       { slug: "reservas", img: "assets/showroom/casaluna-live.jpg", fit: "cover", t: "Reservas Directas", d: "El sitio de reservas de tu propiedad: sin comisiones, calendario sincronizado y panel de administración." },
       { slug: "eventos", img: "assets/showroom/famsalasglez-live.jpg", fit: "cover", t: "Bodas & Eventos", d: "Invitaciones digitales con confirmación de asistencia y un panel privado para los anfitriones." },
       { slug: "forense", img: "assets/showroom/forense-candados.jpg", fit: "cover", t: "Forense Digital de Correo", d: "Cuando un correo es la prueba: cabeceras, rutas y autenticidad, documentadas con claridad." },
-      { slug: "mycfo", video: "assets/showroom/mycfo-chat.mp4", poster: "assets/showroom/mycfo-chat-poster.jpg", bg: SATORI.CREAM, t: "MyCFO", d: "Tu CFO con IA: registras por chat en Telegram y lo ves todo en un portal web seguro, con avisos antes de que haya problemas.", featured: true, badge: "Producto Satori" }
+      { slug: "mycfo", video: "assets/showroom/mycfo-chat-v2.mp4", poster: "assets/showroom/mycfo-chat-poster.jpg", bg: SATORI.CREAM, t: "MyCFO", d: "Tu CFO con IA: registras por chat en Telegram y lo ves todo en un portal web seguro, con avisos antes de que haya problemas.", featured: true, badge: "Producto Satori" }
     ]
   };
   const items = ORDEN_SERVICIOS.map((k) => T.items.find((it) => it.slug === k)).filter(Boolean);
@@ -585,10 +585,11 @@ function ShowroomTeaser() {
         <div style={{ ...eyebrowStyle, justifyContent: "center", color: SATORI.GOLD, opacity: 1 }}>{T.eyebrow}</div>
         <h2 style={{ ...h2Style, color: SATORI.CREAM }}>{T.title}<span className="grad-gold-dark">{T.titleAccent}</span></h2>
         <p style={{ ...bodyStyle, color: SATORI.CREAM, opacity: 0.8, maxWidth: "560px", margin: "1rem auto 1.75rem" }}>{T.sub}</p>
-        <ShowcaseVideo
-          src="assets/showroom/landing-esmeralda-airbnb-green-16x9.mp4"
-          poster="assets/showroom/landing-esmeralda-airbnb-green-poster.jpg"
-          label={T.caption}
+        {/* Foto fija (antes video de 6 MB): la home carga mucho más ligera */}
+        <img
+          src="assets/showroom/esmeralda-live.jpg"
+          alt={T.caption}
+          loading="lazy"
           style={{
             width: "100%",
             maxWidth: "760px",

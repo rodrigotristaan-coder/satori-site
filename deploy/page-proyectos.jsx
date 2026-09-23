@@ -10,7 +10,7 @@ const PROYECTOS_ES = [
     year: "2025",
     descripcion: "Tu CFO con IA: registras por chat en Telegram y lo ves todo en un portal web con Face ID. Lee solo los correos de tu banco, maneja 16 monedas y un motor de 11 reglas te avisa antes de que algo se salga de control.",
     tags: ["Telegram", "Portal web", "Face ID", "16 monedas"],
-    video: "assets/showroom/mycfo-chat.mp4",
+    video: "assets/showroom/mycfo-chat-v2.mp4",
     poster: "assets/showroom/mycfo-chat-poster.jpg"
   },
   {
@@ -38,7 +38,7 @@ const PROYECTOS_ES = [
     year: "2025",
     descripcion: "Invitación de boda digital: sobre interactivo que se abre con música, galería, itinerario, confirmación de asistencia (RSVP), mesa de regalos y gestión de reservas con IA. Diseño y desarrollo por Satori.",
     tags: ["Landing", "Invitación digital", "RSVP", "Reservas con IA"],
-    video: "assets/showroom/invitacion-boda-famsalasglez-16x9.mp4",
+    video: "assets/showroom/invitacion-boda-16x9-v2.mp4",
     poster: "assets/showroom/famsalasglez-live.jpg"
   },
   {
@@ -128,7 +128,7 @@ const PROYECTOS_EN = [
     year: "2025",
     descripcion: "Your AI CFO: log by chat on Telegram and see everything in a web portal with Face ID. It reads your bank emails on its own, handles 16 currencies, and an 11-rule engine warns you before anything gets out of hand.",
     tags: ["Telegram", "Web portal", "Face ID", "16 currencies"],
-    video: "assets/showroom/mycfo-chat.mp4",
+    video: "assets/showroom/mycfo-chat-v2.mp4",
     poster: "assets/showroom/mycfo-chat-poster.jpg"
   },
   {
@@ -156,7 +156,7 @@ const PROYECTOS_EN = [
     year: "2025",
     descripcion: "Digital wedding invitation: an interactive envelope that opens with music, gallery, itinerary, RSVP, gift registry and AI-powered booking management. Designed and developed by Satori.",
     tags: ["Landing", "Digital invite", "RSVP", "AI booking"],
-    video: "assets/showroom/invitacion-boda-famsalasglez-16x9.mp4",
+    video: "assets/showroom/invitacion-boda-16x9-v2.mp4",
     poster: "assets/showroom/famsalasglez-live.jpg"
   },
   {
